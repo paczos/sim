@@ -1,0 +1,777 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - extracted.info - library/implementation/dicomDirImpl.cpp</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">library/implementation</a> - dicomDirImpl.cpp<span style="font-size: 80%;"> (source / <a href="dicomDirImpl.cpp.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">extracted.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">130</td>
+            <td class="headerCovTableEntry">158</td>
+            <td class="headerCovTableEntryMed">82.3 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2019-03-13 14:48:54</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">22</td>
+            <td class="headerCovTableEntry">25</td>
+            <td class="headerCovTableEntryMed">88.0 %</td>
+          </tr>
+          <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : /*</a>
+<span class="lineNum">       2 </span>            : Copyright 2005 - 2017 by Paolo Brandoli/Binarno s.p.
+<span class="lineNum">       3 </span>            : 
+<span class="lineNum">       4 </span>            : Imebra is available for free under the GNU General Public License.
+<span class="lineNum">       5 </span>            : 
+<span class="lineNum">       6 </span>            : The full text of the license is available in the file license.rst
+<span class="lineNum">       7 </span>            :  in the project root folder.
+<span class="lineNum">       8 </span>            : 
+<span class="lineNum">       9 </span>            : If you do not want to be bound by the GPL terms (such as the requirement 
+<span class="lineNum">      10 </span>            :  that your application must also be GPL), you may purchase a commercial 
+<span class="lineNum">      11 </span>            :  license for Imebra from the Imebra’s website (http://imebra.com).
+<span class="lineNum">      12 </span>            : */
+<span class="lineNum">      13 </span>            : 
+<span class="lineNum">      14 </span>            : /*! \file dicomDir.cpp
+<span class="lineNum">      15 </span>            :     \brief Implementation of the classes dicomDir and directoryRecord.
+<span class="lineNum">      16 </span>            : 
+<span class="lineNum">      17 </span>            : */
+<span class="lineNum">      18 </span>            : 
+<span class="lineNum">      19 </span>            : #include &quot;dicomDirImpl.h&quot;
+<span class="lineNum">      20 </span>            : #include &quot;dataSetImpl.h&quot;
+<span class="lineNum">      21 </span>            : #include &quot;dicomStreamCodecImpl.h&quot;
+<span class="lineNum">      22 </span>            : #include &quot;dataHandlerNumericImpl.h&quot;
+<span class="lineNum">      23 </span>            : #include &quot;nullStreamImpl.h&quot;
+<span class="lineNum">      24 </span>            : #include &quot;streamWriterImpl.h&quot;
+<span class="lineNum">      25 </span>            : #include &quot;dataHandlerImpl.h&quot;
+<span class="lineNum">      26 </span>            : #include &quot;../include/imebra/exceptions.h&quot;
+<span class="lineNum">      27 </span>            : #include &lt;map&gt;
+<span class="lineNum">      28 </span>            : #include &lt;string&gt;
+<span class="lineNum">      29 </span>            : 
+<span class="lineNum">      30 </span>            : namespace imebra
+<span class="lineNum">      31 </span>            : {
+<span class="lineNum">      32 </span>            : 
+<span class="lineNum">      33 </span>            : namespace implementation
+<span class="lineNum">      34 </span>            : {
+<span class="lineNum">      35 </span>            : 
+<span class="lineNum">      36 </span>            : 
+<span class="lineNum">      37 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">      38 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">      39 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">      40 </span>            : //
+<span class="lineNum">      41 </span>            : //
+<span class="lineNum">      42 </span>            : //
+<span class="lineNum">      43 </span>            : // directoryRecord
+<span class="lineNum">      44 </span>            : //
+<span class="lineNum">      45 </span>            : //
+<span class="lineNum">      46 </span>            : //
+<span class="lineNum">      47 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">      48 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">      49 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">      50 </span>            : 
+<span class="lineNum">      51 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">      52 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">      53 </span>            : //
+<span class="lineNum">      54 </span>            : //
+<span class="lineNum">      55 </span>            : // Constructor
+<span class="lineNum">      56 </span>            : //
+<span class="lineNum">      57 </span>            : //
+<a name="58"><span class="lineNum">      58 </span>            : ///////////////////////////////////////////////////////////</a>
+<span class="lineNum">      59 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">      60 </span><span class="lineCov">         12 : directoryRecord::directoryRecord(std::shared_ptr&lt;dataSet&gt; pDataSet):</span>
+<span class="lineNum">      61 </span><span class="lineCov">         12 :         m_pDataSet(pDataSet)</span>
+<span class="lineNum">      62 </span>            : {
+<span class="lineNum">      63 </span><span class="lineCov">         12 : }</span>
+<span class="lineNum">      64 </span>            : 
+<span class="lineNum">      65 </span>            : 
+<span class="lineNum">      66 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">      67 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">      68 </span>            : //
+<span class="lineNum">      69 </span>            : //
+<span class="lineNum">      70 </span>            : // Return the record's dataset
+<span class="lineNum">      71 </span>            : //
+<span class="lineNum">      72 </span>            : //
+<a name="73"><span class="lineNum">      73 </span>            : ///////////////////////////////////////////////////////////</a>
+<span class="lineNum">      74 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">      75 </span><span class="lineCov">         78 : std::shared_ptr&lt;dataSet&gt; directoryRecord::getRecordDataSet() const</span>
+<span class="lineNum">      76 </span>            : {
+<span class="lineNum">      77 </span><span class="lineCov">         78 :         return m_pDataSet;</span>
+<span class="lineNum">      78 </span>            : }
+<span class="lineNum">      79 </span>            : 
+<span class="lineNum">      80 </span>            : 
+<span class="lineNum">      81 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">      82 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">      83 </span>            : //
+<span class="lineNum">      84 </span>            : //
+<span class="lineNum">      85 </span>            : // Returns the next sibling record
+<span class="lineNum">      86 </span>            : //
+<span class="lineNum">      87 </span>            : //
+<a name="88"><span class="lineNum">      88 </span>            : ///////////////////////////////////////////////////////////</a>
+<span class="lineNum">      89 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">      90 </span><span class="lineCov">          4 : std::shared_ptr&lt;directoryRecord&gt; directoryRecord::getNextRecord() const</span>
+<span class="lineNum">      91 </span>            : {
+<span class="lineNum">      92 </span><span class="lineCov">          4 :         return m_pNextRecord;</span>
+<span class="lineNum">      93 </span>            : }
+<span class="lineNum">      94 </span>            : 
+<span class="lineNum">      95 </span>            : 
+<span class="lineNum">      96 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">      97 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">      98 </span>            : //
+<span class="lineNum">      99 </span>            : //
+<span class="lineNum">     100 </span>            : // Returns the first child record
+<span class="lineNum">     101 </span>            : //
+<span class="lineNum">     102 </span>            : //
+<a name="103"><span class="lineNum">     103 </span>            : ///////////////////////////////////////////////////////////</a>
+<span class="lineNum">     104 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     105 </span><span class="lineCov">          4 : std::shared_ptr&lt;directoryRecord&gt; directoryRecord::getFirstChildRecord() const</span>
+<span class="lineNum">     106 </span>            : {
+<span class="lineNum">     107 </span><span class="lineCov">          4 :         return m_pFirstChildRecord;</span>
+<span class="lineNum">     108 </span>            : }
+<span class="lineNum">     109 </span>            : 
+<span class="lineNum">     110 </span>            : 
+<span class="lineNum">     111 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     112 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     113 </span>            : //
+<span class="lineNum">     114 </span>            : //
+<span class="lineNum">     115 </span>            : // Sets the next sibling record
+<span class="lineNum">     116 </span>            : //
+<span class="lineNum">     117 </span>            : //
+<a name="118"><span class="lineNum">     118 </span>            : ///////////////////////////////////////////////////////////</a>
+<span class="lineNum">     119 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     120 </span><span class="lineCov">          4 : void directoryRecord::setNextRecord(std::shared_ptr&lt;directoryRecord&gt; pNextRecord)</span>
+<span class="lineNum">     121 </span>            : {
+<span class="lineNum">     122 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">     123 </span>            : 
+<span class="lineNum">     124 </span><span class="lineCov">          4 :     if(pNextRecord != 0)</span>
+<span class="lineNum">     125 </span>            :         {
+<span class="lineNum">     126 </span><span class="lineCov">          4 :                 pNextRecord-&gt;checkCircularReference(this);</span>
+<span class="lineNum">     127 </span>            :         }
+<span class="lineNum">     128 </span><span class="lineCov">          4 :         m_pNextRecord = pNextRecord;</span>
+<span class="lineNum">     129 </span>            : 
+<span class="lineNum">     130 </span><span class="lineNoCov">          0 :     IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">     131 </span><span class="lineCov">          4 : }</span>
+<span class="lineNum">     132 </span>            :         
+<span class="lineNum">     133 </span>            : 
+<span class="lineNum">     134 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     135 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     136 </span>            : //
+<span class="lineNum">     137 </span>            : //
+<span class="lineNum">     138 </span>            : // Set the first child record
+<span class="lineNum">     139 </span>            : //
+<span class="lineNum">     140 </span>            : //
+<a name="141"><span class="lineNum">     141 </span>            : ///////////////////////////////////////////////////////////</a>
+<span class="lineNum">     142 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     143 </span><span class="lineCov">          5 : void directoryRecord::setFirstChildRecord(std::shared_ptr&lt;directoryRecord&gt; pFirstChildRecord)</span>
+<span class="lineNum">     144 </span>            : {
+<span class="lineNum">     145 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">     146 </span>            : 
+<span class="lineNum">     147 </span><span class="lineCov">          5 :     if(pFirstChildRecord != 0)</span>
+<span class="lineNum">     148 </span>            :         {
+<span class="lineNum">     149 </span><span class="lineCov">          5 :                 pFirstChildRecord-&gt;checkCircularReference(this);</span>
+<span class="lineNum">     150 </span>            :         }
+<span class="lineNum">     151 </span><span class="lineCov">          5 :         m_pFirstChildRecord = pFirstChildRecord;</span>
+<span class="lineNum">     152 </span>            : 
+<span class="lineNum">     153 </span><span class="lineNoCov">          0 :     IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">     154 </span><span class="lineCov">          5 : }</span>
+<span class="lineNum">     155 </span>            :         
+<span class="lineNum">     156 </span>            : 
+<span class="lineNum">     157 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     158 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     159 </span>            : //
+<span class="lineNum">     160 </span>            : //
+<span class="lineNum">     161 </span>            : // Returns a part of the full file path
+<span class="lineNum">     162 </span>            : //
+<span class="lineNum">     163 </span>            : //
+<a name="164"><span class="lineNum">     164 </span>            : ///////////////////////////////////////////////////////////</a>
+<span class="lineNum">     165 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     166 </span><span class="lineCov">          4 : fileParts_t directoryRecord::getFileParts() const</span>
+<span class="lineNum">     167 </span>            : {
+<span class="lineNum">     168 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">     169 </span>            : 
+<span class="lineNum">     170 </span><span class="lineCov">          8 :     fileParts_t fileParts;</span>
+<span class="lineNum">     171 </span>            : 
+<span class="lineNum">     172 </span><span class="lineCov">          8 :     std::shared_ptr&lt;handlers::readingDataHandler&gt; filePartsHandler = getRecordDataSet()-&gt;getReadingDataHandler(0x0004, 0, 0x1500, 0);</span>
+<span class="lineNum">     173 </span>            : 
+<span class="lineNum">     174 </span><span class="lineCov">         12 :     for(size_t scanParts(0), endParts(filePartsHandler-&gt;getSize()); scanParts != endParts; ++scanParts)</span>
+<span class="lineNum">     175 </span>            :     {
+<span class="lineNum">     176 </span><span class="lineCov">          8 :         fileParts.push_back(filePartsHandler-&gt;getString(scanParts));</span>
+<span class="lineNum">     177 </span>            :     }
+<span class="lineNum">     178 </span>            : 
+<span class="lineNum">     179 </span><span class="lineCov">          8 :     return fileParts;</span>
+<span class="lineNum">     180 </span>            : 
+<span class="lineNum">     181 </span><span class="lineNoCov">          0 :     IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">     182 </span>            : }
+<span class="lineNum">     183 </span>            : 
+<span class="lineNum">     184 </span>            : 
+<span class="lineNum">     185 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     186 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     187 </span>            : //
+<span class="lineNum">     188 </span>            : //
+<span class="lineNum">     189 </span>            : // Set a part of the full file path
+<span class="lineNum">     190 </span>            : //
+<span class="lineNum">     191 </span>            : //
+<a name="192"><span class="lineNum">     192 </span>            : ///////////////////////////////////////////////////////////</a>
+<span class="lineNum">     193 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     194 </span><span class="lineCov">          2 : void directoryRecord::setFileParts(const fileParts_t&amp; fileParts)</span>
+<span class="lineNum">     195 </span>            : {
+<span class="lineNum">     196 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">     197 </span>            : 
+<span class="lineNum">     198 </span><span class="lineCov">          4 :     std::shared_ptr&lt;handlers::writingDataHandler&gt; filePartsHandler = getRecordDataSet()-&gt;getWritingDataHandler(0x0004, 0, 0x1500, 0);</span>
+<span class="lineNum">     199 </span><span class="lineCov">          2 :     filePartsHandler-&gt;setSize(fileParts.size());</span>
+<span class="lineNum">     200 </span>            : 
+<span class="lineNum">     201 </span><span class="lineCov">          2 :     size_t bufferIndex(0);</span>
+<span class="lineNum">     202 </span><span class="lineCov">          6 :     for(fileParts_t::const_iterator scanParts(fileParts.begin()), endParts(fileParts.end()); scanParts != endParts; ++scanParts)</span>
+<span class="lineNum">     203 </span>            :     {
+<span class="lineNum">     204 </span><span class="lineCov">          4 :         filePartsHandler-&gt;setString(bufferIndex++, *scanParts);</span>
+<span class="lineNum">     205 </span>            :     }
+<span class="lineNum">     206 </span>            : 
+<span class="lineNum">     207 </span><span class="lineNoCov">          0 :     IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">     208 </span><span class="lineCov">          2 : }</span>
+<span class="lineNum">     209 </span>            : 
+<span class="lineNum">     210 </span>            : 
+<span class="lineNum">     211 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     212 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     213 </span>            : //
+<span class="lineNum">     214 </span>            : //
+<span class="lineNum">     215 </span>            : // Returns the record's type (enum)
+<span class="lineNum">     216 </span>            : //
+<span class="lineNum">     217 </span>            : //
+<a name="218"><span class="lineNum">     218 </span>            : ///////////////////////////////////////////////////////////</a>
+<span class="lineNum">     219 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     220 </span><span class="lineCov">          6 : directoryRecordType_t directoryRecord::getType() const</span>
+<span class="lineNum">     221 </span>            : {
+<span class="lineNum">     222 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">     223 </span>            : 
+<span class="lineNum">     224 </span><span class="lineCov">         12 :     std::string typeString(getTypeString());</span>
+<span class="lineNum">     225 </span>            : 
+<span class="lineNum">     226 </span><span class="lineCov">          6 :     const tDirectoryRecordTypeDef* typesList(getRecordTypeMap());</span>
+<span class="lineNum">     227 </span><span class="lineCov">         12 :     for(size_t scanTypes(0); typesList[scanTypes].m_type != directoryRecordType_t::endOfDirectoryRecordTypes; ++scanTypes)</span>
+<span class="lineNum">     228 </span>            :         {
+<span class="lineNum">     229 </span><span class="lineCov">         12 :                 if(typesList[scanTypes].m_name == typeString)</span>
+<span class="lineNum">     230 </span>            :                 {
+<span class="lineNum">     231 </span><span class="lineCov">         12 :                         return typesList[scanTypes].m_type;</span>
+<span class="lineNum">     232 </span>            :                 }
+<span class="lineNum">     233 </span>            :         }
+<span class="lineNum">     234 </span>            : 
+<span class="lineNum">     235 </span>            :         // Invalid value found . Throw an exception
+<span class="lineNum">     236 </span>            :         ///////////////////////////////////////////////////////////
+<span class="lineNum">     237 </span><span class="lineNoCov">          0 :     IMEBRA_THROW(DicomDirUnknownDirectoryRecordTypeError, &quot;Unknown directory record type&quot;);</span>
+<span class="lineNum">     238 </span>            : 
+<span class="lineNum">     239 </span><span class="lineNoCov">          0 :     IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">     240 </span>            : }
+<span class="lineNum">     241 </span>            : 
+<span class="lineNum">     242 </span>            : 
+<span class="lineNum">     243 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     244 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     245 </span>            : //
+<span class="lineNum">     246 </span>            : //
+<span class="lineNum">     247 </span>            : // Returns the record's type (string)
+<span class="lineNum">     248 </span>            : //
+<span class="lineNum">     249 </span>            : //
+<a name="250"><span class="lineNum">     250 </span>            : ///////////////////////////////////////////////////////////</a>
+<span class="lineNum">     251 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     252 </span><span class="lineCov">          8 : std::string directoryRecord::getTypeString() const</span>
+<span class="lineNum">     253 </span>            : {
+<span class="lineNum">     254 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">     255 </span>            : 
+<span class="lineNum">     256 </span><span class="lineCov">          8 :     return getRecordDataSet()-&gt;getString(0x0004, 0, 0x1430, 0, 0);</span>
+<span class="lineNum">     257 </span>            : 
+<span class="lineNum">     258 </span><span class="lineNoCov">          0 :     IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">     259 </span>            : }
+<span class="lineNum">     260 </span>            : 
+<span class="lineNum">     261 </span>            : 
+<span class="lineNum">     262 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     263 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     264 </span>            : //
+<span class="lineNum">     265 </span>            : //
+<span class="lineNum">     266 </span>            : // Set the item's type
+<span class="lineNum">     267 </span>            : //
+<span class="lineNum">     268 </span>            : //
+<a name="269"><span class="lineNum">     269 </span>            : ///////////////////////////////////////////////////////////</a>
+<span class="lineNum">     270 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     271 </span><span class="lineCov">          6 : void directoryRecord::setType(directoryRecordType_t recordType)</span>
+<span class="lineNum">     272 </span>            : {
+<span class="lineNum">     273 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">     274 </span>            : 
+<span class="lineNum">     275 </span><span class="lineCov">          6 :     const tDirectoryRecordTypeDef* typesList(getRecordTypeMap());</span>
+<span class="lineNum">     276 </span><span class="lineCov">         12 :     for(size_t scanTypes(0); typesList[scanTypes].m_type != directoryRecordType_t::endOfDirectoryRecordTypes; ++scanTypes)</span>
+<span class="lineNum">     277 </span>            :         {
+<span class="lineNum">     278 </span><span class="lineCov">         12 :                 if(typesList[scanTypes].m_type == recordType)</span>
+<span class="lineNum">     279 </span>            :                 {
+<span class="lineNum">     280 </span><span class="lineCov">          6 :             getRecordDataSet()-&gt;setString(0x0004, 0, 0x1430, 0, typesList[scanTypes].m_name);</span>
+<span class="lineNum">     281 </span><span class="lineCov">         12 :                         return;</span>
+<span class="lineNum">     282 </span>            :                 }
+<span class="lineNum">     283 </span>            :         }
+<span class="lineNum">     284 </span>            : 
+<span class="lineNum">     285 </span>            :         // Trying to set an invalid type. Throw an exception
+<span class="lineNum">     286 </span>            :         ///////////////////////////////////////////////////////////
+<span class="lineNum">     287 </span><span class="lineNoCov">          0 :     IMEBRA_THROW(DicomDirUnknownDirectoryRecordTypeError, &quot;Unknown directory record type&quot;);</span>
+<span class="lineNum">     288 </span>            : 
+<span class="lineNum">     289 </span><span class="lineNoCov">          0 :     IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">     290 </span>            : }
+<span class="lineNum">     291 </span>            : 
+<span class="lineNum">     292 </span>            : 
+<span class="lineNum">     293 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     294 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     295 </span>            : //
+<span class="lineNum">     296 </span>            : //
+<span class="lineNum">     297 </span>            : // Set the item's type
+<span class="lineNum">     298 </span>            : //
+<span class="lineNum">     299 </span>            : //
+<a name="300"><span class="lineNum">     300 </span>            : ///////////////////////////////////////////////////////////</a>
+<span class="lineNum">     301 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     302 </span><span class="lineNoCov">          0 : void directoryRecord::setTypeString(const std::string&amp; recordType)</span>
+<span class="lineNum">     303 </span>            : {
+<span class="lineNum">     304 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">     305 </span>            : 
+<span class="lineNum">     306 </span><span class="lineNoCov">          0 :     getRecordDataSet()-&gt;setString(0x0004, 0, 0x1430, 0, recordType);</span>
+<span class="lineNum">     307 </span>            : 
+<span class="lineNum">     308 </span><span class="lineNoCov">          0 :     IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">     309 </span><span class="lineNoCov">          0 : }</span>
+<span class="lineNum">     310 </span>            : 
+<span class="lineNum">     311 </span>            : 
+<span class="lineNum">     312 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     313 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     314 </span>            : //
+<span class="lineNum">     315 </span>            : //
+<span class="lineNum">     316 </span>            : // Update the dataSet's offsets. 
+<span class="lineNum">     317 </span>            : //
+<span class="lineNum">     318 </span>            : //
+<a name="319"><span class="lineNum">     319 </span>            : ///////////////////////////////////////////////////////////</a>
+<span class="lineNum">     320 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     321 </span><span class="lineCov">         12 : void directoryRecord::updateOffsets()</span>
+<span class="lineNum">     322 </span>            : {
+<span class="lineNum">     323 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">     324 </span>            : 
+<span class="lineNum">     325 </span>            :     // Update offset for the next record
+<span class="lineNum">     326 </span>            :         ///////////////////////////////////////////////////////////
+<span class="lineNum">     327 </span><span class="lineCov">         12 :         if(m_pNextRecord == 0)</span>
+<span class="lineNum">     328 </span>            :         {
+<span class="lineNum">     329 </span><span class="lineCov">          8 :         getRecordDataSet()-&gt;setUnsignedLong(0x0004, 0, 0x1400, 0, 0);</span>
+<span class="lineNum">     330 </span>            :         }
+<span class="lineNum">     331 </span>            :         else
+<span class="lineNum">     332 </span>            :         {
+<span class="lineNum">     333 </span><span class="lineCov">          4 :         getRecordDataSet()-&gt;setUnsignedLong(0x0004, 0, 0x1400, 0, m_pNextRecord-&gt;getRecordDataSet()-&gt;getItemOffset());</span>
+<span class="lineNum">     334 </span><span class="lineCov">          4 :                 m_pNextRecord-&gt;updateOffsets();</span>
+<span class="lineNum">     335 </span>            :         }
+<span class="lineNum">     336 </span>            : 
+<span class="lineNum">     337 </span>            :         // Update offset for the first child record
+<span class="lineNum">     338 </span>            :         ///////////////////////////////////////////////////////////
+<span class="lineNum">     339 </span><span class="lineCov">         12 :         if(m_pFirstChildRecord == 0)</span>
+<span class="lineNum">     340 </span>            :         {
+<span class="lineNum">     341 </span><span class="lineCov">          8 :         getRecordDataSet()-&gt;setUnsignedLong(0x0004, 0, 0x1420, 0, 0);</span>
+<span class="lineNum">     342 </span>            :         }
+<span class="lineNum">     343 </span>            :         else
+<span class="lineNum">     344 </span>            :         {
+<span class="lineNum">     345 </span><span class="lineCov">          4 :         getRecordDataSet()-&gt;setUnsignedLong(0x0004, 0, 0x1420, 0, m_pFirstChildRecord-&gt;getRecordDataSet()-&gt;getItemOffset());</span>
+<span class="lineNum">     346 </span><span class="lineCov">          4 :                 m_pFirstChildRecord-&gt;updateOffsets();</span>
+<span class="lineNum">     347 </span>            :         }
+<span class="lineNum">     348 </span>            : 
+<span class="lineNum">     349 </span><span class="lineNoCov">          0 :     IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">     350 </span><span class="lineCov">         12 : }</span>
+<span class="lineNum">     351 </span>            : 
+<span class="lineNum">     352 </span>            : 
+<span class="lineNum">     353 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     354 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     355 </span>            : //
+<span class="lineNum">     356 </span>            : //
+<span class="lineNum">     357 </span>            : // Check circular (recursive) references between the
+<span class="lineNum">     358 </span>            : //  dicomdir's items
+<span class="lineNum">     359 </span>            : //
+<span class="lineNum">     360 </span>            : //
+<a name="361"><span class="lineNum">     361 </span>            : ///////////////////////////////////////////////////////////</a>
+<span class="lineNum">     362 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     363 </span><span class="lineCov">          9 : void directoryRecord::checkCircularReference(directoryRecord* pStartRecord)</span>
+<span class="lineNum">     364 </span>            : {
+<span class="lineNum">     365 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">     366 </span>            : 
+<span class="lineNum">     367 </span><span class="lineCov">          9 :     if(this == pStartRecord)</span>
+<span class="lineNum">     368 </span>            :         {
+<span class="lineNum">     369 </span><span class="lineNoCov">          0 :         IMEBRA_THROW(DicomDirCircularReferenceError, &quot;Circular reference detected&quot;);</span>
+<span class="lineNum">     370 </span>            :         }
+<span class="lineNum">     371 </span>            : 
+<span class="lineNum">     372 </span><span class="lineCov">          9 :         if(m_pNextRecord != 0)</span>
+<span class="lineNum">     373 </span>            :         {
+<span class="lineNum">     374 </span><span class="lineNoCov">          0 :                 m_pNextRecord-&gt;checkCircularReference(pStartRecord);</span>
+<span class="lineNum">     375 </span>            :         }
+<span class="lineNum">     376 </span>            : 
+<span class="lineNum">     377 </span><span class="lineCov">          9 :         if(m_pFirstChildRecord != 0)</span>
+<span class="lineNum">     378 </span>            :         {
+<span class="lineNum">     379 </span><span class="lineNoCov">          0 :                 m_pFirstChildRecord-&gt;checkCircularReference(pStartRecord);</span>
+<span class="lineNum">     380 </span>            :         }
+<span class="lineNum">     381 </span>            : 
+<span class="lineNum">     382 </span><span class="lineNoCov">          0 :     IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">     383 </span><span class="lineCov">          9 : }</span>
+<a name="384"><span class="lineNum">     384 </span>            : </a>
+<span class="lineNum">     385 </span>            : 
+<span class="lineNum">     386 </span><span class="lineCov">         12 : const directoryRecord::tDirectoryRecordTypeDef* directoryRecord::getRecordTypeMap()</span>
+<span class="lineNum">     387 </span>            : {
+<span class="lineNum">     388 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">     389 </span>            : 
+<span class="lineNum">     390 </span>            :     static const tDirectoryRecordTypeDef typesList[] =
+<span class="lineNum">     391 </span>            :     {
+<span class="lineNum">     392 </span>            :         {&quot;PATIENT&quot;, directoryRecordType_t::patient},
+<span class="lineNum">     393 </span>            :         {&quot;STUDY&quot;, directoryRecordType_t::study},
+<span class="lineNum">     394 </span>            :         {&quot;SERIES&quot;, directoryRecordType_t::series},
+<span class="lineNum">     395 </span>            :         {&quot;IMAGE&quot;, directoryRecordType_t::image},
+<span class="lineNum">     396 </span>            :         {&quot;OVERLAY&quot;, directoryRecordType_t::overlay},
+<span class="lineNum">     397 </span>            :         {&quot;MODALITY LUT&quot;, directoryRecordType_t::modality_lut},
+<span class="lineNum">     398 </span>            :         {&quot;VOI LUT&quot;, directoryRecordType_t::voi_lut},
+<span class="lineNum">     399 </span>            :         {&quot;CURVE&quot;, directoryRecordType_t::curve},
+<span class="lineNum">     400 </span>            :         {&quot;TOPIC&quot;, directoryRecordType_t::topic},
+<span class="lineNum">     401 </span>            :         {&quot;VISIT&quot;, directoryRecordType_t::visit},
+<span class="lineNum">     402 </span>            :         {&quot;RESULTS&quot;, directoryRecordType_t::results},
+<span class="lineNum">     403 </span>            :         {&quot;INTERPRETATION&quot;, directoryRecordType_t::interpretation},
+<span class="lineNum">     404 </span>            :         {&quot;STUDY COMPONENT&quot;, directoryRecordType_t::study_component},
+<span class="lineNum">     405 </span>            :         {&quot;STORED PRINT&quot;, directoryRecordType_t::stored_print},
+<span class="lineNum">     406 </span>            :         {&quot;RT DOSE&quot;, directoryRecordType_t::rt_dose},
+<span class="lineNum">     407 </span>            :         {&quot;RT STRUCTURE SET&quot;, directoryRecordType_t::rt_structure_set},
+<span class="lineNum">     408 </span>            :         {&quot;RT PLAN&quot;, directoryRecordType_t::rt_plan},
+<span class="lineNum">     409 </span>            :         {&quot;RT TREAT RECORD&quot;, directoryRecordType_t::rt_treat_record},
+<span class="lineNum">     410 </span>            :         {&quot;PRESENTATION&quot;, directoryRecordType_t::presentation},
+<span class="lineNum">     411 </span>            :         {&quot;WAVEFORM&quot;, directoryRecordType_t::waveform},
+<span class="lineNum">     412 </span>            :         {&quot;SR DOCUMENT&quot;, directoryRecordType_t::sr_document},
+<span class="lineNum">     413 </span>            :         {&quot;KEY OBJECT DOC&quot;, directoryRecordType_t::key_object_doc},
+<span class="lineNum">     414 </span>            :         {&quot;SPECTROSCOPY&quot;, directoryRecordType_t::spectroscopy},
+<span class="lineNum">     415 </span>            :         {&quot;RAW DATA&quot;, directoryRecordType_t::raw_data},
+<span class="lineNum">     416 </span>            :         {&quot;REGISTRATION&quot;, directoryRecordType_t::registration},
+<span class="lineNum">     417 </span>            :         {&quot;FIDUCIAL&quot;, directoryRecordType_t::fiducial},
+<a name="418"><span class="lineNum">     418 </span>            :         {&quot;MRDR&quot;, directoryRecordType_t::mrdr},</a>
+<span class="lineNum">     419 </span>            :         {&quot;&quot;, directoryRecordType_t::endOfDirectoryRecordTypes}
+<span class="lineNum">     420 </span><span class="lineCov">         13 :     };</span>
+<span class="lineNum">     421 </span>            : 
+<span class="lineNum">     422 </span><span class="lineCov">         12 :     return typesList;</span>
+<span class="lineNum">     423 </span>            : 
+<span class="lineNum">     424 </span><span class="lineNoCov">          0 :     IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">     425 </span>            : }
+<span class="lineNum">     426 </span>            : 
+<span class="lineNum">     427 </span>            : 
+<span class="lineNum">     428 </span>            : 
+<span class="lineNum">     429 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     430 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     431 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     432 </span>            : //
+<span class="lineNum">     433 </span>            : //
+<span class="lineNum">     434 </span>            : //
+<span class="lineNum">     435 </span>            : // dicomDir class
+<span class="lineNum">     436 </span>            : //
+<span class="lineNum">     437 </span>            : //
+<span class="lineNum">     438 </span>            : //
+<span class="lineNum">     439 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     440 </span>            : ///////////////////////////////////////////////////////////
+<a name="441"><span class="lineNum">     441 </span>            : ///////////////////////////////////////////////////////////</a>
+<span class="lineNum">     442 </span>            : 
+<span class="lineNum">     443 </span><span class="lineCov">          3 : dicomDir::dicomDir(): m_pDataSet(std::make_shared&lt;dataSet&gt;())</span>
+<span class="lineNum">     444 </span>            : {
+<span class="lineNum">     445 </span>            :     // Adjust the transfer syntax
+<span class="lineNum">     446 </span>            :     /////////////////////////////
+<span class="lineNum">     447 </span><span class="lineCov">          3 :     m_pDataSet-&gt;setString(0x2, 0, 0x10, 0, &quot;1.2.840.10008.1.2.1&quot;);</span>
+<span class="lineNum">     448 </span>            : 
+<span class="lineNum">     449 </span>            :     // Adjust the version
+<span class="lineNum">     450 </span>            :     /////////////////////
+<span class="lineNum">     451 </span>            :     {
+<span class="lineNum">     452 </span><span class="lineCov">          6 :         std::shared_ptr&lt;handlers::writingDataHandlerRaw&gt; versionHandler(m_pDataSet-&gt;getWritingDataHandlerRaw(0x2, 0, 0x1, 0, tagVR_t::OB));</span>
+<span class="lineNum">     453 </span><span class="lineCov">          3 :         versionHandler-&gt;setSize(2);</span>
+<span class="lineNum">     454 </span><span class="lineCov">          3 :         versionHandler-&gt;setUnsignedLong(0, 0);</span>
+<span class="lineNum">     455 </span><span class="lineCov">          3 :         versionHandler-&gt;setUnsignedLong(1, 1);</span>
+<span class="lineNum">     456 </span>            :     }
+<span class="lineNum">     457 </span>            : 
+<span class="lineNum">     458 </span>            :     // Adjust the SOP class UID
+<span class="lineNum">     459 </span>            :     ///////////////////////////
+<span class="lineNum">     460 </span><span class="lineCov">          3 :     m_pDataSet-&gt;setString(0x2, 0, 0x2, 0, &quot;1.2.840.10008.1.3.10&quot;);</span>
+<span class="lineNum">     461 </span>            : 
+<span class="lineNum">     462 </span><span class="lineCov">          6 :     implementation::charsetsList::tCharsetsList list;</span>
+<span class="lineNum">     463 </span><span class="lineCov">          3 :     list.push_back(&quot;ISO 2022 IR 6&quot;);</span>
+<span class="lineNum">     464 </span><span class="lineCov">          3 :     m_pDataSet-&gt;setCharsetsList(list);</span>
+<span class="lineNum">     465 </span><span class="lineCov">          3 : }</span>
+<span class="lineNum">     466 </span>            : 
+<span class="lineNum">     467 </span>            : 
+<span class="lineNum">     468 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     469 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     470 </span>            : //
+<span class="lineNum">     471 </span>            : //
+<span class="lineNum">     472 </span>            : // Constructor
+<span class="lineNum">     473 </span>            : //
+<span class="lineNum">     474 </span>            : //
+<a name="475"><span class="lineNum">     475 </span>            : ///////////////////////////////////////////////////////////</a>
+<span class="lineNum">     476 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     477 </span><span class="lineCov">          3 : dicomDir::dicomDir(std::shared_ptr&lt;dataSet&gt; pDataSet):</span>
+<span class="lineNum">     478 </span><span class="lineCov">          3 :         m_pDataSet(pDataSet)</span>
+<span class="lineNum">     479 </span>            : {
+<span class="lineNum">     480 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">     481 </span>            : 
+<span class="lineNum">     482 </span><span class="lineCov">          3 :     if(m_pDataSet.get() == 0)</span>
+<span class="lineNum">     483 </span>            :         {
+<span class="lineNum">     484 </span><span class="lineNoCov">          0 :         m_pDataSet = std::make_shared&lt;dataSet&gt;();</span>
+<span class="lineNum">     485 </span>            :         }
+<span class="lineNum">     486 </span>            : 
+<span class="lineNum">     487 </span>            :         // Get the DICOMDIR sequence
+<span class="lineNum">     488 </span>            :         ///////////////////////////////////////////////////////////
+<span class="lineNum">     489 </span>            :         typedef std::map&lt;std::uint32_t, std::shared_ptr&lt;directoryRecord&gt; &gt; tOffsetsToRecords;
+<span class="lineNum">     490 </span><span class="lineCov">          6 :         tOffsetsToRecords offsetsToRecords;</span>
+<span class="lineNum">     491 </span><span class="lineCov">          9 :     for(std::uint32_t scanItems(0); ; ++scanItems)</span>
+<span class="lineNum">     492 </span>            :         {
+<span class="lineNum">     493 </span>            :         try
+<span class="lineNum">     494 </span>            :         {
+<span class="lineNum">     495 </span><span class="lineCov">         15 :             std::shared_ptr&lt;dataSet&gt; pDataSet(m_pDataSet-&gt;getSequenceItem(0x0004, 0, 0x1220, scanItems));</span>
+<span class="lineNum">     496 </span><span class="lineCov">         12 :             std::shared_ptr&lt;directoryRecord&gt; newRecord(std::make_shared&lt;directoryRecord&gt;(pDataSet));</span>
+<span class="lineNum">     497 </span><span class="lineCov">          6 :             offsetsToRecords[pDataSet-&gt;getItemOffset()] = newRecord;</span>
+<span class="lineNum">     498 </span><span class="lineCov">          6 :             m_recordsList.push_back(newRecord);</span>
+<span class="lineNum">     499 </span>            :         }
+<span class="lineNum">     500 </span><span class="lineCov">          6 :         catch(const MissingDataElementError&amp;)</span>
+<span class="lineNum">     501 </span>            :         {
+<span class="lineNum">     502 </span><span class="lineCov">          3 :             break; // Out of sequence items</span>
+<span class="lineNum">     503 </span>            :         }
+<span class="lineNum">     504 </span><span class="lineCov">          6 :         }</span>
+<span class="lineNum">     505 </span>            : 
+<span class="lineNum">     506 </span>            :         // Scan all the records and update the pointers
+<span class="lineNum">     507 </span>            :         ///////////////////////////////////////////////////////////
+<span class="lineNum">     508 </span><span class="lineCov">          9 :         for(tOffsetsToRecords::iterator scanRecords(offsetsToRecords.begin()); scanRecords != offsetsToRecords.end(); ++scanRecords)</span>
+<span class="lineNum">     509 </span>            :         {
+<span class="lineNum">     510 </span>            :         try
+<span class="lineNum">     511 </span>            :         {
+<span class="lineNum">     512 </span><span class="lineCov">          6 :             std::uint32_t nextRecordOffset(scanRecords-&gt;second-&gt;getRecordDataSet()-&gt;getUnsignedLong(0x0004, 0, 0x1400, 0, 0));</span>
+<span class="lineNum">     513 </span><span class="lineCov">          6 :             tOffsetsToRecords::iterator findNextRecord(offsetsToRecords.find(nextRecordOffset));</span>
+<span class="lineNum">     514 </span><span class="lineCov">          6 :             if(findNextRecord != offsetsToRecords.end())</span>
+<span class="lineNum">     515 </span>            :             {
+<span class="lineNum">     516 </span><span class="lineCov">          2 :                 scanRecords-&gt;second-&gt;setNextRecord(findNextRecord-&gt;second);</span>
+<span class="lineNum">     517 </span>            :             }
+<span class="lineNum">     518 </span>            :         }
+<span class="lineNum">     519 </span><span class="lineNoCov">          0 :         catch(const MissingDataElementError&amp;)</span>
+<span class="lineNum">     520 </span>            :         {
+<span class="lineNum">     521 </span>            :             // Nothing to do
+<span class="lineNum">     522 </span>            :         }
+<span class="lineNum">     523 </span>            : 
+<span class="lineNum">     524 </span>            :         try
+<span class="lineNum">     525 </span>            :         {
+<span class="lineNum">     526 </span><span class="lineCov">          6 :             std::uint32_t childRecordOffset(scanRecords-&gt;second-&gt;getRecordDataSet()-&gt;getUnsignedLong(0x0004, 0, 0x1420, 0, 0));</span>
+<span class="lineNum">     527 </span><span class="lineCov">          6 :             tOffsetsToRecords::iterator findChildRecord(offsetsToRecords.find(childRecordOffset));</span>
+<span class="lineNum">     528 </span><span class="lineCov">          6 :             if(findChildRecord != offsetsToRecords.end())</span>
+<span class="lineNum">     529 </span>            :             {
+<span class="lineNum">     530 </span><span class="lineCov">          2 :                 scanRecords-&gt;second-&gt;setFirstChildRecord(findChildRecord-&gt;second);</span>
+<span class="lineNum">     531 </span>            :             }
+<span class="lineNum">     532 </span>            :         }
+<span class="lineNum">     533 </span><span class="lineNoCov">          0 :         catch(const MissingDataElementError&amp;)</span>
+<span class="lineNum">     534 </span>            :         {
+<span class="lineNum">     535 </span>            :             // Nothing to do
+<span class="lineNum">     536 </span>            :         }
+<span class="lineNum">     537 </span>            :     }
+<span class="lineNum">     538 </span>            : 
+<span class="lineNum">     539 </span>            :         // Get the position of the first record
+<span class="lineNum">     540 </span>            :     ///////////////////////////////////////////////////////////
+<span class="lineNum">     541 </span>            :     try
+<span class="lineNum">     542 </span>            :     {
+<span class="lineNum">     543 </span><span class="lineCov">          3 :         tOffsetsToRecords::iterator findRecord(offsetsToRecords.find(m_pDataSet-&gt;getUnsignedLong(0x0004, 0, 0x1200, 0, 0)));</span>
+<span class="lineNum">     544 </span><span class="lineCov">          3 :         if(findRecord == offsetsToRecords.end())</span>
+<span class="lineNum">     545 </span>            :         {
+<span class="lineNum">     546 </span><span class="lineCov">          1 :             setFirstRootRecord(std::shared_ptr&lt;directoryRecord&gt;());</span>
+<span class="lineNum">     547 </span>            :         }
+<span class="lineNum">     548 </span>            :         else
+<span class="lineNum">     549 </span>            :         {
+<span class="lineNum">     550 </span><span class="lineCov">          2 :             setFirstRootRecord(findRecord-&gt;second);</span>
+<span class="lineNum">     551 </span>            :         }
+<span class="lineNum">     552 </span>            :     }
+<span class="lineNum">     553 </span><span class="lineNoCov">          0 :     catch(const MissingDataElementError&amp;)</span>
+<span class="lineNum">     554 </span>            :     {
+<span class="lineNum">     555 </span>            :         // Nothing to do
+<span class="lineNum">     556 </span>            :     }
+<span class="lineNum">     557 </span>            : 
+<span class="lineNum">     558 </span><span class="lineNoCov">          0 :     IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">     559 </span><span class="lineCov">          3 : }</span>
+<span class="lineNum">     560 </span>            : 
+<span class="lineNum">     561 </span>            : 
+<span class="lineNum">     562 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     563 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     564 </span>            : //
+<span class="lineNum">     565 </span>            : //
+<span class="lineNum">     566 </span>            : // Destructor, make sure that the records are released
+<span class="lineNum">     567 </span>            : //  after the root record.
+<span class="lineNum">     568 </span>            : // This resolves a stack overflow when a large number
+<span class="lineNum">     569 </span>            : //  sibling records is present
+<span class="lineNum">     570 </span>            : //
+<span class="lineNum">     571 </span>            : //
+<a name="572"><span class="lineNum">     572 </span>            : ///////////////////////////////////////////////////////////</a>
+<span class="lineNum">     573 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     574 </span><span class="lineCov">          8 : dicomDir::~dicomDir()</span>
+<span class="lineNum">     575 </span>            : {
+<span class="lineNum">     576 </span><span class="lineCov">          4 :     m_pFirstRootRecord.reset();</span>
+<span class="lineNum">     577 </span><span class="lineCov">          4 :         m_recordsList.clear();</span>
+<span class="lineNum">     578 </span><span class="lineCov">          4 : }</span>
+<span class="lineNum">     579 </span>            : 
+<span class="lineNum">     580 </span>            : 
+<span class="lineNum">     581 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     582 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     583 </span>            : //
+<span class="lineNum">     584 </span>            : //
+<span class="lineNum">     585 </span>            : // Returns the dataSet
+<span class="lineNum">     586 </span>            : //
+<span class="lineNum">     587 </span>            : //
+<a name="588"><span class="lineNum">     588 </span>            : ///////////////////////////////////////////////////////////</a>
+<span class="lineNum">     589 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     590 </span><span class="lineNoCov">          0 : std::shared_ptr&lt;dataSet&gt; dicomDir::getDirectoryDataSet() const</span>
+<span class="lineNum">     591 </span>            : {
+<span class="lineNum">     592 </span><span class="lineNoCov">          0 :         return m_pDataSet;</span>
+<span class="lineNum">     593 </span>            : }
+<span class="lineNum">     594 </span>            : 
+<span class="lineNum">     595 </span>            : 
+<span class="lineNum">     596 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     597 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     598 </span>            : //
+<span class="lineNum">     599 </span>            : //
+<span class="lineNum">     600 </span>            : // Returns a new record that can be inserted in the
+<span class="lineNum">     601 </span>            : //  folder
+<span class="lineNum">     602 </span>            : //
+<span class="lineNum">     603 </span>            : //
+<a name="604"><span class="lineNum">     604 </span>            : ///////////////////////////////////////////////////////////</a>
+<span class="lineNum">     605 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     606 </span><span class="lineCov">          6 : std::shared_ptr&lt;directoryRecord&gt; dicomDir::getNewRecord(directoryRecordType_t recordType)</span>
+<span class="lineNum">     607 </span>            : {
+<span class="lineNum">     608 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">     609 </span>            : 
+<span class="lineNum">     610 </span><span class="lineCov">         12 :     std::shared_ptr&lt;data&gt; recordsTag(m_pDataSet-&gt;getTagCreate(0x0004, 0, 0x1220));</span>
+<span class="lineNum">     611 </span><span class="lineCov">         12 :     std::shared_ptr&lt;dataSet&gt; recordDataSet = std::make_shared&lt;dataSet&gt;();</span>
+<span class="lineNum">     612 </span><span class="lineCov">          6 :         recordsTag-&gt;appendDataSet(recordDataSet);</span>
+<span class="lineNum">     613 </span>            : 
+<span class="lineNum">     614 </span><span class="lineCov">         12 :     std::shared_ptr&lt;directoryRecord&gt; newRecord(std::make_shared&lt;directoryRecord&gt;(recordDataSet));</span>
+<span class="lineNum">     615 </span><span class="lineCov">          6 :     newRecord-&gt;setType(recordType);</span>
+<span class="lineNum">     616 </span><span class="lineCov">          6 :         m_recordsList.push_back(newRecord);</span>
+<span class="lineNum">     617 </span>            : 
+<span class="lineNum">     618 </span><span class="lineCov">         12 :         return newRecord;</span>
+<span class="lineNum">     619 </span>            : 
+<span class="lineNum">     620 </span><span class="lineNoCov">          0 :     IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">     621 </span>            : }
+<span class="lineNum">     622 </span>            : 
+<span class="lineNum">     623 </span>            : 
+<span class="lineNum">     624 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     625 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     626 </span>            : //
+<span class="lineNum">     627 </span>            : //
+<span class="lineNum">     628 </span>            : // Build the a dicom dataset that contain the directory's
+<span class="lineNum">     629 </span>            : //  information.
+<span class="lineNum">     630 </span>            : //
+<span class="lineNum">     631 </span>            : //
+<a name="632"><span class="lineNum">     632 </span>            : ///////////////////////////////////////////////////////////</a>
+<span class="lineNum">     633 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     634 </span><span class="lineCov">          3 : std::shared_ptr&lt;dataSet&gt; dicomDir::buildDataSet()</span>
+<span class="lineNum">     635 </span>            : {
+<span class="lineNum">     636 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">     637 </span>            : 
+<span class="lineNum">     638 </span>            :         // Allocate offset fields
+<span class="lineNum">     639 </span>            :         ///////////////////////////////////////////////////////////
+<span class="lineNum">     640 </span><span class="lineCov">          3 :         if(m_pFirstRootRecord != 0)</span>
+<span class="lineNum">     641 </span>            :         {
+<span class="lineNum">     642 </span><span class="lineCov">          2 :                 m_pFirstRootRecord-&gt;updateOffsets();</span>
+<span class="lineNum">     643 </span>            :         }
+<span class="lineNum">     644 </span><span class="lineCov">          3 :     m_pDataSet-&gt;setUnsignedLong(0x0004, 0, 0x1200, 0, 0);</span>
+<span class="lineNum">     645 </span>            : 
+<span class="lineNum">     646 </span>            : 
+<span class="lineNum">     647 </span>            :         // Save to a null stream in order to update the offsets
+<span class="lineNum">     648 </span>            :         ///////////////////////////////////////////////////////////
+<span class="lineNum">     649 </span><span class="lineCov">          6 :     std::shared_ptr&lt;nullStreamWriter&gt; saveStream(std::make_shared&lt;nullStreamWriter&gt;());</span>
+<span class="lineNum">     650 </span><span class="lineCov">          6 :     std::shared_ptr&lt;streamWriter&gt; writer(std::make_shared&lt;streamWriter&gt;(saveStream));</span>
+<span class="lineNum">     651 </span><span class="lineCov">          6 :     std::shared_ptr&lt;codecs::dicomStreamCodec&gt; writerCodec(std::make_shared&lt;codecs::dicomStreamCodec&gt;());</span>
+<span class="lineNum">     652 </span><span class="lineCov">          3 :         writerCodec-&gt;write(writer, m_pDataSet);</span>
+<span class="lineNum">     653 </span>            : 
+<span class="lineNum">     654 </span>            :         // Scan all the records and update the pointers
+<span class="lineNum">     655 </span>            :         ///////////////////////////////////////////////////////////
+<span class="lineNum">     656 </span><span class="lineCov">          3 :         if(m_pFirstRootRecord != 0)</span>
+<span class="lineNum">     657 </span>            :         {
+<span class="lineNum">     658 </span><span class="lineCov">          2 :                 m_pFirstRootRecord-&gt;updateOffsets();</span>
+<span class="lineNum">     659 </span><span class="lineCov">          2 :         m_pDataSet-&gt;setUnsignedLong(0x0004, 0, 0x1200, 0, m_pFirstRootRecord-&gt;getRecordDataSet()-&gt;getItemOffset());</span>
+<span class="lineNum">     660 </span>            :         }
+<span class="lineNum">     661 </span>            : 
+<span class="lineNum">     662 </span><span class="lineCov">          6 :         return m_pDataSet;</span>
+<span class="lineNum">     663 </span>            : 
+<span class="lineNum">     664 </span><span class="lineNoCov">          0 :     IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">     665 </span>            : }
+<span class="lineNum">     666 </span>            : 
+<span class="lineNum">     667 </span>            : 
+<span class="lineNum">     668 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     669 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     670 </span>            : //
+<span class="lineNum">     671 </span>            : //
+<span class="lineNum">     672 </span>            : // Returns the first root record
+<span class="lineNum">     673 </span>            : //
+<span class="lineNum">     674 </span>            : //
+<a name="675"><span class="lineNum">     675 </span>            : ///////////////////////////////////////////////////////////</a>
+<span class="lineNum">     676 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     677 </span><span class="lineCov">          3 : std::shared_ptr&lt;directoryRecord&gt; dicomDir::getFirstRootRecord() const</span>
+<span class="lineNum">     678 </span>            : {
+<span class="lineNum">     679 </span><span class="lineCov">          3 :         return m_pFirstRootRecord;</span>
+<span class="lineNum">     680 </span>            : }
+<span class="lineNum">     681 </span>            : 
+<span class="lineNum">     682 </span>            : 
+<span class="lineNum">     683 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     684 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     685 </span>            : //
+<span class="lineNum">     686 </span>            : //
+<span class="lineNum">     687 </span>            : // Set the first root record
+<span class="lineNum">     688 </span>            : //
+<span class="lineNum">     689 </span>            : //
+<a name="690"><span class="lineNum">     690 </span>            : ///////////////////////////////////////////////////////////</a>
+<span class="lineNum">     691 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     692 </span><span class="lineCov">          5 : void dicomDir::setFirstRootRecord(std::shared_ptr&lt;directoryRecord&gt; pFirstRootRecord)</span>
+<span class="lineNum">     693 </span>            : {
+<span class="lineNum">     694 </span><span class="lineCov">          5 :         m_pFirstRootRecord = pFirstRootRecord;</span>
+<span class="lineNum">     695 </span><span class="lineCov">          5 : }</span>
+<span class="lineNum">     696 </span>            : 
+<span class="lineNum">     697 </span>            : 
+<span class="lineNum">     698 </span>            : 
+<span class="lineNum">     699 </span>            : } // namespace implementation
+<span class="lineNum">     700 </span>            : 
+<span class="lineNum">     701 </span>            : } // namespace imebra
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.13</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

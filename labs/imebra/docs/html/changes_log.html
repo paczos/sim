@@ -1,0 +1,641 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Changes log &mdash; Imebra 4.5.2.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="copyright" title="Copyright" href="copyright.html" />
+    <link rel="next" title="Compiling Imebra" href="compiling_imebra.html" />
+    <link rel="prev" title="Introduction" href="introduction.html" /> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Imebra
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                4.5.2
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Download Imebra</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="download.html">Downloading Imebra</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Legal</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="copyright.html">Copyright</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gplv2.html">GNU General Public License</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Introduction</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Changes log</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#version-release-this-version">Version 4.5.2.1 (this version)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#version-4-5-1-1">Version 4.5.1.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#version-4-4-1-1">Version 4.4.1.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#version-4-4-0-2">Version 4.4.0.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#version-4-4-0-1">Version 4.4.0.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#version-4-3-0-1">Version 4.3.0.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#version-4-2-3-1">Version 4.2.3.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#version-4-2-2-1">Version 4.2.2.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#version-4-2-1-1">Version 4.2.1.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#version-4-2-0-2">Version 4.2.0.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#version-4-2-0-1">Version 4.2.0.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#version-4-1-2-1">Version 4.1.2.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#version-4-1-1-1">Version 4.1.1.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#version-4-1-0-1">Version 4.1.0.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#version-4-0-12-1">Version 4.0.12.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#version-4-0-11-2">Version 4.0.11.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#version-4-0-11-1">Version 4.0.11.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#version-4-0-10-1">Version 4.0.10.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#version-4-0-9-1">Version 4.0.9.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#version-4-0-8-1">Version 4.0.8.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#version-4-0-7-1">Version 4.0.7.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#version-4-0-6-1">Version 4.0.6.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#version-4-0-5-3">Version 4.0.5.3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#version-4-0-5-1">Version 4.0.5.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#version-4-0-4-1">Version 4.0.4.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#version-4-0-3-5">Version 4.0.3.5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#version-4-0-3-1">Version 4.0.3.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#version-4-0-2-6">Version 4.0.2.6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#version-4-0-2-1">Version 4.0.2.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#version-4-0-1-6">Version 4.0.1.6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#version-4-0-1-1">Version 4.0.1.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#version-4-0-0-11">Version 4.0.0.11</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#version-4-0-0-8">Version 4.0.0.8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#version-4-0-0-6">Version 4.0.0.6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#version-4-0-0-4">Version 4.0.0.4</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">User documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="compiling_imebra.html">Compiling Imebra</a></li>
+<li class="toctree-l1"><a class="reference internal" href="add_to_project.html">Adding Imebra to your project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quick_tour.html">Getting started</a></li>
+</ul>
+<p class="caption"><span class="caption-text">API</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="objects_lifecycle.html">Objects lifecycle and Object ownership</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dicom_data_classes.html">DICOM dataSet &amp; tags classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stream_classes.html">Stream classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="imaging_classes.html">Imaging classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="transforms_classes.html">Transforms classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="memory_management_classes.html">Memory management classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="acse_classes.html">ACSE classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dimse_classes.html">DIMSE classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dicomdir_classes.html">DICOMDIR classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dicom_dictionary_classes.html">DICOM dictionary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="definition_classes.html">Definitions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="exception_classes.html">Exceptions</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Build distributions</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="build_distribution.html">Creating the source distribution from the code in the VCS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="build_distribution.html#versioning">Versioning</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Requirements &amp; Risks</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="risks_requirements.html">Requirements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="risks_requirements.html#risks">Risks</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Standard operating procedures</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="sop.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sop.html#sops">SOPs</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Imebra</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Changes log</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/changes_log.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="changes-log">
+<span id="changes-log-label"></span><h1>Changes log<a class="headerlink" href="#changes-log" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="version-release-this-version">
+<h2>Version 4.5.2.1 (this version)<a class="headerlink" href="#version-release-this-version" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Fixed bug #272 (Ignore the transfer syntaxes in the Acse Presentation Context Item Fields if the reason field is not “acceptance”) as per
+SOP <a class="reference internal" href="sop.html#fixbug-2"><span class="std std-ref">SOP FIXBUG/2 Fixing a bug</span></a></li>
+</ul>
+</div>
+<div class="section" id="version-4-5-1-1">
+<h2>Version 4.5.1.1<a class="headerlink" href="#version-4-5-1-1" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Implemented enhancement #245 (Modify the Swig IDL to generate Golang bindings)</li>
+<li>Implemented enhancement #259 (Add a starter html page in the documentation folder) as per SOP <a class="reference internal" href="sop.html#devenh-2"><span class="std std-ref">SOP DEVENH/2 Implementing a new enhancement</span></a></li>
+<li>Fixed bug #260 (Remove warning “enumeration response not handled in switch”) as per SOP <a class="reference internal" href="sop.html#fixbug-2"><span class="std std-ref">SOP FIXBUG/2 Fixing a bug</span></a></li>
+<li>Fixed bug #261 (Remove warning “variable quality set but not used”) as per SOP <a class="reference internal" href="sop.html#fixbug-2"><span class="std std-ref">SOP FIXBUG/2 Fixing a bug</span></a></li>
+<li>Fixed bug #262 (Remove the warning gtest.h:1448:16: warning: comparison between signed and unsigned integer expressions) as per SOP <a class="reference internal" href="sop.html#fixbug-2"><span class="std std-ref">SOP FIXBUG/2 Fixing a bug</span></a></li>
+<li>Fixed bug #263 (Replace std::auto_ptr with std::unique_ptr in dicom2jpeg) as per SOP <a class="reference internal" href="sop.html#fixbug-2"><span class="std std-ref">SOP FIXBUG/2 Fixing a bug</span></a></li>
+<li>Fixed bug #264 (Remove warning “acseImpl.cpp:2491:9: warning: this statement may fall through”) as per SOP <a class="reference internal" href="sop.html#fixbug-2"><span class="std std-ref">SOP FIXBUG/2 Fixing a bug</span></a></li>
+<li>Fixed bug #265 (Remove warning “dicomStreamCodecImpl.cpp:713:17: warning: ‘tagType’ may be used uninitialized in this function”) as per SOP <a class="reference internal" href="sop.html#fixbug-2"><span class="std std-ref">SOP FIXBUG/2 Fixing a bug</span></a></li>
+<li>Fixed bug #266 (Remove warning “imageImpl.cpp:274:5: warning: this ‘if’ clause does not guard”) as per SOP <a class="reference internal" href="sop.html#fixbug-2"><span class="std std-ref">SOP FIXBUG/2 Fixing a bug</span></a></li>
+<li>Fixed bug #267 (Remove warning “tcpSequenceStreamImpl.cpp:216:26: warning: this statement may fall through”) as per SOP <a class="reference internal" href="sop.html#fixbug-2"><span class="std std-ref">SOP FIXBUG/2 Fixing a bug</span></a></li>
+</ul>
+</div>
+<div class="section" id="version-4-4-1-1">
+<h2>Version 4.4.1.1<a class="headerlink" href="#version-4-4-1-1" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Fixed bug #241 (The documentation for StreamTimeout::StreamTimeout() is wrong) as per SOP <a class="reference internal" href="sop.html#fixbug-2"><span class="std std-ref">SOP FIXBUG/2 Fixing a bug</span></a></li>
+<li>Fixed bug #247 (GCC 7.3 emits warning “left shift of negative value”) as per SOP <a class="reference internal" href="sop.html#fixbug-2"><span class="std std-ref">SOP FIXBUG/2 Fixing a bug</span></a></li>
+<li>Fixed bug #248 (The lossless jpeg test does not test the jpeg codec) as per SOP <a class="reference internal" href="sop.html#fixbug-2"><span class="std std-ref">SOP FIXBUG/2 Fixing a bug</span></a></li>
+<li>Implemented enhancement #249 (Update and re-organize the Java wrapper files) as per SOP <a class="reference internal" href="sop.html#devenh-2"><span class="std std-ref">SOP DEVENH/2 Implementing a new enhancement</span></a></li>
+<li>Fixed bug #254 (The data handler for the unicode strings may throw in the destructor) as per SOP <a class="reference internal" href="sop.html#fixbug-2"><span class="std std-ref">SOP FIXBUG/2 Fixing a bug</span></a></li>
+<li>Implemented enhancement #256 (Move the gradle folder into the javaWrapper folder and update the gradle build file)
+as per SOP <a class="reference internal" href="sop.html#devenh-2"><span class="std std-ref">SOP DEVENH/2 Implementing a new enhancement</span></a></li>
+<li>Implemented enhancement #257 (Move python_wrapper.cxx into the pythonWrapper folder) as per SOP <a class="reference internal" href="sop.html#devenh-2"><span class="std std-ref">SOP DEVENH/2 Implementing a new enhancement</span></a></li>
+</ul>
+</div>
+<div class="section" id="version-4-4-0-2">
+<h2>Version 4.4.0.2<a class="headerlink" href="#version-4-4-0-2" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Implemented enhancement #243 (Add a documentation section describing the memory management and object ownership in Imebra)
+as per SOP <a class="reference internal" href="sop.html#devenh-2"><span class="std std-ref">SOP DEVENH/2 Implementing a new enhancement</span></a></li>
+</ul>
+</div>
+<div class="section" id="version-4-4-0-1">
+<h2>Version 4.4.0.1<a class="headerlink" href="#version-4-4-0-1" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Fixed bug #236 (Documentation of the return value for ReadingDataHandler::data is wrong) as per SOP <a class="reference internal" href="sop.html#fixbug-2"><span class="std std-ref">SOP FIXBUG/2 Fixing a bug</span></a></li>
+<li>Fixed bug #237 (Documentation of the return value for ReadMemory::data is wrong) as per SOP <a class="reference internal" href="sop.html#fixbug-2"><span class="std std-ref">SOP FIXBUG/2 Fixing a bug</span></a></li>
+<li>Implemented enhancement #238 (Update the introduction to Imebra with the latest features) as per SOP <a class="reference internal" href="sop.html#devenh-2"><span class="std std-ref">SOP DEVENH/2 Implementing a new enhancement</span></a></li>
+<li>Implemented enhancement #239 (Expand the introductory sections in the API docs) as per SOP <a class="reference internal" href="sop.html#devenh-2"><span class="std std-ref">SOP DEVENH/2 Implementing a new enhancement</span></a></li>
+<li>Fixed bug #240 (The objective-c equivalent of StreamTimeout is missing)</li>
+</ul>
+</div>
+<div class="section" id="version-4-3-0-1">
+<h2>Version 4.3.0.1<a class="headerlink" href="#version-4-3-0-1" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Implemented enhancement #229 (Update the tag dictionary to the latest standard, allow more than one VR, account
+for multiple groups) as per SOP <a class="reference internal" href="sop.html#devenh-2"><span class="std std-ref">SOP DEVENH/2 Implementing a new enhancement</span></a></li>
+<li>Implemented enhancement #230 (Add Swift examples to the documentation) as per SOP <a class="reference internal" href="sop.html#devenh-2"><span class="std std-ref">SOP DEVENH/2 Implementing a new enhancement</span></a></li>
+<li>Fixed bug #233 (C-MOVE does not specify the destination) as per SOP <a class="reference internal" href="sop.html#fixbug-2"><span class="std std-ref">SOP FIXBUG/2 Fixing a bug</span></a></li>
+<li>Fixed bug #234 (The documentation for CMOVE response is missing) as per SOP <a class="reference internal" href="sop.html#fixbug-2"><span class="std std-ref">SOP FIXBUG/2 Fixing a bug</span></a></li>
+<li>Fixed bug #235 (ImebraCodecFactory::saveXXX must have the attribute swift_error(nonnull_error)) as per SOP <a class="reference internal" href="sop.html#fixbug-2"><span class="std std-ref">SOP FIXBUG/2 Fixing a bug</span></a></li>
+</ul>
+</div>
+<div class="section" id="version-4-2-3-1">
+<h2>Version 4.2.3.1<a class="headerlink" href="#version-4-2-3-1" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Fixed bug #222 (imebra::implementation::codecs::streamCodec needs virtual destructor) as per SOP <a class="reference internal" href="sop.html#fixbug-2"><span class="std std-ref">SOP FIXBUG/2 Fixing a bug</span></a></li>
+<li>Fixed bug #223 (imebra::implementation::data needs virtual destructor) as per SOP <a class="reference internal" href="sop.html#fixbug-2"><span class="std std-ref">SOP FIXBUG/2 Fixing a bug</span></a></li>
+<li>Fixed bug #224 (imebra::implementation::buffer needs virtual destructor) as per SOP <a class="reference internal" href="sop.html#fixbug-2"><span class="std std-ref">SOP FIXBUG/2 Fixing a bug</span></a></li>
+<li>Fixed bug #225 (imebra::implementation::codecs::jpeg::tag needs virtual destructor) as per SOP <a class="reference internal" href="sop.html#fixbug-2"><span class="std std-ref">SOP FIXBUG/2 Fixing a bug</span></a></li>
+<li>Fixed bug #227 (The classes jpegCodecBase and imageCodec need a virtual destructor) as per SOP <a class="reference internal" href="sop.html#fixbug-2"><span class="std std-ref">SOP FIXBUG/2 Fixing a bug</span></a></li>
+<li>Fixed bug #228 (Cast from long to int32_t in CPartialResponse getXXXSubOperations methods) as per SOP <a class="reference internal" href="sop.html#fixbug-2"><span class="std std-ref">SOP FIXBUG/2 Fixing a bug</span></a></li>
+</ul>
+</div>
+<div class="section" id="version-4-2-2-1">
+<h2>Version 4.2.2.1<a class="headerlink" href="#version-4-2-2-1" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Implemented enhancement #185 (Make Imebra compatible with latest Android SDK) as per SOP <a class="reference internal" href="sop.html#devenh-2"><span class="std std-ref">SOP DEVENH/2 Implementing a new enhancement</span></a></li>
+<li>Fixed bug #218 (Java does not support the multiple inheritance used by Pipe and TcpStream) as per
+SOP <a class="reference internal" href="sop.html#fixbug-2"><span class="std std-ref">SOP FIXBUG/2 Fixing a bug</span></a></li>
+<li>Implemented enhancement #221 (The charset conversion code should use the DICOM charsets in order of registration)
+as per SOP <a class="reference internal" href="sop.html#devenh-2"><span class="std std-ref">SOP DEVENH/2 Implementing a new enhancement</span></a></li>
+</ul>
+</div>
+<div class="section" id="version-4-2-1-1">
+<h2>Version 4.2.1.1<a class="headerlink" href="#version-4-2-1-1" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Fixed bug #194 (Remove warning “Implicit conversion changes signdness” in dicomImageCodecImpl.cpp)
+as per SOP <a class="reference internal" href="sop.html#fixbug-2"><span class="std std-ref">SOP FIXBUG/2 Fixing a bug</span></a></li>
+<li>Fixed bug #195 (Remove warning “Implicit conversion changes signdness” in huffmanTableImpl.cpp)
+as per SOP <a class="reference internal" href="sop.html#fixbug-2"><span class="std std-ref">SOP FIXBUG/2 Fixing a bug</span></a></li>
+<li>Fixed bug #196 (Remove warning “implicit conversion changes signedness” in jpegCodecBaseImpl.cpp)
+as per SOP <a class="reference internal" href="sop.html#fixbug-2"><span class="std std-ref">SOP FIXBUG/2 Fixing a bug</span></a></li>
+<li>Fixed bug #198 (Remove warning “implicit conversion changes signedness” in jpegImageCodecImpl.cpp)
+as per SOP <a class="reference internal" href="sop.html#fixbug-2"><span class="std std-ref">SOP FIXBUG/2 Fixing a bug</span></a></li>
+<li>Fixed bug #203 (Remove all the build warnings from the tests) as per SOP <a class="reference internal" href="sop.html#fixbug-2"><span class="std std-ref">SOP FIXBUG/2 Fixing a bug</span></a></li>
+<li>Fixed bug #219 (When writing sequences that embed sequences, the item length is wrong) as per SOP <a class="reference internal" href="sop.html#fixbug-2"><span class="std std-ref">SOP FIXBUG/2 Fixing a bug</span></a></li>
+</ul>
+</div>
+<div class="section" id="version-4-2-0-2">
+<h2>Version 4.2.0.2<a class="headerlink" href="#version-4-2-0-2" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Fixed bug #216 (Undocumented ImebraDrawBitmap::getImebraImage) as per SOP <a class="reference internal" href="sop.html#fixbug-2"><span class="std std-ref">SOP FIXBUG/2 Fixing a bug</span></a></li>
+</ul>
+</div>
+<div class="section" id="version-4-2-0-1">
+<h2>Version 4.2.0.1<a class="headerlink" href="#version-4-2-0-1" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Implemented enhancement #193 (Add Objective-C wrappers) as per SOP <a class="reference internal" href="sop.html#devenh-2"><span class="std std-ref">SOP DEVENH/2 Implementing a new enhancement</span></a></li>
+<li>Implemented enhancement #215 (Add DICOM well known Uids) as per SOP <a class="reference internal" href="sop.html#devenh-2"><span class="std std-ref">SOP DEVENH/2 Implementing a new enhancement</span></a></li>
+</ul>
+</div>
+<div class="section" id="version-4-1-2-1">
+<h2>Version 4.1.2.1<a class="headerlink" href="#version-4-1-2-1" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Fixed bug #214 (The lossless jpeg codec should not encode/decode the amplitude only
+when the amplitude length is 16) as per SOP <a class="reference internal" href="sop.html#fixbug-2"><span class="std std-ref">SOP FIXBUG/2 Fixing a bug</span></a></li>
+</ul>
+</div>
+<div class="section" id="version-4-1-1-1">
+<h2>Version 4.1.1.1<a class="headerlink" href="#version-4-1-1-1" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Fixed bug #174 (Remove warning “conversion to ‘uint8_t {aka unsigned char}’ from int
+may alter its value”) as per SOP <a class="reference internal" href="sop.html#fixbug-2"><span class="std std-ref">SOP FIXBUG/2 Fixing a bug</span></a></li>
+<li>Fixed bug #197 (Remove unused variables from jpegStreamCodecImpl.cpp) as per SOP <a class="reference internal" href="sop.html#fixbug-2"><span class="std std-ref">SOP FIXBUG/2 Fixing a bug</span></a></li>
+<li>Implemented enhancement #204 (Move the examples make files to the main CMakeLists.txt) as per SOP <a class="reference internal" href="sop.html#devenh-2"><span class="std std-ref">SOP DEVENH/2 Implementing a new enhancement</span></a></li>
+<li>Fixed bug #205 (Lossless jpeg codec wrongly writes/reads amplitude value when the amplitude length is equal to the max bit depth) as per SOP <a class="reference internal" href="sop.html#fixbug-2"><span class="std std-ref">SOP FIXBUG/2 Fixing a bug</span></a></li>
+<li>Fixes bug #207 (Specify the keyword “override” next to methods that override methods in the super
+class) as per SOP <a class="reference internal" href="sop.html#fixbug-2"><span class="std std-ref">SOP FIXBUG/2 Fixing a bug</span></a></li>
+<li>Fixes bug #208 (Remove unused static variables from the jpeg codec) as per SOP <a class="reference internal" href="sop.html#fixbug-2"><span class="std std-ref">SOP FIXBUG/2 Fixing a bug</span></a></li>
+<li>Fixes bug #209 (Move the implementation of the tagDQT class into jpegCodecImageImpl.cpp) as per
+SOP <a class="reference internal" href="sop.html#fixbug-2"><span class="std std-ref">SOP FIXBUG/2 Fixing a bug</span></a></li>
+<li>Implemented enhancement #210 (Output the TCP error number in the exception for unexpected TCP errors)
+as per SOP <a class="reference internal" href="sop.html#devenh-2"><span class="std std-ref">SOP DEVENH/2 Implementing a new enhancement</span></a></li>
+<li>Implemented enhancement #212 (Use poll to wait for writable/readable sockets) as per SOP <a class="reference internal" href="sop.html#devenh-2"><span class="std std-ref">SOP DEVENH/2 Implementing a new enhancement</span></a></li>
+<li>Fixed bug #213 (TCP address functions crash on error) as per SOP <a class="reference internal" href="sop.html#fixbug-2"><span class="std std-ref">SOP FIXBUG/2 Fixing a bug</span></a></li>
+</ul>
+</div>
+<div class="section" id="version-4-1-0-1">
+<h2>Version 4.1.0.1<a class="headerlink" href="#version-4-1-0-1" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Implemented feature #180 (Implement the DICOM part 7 DIMSE and part 8 DUL) as per SOP <a class="reference internal" href="sop.html#devfeat-2"><span class="std std-ref">SOP DEVFEAT/2 Implementing a new feature</span></a></li>
+<li>Fixed bug #184 (Remove variable bStopped from dicomStreamCodec::parseStream) as per SOP <a class="reference internal" href="sop.html#fixbug-2"><span class="std std-ref">SOP FIXBUG/2 Fixing a bug</span></a></li>
+<li>Implemented enhancement #199 (Specify that on OS-X and iOS the iconv library must be explicitly linked when using a static Imebra library) as
+per SOP <a class="reference internal" href="sop.html#devenh-2"><span class="std std-ref">SOP DEVENH/2 Implementing a new enhancement</span></a></li>
+<li>Fixed bug #201 (The build system fails to upload the artifacts to dropbox) as per SOP <a class="reference internal" href="sop.html#fixbug-2"><span class="std std-ref">SOP FIXBUG/2 Fixing a bug</span></a></li>
+<li>Fixed bug #202 (The Specific Charset Tag is populated even when not necessary) as per SOP <a class="reference internal" href="sop.html#fixbug-2"><span class="std std-ref">SOP FIXBUG/2 Fixing a bug</span></a></li>
+</ul>
+</div>
+<div class="section" id="version-4-0-12-1">
+<h2>Version 4.0.12.1<a class="headerlink" href="#version-4-0-12-1" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Implemented enhancement #187 (Modify the virtual streams so no seek is necessary when streamReader::getReader() is called) as per SOP <a class="reference internal" href="sop.html#devenh-2"><span class="std std-ref">SOP DEVENH/2 Implementing a new enhancement</span></a></li>
+<li>Fixed bug #188 (The build fails when uploading the artifacts to dropbox) as per SOP <a class="reference internal" href="sop.html#fixbug-2"><span class="std std-ref">SOP FIXBUG/2 Fixing a bug</span></a></li>
+<li>Fixed bug #189 (Remove warnings C4275 and C4251from Windows builds) as per SOP <a class="reference internal" href="sop.html#fixbug-2"><span class="std std-ref">SOP FIXBUG/2 Fixing a bug</span></a></li>
+<li>Fixed bug #192 (Test with corrupted files does not run on Windows) as per SOP <a class="reference internal" href="sop.html#fixbug-2"><span class="std std-ref">SOP FIXBUG/2 Fixing a bug</span></a></li>
+<li>Fixed bug #200 (The attribute with VR AT should be 4 bytes wide, but instead is treated as a 2 bytes attribute) as per SOP <a class="reference internal" href="sop.html#fixbug-2"><span class="std std-ref">SOP FIXBUG/2 Fixing a bug</span></a></li>
+</ul>
+</div>
+<div class="section" id="version-4-0-11-2">
+<h2>Version 4.0.11.2<a class="headerlink" href="#version-4-0-11-2" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Fixed bug #160 (Replace “Java++” with “Java” in the section “Getting started” of the documentation) as per SOP <a class="reference internal" href="sop.html#fixbug-2"><span class="std std-ref">SOP FIXBUG/2 Fixing a bug</span></a></li>
+<li>Implemented enhancement #182 (Add a section that explains how to download Imebra) as per SOP <a class="reference internal" href="sop.html#devenh-2"><span class="std std-ref">SOP DEVENH/2 Implementing a new enhancement</span></a></li>
+</ul>
+</div>
+<div class="section" id="version-4-0-11-1">
+<h2>Version 4.0.11.1<a class="headerlink" href="#version-4-0-11-1" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Fixed bug #177 (Imebra cannot read private tags for implicit VR syntax) as per SOP <a class="reference internal" href="sop.html#fixbug-2"><span class="std std-ref">SOP FIXBUG/2 Fixing a bug</span></a></li>
+<li>Fixed bug #181 (The implementation classes baseStreamInput, baseStreamOutput, readingDataHandler,
+transform don’t provide a virtual destructor) as per SOP <a class="reference internal" href="sop.html#fixbug-2"><span class="std std-ref">SOP FIXBUG/2 Fixing a bug</span></a></li>
+</ul>
+</div>
+<div class="section" id="version-4-0-10-1">
+<h2>Version 4.0.10.1<a class="headerlink" href="#version-4-0-10-1" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Fixed bug #163 (DrawBitmap fails with 16 bits palette images) as per SOP <a class="reference internal" href="sop.html#fixbug-2"><span class="std std-ref">SOP FIXBUG/2 Fixing a bug</span></a></li>
+<li>Implemented enhancement #164 (Remove warnings “control reaches end of non-void function” in bufferImpl.cpp) as per SOP <a class="reference internal" href="sop.html#devenh-2"><span class="std std-ref">SOP DEVENH/2 Implementing a new enhancement</span></a></li>
+<li>Implemented enhancement #167 (Remove compilation warning conversion from float/double to int in dataHandlerNumericImpl.h) as per SOP <a class="reference internal" href="sop.html#devenh-2"><span class="std std-ref">SOP DEVENH/2 Implementing a new enhancement</span></a></li>
+<li>Implemented enhancement #168 (Remove warning VOILUTImpl.h:194:82: conversion to ‘double’ from ‘int64_t’) as per SOP <a class="reference internal" href="sop.html#devenh-2"><span class="std std-ref">SOP DEVENH/2 Implementing a new enhancement</span></a></li>
+<li>Implemented enhancement #169 (Separate the stream codecs from the image codecs) as per SOP <a class="reference internal" href="sop.html#devenh-2"><span class="std std-ref">SOP DEVENH/2 Implementing a new enhancement</span></a></li>
+<li>Implemented enhancement #172 (Add an experimental jpeg2000 decoder)</li>
+<li>Implemented enhancement #173 (Add the color spaces YBR_ICT and YBR_RCT) as per SOP <a class="reference internal" href="sop.html#devenh-2"><span class="std std-ref">SOP DEVENH/2 Implementing a new enhancement</span></a></li>
+<li>Implemented enhancement #175 (Accept string tags that pad the value with 0x0 instead of spaces) as per SOP <a class="reference internal" href="sop.html#devenh-2"><span class="std std-ref">SOP DEVENH/2 Implementing a new enhancement</span></a></li>
+<li>Implemented enhancement #176 (Add internal method streamReader readSome) as per SOP <a class="reference internal" href="sop.html#devenh-2"><span class="std std-ref">SOP DEVENH/2 Implementing a new enhancement</span></a></li>
+</ul>
+</div>
+<div class="section" id="version-4-0-9-1">
+<h2>Version 4.0.9.1<a class="headerlink" href="#version-4-0-9-1" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Implemented enhancement #161 (Add the full license text in the project root folder, add a short link to the license in each
+source file) as per SOP <a class="reference internal" href="sop.html#devenh-2"><span class="std std-ref">SOP DEVENH/2 Implementing a new enhancement</span></a></li>
+<li>Fixed bug #162 (Dataset: useless copy when inserting non encapsulated images) as per SOP <a class="reference internal" href="sop.html#fixbug-2"><span class="std std-ref">SOP FIXBUG/2 Fixing a bug</span></a></li>
+</ul>
+</div>
+<div class="section" id="version-4-0-8-1">
+<h2>Version 4.0.8.1<a class="headerlink" href="#version-4-0-8-1" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Implemented enhancement #153 (Modify swig.i so a Python wrapper can be generated with swig) as per SOP <a class="reference internal" href="sop.html#devenh-2"><span class="std std-ref">SOP DEVENH/2 Implementing a new enhancement</span></a></li>
+<li>Implemented enhancement #154 (Add a objective-c helper that return an UIImage or NSImage) as per SOP <a class="reference internal" href="sop.html#devenh-2"><span class="std std-ref">SOP DEVENH/2 Implementing a new enhancement</span></a></li>
+<li>Fixed bug #155 (Empty embedded datasets should not be written) as per SOP <a class="reference internal" href="sop.html#fixbug-2"><span class="std std-ref">SOP FIXBUG/2 Fixing a bug</span></a></li>
+<li>Fixed bug #156 (getSequenceItem throws MissingDataElementError instead of MissingItemError) as per SOP <a class="reference internal" href="sop.html#fixbug-2"><span class="std std-ref">SOP FIXBUG/2 Fixing a bug</span></a></li>
+</ul>
+</div>
+<div class="section" id="version-4-0-7-1">
+<h2>Version 4.0.7.1<a class="headerlink" href="#version-4-0-7-1" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Fixed bug #150 (Missing documentation for Tag members that return numeric and raw data handlers) as per SOP <a class="reference internal" href="sop.html#fixbug-2"><span class="std std-ref">SOP FIXBUG/2 Fixing a bug</span></a></li>
+<li>Fixed bug #151 (Imebra creates the tag 0028,0006 even when the number of color channel is 1) as per SOP <a class="reference internal" href="sop.html#fixbug-2"><span class="std std-ref">SOP FIXBUG/2 Fixing a bug</span></a></li>
+</ul>
+</div>
+<div class="section" id="version-4-0-6-1">
+<h2>Version 4.0.6.1<a class="headerlink" href="#version-4-0-6-1" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><p class="first">Fixed bug #132 (Dead assignment to runLength in the Jpeg codec) as per SOP <a class="reference internal" href="sop.html#fixbug-2"><span class="std std-ref">SOP FIXBUG/2 Fixing a bug</span></a></p>
+</li>
+<li><p class="first">Fixed bug #143 (The documentation wrongly states that Image::Image() allocates the image memory) as per SOP <a class="reference internal" href="sop.html#fixbug-2"><span class="std std-ref">SOP FIXBUG/2 Fixing a bug</span></a></p>
+</li>
+<li><p class="first">Implemented enhancement #144 (Improve the bug fixing/feature implementation SOPs so they are developed in separate branches).
+Improved SOPs FIXBUG (<a class="reference internal" href="sop.html#fixbug-2"><span class="std std-ref">SOP FIXBUG/2 Fixing a bug</span></a>) DEVFEAT (<a class="reference internal" href="sop.html#devfeat-2"><span class="std std-ref">SOP DEVFEAT/2 Implementing a new feature</span></a>) DEVENH (<a class="reference internal" href="sop.html#devenh-2"><span class="std std-ref">SOP DEVENH/2 Implementing a new enhancement</span></a>), updated SOP RELEASE (<a class="reference internal" href="sop.html#release-2"><span class="std std-ref">SOP RELEASE/2 Preparation of a new release</span></a>)
+as per SOPs <a class="reference internal" href="sop.html#modsop-1"><span class="std std-ref">SOP MODSOP/1: Modifying the SOPs</span></a>, <a class="reference internal" href="sop.html#devenh-1"><span class="std std-ref">SOP DEVENH/1 Implementing a new enhancement</span></a></p>
+</li>
+<li><p class="first">Fixed bug #145 (In the SOP CHGLOG/1 the text</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Version</span> <span class="o">|</span><span class="n">release</span><span class="o">|</span> <span class="p">(</span><span class="n">this</span> <span class="n">version</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>is replaced with the current version) as per SOP <a class="reference internal" href="sop.html#fixbug-2"><span class="std std-ref">SOP FIXBUG/2 Fixing a bug</span></a></p>
+</li>
+<li><p class="first">Implemented enhancement #146 (Explain how to compile the 64bit version of the library on Windows) as per SOP <a class="reference internal" href="sop.html#devenh-2"><span class="std std-ref">SOP DEVENH/2 Implementing a new enhancement</span></a></p>
+</li>
+<li><p class="first">Implemented enhancement #148 (Modify CMake for iOS target) as per SOP <a class="reference internal" href="sop.html#devenh-2"><span class="std std-ref">SOP DEVENH/2 Implementing a new enhancement</span></a></p>
+</li>
+</ul>
+</div>
+<div class="section" id="version-4-0-5-3">
+<h2>Version 4.0.5.3<a class="headerlink" href="#version-4-0-5-3" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Fixed bug #117 (build fails on OSX)</li>
+</ul>
+</div>
+<div class="section" id="version-4-0-5-1">
+<h2>Version 4.0.5.1<a class="headerlink" href="#version-4-0-5-1" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Fixed bug #135 (openFile failure) as per <a class="reference internal" href="sop.html#fixbug-1"><span class="std std-ref">SOP FIXBUG/1 Fixing a bug</span></a></li>
+<li>Implemented enhancement #138 (Redundant check in dicomCodec::allocChannels) as per <a class="reference internal" href="sop.html#devenh-1"><span class="std std-ref">SOP DEVENH/1 Implementing a new enhancement</span></a></li>
+<li>Fixed bug #139 (On Windows the preprocessor macro NOMINMAX has to be defined if windows.h is included) as per <a class="reference internal" href="sop.html#fixbug-1"><span class="std std-ref">SOP FIXBUG/1 Fixing a bug</span></a></li>
+<li>Implemented enhancement #140 (Remove the macro NOMINMAX from the Imebra source code and place it in CMake) as per <a class="reference internal" href="sop.html#devenh-1"><span class="std std-ref">SOP DEVENH/1 Implementing a new enhancement</span></a></li>
+<li>Fixed bug #142 (The DICOM VR “LT” (long text) should not treat the backslash as a separator) as per <a class="reference internal" href="sop.html#fixbug-1"><span class="std std-ref">SOP FIXBUG/1 Fixing a bug</span></a></li>
+</ul>
+</div>
+<div class="section" id="version-4-0-4-1">
+<h2>Version 4.0.4.1<a class="headerlink" href="#version-4-0-4-1" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Fixed bug #131 (Unused variables in transformImpl.cpp) as per <a class="reference internal" href="sop.html#fixbug-1"><span class="std std-ref">SOP FIXBUG/1 Fixing a bug</span></a></li>
+<li>Fixed bug #136 (Segmentation fault when navigating the DicomDir entries) as per <a class="reference internal" href="sop.html#fixbug-1"><span class="std std-ref">SOP FIXBUG/1 Fixing a bug</span></a></li>
+<li>Fixed bug #137 (The example DicomDirItems throws an exception while scanning the DicomDirEntry tags) as per <a class="reference internal" href="sop.html#fixbug-1"><span class="std std-ref">SOP FIXBUG/1 Fixing a bug</span></a></li>
+</ul>
+</div>
+<div class="section" id="version-4-0-3-5">
+<h2>Version 4.0.3.5<a class="headerlink" href="#version-4-0-3-5" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Fixed bug #134 (The example ChangeTransferSyntax copies the tags over the images created using the new transfer syntax)</li>
+<li>Added XSD file for the imebra_requirements.xml file</li>
+<li>Added Standard Operating Procedures for future development</li>
+</ul>
+</div>
+<div class="section" id="version-4-0-3-1">
+<h2>Version 4.0.3.1<a class="headerlink" href="#version-4-0-3-1" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Implemented enhancement #130 (Allow the decompression of Jpeg images that have a premature EOI tag)</li>
+</ul>
+</div>
+<div class="section" id="version-4-0-2-6">
+<h2>Version 4.0.2.6<a class="headerlink" href="#version-4-0-2-6" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Fixed bug #125 (Documentation: The Java examples use the methods setUnicodeString and getUnicodeString and finalize)</li>
+<li>Fixed bug #126 (Documentation: Wrong call to getLut in the examples)</li>
+<li>Fixed bug #127 (Documentation: wrong Java Example for writing a Tag into a DataSet)</li>
+<li>Fixed bug #129 (Documentation: The example that retrieves the LUTs out never exit from the loop)</li>
+</ul>
+</div>
+<div class="section" id="version-4-0-2-1">
+<h2>Version 4.0.2.1<a class="headerlink" href="#version-4-0-2-1" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Fixed bug #122 (Failure to open a file with Java Wrappers)</li>
+<li>Fixed bug #123 (SWIG translates the Java String to UTF16 and not UTF32 when filling std::wstring)</li>
+<li>Fixef bug #124 (Java charset conversion fails)</li>
+</ul>
+</div>
+<div class="section" id="version-4-0-1-6">
+<h2>Version 4.0.1.6<a class="headerlink" href="#version-4-0-1-6" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Fixed bug #121 (Wrong Java examples in the documentation)</li>
+<li>Improved test units</li>
+<li>Improved the documentation for the class DataSet</li>
+<li>Improved the section “Compiling Imebra” of the documentation</li>
+</ul>
+</div>
+<div class="section" id="version-4-0-1-1">
+<h2>Version 4.0.1.1<a class="headerlink" href="#version-4-0-1-1" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Fixed bug #119 (Imebra does not create the tag 0002,0001 when writing a DICOM file)</li>
+<li>Fixed bug #120 (When creating an empty DataSet with unspecified transfer syntax then the transfer syntax is set to 1.2.840.10008.1.2.1)</li>
+<li>Added changes log</li>
+</ul>
+</div>
+<div class="section" id="version-4-0-0-11">
+<h2>Version 4.0.0.11<a class="headerlink" href="#version-4-0-0-11" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Added test for TransformsChain</li>
+<li>Improved string data handler tests</li>
+<li>Added test for VR UC</li>
+<li>Improved documentation</li>
+</ul>
+</div>
+<div class="section" id="version-4-0-0-8">
+<h2>Version 4.0.0.8<a class="headerlink" href="#version-4-0-0-8" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Documentation: renamed “Quick tour” to “Getting started”</li>
+<li>Closed bug #118 (Risks in the documentation are not ordered by mitigated total risk)</li>
+</ul>
+</div>
+<div class="section" id="version-4-0-0-6">
+<h2>Version 4.0.0.6<a class="headerlink" href="#version-4-0-0-6" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Improved documentation</li>
+<li>CMake: when compiling on Windows set the Kernel32 library in the compiler detection block, not in the charset conversion detection block</li>
+</ul>
+</div>
+<div class="section" id="version-4-0-0-4">
+<h2>Version 4.0.0.4<a class="headerlink" href="#version-4-0-0-4" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>First public release of Imebra V4</li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="compiling_imebra.html" class="btn btn-neutral float-right" title="Compiling Imebra" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="introduction.html" class="btn btn-neutral" title="Introduction" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; <a href="copyright.html">Copyright</a> 2016, Paolo Brandoli.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'4.5.2.1',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  <script type="text/javascript" src="_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

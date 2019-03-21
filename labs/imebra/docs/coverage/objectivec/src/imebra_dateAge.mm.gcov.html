@@ -1,0 +1,216 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - extracted.info - objectivec/src/imebra_dateAge.mm</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">objectivec/src</a> - imebra_dateAge.mm<span style="font-size: 80%;"> (source / <a href="imebra_dateAge.mm.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">extracted.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">12</td>
+            <td class="headerCovTableEntry">45</td>
+            <td class="headerCovTableEntryLo">26.7 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2019-03-13 14:48:54</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">4</td>
+            <td class="headerCovTableEntry">17</td>
+            <td class="headerCovTableEntryLo">23.5 %</td>
+          </tr>
+          <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : /*</a>
+<span class="lineNum">       2 </span>            : Copyright 2005 - 2017 by Paolo Brandoli/Binarno s.p.
+<span class="lineNum">       3 </span>            : 
+<span class="lineNum">       4 </span>            : Imebra is available for free under the GNU General Public License.
+<span class="lineNum">       5 </span>            : 
+<span class="lineNum">       6 </span>            : The full text of the license is available in the file license.rst
+<span class="lineNum">       7 </span>            :  in the project root folder.
+<span class="lineNum">       8 </span>            : 
+<span class="lineNum">       9 </span>            : If you do not want to be bound by the GPL terms (such as the requirement
+<span class="lineNum">      10 </span>            :  that your application must also be GPL), you may purchase a commercial
+<span class="lineNum">      11 </span>            :  license for Imebra from the Imebra’s website (http://imebra.com).
+<span class="lineNum">      12 </span>            : */
+<span class="lineNum">      13 </span>            : 
+<span class="lineNum">      14 </span>            : #include &quot;imebra_bridgeStructures.h&quot;
+<span class="lineNum">      15 </span>            : 
+<span class="lineNum">      16 </span>            : #import &lt;Foundation/NSString.h&gt;
+<span class="lineNum">      17 </span>            : 
+<a name="18"><span class="lineNum">      18 </span>            : @implementation ImebraAge</a>
+<span class="lineNum">      19 </span>            : 
+<span class="lineNum">      20 </span><span class="lineNoCov">          0 : -(void)dealloc</span>
+<span class="lineNum">      21 </span>            : {
+<span class="lineNum">      22 </span><span class="lineNoCov">          0 :     delete m_pAge;</span>
+<span class="lineNum">      23 </span>            : #if !__has_feature(objc_arc)
+<span class="lineNum">      24 </span><span class="lineCov">          3 :     [super dealloc];</span>
+<span class="lineNum">      25 </span>            : #endif
+<a name="26"><span class="lineNum">      26 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">      27 </span>            : 
+<span class="lineNum">      28 </span><span class="lineCov">          3 : -(id)initWithAge:(unsigned int)initialAge units:(ImebraAgeUnit_t)initialUnits</span>
+<span class="lineNum">      29 </span>            : {
+<span class="lineNum">      30 </span><span class="lineCov">          3 :     m_pAge = 0;</span>
+<span class="lineNum">      31 </span><span class="lineCov">          6 :     self = [super init];</span>
+<span class="lineNum">      32 </span><span class="lineCov">          3 :     if(self)</span>
+<span class="lineNum">      33 </span>            :     {
+<span class="lineNum">      34 </span><span class="lineCov">          3 :         m_pAge = new imebra::Age(initialAge, (imebra::ageUnit_t)initialUnits);</span>
+<span class="lineNum">      35 </span>            :     }
+<span class="lineNum">      36 </span><span class="lineCov">          3 :     return self;</span>
+<a name="37"><span class="lineNum">      37 </span>            : }</a>
+<span class="lineNum">      38 </span>            : 
+<span class="lineNum">      39 </span><span class="lineNoCov">          0 : -(double)years</span>
+<span class="lineNum">      40 </span>            : {
+<span class="lineNum">      41 </span><span class="lineNoCov">          0 :     return m_pAge-&gt;years();</span>
+<a name="42"><span class="lineNum">      42 </span>            : }</a>
+<span class="lineNum">      43 </span>            : 
+<span class="lineNum">      44 </span><span class="lineCov">          1 : -(unsigned int)age</span>
+<span class="lineNum">      45 </span>            : {
+<span class="lineNum">      46 </span><span class="lineCov">          1 :     return m_pAge-&gt;age;</span>
+<a name="47"><span class="lineNum">      47 </span>            : }</a>
+<span class="lineNum">      48 </span>            : 
+<span class="lineNum">      49 </span><span class="lineCov">          1 : -(ImebraAgeUnit_t)units</span>
+<span class="lineNum">      50 </span>            : {
+<span class="lineNum">      51 </span><span class="lineCov">          1 :     return (ImebraAgeUnit_t)m_pAge-&gt;units;</span>
+<span class="lineNum">      52 </span>            : }
+<span class="lineNum">      53 </span>            : 
+<span class="lineNum">      54 </span>            : @end
+<span class="lineNum">      55 </span>            : 
+<span class="lineNum">      56 </span>            : 
+<a name="57"><span class="lineNum">      57 </span>            : @implementation ImebraDate</a>
+<span class="lineNum">      58 </span>            : 
+<span class="lineNum">      59 </span><span class="lineNoCov">          0 : -(void)dealloc</span>
+<span class="lineNum">      60 </span>            : {
+<span class="lineNum">      61 </span><span class="lineNoCov">          0 :     delete m_pDate;</span>
+<span class="lineNum">      62 </span>            : #if !__has_feature(objc_arc)
+<span class="lineNum">      63 </span><span class="lineNoCov">          0 :     [super dealloc];</span>
+<span class="lineNum">      64 </span>            : #endif
+<span class="lineNum">      65 </span><span class="lineNoCov">          0 : }</span>
+<span class="lineNum">      66 </span>            : 
+<span class="lineNum">      67 </span>            : -(id)initWithYear:(unsigned int)initialYear
+<span class="lineNum">      68 </span>            :                                 month:(unsigned int)initialMonth
+<span class="lineNum">      69 </span>            :                                 day:(unsigned int)initialDay
+<span class="lineNum">      70 </span>            :                                 hour:(unsigned int)initialHour
+<span class="lineNum">      71 </span>            :                                 minutes:(unsigned int)initialMinutes
+<span class="lineNum">      72 </span>            :                                 seconds:(unsigned int)initialSeconds
+<a name="73"><span class="lineNum">      73 </span>            :                                 nanoseconds:(unsigned int)initialNanoseconds</a>
+<span class="lineNum">      74 </span>            :                                 offsetHours:(int)initialOffsetHours
+<span class="lineNum">      75 </span><span class="lineNoCov">          0 :                                 offsetMinutes:(int)initialOffsetMinutes</span>
+<span class="lineNum">      76 </span>            : {
+<span class="lineNum">      77 </span><span class="lineNoCov">          0 :     self = [super init];</span>
+<span class="lineNum">      78 </span><span class="lineNoCov">          0 :     if(self)</span>
+<span class="lineNum">      79 </span>            :     {
+<span class="lineNum">      80 </span><span class="lineNoCov">          0 :         self-&gt;m_pDate =</span>
+<span class="lineNum">      81 </span>            :                     new imebra::Date(
+<span class="lineNum">      82 </span>            :                         initialYear,
+<span class="lineNum">      83 </span>            :                         initialMonth,
+<span class="lineNum">      84 </span>            :                         initialDay,
+<span class="lineNum">      85 </span>            :                         initialHour,
+<span class="lineNum">      86 </span>            :                         initialMinutes,
+<span class="lineNum">      87 </span>            :                         initialSeconds,
+<span class="lineNum">      88 </span>            :                         initialNanoseconds,
+<span class="lineNum">      89 </span>            :                         initialOffsetHours,
+<span class="lineNum">      90 </span><span class="lineNoCov">          0 :                         initialOffsetMinutes);</span>
+<span class="lineNum">      91 </span>            :     }
+<span class="lineNum">      92 </span><span class="lineNoCov">          0 :     return self;</span>
+<a name="93"><span class="lineNum">      93 </span>            : }</a>
+<span class="lineNum">      94 </span>            : 
+<span class="lineNum">      95 </span><span class="lineNoCov">          0 : -(unsigned int)year</span>
+<span class="lineNum">      96 </span>            : {
+<span class="lineNum">      97 </span><span class="lineNoCov">          0 :     return m_pDate-&gt;year;</span>
+<a name="98"><span class="lineNum">      98 </span>            : }</a>
+<span class="lineNum">      99 </span>            : 
+<span class="lineNum">     100 </span><span class="lineNoCov">          0 : -(unsigned int)month</span>
+<span class="lineNum">     101 </span>            : {
+<span class="lineNum">     102 </span><span class="lineNoCov">          0 :     return m_pDate-&gt;month;</span>
+<a name="103"><span class="lineNum">     103 </span>            : }</a>
+<span class="lineNum">     104 </span>            : 
+<span class="lineNum">     105 </span><span class="lineNoCov">          0 : -(unsigned int)day</span>
+<span class="lineNum">     106 </span>            : {
+<span class="lineNum">     107 </span><span class="lineNoCov">          0 :     return m_pDate-&gt;day;</span>
+<a name="108"><span class="lineNum">     108 </span>            : }</a>
+<span class="lineNum">     109 </span>            : 
+<span class="lineNum">     110 </span><span class="lineNoCov">          0 : -(unsigned int)hour</span>
+<span class="lineNum">     111 </span>            : {
+<span class="lineNum">     112 </span><span class="lineNoCov">          0 :     return m_pDate-&gt;hour;</span>
+<a name="113"><span class="lineNum">     113 </span>            : }</a>
+<span class="lineNum">     114 </span>            : 
+<span class="lineNum">     115 </span><span class="lineNoCov">          0 : -(unsigned int)minutes</span>
+<span class="lineNum">     116 </span>            : {
+<span class="lineNum">     117 </span><span class="lineNoCov">          0 :     return m_pDate-&gt;minutes;</span>
+<a name="118"><span class="lineNum">     118 </span>            : }</a>
+<span class="lineNum">     119 </span>            : 
+<span class="lineNum">     120 </span><span class="lineNoCov">          0 : -(unsigned int)seconds</span>
+<span class="lineNum">     121 </span>            : {
+<span class="lineNum">     122 </span><span class="lineNoCov">          0 :     return m_pDate-&gt;seconds;</span>
+<a name="123"><span class="lineNum">     123 </span>            : }</a>
+<span class="lineNum">     124 </span>            : 
+<span class="lineNum">     125 </span><span class="lineNoCov">          0 : -(unsigned int)nanoseconds</span>
+<span class="lineNum">     126 </span>            : {
+<span class="lineNum">     127 </span><span class="lineNoCov">          0 :     return m_pDate-&gt;nanoseconds;</span>
+<a name="128"><span class="lineNum">     128 </span>            : }</a>
+<span class="lineNum">     129 </span>            : 
+<span class="lineNum">     130 </span><span class="lineNoCov">          0 : -(int)offsetHours</span>
+<span class="lineNum">     131 </span>            : {
+<span class="lineNum">     132 </span><span class="lineNoCov">          0 :     return m_pDate-&gt;offsetHours;</span>
+<a name="133"><span class="lineNum">     133 </span>            : }</a>
+<span class="lineNum">     134 </span>            : 
+<span class="lineNum">     135 </span><span class="lineNoCov">          0 : -(int)offsetMinutes</span>
+<span class="lineNum">     136 </span>            : {
+<span class="lineNum">     137 </span><span class="lineNoCov">          0 :     return m_pDate-&gt;offsetMinutes;</span>
+<a name="138"><span class="lineNum">     138 </span>            : }</a>
+<span class="lineNum">     139 </span>            : 
+<span class="lineNum">     140 </span><span class="lineCov">          1 : @end</span>
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.13</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

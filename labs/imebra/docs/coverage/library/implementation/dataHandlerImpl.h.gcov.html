@@ -1,0 +1,452 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - extracted.info - library/implementation/dataHandlerImpl.h</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">library/implementation</a> - dataHandlerImpl.h<span style="font-size: 80%;"> (source / <a href="dataHandlerImpl.h.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">extracted.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">11</td>
+            <td class="headerCovTableEntry">13</td>
+            <td class="headerCovTableEntryMed">84.6 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2019-03-13 14:48:54</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">2</td>
+            <td class="headerCovTableEntry">2</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : /*</a>
+<span class="lineNum">       2 </span>            : Copyright 2005 - 2017 by Paolo Brandoli/Binarno s.p.
+<span class="lineNum">       3 </span>            : 
+<span class="lineNum">       4 </span>            : Imebra is available for free under the GNU General Public License.
+<span class="lineNum">       5 </span>            : 
+<span class="lineNum">       6 </span>            : The full text of the license is available in the file license.rst
+<span class="lineNum">       7 </span>            :  in the project root folder.
+<span class="lineNum">       8 </span>            : 
+<span class="lineNum">       9 </span>            : If you do not want to be bound by the GPL terms (such as the requirement 
+<span class="lineNum">      10 </span>            :  that your application must also be GPL), you may purchase a commercial 
+<span class="lineNum">      11 </span>            :  license for Imebra from the Imebra’s website (http://imebra.com).
+<span class="lineNum">      12 </span>            : */
+<span class="lineNum">      13 </span>            : 
+<span class="lineNum">      14 </span>            : /*! \file dataHandler.h
+<span class="lineNum">      15 </span>            :     \brief Declaration of the base class used by all the data handlers.
+<span class="lineNum">      16 </span>            : 
+<span class="lineNum">      17 </span>            : */
+<span class="lineNum">      18 </span>            : 
+<span class="lineNum">      19 </span>            : #if !defined(imebraDataHandler_6F85D344_DEF8_468d_BF73_AC5BB17FD22A__INCLUDED_)
+<span class="lineNum">      20 </span>            : #define imebraDataHandler_6F85D344_DEF8_468d_BF73_AC5BB17FD22A__INCLUDED_
+<span class="lineNum">      21 </span>            : 
+<span class="lineNum">      22 </span>            : #include &quot;../include/imebra/definitions.h&quot;
+<span class="lineNum">      23 </span>            : #include &quot;../include/imebra/exceptions.h&quot;
+<span class="lineNum">      24 </span>            : #include &quot;exceptionImpl.h&quot;
+<span class="lineNum">      25 </span>            : #include &lt;memory&gt;
+<span class="lineNum">      26 </span>            : #include &quot;charsetsListImpl.h&quot;
+<span class="lineNum">      27 </span>            : 
+<span class="lineNum">      28 </span>            : 
+<span class="lineNum">      29 </span>            : namespace imebra
+<span class="lineNum">      30 </span>            : {
+<span class="lineNum">      31 </span>            : 
+<span class="lineNum">      32 </span>            : namespace implementation
+<span class="lineNum">      33 </span>            : {
+<span class="lineNum">      34 </span>            : 
+<span class="lineNum">      35 </span>            : class memory;
+<span class="lineNum">      36 </span>            : class buffer;
+<span class="lineNum">      37 </span>            : 
+<span class="lineNum">      38 </span>            : /// \namespace handlers
+<span class="lineNum">      39 </span>            : /// \brief All the implementations of the data handlers
+<span class="lineNum">      40 </span>            : ///         are defined in this namespace.
+<span class="lineNum">      41 </span>            : ///
+<span class="lineNum">      42 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">      43 </span>            : namespace handlers
+<span class="lineNum">      44 </span>            : {
+<span class="lineNum">      45 </span>            : 
+<span class="lineNum">      46 </span>            : ///
+<span class="lineNum">      47 </span>            : /// \brief The readingDataHandler parses the content of
+<span class="lineNum">      48 </span>            : ///        a tag's buffer and makes it accessible as
+<span class="lineNum">      49 </span>            : ///        numeric value, string, time or age.
+<span class="lineNum">      50 </span>            : ///
+<span class="lineNum">      51 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">      52 </span>            : class readingDataHandler
+<span class="lineNum">      53 </span>            : {
+<span class="lineNum">      54 </span>            : public:
+<span class="lineNum">      55 </span>            :     ///
+<span class="lineNum">      56 </span>            :     /// \brief Constructor.
+<span class="lineNum">      57 </span>            :     /// \param The data type of the tag exposed by this
+<span class="lineNum">      58 </span>            :     ///         readingDataHandler.
+<span class="lineNum">      59 </span>            :     ///
+<span class="lineNum">      60 </span>            :     ///////////////////////////////////////////////////////////
+<span class="lineNum">      61 </span>            :     readingDataHandler(tagVR_t dataType);
+<span class="lineNum">      62 </span>            : 
+<span class="lineNum">      63 </span>            :     virtual ~readingDataHandler();
+<span class="lineNum">      64 </span>            : 
+<span class="lineNum">      65 </span>            :     tagVR_t getDataType() const;
+<span class="lineNum">      66 </span>            : 
+<span class="lineNum">      67 </span>            :     /// \brief Retrieve the data handler's local buffer buffer
+<span class="lineNum">      68 </span>            :     ///         size (in elements).
+<span class="lineNum">      69 </span>            :     ///
+<span class="lineNum">      70 </span>            :     /// @return the buffer's size in elements
+<span class="lineNum">      71 </span>            :     ///
+<span class="lineNum">      72 </span>            :     ///////////////////////////////////////////////////////////
+<span class="lineNum">      73 </span>            :     virtual size_t getSize() const = 0;
+<span class="lineNum">      74 </span>            : 
+<span class="lineNum">      75 </span>            :     /// \brief Retrieve the buffer's element referenced by the
+<span class="lineNum">      76 </span>            :     ///         zero-based index specified in the parameter and
+<span class="lineNum">      77 </span>            :     ///         returns it as a signed long value.
+<span class="lineNum">      78 </span>            :     ///
+<span class="lineNum">      79 </span>            :     /// @param index   the zero base index of the buffer's
+<span class="lineNum">      80 </span>            :     ///                 element to retrieve
+<span class="lineNum">      81 </span>            :     /// @return the value of the data element referenced by
+<span class="lineNum">      82 </span>            :     ///          the index, transformed into a signed long, or
+<span class="lineNum">      83 </span>            :     ///          0 if the index is out of range
+<span class="lineNum">      84 </span>            :     ///
+<span class="lineNum">      85 </span>            :     ///////////////////////////////////////////////////////////
+<span class="lineNum">      86 </span>            :     virtual std::int32_t getSignedLong(const size_t index) const = 0;
+<span class="lineNum">      87 </span>            : 
+<span class="lineNum">      88 </span>            :     /// \brief Retrieve the buffer's element referenced by the
+<span class="lineNum">      89 </span>            :     ///         zero-based index specified in the parameter and
+<span class="lineNum">      90 </span>            :     ///         returns it as an unsigned long value.
+<span class="lineNum">      91 </span>            :     ///
+<span class="lineNum">      92 </span>            :     /// @param index   the zero base index of the buffer's
+<span class="lineNum">      93 </span>            :     ///                 element to retrieve
+<span class="lineNum">      94 </span>            :     /// @return the value of the data element referenced by
+<span class="lineNum">      95 </span>            :     ///          the index, transformed into an unsigned long,
+<span class="lineNum">      96 </span>            :     ///          or 0 if the index is out of range
+<span class="lineNum">      97 </span>            :     ///
+<span class="lineNum">      98 </span>            :     ///////////////////////////////////////////////////////////
+<span class="lineNum">      99 </span>            :     virtual std::uint32_t getUnsignedLong(const size_t index) const = 0;
+<span class="lineNum">     100 </span>            : 
+<span class="lineNum">     101 </span>            :     /// \brief Retrieve the buffer's element referenced by the
+<span class="lineNum">     102 </span>            :     ///         zero-based index specified in the parameter and
+<span class="lineNum">     103 </span>            :     ///         returns it as a double floating point value.
+<span class="lineNum">     104 </span>            :     ///
+<span class="lineNum">     105 </span>            :     /// @param index   the zero base index of the buffer's
+<span class="lineNum">     106 </span>            :     ///                 element to retrieve
+<span class="lineNum">     107 </span>            :     /// @return the value of the data element referenced by
+<span class="lineNum">     108 </span>            :     ///          the index, transformed into a double floating
+<span class="lineNum">     109 </span>            :     ///          point, or 0 if the index is out of range
+<span class="lineNum">     110 </span>            :     ///
+<span class="lineNum">     111 </span>            :     ///////////////////////////////////////////////////////////
+<span class="lineNum">     112 </span>            :     virtual double getDouble(const size_t index) const = 0;
+<span class="lineNum">     113 </span>            : 
+<span class="lineNum">     114 </span>            :     /// \brief Retrieve the buffer's element referenced by the
+<span class="lineNum">     115 </span>            :     ///         zero-based index specified in the parameter and
+<span class="lineNum">     116 </span>            :     ///         returns it as a string value.
+<span class="lineNum">     117 </span>            :     ///
+<span class="lineNum">     118 </span>            :     /// @param index   the zero base index of the buffer's
+<span class="lineNum">     119 </span>            :     ///                 element to retrieve
+<span class="lineNum">     120 </span>            :     /// @return the value of the data element referenced by
+<span class="lineNum">     121 </span>            :     ///          the index, transformed into a string, or
+<span class="lineNum">     122 </span>            :     ///          0 if the index is out of range
+<span class="lineNum">     123 </span>            :     ///
+<span class="lineNum">     124 </span>            :     ///////////////////////////////////////////////////////////
+<span class="lineNum">     125 </span>            :     virtual std::string getString(const size_t index) const = 0;
+<span class="lineNum">     126 </span>            : 
+<span class="lineNum">     127 </span>            :     /// \brief Retrieve the buffer's element referenced by the
+<span class="lineNum">     128 </span>            :     ///         zero-based index specified in the parameter and
+<span class="lineNum">     129 </span>            :     ///         returns it as an unicode string value.
+<span class="lineNum">     130 </span>            :     ///
+<span class="lineNum">     131 </span>            :     /// @param index   the zero base index of the buffer's
+<span class="lineNum">     132 </span>            :     ///                 element to retrieve
+<span class="lineNum">     133 </span>            :     /// @return the value of the data element referenced by
+<span class="lineNum">     134 </span>            :     ///          the index, transformed into an unicode string,
+<span class="lineNum">     135 </span>            :     ///          or 0 if the index is out of range
+<span class="lineNum">     136 </span>            :     ///
+<span class="lineNum">     137 </span>            :     ///////////////////////////////////////////////////////////
+<span class="lineNum">     138 </span>            :     virtual std::wstring getUnicodeString(const size_t index) const = 0;
+<span class="lineNum">     139 </span>            : 
+<span class="lineNum">     140 </span>            :     /// \brief Retrieve the buffer's element referenced by the
+<span class="lineNum">     141 </span>            :     ///         zero-based index specified in the parameter and
+<span class="lineNum">     142 </span>            :     ///         returns it as a date/time value.
+<span class="lineNum">     143 </span>            :     ///
+<span class="lineNum">     144 </span>            :     /// @param index   the zero base index of the buffer's
+<span class="lineNum">     145 </span>            :     ///                 element to retrieve
+<span class="lineNum">     146 </span>            :     /// @param pYear   a pointer to a value that will be filled
+<span class="lineNum">     147 </span>            :     ///                 with the UTC date's year
+<span class="lineNum">     148 </span>            :     /// @param pMonth  a pointer to a value that will be filled
+<span class="lineNum">     149 </span>            :     ///                 with the UTC date's month
+<span class="lineNum">     150 </span>            :     /// @param pDay    a pointer to a value that will be filled
+<span class="lineNum">     151 </span>            :     ///                 with the UTC date's day of the month
+<span class="lineNum">     152 </span>            :     /// @param pHour   a pointer to a value that will be filled
+<span class="lineNum">     153 </span>            :     ///                 with the UTC hour
+<span class="lineNum">     154 </span>            :     /// @param pMinutes a pointer to a value that will be
+<span class="lineNum">     155 </span>            :     ///                 filled with the UTC minutes
+<span class="lineNum">     156 </span>            :     /// @param pSeconds a pointer to a value that will be
+<span class="lineNum">     157 </span>            :     ///                 filled with the UTC seconds
+<span class="lineNum">     158 </span>            :     /// @param pNanoseconds a pointer to a value that will be
+<span class="lineNum">     159 </span>            :     ///                 filled with the UTC nanosecods
+<span class="lineNum">     160 </span>            :     /// @param pOffsetHours a pointer to a value that will be
+<span class="lineNum">     161 </span>            :     ///                 filled with the difference between the
+<span class="lineNum">     162 </span>            :     ///                 date time zone and the UTC time zone
+<span class="lineNum">     163 </span>            :     /// @param pOffsetMinutes a pointer to a value that will be
+<span class="lineNum">     164 </span>            :     ///                 filled with the difference between the
+<span class="lineNum">     165 </span>            :     ///                 date time zone and the UTC time zone
+<span class="lineNum">     166 </span>            :     ///
+<span class="lineNum">     167 </span>            :     ///////////////////////////////////////////////////////////
+<span class="lineNum">     168 </span>            :     virtual void getDate(const size_t index,
+<span class="lineNum">     169 </span>            :         std::uint32_t* pYear,
+<span class="lineNum">     170 </span>            :         std::uint32_t* pMonth,
+<span class="lineNum">     171 </span>            :         std::uint32_t* pDay,
+<span class="lineNum">     172 </span>            :         std::uint32_t* pHour,
+<span class="lineNum">     173 </span>            :         std::uint32_t* pMinutes,
+<span class="lineNum">     174 </span>            :         std::uint32_t* pSeconds,
+<span class="lineNum">     175 </span>            :         std::uint32_t* pNanoseconds,
+<span class="lineNum">     176 </span>            :         std::int32_t* pOffsetHours,
+<span class="lineNum">     177 </span>            :         std::int32_t* pOffsetMinutes) const;
+<span class="lineNum">     178 </span>            : 
+<span class="lineNum">     179 </span>            :     /// \brief Retrieve the age value and its unit from the
+<span class="lineNum">     180 </span>            :     ///         buffer handled by this handler.
+<span class="lineNum">     181 </span>            :     ///
+<span class="lineNum">     182 </span>            :     /// @param index the zero based index of the age value to
+<span class="lineNum">     183 </span>            :     ///               modify
+<span class="lineNum">     184 </span>            :     /// @param pUnit a pointer to a ageUnit_t that will be
+<span class="lineNum">     185 </span>            :     ///               filled with the unit information related
+<span class="lineNum">     186 </span>            :     ///               to the returned value
+<span class="lineNum">     187 </span>            :     /// @return the age, expressed in the unit written in the
+<span class="lineNum">     188 </span>            :     ///               location referenced by the parameter
+<span class="lineNum">     189 </span>            :     ///               pUnit
+<span class="lineNum">     190 </span>            :     ///
+<span class="lineNum">     191 </span>            :     ///////////////////////////////////////////////////////////
+<span class="lineNum">     192 </span>            :     virtual std::uint32_t getAge(const size_t index, ageUnit_t* pUnit) const;
+<span class="lineNum">     193 </span>            : 
+<span class="lineNum">     194 </span>            : private:
+<span class="lineNum">     195 </span>            :     const tagVR_t m_dataType;
+<span class="lineNum">     196 </span>            : };
+<span class="lineNum">     197 </span>            : 
+<span class="lineNum">     198 </span>            : class writingDataHandler
+<span class="lineNum">     199 </span>            : {
+<span class="lineNum">     200 </span>            : public:
+<span class="lineNum">     201 </span>            :     writingDataHandler(const std::shared_ptr&lt;buffer&gt;&amp; pBuffer, tagVR_t dataType, const std::uint8_t paddingByte);
+<span class="lineNum">     202 </span>            : 
+<span class="lineNum">     203 </span>            :     virtual ~writingDataHandler();
+<span class="lineNum">     204 </span>            : 
+<span class="lineNum">     205 </span>            :     tagVR_t getDataType() const;
+<span class="lineNum">     206 </span>            : 
+<span class="lineNum">     207 </span>            :     virtual size_t getSize() const = 0;
+<span class="lineNum">     208 </span>            : 
+<span class="lineNum">     209 </span>            :     /// \brief Set the buffer's size, in elements.
+<span class="lineNum">     210 </span>            :     ///
+<span class="lineNum">     211 </span>            :     /// The function resize the data handler's local buffer
+<span class="lineNum">     212 </span>            :     ///  to the requested number of elements.
+<span class="lineNum">     213 </span>            :     ///
+<span class="lineNum">     214 </span>            :     /// @param elementsNumber the requested buffer's size,
+<span class="lineNum">     215 </span>            :     ///                        in data elements
+<span class="lineNum">     216 </span>            :     ///
+<span class="lineNum">     217 </span>            :     ///////////////////////////////////////////////////////////
+<span class="lineNum">     218 </span>            :     virtual void setSize(const size_t elementsNumber) = 0;
+<span class="lineNum">     219 </span>            : 
+<span class="lineNum">     220 </span>            :     /// \brief Set the buffer's element referenced by the
+<span class="lineNum">     221 </span>            :     ///         zero-based index specified in the parameter
+<span class="lineNum">     222 </span>            :     ///         to a date/time value.
+<span class="lineNum">     223 </span>            :     ///
+<span class="lineNum">     224 </span>            :     /// @param index   the zero base index of the buffer's
+<span class="lineNum">     225 </span>            :     ///                 element to be set
+<span class="lineNum">     226 </span>            :     /// @param year   the UTC date's year
+<span class="lineNum">     227 </span>            :     /// @param month  the UTC date's month
+<span class="lineNum">     228 </span>            :     /// @param day    the UTC date's day of the month
+<span class="lineNum">     229 </span>            :     /// @param hour   the UTC hour
+<span class="lineNum">     230 </span>            :     /// @param minutes the UTC minutes
+<span class="lineNum">     231 </span>            :     /// @param seconds the UTC seconds
+<span class="lineNum">     232 </span>            :     /// @param nanoseconds the UTC nanosecods
+<span class="lineNum">     233 </span>            :     /// @param offsetHours the difference between the date time
+<span class="lineNum">     234 </span>            :     ///                zone and the UTC time zone
+<span class="lineNum">     235 </span>            :     /// @param offsetMinutes the difference between the date
+<span class="lineNum">     236 </span>            :     ///                time zone and the UTC time zone
+<span class="lineNum">     237 </span>            :     ///
+<span class="lineNum">     238 </span>            :     ///////////////////////////////////////////////////////////
+<span class="lineNum">     239 </span>            :     virtual void setDate(const size_t index,
+<span class="lineNum">     240 </span>            :         std::uint32_t year,
+<span class="lineNum">     241 </span>            :         std::uint32_t month,
+<span class="lineNum">     242 </span>            :         std::uint32_t day,
+<span class="lineNum">     243 </span>            :         std::uint32_t hour,
+<span class="lineNum">     244 </span>            :         std::uint32_t minutes,
+<span class="lineNum">     245 </span>            :         std::uint32_t seconds,
+<span class="lineNum">     246 </span>            :         std::uint32_t nanoseconds,
+<span class="lineNum">     247 </span>            :         std::int32_t offsetHours,
+<span class="lineNum">     248 </span>            :         std::int32_t offsetMinutes);
+<span class="lineNum">     249 </span>            : 
+<span class="lineNum">     250 </span>            :     /// \brief Set the value of the age string and specify
+<span class="lineNum">     251 </span>            :     ///         its unit.
+<span class="lineNum">     252 </span>            :     ///
+<span class="lineNum">     253 </span>            :     /// @param index the zero based index of the age value to
+<span class="lineNum">     254 </span>            :     ///               read
+<span class="lineNum">     255 </span>            :     /// @param age   the age to be written in the buffer
+<span class="lineNum">     256 </span>            :     /// @param unit  the units used for the parameter age
+<span class="lineNum">     257 </span>            :     ///
+<span class="lineNum">     258 </span>            :     ///////////////////////////////////////////////////////////
+<span class="lineNum">     259 </span>            :     virtual void setAge(const size_t index, const std::uint32_t age, const ageUnit_t unit);
+<span class="lineNum">     260 </span>            : 
+<span class="lineNum">     261 </span>            :     /// \brief Set the buffer's element referenced by the
+<span class="lineNum">     262 </span>            :     ///         zero-based index specified in the parameter
+<span class="lineNum">     263 </span>            :     ///         to a signed long value.
+<span class="lineNum">     264 </span>            :     ///
+<span class="lineNum">     265 </span>            :     /// @param index   the zero base index of the buffer's
+<span class="lineNum">     266 </span>            :     ///                 element to be set
+<span class="lineNum">     267 </span>            :     /// @param value the value to write into the
+<span class="lineNum">     268 </span>            :     ///                           %data element.
+<span class="lineNum">     269 </span>            :     ///
+<span class="lineNum">     270 </span>            :     ///////////////////////////////////////////////////////////
+<span class="lineNum">     271 </span>            :     virtual void setSignedLong(const size_t index, const std::int32_t value) =0;
+<span class="lineNum">     272 </span>            : 
+<span class="lineNum">     273 </span>            :     /// \brief Set the buffer's element referenced by the
+<span class="lineNum">     274 </span>            :     ///         zero-based index specified in the parameter
+<span class="lineNum">     275 </span>            :     ///         to an unsigned long value.
+<span class="lineNum">     276 </span>            :     ///
+<span class="lineNum">     277 </span>            :     /// @param index   the zero base index of the buffer's
+<span class="lineNum">     278 </span>            :     ///                 element to be set
+<span class="lineNum">     279 </span>            :     /// @param value the value to write into the
+<span class="lineNum">     280 </span>            :     ///                           %data element.
+<span class="lineNum">     281 </span>            :     ///
+<span class="lineNum">     282 </span>            :     ///////////////////////////////////////////////////////////
+<span class="lineNum">     283 </span>            :     virtual void setUnsignedLong(const size_t index, const std::uint32_t value) =0;
+<span class="lineNum">     284 </span>            : 
+<span class="lineNum">     285 </span>            :     /// \brief Set the buffer's element referenced by the
+<span class="lineNum">     286 </span>            :     ///         zero-based index specified in the parameter
+<span class="lineNum">     287 </span>            :     ///         to a double floating point value.
+<span class="lineNum">     288 </span>            :     ///
+<span class="lineNum">     289 </span>            :     /// @param index   the zero base index of the buffer's
+<span class="lineNum">     290 </span>            :     ///                 element to be set
+<span class="lineNum">     291 </span>            :     /// @param value the value to write into the
+<span class="lineNum">     292 </span>            :     ///                           %data element.
+<span class="lineNum">     293 </span>            :     ///
+<span class="lineNum">     294 </span>            :     ///////////////////////////////////////////////////////////
+<span class="lineNum">     295 </span>            :     virtual void setDouble(const size_t index, const double value) =0;
+<span class="lineNum">     296 </span>            : 
+<span class="lineNum">     297 </span>            :     /// \brief Set the buffer's element referenced by the
+<span class="lineNum">     298 </span>            :     ///         zero-based index specified in the parameter
+<span class="lineNum">     299 </span>            :     ///         to a string value. See also setUnicodeString().
+<span class="lineNum">     300 </span>            :     ///
+<span class="lineNum">     301 </span>            :     /// @param index   the zero base index of the buffer's
+<span class="lineNum">     302 </span>            :     ///                 element to be set
+<span class="lineNum">     303 </span>            :     /// @param value the value to write into the
+<span class="lineNum">     304 </span>            :     ///                           %data element.
+<span class="lineNum">     305 </span>            :     ///////////////////////////////////////////////////////////
+<span class="lineNum">     306 </span>            :     virtual void setString(const size_t index, const std::string&amp; value) =0;
+<span class="lineNum">     307 </span>            : 
+<span class="lineNum">     308 </span>            :     /// \brief Set the buffer's element referenced by the
+<span class="lineNum">     309 </span>            :     ///         zero-based index specified in the parameter
+<span class="lineNum">     310 </span>            :     ///         to a string value. See also setString().
+<span class="lineNum">     311 </span>            :     ///
+<span class="lineNum">     312 </span>            :     /// @param index   the zero base index of the buffer's
+<span class="lineNum">     313 </span>            :     ///                 element to be set
+<span class="lineNum">     314 </span>            :     /// @param value the value to write into the %data
+<span class="lineNum">     315 </span>            :     ///                           element.
+<span class="lineNum">     316 </span>            :     ///////////////////////////////////////////////////////////
+<span class="lineNum">     317 </span>            :     virtual void setUnicodeString(const size_t index, const std::wstring&amp; value) =0;
+<span class="lineNum">     318 </span>            : 
+<span class="lineNum">     319 </span>            : protected:
+<span class="lineNum">     320 </span>            :     const tagVR_t m_dataType;
+<span class="lineNum">     321 </span>            : 
+<span class="lineNum">     322 </span>            :     // Pointer to the connected buffer
+<span class="lineNum">     323 </span>            :     ///////////////////////////////////////////////////////////
+<span class="lineNum">     324 </span>            :     std::shared_ptr&lt;buffer&gt; m_buffer;
+<span class="lineNum">     325 </span>            : 
+<span class="lineNum">     326 </span>            :     const std::uint8_t m_paddingByte;
+<span class="lineNum">     327 </span>            : };
+<span class="lineNum">     328 </span>            : 
+<span class="lineNum">     329 </span>            : ///
+<span class="lineNum">     330 </span>            : /// \brief Throws an exception if the content of the strings container
+<span class="lineNum">     331 </span>            : ///        does not respect the rules (max size, unit size,
+<span class="lineNum">     332 </span>            : ///        no multiple strings if separator is not allowed).
+<a name="333"><span class="lineNum">     333 </span>            : ///</a>
+<span class="lineNum">     334 </span>            : template &lt;typename stringContainer&gt;
+<span class="lineNum">     335 </span><span class="lineCov">      79255 : void validateStringContainer(const stringContainer&amp; strings, size_t maxSize, size_t unitSize, bool bSeparator)</span>
+<span class="lineNum">     336 </span>            : {
+<span class="lineNum">     337 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">     338 </span>            : 
+<span class="lineNum">     339 </span><span class="lineCov">      79255 :     if(!bSeparator &amp;&amp; strings.size() &gt; 1)</span>
+<span class="lineNum">     340 </span>            :     {
+<span class="lineNum">     341 </span><span class="lineNoCov">          0 :         IMEBRA_THROW(DataHandlerInvalidDataError, &quot;Multiple strings not allowed&quot;);</span>
+<span class="lineNum">     342 </span>            :     }
+<span class="lineNum">     343 </span>            : 
+<span class="lineNum">     344 </span><span class="lineCov">      79394 :     if(unitSize != 0)</span>
+<span class="lineNum">     345 </span>            :     {
+<span class="lineNum">     346 </span><span class="lineCov">         20 :         for(size_t scanStrings(0); scanStrings != strings.size(); ++scanStrings)</span>
+<span class="lineNum">     347 </span>            :         {
+<span class="lineNum">     348 </span><span class="lineCov">         10 :             if(strings.at(scanStrings).size() != unitSize)</span>
+<span class="lineNum">     349 </span>            :             {
+<span class="lineNum">     350 </span><span class="lineNoCov">          0 :                 IMEBRA_THROW(DataHandlerInvalidDataError, &quot;Strings must be &quot; &lt;&lt; unitSize &lt;&lt; &quot; bytes long&quot;);</span>
+<span class="lineNum">     351 </span>            :             }
+<span class="lineNum">     352 </span>            :         }
+<span class="lineNum">     353 </span>            :     }
+<span class="lineNum">     354 </span>            : 
+<span class="lineNum">     355 </span><span class="lineCov">      79394 :     if(maxSize != 0)</span>
+<span class="lineNum">     356 </span>            :     {
+<span class="lineNum">     357 </span><span class="lineCov">     140064 :         for(size_t scanStrings(0); scanStrings != strings.size(); ++scanStrings)</span>
+<span class="lineNum">     358 </span>            :         {
+<span class="lineNum">     359 </span><span class="lineCov">      70168 :             if(strings.at(scanStrings).size() &gt; maxSize)</span>
+<span class="lineNum">     360 </span>            :             {
+<span class="lineNum">     361 </span><span class="lineCov">          8 :                 IMEBRA_THROW(DataHandlerInvalidDataError, &quot;Element size is &quot; &lt;&lt; strings.at(scanStrings).size() &lt;&lt; &quot; but should be maximum &quot; &lt;&lt; maxSize &lt;&lt; &quot; bytes&quot;);</span>
+<span class="lineNum">     362 </span>            :             }
+<span class="lineNum">     363 </span>            :         }
+<span class="lineNum">     364 </span>            :     }
+<span class="lineNum">     365 </span>            : 
+<span class="lineNum">     366 </span><span class="lineCov">          8 :     IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">     367 </span><span class="lineCov">      79457 : }</span>
+<span class="lineNum">     368 </span>            : 
+<span class="lineNum">     369 </span>            : 
+<span class="lineNum">     370 </span>            : } // namespace handlers
+<span class="lineNum">     371 </span>            : 
+<span class="lineNum">     372 </span>            : } // namespace implementation
+<span class="lineNum">     373 </span>            : 
+<span class="lineNum">     374 </span>            : } // namespace imebra
+<span class="lineNum">     375 </span>            : 
+<span class="lineNum">     376 </span>            : #endif // !defined(imebraDataHandler_6F85D344_DEF8_468d_BF73_AC5BB17FD22A__INCLUDED_)
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.13</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

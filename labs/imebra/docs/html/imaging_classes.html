@@ -1,0 +1,757 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Imaging classes &mdash; Imebra 4.5.2.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="copyright" title="Copyright" href="copyright.html" />
+    <link rel="next" title="Transforms classes" href="transforms_classes.html" />
+    <link rel="prev" title="Stream classes" href="stream_classes.html" /> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Imebra
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                4.5.2
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Download Imebra</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="download.html">Downloading Imebra</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Legal</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="copyright.html">Copyright</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gplv2.html">GNU General Public License</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Introduction</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changes_log.html">Changes log</a></li>
+</ul>
+<p class="caption"><span class="caption-text">User documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="compiling_imebra.html">Compiling Imebra</a></li>
+<li class="toctree-l1"><a class="reference internal" href="add_to_project.html">Adding Imebra to your project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quick_tour.html">Getting started</a></li>
+</ul>
+<p class="caption"><span class="caption-text">API</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="objects_lifecycle.html">Objects lifecycle and Object ownership</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dicom_data_classes.html">DICOM dataSet &amp; tags classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stream_classes.html">Stream classes</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Imaging classes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#image-storage">Image storage</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#image">Image</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#c">C++</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#objective-c-swift">Objective-C/Swift</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#image-rendering">Image rendering</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#drawbitmap">DrawBitmap</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id1">C++</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id2">Objective-C/Swift</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="transforms_classes.html">Transforms classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="memory_management_classes.html">Memory management classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="acse_classes.html">ACSE classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dimse_classes.html">DIMSE classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dicomdir_classes.html">DICOMDIR classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dicom_dictionary_classes.html">DICOM dictionary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="definition_classes.html">Definitions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="exception_classes.html">Exceptions</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Build distributions</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="build_distribution.html">Creating the source distribution from the code in the VCS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="build_distribution.html#versioning">Versioning</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Requirements &amp; Risks</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="risks_requirements.html">Requirements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="risks_requirements.html#risks">Risks</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Standard operating procedures</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="sop.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sop.html#sops">SOPs</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Imebra</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Imaging classes</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/imaging_classes.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="imaging-classes">
+<h1>Imaging classes<a class="headerlink" href="#imaging-classes" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>The classes described in this chapter are used to store and render images.</p>
+<p>The following classes are described in this chapter:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="37%" />
+<col width="35%" />
+<col width="28%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">C++ class</th>
+<th class="head">Objective-C/Swift class</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><a class="reference internal" href="#_CPPv3N6imebra5ImageE" title="imebra::Image"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">imebra::Image</span></code></a></td>
+<td><a class="reference internal" href="#_CPPv311ImebraImage" title="ImebraImage"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">ImebraImage</span></code></a></td>
+<td>Stores a decompressed image</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#_CPPv3N6imebra10DrawBitmapE" title="imebra::DrawBitmap"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">imebra::DrawBitmap</span></code></a></td>
+<td><a class="reference internal" href="#_CPPv316ImebraDrawBitmap" title="ImebraDrawBitmap"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">ImebraDrawBitmap</span></code></a></td>
+<td>Render an image into a bitmap</td>
+</tr>
+</tbody>
+</table>
+<p>Images can be obtained from a <a class="reference internal" href="dicom_data_classes.html#dataset"><span class="std std-ref">DataSet</span></a> object by calling the getImage or getImageApplyModality methods.</p>
+<p>Before being rendered, an image may be processed by one or more <a class="reference internal" href="transforms_classes.html#transform-classes"><span class="std std-ref">Transforms classes</span></a>.</p>
+</div>
+<div class="section" id="image-storage">
+<h2>Image storage<a class="headerlink" href="#image-storage" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="image">
+<h3>Image<a class="headerlink" href="#image" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="c">
+<h4>C++<a class="headerlink" href="#c" title="Permalink to this headline">¶</a></h4>
+<dl class="class">
+<dt id="_CPPv3N6imebra5ImageE">
+<span id="_CPPv2N6imebra5ImageE"></span><span id="imebra::Image"></span><span class="target" id="classimebra_1_1_image"></span><em class="property">class </em><code class="descname">Image</code><a class="headerlink" href="#_CPPv3N6imebra5ImageE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Represents a DICOM image. </p>
+<p>The class manages an uncompressed DICOM image. Images are compressed when they are inserted into the <a class="reference internal" href="dicom_data_classes.html#classimebra_1_1_data_set"><span class="std std-ref">DataSet</span></a> via <a class="reference internal" href="dicom_data_classes.html#classimebra_1_1_data_set_1ad9d0105847df32051b1169023a037043"><span class="std std-ref">DataSet::setImage()</span></a> and are decompressed when they are referenced by the <a class="reference internal" href="#classimebra_1_1_image"><span class="std std-ref">Image</span></a> class.</p>
+<p>The image is stored in a contiguous area of memory: each channel’s value can occupy 1, 2 or 4 bytes, according to the <a class="reference internal" href="#classimebra_1_1_image"><span class="std std-ref">Image</span></a>’s data type.</p>
+<p>Channels’ values are always interleaved in the <a class="reference internal" href="#classimebra_1_1_image"><span class="std std-ref">Image</span></a> class, regardless of how they are stored in the <a class="reference internal" href="dicom_data_classes.html#classimebra_1_1_data_set"><span class="std std-ref">DataSet</span></a> object. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric">Public Functions</p>
+<dl class="function">
+<dt id="_CPPv3N6imebra5Image5ImageENSt8uint32_tENSt8uint32_tE10bitDepth_tRKNSt6stringENSt8uint32_tE">
+<span id="_CPPv2N6imebra5Image5ImageENSt8uint32_tENSt8uint32_tE10bitDepth_tRKNSt6stringENSt8uint32_tE"></span><span id="imebra::Image::Image__std::uint32_t.std::uint32_t.bitDepth_t.ssCR.std::uint32_t"></span><span class="target" id="classimebra_1_1_image_1a59b7233c73d8da59151cb978c5920cf1"></span><code class="descname">Image</code><span class="sig-paren">(</span>std::uint32_t <em>width</em>, std::uint32_t <em>height</em>, <a class="reference internal" href="definition_classes.html#_CPPv3N6imebra10bitDepth_tE" title="imebra::bitDepth_t">bitDepth_t</a> <em>depth</em>, <em class="property">const</em> std::string &amp;<em>colorSpace</em>, std::uint32_t <em>highBit</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N6imebra5Image5ImageENSt8uint32_tENSt8uint32_tE10bitDepth_tRKNSt6stringENSt8uint32_tE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Constructor. </p>
+<p>The memory for the image is not allocated by the constructor but only when a <a class="reference internal" href="dicom_data_classes.html#classimebra_1_1_writing_data_handler"><span class="std std-ref">WritingDataHandler</span></a> is requested with <a class="reference internal" href="#classimebra_1_1_image_1a8b87b81766e5036f50253c741d10ddb6"><span class="std std-ref">getWritingDataHandler()</span></a>.</p>
+<p><dl class="docutils">
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">width</span></code>: the image width, in pixels </li>
+<li><code class="docutils literal notranslate"><span class="pre">height</span></code>: the image height, in pixels </li>
+<li><code class="docutils literal notranslate"><span class="pre">depth</span></code>: the channel values data types </li>
+<li><code class="docutils literal notranslate"><span class="pre">colorSpace</span></code>: the <a class="reference internal" href="#classimebra_1_1_image"><span class="std std-ref">Image</span></a>’s color space </li>
+<li><code class="docutils literal notranslate"><span class="pre">highBit</span></code>: the highest bit occupied by the channels’ values </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N6imebra5ImageD0Ev">
+<span id="_CPPv2N6imebra5ImageD0Ev"></span><span id="imebra::Image::~Image"></span><span class="target" id="classimebra_1_1_image_1a6175f03a19cfcc52014f68153340f437"></span><em class="property">virtual</em> <code class="descname">~Image</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N6imebra5ImageD0Ev" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Destructor. </p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3NK6imebra5Image10getWidthMmEv">
+<span id="_CPPv2NK6imebra5Image10getWidthMmEv"></span><span id="imebra::Image::getWidthMmC"></span><span class="target" id="classimebra_1_1_image_1acb684f9fd651e823c5e01275751a6018"></span>double <code class="descname">getWidthMm</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv3NK6imebra5Image10getWidthMmEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Retrieve the image’s width, in millimiters. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>the image’s width, in millimiters </dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3NK6imebra5Image11getHeightMmEv">
+<span id="_CPPv2NK6imebra5Image11getHeightMmEv"></span><span id="imebra::Image::getHeightMmC"></span><span class="target" id="classimebra_1_1_image_1a03f5649fcd8542dac6362e0644eb557a"></span>double <code class="descname">getHeightMm</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv3NK6imebra5Image11getHeightMmEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Retrieve the image’s height, in millimiters. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>the image’s height, in millimiters </dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N6imebra5Image9setSizeMmEdd">
+<span id="_CPPv2N6imebra5Image9setSizeMmEdd"></span><span id="imebra::Image::setSizeMm__double.double"></span><span class="target" id="classimebra_1_1_image_1ab0a9384c1962b85588789f48dc8c41d2"></span>void <code class="descname">setSizeMm</code><span class="sig-paren">(</span>double <em>width</em>, double <em>height</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N6imebra5Image9setSizeMmEdd" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Set the image’s size, in millimiters. </p>
+<p><dl class="docutils">
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">width</span></code>: the image’s width, in millimiters </li>
+<li><code class="docutils literal notranslate"><span class="pre">height</span></code>: the image’s height, in millimiters </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3NK6imebra5Image8getWidthEv">
+<span id="_CPPv2NK6imebra5Image8getWidthEv"></span><span id="imebra::Image::getWidthC"></span><span class="target" id="classimebra_1_1_image_1a80e5cd641f0674b58226d6d3aa20ae2f"></span>std::uint32_t <code class="descname">getWidth</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv3NK6imebra5Image8getWidthEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Retrieve the image’s width, in pixels. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>the image’s width, in pixels </dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3NK6imebra5Image9getHeightEv">
+<span id="_CPPv2NK6imebra5Image9getHeightEv"></span><span id="imebra::Image::getHeightC"></span><span class="target" id="classimebra_1_1_image_1a3bfd46d892f539d325e63add50f89225"></span>std::uint32_t <code class="descname">getHeight</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv3NK6imebra5Image9getHeightEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Retrieve the image’s height, in pixels. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>the image’s height, in pixels </dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3NK6imebra5Image21getReadingDataHandlerEv">
+<span id="_CPPv2NK6imebra5Image21getReadingDataHandlerEv"></span><span id="imebra::Image::getReadingDataHandlerC"></span><span class="target" id="classimebra_1_1_image_1ab44ce6ed5c0b4ac5d8941c02d9a611f8"></span><a class="reference internal" href="dicom_data_classes.html#_CPPv3N6imebra25ReadingDataHandlerNumericE" title="imebra::ReadingDataHandlerNumeric">ReadingDataHandlerNumeric</a> *<code class="descname">getReadingDataHandler</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv3NK6imebra5Image21getReadingDataHandlerEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Retrieve a <a class="reference internal" href="dicom_data_classes.html#classimebra_1_1_reading_data_handler_numeric"><span class="std std-ref">ReadingDataHandlerNumeric</span></a> object referencing the <a class="reference internal" href="#classimebra_1_1_image"><span class="std std-ref">Image</span></a>’s memory (read only). </p>
+<p>The memory referenced by <a class="reference internal" href="dicom_data_classes.html#classimebra_1_1_reading_data_handler_numeric"><span class="std std-ref">ReadingDataHandlerNumeric</span></a> contains all the image’s values. The color channels are interleaved.</p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>a <a class="reference internal" href="dicom_data_classes.html#classimebra_1_1_reading_data_handler_numeric"><span class="std std-ref">ReadingDataHandlerNumeric</span></a> object referencing the <a class="reference internal" href="#classimebra_1_1_image"><span class="std std-ref">Image</span></a>’s memory in read-only mode </dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N6imebra5Image21getWritingDataHandlerEv">
+<span id="_CPPv2N6imebra5Image21getWritingDataHandlerEv"></span><span id="imebra::Image::getWritingDataHandler"></span><span class="target" id="classimebra_1_1_image_1a8b87b81766e5036f50253c741d10ddb6"></span><a class="reference internal" href="dicom_data_classes.html#_CPPv3N6imebra25WritingDataHandlerNumericE" title="imebra::WritingDataHandlerNumeric">WritingDataHandlerNumeric</a> *<code class="descname">getWritingDataHandler</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N6imebra5Image21getWritingDataHandlerEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Retrieve a <a class="reference internal" href="dicom_data_classes.html#classimebra_1_1_writing_data_handler_numeric"><span class="std std-ref">WritingDataHandlerNumeric</span></a> object referencing the <a class="reference internal" href="#classimebra_1_1_image"><span class="std std-ref">Image</span></a>’s memory (mutable). </p>
+<p>The memory referenced by the <a class="reference internal" href="dicom_data_classes.html#classimebra_1_1_writing_data_handler_numeric"><span class="std std-ref">WritingDataHandlerNumeric</span></a> object is uninitialized.</p>
+<p>When the <a class="reference internal" href="dicom_data_classes.html#classimebra_1_1_writing_data_handler_numeric"><span class="std std-ref">WritingDataHandlerNumeric</span></a> is destroyed then the memory managed by the <a class="reference internal" href="dicom_data_classes.html#classimebra_1_1_writing_data_handler_numeric"><span class="std std-ref">WritingDataHandlerNumeric</span></a> object replaces the old <a class="reference internal" href="#classimebra_1_1_image"><span class="std std-ref">Image</span></a>’s memory.</p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>a <a class="reference internal" href="dicom_data_classes.html#classimebra_1_1_writing_data_handler_numeric"><span class="std std-ref">WritingDataHandlerNumeric</span></a> object referencing an uninitialized memory buffer that the client has to fill the the image’s data </dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3NK6imebra5Image13getColorSpaceEv">
+<span id="_CPPv2NK6imebra5Image13getColorSpaceEv"></span><span id="imebra::Image::getColorSpaceC"></span><span class="target" id="classimebra_1_1_image_1a4c0bf2ed820d1c3abcb5f1410862081c"></span>std::string <code class="descname">getColorSpace</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv3NK6imebra5Image13getColorSpaceEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Retrieve the <a class="reference internal" href="#classimebra_1_1_image"><span class="std std-ref">Image</span></a>’s color space. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>the <a class="reference internal" href="#classimebra_1_1_image"><span class="std std-ref">Image</span></a>’s color space </dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3NK6imebra5Image17getChannelsNumberEv">
+<span id="_CPPv2NK6imebra5Image17getChannelsNumberEv"></span><span id="imebra::Image::getChannelsNumberC"></span><span class="target" id="classimebra_1_1_image_1a728fbae9e8597d4a0a3a8428dcee27af"></span>std::uint32_t <code class="descname">getChannelsNumber</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv3NK6imebra5Image17getChannelsNumberEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Return the number of color channels contained by the image. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>the number of color channel contained by the image </dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3NK6imebra5Image8getDepthEv">
+<span id="_CPPv2NK6imebra5Image8getDepthEv"></span><span id="imebra::Image::getDepthC"></span><span class="target" id="classimebra_1_1_image_1a8f3580f3b7adc67cad06e74cd5dbef32"></span><a class="reference internal" href="definition_classes.html#_CPPv3N6imebra10bitDepth_tE" title="imebra::bitDepth_t">bitDepth_t</a> <code class="descname">getDepth</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv3NK6imebra5Image8getDepthEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Return the type of the channels’ values. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>the type of the channels’ values </dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3NK6imebra5Image10getHighBitEv">
+<span id="_CPPv2NK6imebra5Image10getHighBitEv"></span><span id="imebra::Image::getHighBitC"></span><span class="target" id="classimebra_1_1_image_1aaf9339bcd87789ed862ab0a68eb03792"></span>std::uint32_t <code class="descname">getHighBit</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv3NK6imebra5Image10getHighBitEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Return the highest bit occupied by the channels’ values. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>the highest bit occupied by the channels’ values </dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="objective-c-swift">
+<h4>Objective-C/Swift<a class="headerlink" href="#objective-c-swift" title="Permalink to this headline">¶</a></h4>
+<dl class="class">
+<dt id="_CPPv311ImebraImage">
+<span id="_CPPv211ImebraImage"></span><span id="ImebraImage"></span><span class="target" id="interface_imebra_image"></span><em class="property">class </em><code class="descname">ImebraImage</code> : <em class="property">public</em> NSObject<a class="headerlink" href="#_CPPv311ImebraImage" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Represents a DICOM image. </p>
+<p>The class manages an uncompressed DICOM image. Images are compressed when they are inserted into the DataSet via DataSet::setImage() and are decompressed when they are referenced by the Image class.</p>
+<p>The image is stored in a contiguous area of memory: each channel’s value can occupy 1, 2 or 4 bytes, according to the Image’s data type.</p>
+<p>Channels’ values are always interleaved in the Image class, regardless of how they are stored in the DataSet object. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric">Public Functions</p>
+<dl class="function">
+<dt>
+<span class="target" id="interface_imebra_image_1ac071354917dc3aee7ed7414747518734"></span><code class="descname">id ImebraImage::initWithWidth:height:depth:colorSpace:highBit:(unsigned int width, unsigned int height, ImebraBitDepth_t depth, NSString * colorSpace, unsigned int highBit)</code></dt>
+<dd><p>Initializer. </p>
+<p>The memory for the image is not allocated by the constructor but only when a WritingDataHandler is requested with getWritingDataHandler().</p>
+<p><dl class="docutils">
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">width</span></code>: the image width, in pixels </li>
+<li><code class="docutils literal notranslate"><span class="pre">height</span></code>: the image height, in pixels </li>
+<li><code class="docutils literal notranslate"><span class="pre">depth</span></code>: the channel values data types </li>
+<li><code class="docutils literal notranslate"><span class="pre">colorSpace</span></code>: the Image’s color space </li>
+<li><code class="docutils literal notranslate"><span class="pre">highBit</span></code>: the highest bit occupied by the channels’ values </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<span class="target" id="interface_imebra_image_1a4217c9752c9dd08b176767c2c291238b"></span><code class="descname">ImebraReadingDataHandlerNumeric* ImebraImage::getReadingDataHandler:(NSError ** pError)</code></dt>
+<dd><p>Retrieve a <a class="reference internal" href="dicom_data_classes.html#interface_imebra_reading_data_handler_numeric"><span class="std std-ref">ImebraReadingDataHandlerNumeric</span></a> object referencing the image’s memory (read only). </p>
+<p>The memory referenced by ImageReadingDataHandlerNumeric contains all the image’s pixels. The color channels are interleaved.</p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>a <a class="reference internal" href="dicom_data_classes.html#interface_imebra_reading_data_handler_numeric"><span class="std std-ref">ImebraReadingDataHandlerNumeric</span></a> object referencing the Image’s memory in read-only mode </dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<span class="target" id="interface_imebra_image_1ae6ce68fe1a87ae748e0513d21c009481"></span><code class="descname">ImebraWritingDataHandlerNumeric* ImebraImage::getWritingDataHandler:(NSError ** pError)</code></dt>
+<dd><p>Retrieve a <a class="reference internal" href="dicom_data_classes.html#interface_imebra_writing_data_handler_numeric"><span class="std std-ref">ImebraWritingDataHandlerNumeric</span></a> object referencing the image’s memory (mutable). </p>
+<p>The memory referenced by the <a class="reference internal" href="dicom_data_classes.html#interface_imebra_writing_data_handler_numeric"><span class="std std-ref">ImebraWritingDataHandlerNumeric</span></a> object is uninitialized.</p>
+<p>When the <a class="reference internal" href="dicom_data_classes.html#interface_imebra_writing_data_handler_numeric"><span class="std std-ref">ImebraWritingDataHandlerNumeric</span></a> object is destroyed then the memory managed by the handler replaces the old image’s memory.</p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>a <a class="reference internal" href="dicom_data_classes.html#interface_imebra_writing_data_handler_numeric"><span class="std std-ref">ImebraWritingDataHandlerNumeric</span></a> object referencing an uninitialized memory buffer that the client has to fill the the image’s data </dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric">Property</p>
+<dl class="member">
+<dt>
+<span class="target" id="interface_imebra_image_1ad324266d46a730652ac166dcc61675c5"></span><em class="property">property </em><code class="descname">ImebraImage::widthMm</code></dt>
+<dd><p>Image’s width, in millimiters. </p>
+</dd></dl>
+
+<dl class="member">
+<dt>
+<span class="target" id="interface_imebra_image_1a308f50bed56ce6831461d1e2fd05b18d"></span><em class="property">property </em><code class="descname">ImebraImage::heightMm</code></dt>
+<dd><p>Image’s height, in millimiters. </p>
+</dd></dl>
+
+<dl class="member">
+<dt>
+<span class="target" id="interface_imebra_image_1a8882527e0d5ef910950544c07f6f2344"></span><em class="property">property </em><code class="descname">ImebraImage::width</code></dt>
+<dd><p>Retrieve the image’s width, in pixels. </p>
+</dd></dl>
+
+<dl class="member">
+<dt>
+<span class="target" id="interface_imebra_image_1ada3ada926a507a63ebcc5e771a96d742"></span><em class="property">property </em><code class="descname">ImebraImage::height</code></dt>
+<dd><p>Retrieve the image’s height, in pixels. </p>
+</dd></dl>
+
+<dl class="member">
+<dt>
+<span class="target" id="interface_imebra_image_1a0fb9550573d0c809abee5c02a004d85a"></span><em class="property">property </em><code class="descname">ImebraImage::colorSpace</code></dt>
+<dd><p>Retrieve the Image’s color space. </p>
+</dd></dl>
+
+<dl class="member">
+<dt>
+<span class="target" id="interface_imebra_image_1aa9ec6fb263fe24707bd616efad79d907"></span><em class="property">property </em><code class="descname">ImebraImage::getChannelsNumber</code></dt>
+<dd><p>Return the number of color channels contained by the image. </p>
+</dd></dl>
+
+<dl class="member">
+<dt>
+<span class="target" id="interface_imebra_image_1a4f705a0cc1c81dad2a8b69d46be629d5"></span><em class="property">property </em><code class="descname">ImebraImage::getDepth</code></dt>
+<dd><p>Return the type of the channels’ values. </p>
+</dd></dl>
+
+<dl class="member">
+<dt>
+<span class="target" id="interface_imebra_image_1aa44a4e40ce4d90180f7aa91021152e79"></span><em class="property">property </em><code class="descname">ImebraImage::getHighBit</code></dt>
+<dd><p>Return the highest bit occupied by the channels’ values. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</div>
+</div>
+</div>
+<div class="section" id="image-rendering">
+<h2>Image rendering<a class="headerlink" href="#image-rendering" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="drawbitmap">
+<h3>DrawBitmap<a class="headerlink" href="#drawbitmap" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id1">
+<h4>C++<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h4>
+<dl class="class">
+<dt id="_CPPv3N6imebra10DrawBitmapE">
+<span id="_CPPv2N6imebra10DrawBitmapE"></span><span id="imebra::DrawBitmap"></span><span class="target" id="classimebra_1_1_draw_bitmap"></span><em class="property">class </em><code class="descname">DrawBitmap</code><a class="headerlink" href="#_CPPv3N6imebra10DrawBitmapE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p><a class="reference internal" href="#classimebra_1_1_draw_bitmap"><span class="std std-ref">DrawBitmap</span></a> takes care of converting an <a class="reference internal" href="#classimebra_1_1_image"><span class="std std-ref">Image</span></a> object into an array of bytes that can be displayed by the operating system facilities. </p>
+<p><a class="reference internal" href="#classimebra_1_1_draw_bitmap"><span class="std std-ref">DrawBitmap</span></a> can apply several transformations to the <a class="reference internal" href="#classimebra_1_1_image"><span class="std std-ref">Image</span></a> before generating the bitmap.</p>
+<p><a class="reference internal" href="#classimebra_1_1_draw_bitmap"><span class="std std-ref">DrawBitmap</span></a> applies automatically the necessary color transform and high bit shift in order to obtain a 8 bits per channel RGB image. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric">Public Functions</p>
+<dl class="function">
+<dt id="_CPPv3N6imebra10DrawBitmap10DrawBitmapEv">
+<span id="_CPPv2N6imebra10DrawBitmap10DrawBitmapEv"></span><span id="imebra::DrawBitmap::DrawBitmap"></span><span class="target" id="classimebra_1_1_draw_bitmap_1a303ecd8908e51d604d556a0793dbea08"></span><code class="descname">DrawBitmap</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N6imebra10DrawBitmap10DrawBitmapEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Construct a <a class="reference internal" href="#classimebra_1_1_draw_bitmap"><span class="std std-ref">DrawBitmap</span></a> with no transforms. </p>
+<p>The <a class="reference internal" href="#classimebra_1_1_draw_bitmap_1ad94b2444ab22a76fc9353ced0c853e32"><span class="std std-ref">getBitmap()</span></a> method will not apply any <a class="reference internal" href="transforms_classes.html#classimebra_1_1_transform"><span class="std std-ref">Transform</span></a> to the <a class="reference internal" href="#classimebra_1_1_image"><span class="std std-ref">Image</span></a> before generating the bitmap. </p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N6imebra10DrawBitmap10DrawBitmapERK9Transform">
+<span id="_CPPv2N6imebra10DrawBitmap10DrawBitmapERK9Transform"></span><span id="imebra::DrawBitmap::DrawBitmap__TransformCR"></span><span class="target" id="classimebra_1_1_draw_bitmap_1a756f12e8d539d4d5cca0ec3498efe1fa"></span><code class="descname">DrawBitmap</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="transforms_classes.html#_CPPv3N6imebra9TransformE" title="imebra::Transform">Transform</a> &amp;<em>transformsChain</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N6imebra10DrawBitmap10DrawBitmapERK9Transform" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Construct a <a class="reference internal" href="#classimebra_1_1_draw_bitmap"><span class="std std-ref">DrawBitmap</span></a> object that always apply the transforms in the specified <a class="reference internal" href="transforms_classes.html#classimebra_1_1_transforms_chain"><span class="std std-ref">TransformsChain</span></a> before calculating the bitmap of the <a class="reference internal" href="#classimebra_1_1_image"><span class="std std-ref">Image</span></a> in the <a class="reference internal" href="#classimebra_1_1_draw_bitmap_1ad94b2444ab22a76fc9353ced0c853e32"><span class="std std-ref">getBitmap()</span></a> method. </p>
+<p><dl class="docutils">
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">transformsChain</span></code>: the transforms to apply to the <a class="reference internal" href="#classimebra_1_1_image"><span class="std std-ref">Image</span></a> in the <a class="reference internal" href="#classimebra_1_1_draw_bitmap_1ad94b2444ab22a76fc9353ced0c853e32"><span class="std std-ref">getBitmap()</span></a> method </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N6imebra10DrawBitmapD0Ev">
+<span id="_CPPv2N6imebra10DrawBitmapD0Ev"></span><span id="imebra::DrawBitmap::~DrawBitmap"></span><span class="target" id="classimebra_1_1_draw_bitmap_1a8642e93782492c955f3b3361c274d0bf"></span><em class="property">virtual</em> <code class="descname">~DrawBitmap</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N6imebra10DrawBitmapD0Ev" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Destructor. </p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N6imebra10DrawBitmap9getBitmapERK5Image16drawBitmapType_tNSt8uint32_tEPc6size_t">
+<span id="_CPPv2N6imebra10DrawBitmap9getBitmapERK5Image16drawBitmapType_tNSt8uint32_tEPc6size_t"></span><span id="imebra::DrawBitmap::getBitmap__ImageCR.drawBitmapType_t.std::uint32_t.cP.s"></span><span class="target" id="classimebra_1_1_draw_bitmap_1ad94b2444ab22a76fc9353ced0c853e32"></span>size_t <code class="descname">getBitmap</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv3N6imebra5ImageE" title="imebra::Image">Image</a> &amp;<em>image</em>, <a class="reference internal" href="definition_classes.html#_CPPv3N6imebra16drawBitmapType_tE" title="imebra::drawBitmapType_t">drawBitmapType_t</a> <em>drawBitmapType</em>, std::uint32_t <em>rowAlignBytes</em>, char *<em>destination</em>, size_t <em>destinationSize</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N6imebra10DrawBitmap9getBitmapERK5Image16drawBitmapType_tNSt8uint32_tEPc6size_t" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Apply the transforms defined in the constructor (if any) to the input image, then calculate an array of bytes containing a bitmap that can be rendered by the operating system. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>the number of bytes occupied by the bitmap in the pre-allocated buffer. If the number of occupied bytes is bigger than the value of the parameter bufferSize then the method doesn’t generate the bitmap </dd>
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">image</span></code>: the image for which the bitmap must be calculated </li>
+<li><code class="docutils literal notranslate"><span class="pre">drawBitmapType</span></code>: the type of bitmap to generate </li>
+<li><code class="docutils literal notranslate"><span class="pre">rowAlignBytes</span></code>: the number of bytes on which the bitmap rows are aligned </li>
+<li><code class="docutils literal notranslate"><span class="pre">destination</span></code>: a pointer to the pre-allocated buffer where <a class="reference internal" href="#classimebra_1_1_draw_bitmap_1ad94b2444ab22a76fc9353ced0c853e32"><span class="std std-ref">getBitmap()</span></a> will store the generated bitmap </li>
+<li><code class="docutils literal notranslate"><span class="pre">destinationSize</span></code>: the size of the allocated buffer </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N6imebra10DrawBitmap9getBitmapERK5Image16drawBitmapType_tNSt8uint32_tE">
+<span id="_CPPv2N6imebra10DrawBitmap9getBitmapERK5Image16drawBitmapType_tNSt8uint32_tE"></span><span id="imebra::DrawBitmap::getBitmap__ImageCR.drawBitmapType_t.std::uint32_t"></span><span class="target" id="classimebra_1_1_draw_bitmap_1a6352fe44e7855667d7109234e6c27df4"></span><a class="reference internal" href="memory_management_classes.html#_CPPv3N6imebra15ReadWriteMemoryE" title="imebra::ReadWriteMemory">ReadWriteMemory</a> *<code class="descname">getBitmap</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv3N6imebra5ImageE" title="imebra::Image">Image</a> &amp;<em>image</em>, <a class="reference internal" href="definition_classes.html#_CPPv3N6imebra16drawBitmapType_tE" title="imebra::drawBitmapType_t">drawBitmapType_t</a> <em>drawBitmapType</em>, std::uint32_t <em>rowAlignBytes</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N6imebra10DrawBitmap9getBitmapERK5Image16drawBitmapType_tNSt8uint32_tE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Apply the transforms defined in the constructor (if any) to the input image, then calculate an array of bytes containing a bitmap that can be rendered by the operating system. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>a <a class="reference internal" href="memory_management_classes.html#classimebra_1_1_read_write_memory"><span class="std std-ref">ReadWriteMemory</span></a> object referencing the buffer containing the generated bitmap </dd>
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">image</span></code>: the image for which the bitmap must be calculated </li>
+<li><code class="docutils literal notranslate"><span class="pre">drawBitmapType</span></code>: the type of bitmap to generate </li>
+<li><code class="docutils literal notranslate"><span class="pre">rowAlignBytes</span></code>: the number of bytes on which the bitmap rows are aligned </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="id2">
+<h4>Objective-C/Swift<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h4>
+<dl class="class">
+<dt id="_CPPv316ImebraDrawBitmap">
+<span id="_CPPv216ImebraDrawBitmap"></span><span id="ImebraDrawBitmap"></span><span class="target" id="interface_imebra_draw_bitmap"></span><em class="property">class </em><code class="descname">ImebraDrawBitmap</code> : <em class="property">public</em> NSObject<a class="headerlink" href="#_CPPv316ImebraDrawBitmap" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p><a class="reference internal" href="#interface_imebra_draw_bitmap"><span class="std std-ref">ImebraDrawBitmap</span></a> takes care of converting an Image object into an array of bytes that can be displayed by the operating system facilities. </p>
+<p><a class="reference internal" href="#interface_imebra_draw_bitmap"><span class="std std-ref">ImebraDrawBitmap</span></a> can apply several transformations to the Image before generating the bitmap.</p>
+<p>DrawBitmap applies automatically the necessary color transform and high bit shift in order to obtain a 8 bits per channel RGB image. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric">Public Functions</p>
+<dl class="function">
+<dt id="_CPPv3N16ImebraDrawBitmap4initEv">
+<span id="_CPPv2N16ImebraDrawBitmap4initEv"></span><span id="ImebraDrawBitmap::init"></span><span class="target" id="interface_imebra_draw_bitmap_1a383bea62b10e2c9ff155fc3853594eed"></span>id <code class="descname">init</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N16ImebraDrawBitmap4initEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Initializes a <a class="reference internal" href="#interface_imebra_draw_bitmap"><span class="std std-ref">ImebraDrawBitmap</span></a> with no transforms. </p>
+<p>The getBitmap() method will not apply any transform to the Image before generating the bitmap (except for the high bit and color space to obtain a 24bpp RGB image). </p>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<span class="target" id="interface_imebra_draw_bitmap_1af2ae9ddccb51cb359d775e6fddc347f6"></span><code class="descname">id ImebraDrawBitmap::initWithTransform:(ImebraTransform  * pTransform)</code></dt>
+<dd><p>Initializes a <a class="reference internal" href="#interface_imebra_draw_bitmap"><span class="std std-ref">ImebraDrawBitmap</span></a> object that always apply the transform specified in the parameter when calling getBitmap() or getImebraImage(). </p>
+<p><dl class="docutils">
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">pTransform</span></code>: the transforms to apply to the Image in the getBitmap() method </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<span class="target" id="interface_imebra_draw_bitmap_1a17d465cbc519ddbd8d27cc56d9e82856"></span><code class="descname">ImebraReadWriteMemory* ImebraDrawBitmap::getBitmap:bitmapType:rowAlignBytes:error:(ImebraImage  * pImage, ImebraDrawBitmapType_t drawBitmapType, unsigned int rowAlignBytes, NSError ** pError)</code></dt>
+<dd><p>Apply the transforms defined in the constructor (if any) to the input image, then calculate an array of bytes containing a bitmap that can be rendered by the operating system. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>a <a class="reference internal" href="memory_management_classes.html#interface_imebra_read_write_memory"><span class="std std-ref">ImebraReadWriteMemory</span></a> object referencing the buffer containing the generated bitmap </dd>
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">pImage</span></code>: the image for which the bitmap must be calculated </li>
+<li><code class="docutils literal notranslate"><span class="pre">drawBitmapType</span></code>: the type of bitmap to generate </li>
+<li><code class="docutils literal notranslate"><span class="pre">rowAlignBytes</span></code>: the number of bytes on which the bitmap rows are aligned </li>
+<li><code class="docutils literal notranslate"><span class="pre">pError</span></code>: set to a NSError derived class in case of error </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<span class="target" id="interface_imebra_draw_bitmap_1a3889732cbc4ec63e30d0d2713dc76853"></span><code class="descname">NSImage* ImebraDrawBitmap::getImebraImage:error:(ImebraImage  * pImage, NSError ** pError)</code></dt>
+<dd><p>Apply the transforms defined in the constructor (if any) to the input image, then return a NSImage (on OS-X) or an UIImage (on iOS). </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>a NSImage on OS-X or an UIImage on iOS </dd>
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">pImage</span></code>: the image for which the NSImage or UIImage must be calculated </li>
+<li><code class="docutils literal notranslate"><span class="pre">pError</span></code>: set to a NSError derived class in case of error </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="transforms_classes.html" class="btn btn-neutral float-right" title="Transforms classes" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="stream_classes.html" class="btn btn-neutral" title="Stream classes" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; <a href="copyright.html">Copyright</a> 2016, Paolo Brandoli.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'4.5.2.1',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  <script type="text/javascript" src="_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

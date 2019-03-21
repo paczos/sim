@@ -1,0 +1,240 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - extracted.info - library/implementation/modalityVOILUTImpl.h</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">library/implementation</a> - modalityVOILUTImpl.h<span style="font-size: 80%;"> (source / <a href="modalityVOILUTImpl.h.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">extracted.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">20</td>
+            <td class="headerCovTableEntry">22</td>
+            <td class="headerCovTableEntryHi">90.9 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2019-03-13 14:48:54</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">5</td>
+            <td class="headerCovTableEntry">39</td>
+            <td class="headerCovTableEntryLo">12.8 %</td>
+          </tr>
+          <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : /*</a>
+<span class="lineNum">       2 </span>            : Copyright 2005 - 2017 by Paolo Brandoli/Binarno s.p.
+<span class="lineNum">       3 </span>            : 
+<span class="lineNum">       4 </span>            : Imebra is available for free under the GNU General Public License.
+<span class="lineNum">       5 </span>            : 
+<span class="lineNum">       6 </span>            : The full text of the license is available in the file license.rst
+<span class="lineNum">       7 </span>            :  in the project root folder.
+<span class="lineNum">       8 </span>            : 
+<span class="lineNum">       9 </span>            : If you do not want to be bound by the GPL terms (such as the requirement 
+<span class="lineNum">      10 </span>            :  that your application must also be GPL), you may purchase a commercial 
+<span class="lineNum">      11 </span>            :  license for Imebra from the Imebra’s website (http://imebra.com).
+<span class="lineNum">      12 </span>            : */
+<span class="lineNum">      13 </span>            : 
+<span class="lineNum">      14 </span>            : /*! \file modalityVOILUT.h
+<span class="lineNum">      15 </span>            :     \brief Declaration of the class modalityVOILUT.
+<span class="lineNum">      16 </span>            : 
+<span class="lineNum">      17 </span>            : */
+<span class="lineNum">      18 </span>            : 
+<span class="lineNum">      19 </span>            : #if !defined(imebraModalityVOILUT_8347C70F_1FC8_4df8_A887_8DE9E968B2CF__INCLUDED_)
+<span class="lineNum">      20 </span>            : #define imebraModalityVOILUT_8347C70F_1FC8_4df8_A887_8DE9E968B2CF__INCLUDED_
+<span class="lineNum">      21 </span>            : 
+<span class="lineNum">      22 </span>            : #include &quot;transformImpl.h&quot;
+<span class="lineNum">      23 </span>            : #include &quot;imageImpl.h&quot;
+<span class="lineNum">      24 </span>            : #include &quot;dataSetImpl.h&quot;
+<span class="lineNum">      25 </span>            : #include &quot;LUTImpl.h&quot;
+<span class="lineNum">      26 </span>            : #include &quot;colorTransformsFactoryImpl.h&quot;
+<span class="lineNum">      27 </span>            : #include &quot;../include/imebra/exceptions.h&quot;
+<span class="lineNum">      28 </span>            : 
+<span class="lineNum">      29 </span>            : 
+<span class="lineNum">      30 </span>            : namespace imebra
+<span class="lineNum">      31 </span>            : {
+<span class="lineNum">      32 </span>            : 
+<span class="lineNum">      33 </span>            : namespace implementation
+<span class="lineNum">      34 </span>            : {
+<span class="lineNum">      35 </span>            : 
+<span class="lineNum">      36 </span>            : namespace transforms
+<span class="lineNum">      37 </span>            : {
+<span class="lineNum">      38 </span>            : 
+<span class="lineNum">      39 </span>            : 
+<span class="lineNum">      40 </span>            : /// \addtogroup group_transforms
+<span class="lineNum">      41 </span>            : ///
+<span class="lineNum">      42 </span>            : /// @{
+<span class="lineNum">      43 </span>            : 
+<span class="lineNum">      44 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">      45 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">      46 </span>            : /// \brief This class transforms the pixel values of the
+<span class="lineNum">      47 </span>            : ///         image retrieved from the dataset into values
+<span class="lineNum">      48 </span>            : ///         that are meaningful to th application.
+<span class="lineNum">      49 </span>            : ///
+<span class="lineNum">      50 </span>            : /// For instance, the original pixel values could store
+<span class="lineNum">      51 </span>            : ///  a device specific value that has a meaning only when
+<span class="lineNum">      52 </span>            : ///  used by the device that generated it: this transform
+<span class="lineNum">      53 </span>            : ///  uses the modality VOI/LUT defined in the dataset to
+<span class="lineNum">      54 </span>            : ///  convert the original values into optical density
+<span class="lineNum">      55 </span>            : ///  or other known measure units.
+<span class="lineNum">      56 </span>            : ///
+<span class="lineNum">      57 </span>            : /// If the dataset doesn't define any modality VOI/LUT
+<span class="lineNum">      58 </span>            : ///  transformation, then the input image is simply copied
+<span class="lineNum">      59 </span>            : ///  into the output image.
+<span class="lineNum">      60 </span>            : ///
+<a name="61"><span class="lineNum">      61 </span>            : ///////////////////////////////////////////////////////////</a>
+<span class="lineNum">      62 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">      63 </span><span class="lineCov">          6 : class modalityVOILUT: public transform</span>
+<span class="lineNum">      64 </span>            : {
+<span class="lineNum">      65 </span>            : public:
+<span class="lineNum">      66 </span>            :         /// \brief Constructor.
+<span class="lineNum">      67 </span>            :         ///
+<span class="lineNum">      68 </span>            :         /// @param pDataSet the dataSet from which the input
+<span class="lineNum">      69 </span>            :         ///         images come from
+<span class="lineNum">      70 </span>            :         ///
+<span class="lineNum">      71 </span>            :         ///////////////////////////////////////////////////////////
+<a name="72"><span class="lineNum">      72 </span>            :     modalityVOILUT(std::shared_ptr&lt;const dataSet&gt; pDataSet);</a>
+<span class="lineNum">      73 </span>            : 
+<span class="lineNum">      74 </span><span class="lineCov">          6 :         DEFINE_RUN_TEMPLATE_TRANSFORM;</span>
+<a name="75"><span class="lineNum">      75 </span>            : </a>
+<span class="lineNum">      76 </span>            :         template &lt;class inputType, class outputType&gt;
+<span class="lineNum">      77 </span><span class="lineCov">          6 :                         void templateTransform(</span>
+<span class="lineNum">      78 </span>            :                     const inputType* inputHandlerData,
+<span class="lineNum">      79 </span>            :                     outputType* outputHandlerData,
+<span class="lineNum">      80 </span>            :                     bitDepth_t /* inputDepth */, std::uint32_t inputHandlerWidth, const std::string&amp; inputHandlerColorSpace,
+<span class="lineNum">      81 </span>            :                     std::shared_ptr&lt;palette&gt; /* inputPalette */,
+<span class="lineNum">      82 </span>            :                     std::uint32_t /* inputHighBit */,
+<span class="lineNum">      83 </span>            :                     std::uint32_t inputTopLeftX, std::uint32_t inputTopLeftY, std::uint32_t inputWidth, std::uint32_t inputHeight,
+<span class="lineNum">      84 </span>            :                     bitDepth_t /* outputDepth */, std::uint32_t outputHandlerWidth, const std::string&amp; outputHandlerColorSpace,
+<span class="lineNum">      85 </span>            :                     std::shared_ptr&lt;palette&gt; /* outputPalette */,
+<span class="lineNum">      86 </span>            :                     std::uint32_t /* outputHighBit */,
+<span class="lineNum">      87 </span>            :                     std::uint32_t outputTopLeftX, std::uint32_t outputTopLeftY) const
+<span class="lineNum">      88 </span>            :         {
+<span class="lineNum">      89 </span>            :         IMEBRA_FUNCTION_START();
+<span class="lineNum">      90 </span>            : 
+<span class="lineNum">      91 </span><span class="lineCov">          6 :                 if(!colorTransforms::colorTransformsFactory::isMonochrome(inputHandlerColorSpace) || !colorTransforms::colorTransformsFactory::isMonochrome(outputHandlerColorSpace))</span>
+<span class="lineNum">      92 </span>            :                 {
+<span class="lineNum">      93 </span><span class="lineNoCov">          0 :             IMEBRA_THROW(ModalityVOILUTError, &quot;modalityVOILUT can process only monochromatic images&quot;);</span>
+<span class="lineNum">      94 </span>            :                 }
+<span class="lineNum">      95 </span><span class="lineCov">          6 :         const inputType* pInputMemory(inputHandlerData);</span>
+<span class="lineNum">      96 </span><span class="lineCov">          6 :                 outputType* pOutputMemory(outputHandlerData);</span>
+<span class="lineNum">      97 </span>            : 
+<span class="lineNum">      98 </span><span class="lineCov">          6 :                 pInputMemory += inputTopLeftY * inputHandlerWidth + inputTopLeftX;</span>
+<span class="lineNum">      99 </span><span class="lineCov">          6 :                 pOutputMemory += outputTopLeftY * outputHandlerWidth + outputTopLeftX;</span>
+<span class="lineNum">     100 </span>            : 
+<span class="lineNum">     101 </span>            :                 //
+<span class="lineNum">     102 </span>            :                 // Modality LUT found
+<span class="lineNum">     103 </span>            :                 //
+<span class="lineNum">     104 </span>            :                 ///////////////////////////////////////////////////////////
+<span class="lineNum">     105 </span><span class="lineCov">          6 :         if(m_voiLut != 0 &amp;&amp; m_voiLut-&gt;getSize() != 0)</span>
+<span class="lineNum">     106 </span>            :                 {
+<span class="lineNum">     107 </span><span class="lineCov">          6 :                         for(; inputHeight != 0; --inputHeight)</span>
+<span class="lineNum">     108 </span>            :                         {
+<span class="lineNum">     109 </span><span class="lineCov">         14 :                 for(std::uint32_t scanPixels(inputWidth); scanPixels != 0; --scanPixels)</span>
+<span class="lineNum">     110 </span>            :                                 {
+<span class="lineNum">     111 </span><span class="lineCov">         12 :                     *(pOutputMemory++) = (outputType) ( m_voiLut-&gt;getMappedValue((std::int32_t)*(pInputMemory++)));</span>
+<span class="lineNum">     112 </span>            :                                 }
+<span class="lineNum">     113 </span><span class="lineCov">          2 :                                 pInputMemory += (inputHandlerWidth - inputWidth);</span>
+<span class="lineNum">     114 </span><span class="lineCov">          2 :                                 pOutputMemory += (outputHandlerWidth - inputWidth);</span>
+<span class="lineNum">     115 </span>            :                         }
+<span class="lineNum">     116 </span><span class="lineCov">          2 :                         return;</span>
+<span class="lineNum">     117 </span>            :                 }
+<span class="lineNum">     118 </span>            : 
+<span class="lineNum">     119 </span>            :                 //
+<span class="lineNum">     120 </span>            :                 // Modality LUT not found
+<span class="lineNum">     121 </span>            :                 //
+<span class="lineNum">     122 </span>            :                 ///////////////////////////////////////////////////////////
+<span class="lineNum">     123 </span>            : 
+<span class="lineNum">     124 </span>            :                 // Retrieve the intercept/scale pair
+<span class="lineNum">     125 </span>            :                 ///////////////////////////////////////////////////////////
+<span class="lineNum">     126 </span><span class="lineCov">         12 :                 for(; inputHeight != 0; --inputHeight)</span>
+<span class="lineNum">     127 </span>            :                 {
+<span class="lineNum">     128 </span><span class="lineCov">         28 :             for(std::uint32_t scanPixels(inputWidth); scanPixels != 0; --scanPixels)</span>
+<span class="lineNum">     129 </span>            :                         {
+<span class="lineNum">     130 </span><span class="lineCov">         24 :                 *(pOutputMemory++) = (outputType)((double)(*(pInputMemory++)) * m_rescaleSlope + m_rescaleIntercept);</span>
+<span class="lineNum">     131 </span>            :                         }
+<span class="lineNum">     132 </span><span class="lineCov">          4 :                         pInputMemory += (inputHandlerWidth - inputWidth);</span>
+<span class="lineNum">     133 </span><span class="lineCov">          4 :                         pOutputMemory += (outputHandlerWidth - inputWidth);</span>
+<span class="lineNum">     134 </span>            :                 }
+<span class="lineNum">     135 </span><span class="lineNoCov">          0 :                 IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">     136 </span>            :         }
+<span class="lineNum">     137 </span>            : 
+<span class="lineNum">     138 </span>            :     virtual bool isEmpty() const override;
+<span class="lineNum">     139 </span>            : 
+<span class="lineNum">     140 </span>            :     virtual std::shared_ptr&lt;image&gt; allocateOutputImage(
+<span class="lineNum">     141 </span>            :             bitDepth_t inputDepth,
+<span class="lineNum">     142 </span>            :             const std::string&amp; inputColorSpace,
+<span class="lineNum">     143 </span>            :             std::uint32_t inputHighBit,
+<span class="lineNum">     144 </span>            :             std::shared_ptr&lt;palette&gt; inputPalette,
+<span class="lineNum">     145 </span>            :             std::uint32_t outputWidth, std::uint32_t outputHeight) const override;
+<span class="lineNum">     146 </span>            : 
+<span class="lineNum">     147 </span>            : private:
+<span class="lineNum">     148 </span>            :     std::shared_ptr&lt;const dataSet&gt; m_pDataSet;
+<span class="lineNum">     149 </span>            :     std::shared_ptr&lt;const lut&gt; m_voiLut;
+<span class="lineNum">     150 </span>            :     double m_rescaleIntercept;
+<span class="lineNum">     151 </span>            :     double m_rescaleSlope;
+<span class="lineNum">     152 </span>            :         bool m_bEmpty;
+<span class="lineNum">     153 </span>            : };
+<span class="lineNum">     154 </span>            : 
+<span class="lineNum">     155 </span>            : 
+<span class="lineNum">     156 </span>            : /// @}
+<span class="lineNum">     157 </span>            : 
+<span class="lineNum">     158 </span>            : } // namespace transforms
+<span class="lineNum">     159 </span>            : 
+<span class="lineNum">     160 </span>            : } // namespace implementation
+<span class="lineNum">     161 </span>            : 
+<span class="lineNum">     162 </span>            : } // namespace imebra
+<span class="lineNum">     163 </span>            : 
+<span class="lineNum">     164 </span>            : #endif // !defined(imebraModalityVOILUT_8347C70F_1FC8_4df8_A887_8DE9E968B2CF__INCLUDED_)
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.13</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

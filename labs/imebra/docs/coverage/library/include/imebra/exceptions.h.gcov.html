@@ -1,0 +1,1591 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - extracted.info - library/include/imebra/exceptions.h</title>
+  <link rel="stylesheet" type="text/css" href="../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../index.html">top level</a> - <a href="index.html">library/include/imebra</a> - exceptions.h<span style="font-size: 80%;"> (source / <a href="exceptions.h.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">extracted.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">37</td>
+            <td class="headerCovTableEntry">98</td>
+            <td class="headerCovTableEntryLo">37.8 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2019-03-13 14:48:54</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">74</td>
+            <td class="headerCovTableEntry">295</td>
+            <td class="headerCovTableEntryLo">25.1 %</td>
+          </tr>
+          <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : /*</a>
+<span class="lineNum">       2 </span>            : Copyright 2005 - 2017 by Paolo Brandoli/Binarno s.p.
+<span class="lineNum">       3 </span>            : 
+<span class="lineNum">       4 </span>            : Imebra is available for free under the GNU General Public License.
+<span class="lineNum">       5 </span>            : 
+<span class="lineNum">       6 </span>            : The full text of the license is available in the file license.rst
+<span class="lineNum">       7 </span>            :  in the project root folder.
+<span class="lineNum">       8 </span>            : 
+<span class="lineNum">       9 </span>            : If you do not want to be bound by the GPL terms (such as the requirement
+<span class="lineNum">      10 </span>            :  that your application must also be GPL), you may purchase a commercial
+<span class="lineNum">      11 </span>            :  license for Imebra from the Imebra’s website (http://imebra.com).
+<span class="lineNum">      12 </span>            : */
+<span class="lineNum">      13 </span>            : 
+<span class="lineNum">      14 </span>            : #if !defined(imebraExceptions__INCLUDED_)
+<span class="lineNum">      15 </span>            : #define imebraExceptions__INCLUDED_
+<span class="lineNum">      16 </span>            : 
+<span class="lineNum">      17 </span>            : #include &lt;stdexcept&gt;
+<span class="lineNum">      18 </span>            : #include &lt;string&gt;
+<span class="lineNum">      19 </span>            : #include &quot;definitions.h&quot;
+<span class="lineNum">      20 </span>            : 
+<span class="lineNum">      21 </span>            : namespace imebra
+<span class="lineNum">      22 </span>            : {
+<span class="lineNum">      23 </span>            : 
+<span class="lineNum">      24 </span>            : 
+<span class="lineNum">      25 </span>            : /// \brief Return the stack trace for the last exception thrown in the current
+<span class="lineNum">      26 </span>            : ///        thread.
+<span class="lineNum">      27 </span>            : ///
+<span class="lineNum">      28 </span>            : ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">      29 </span>            : class IMEBRA_API ExceptionsManager
+<span class="lineNum">      30 </span>            : {
+<span class="lineNum">      31 </span>            : public:
+<span class="lineNum">      32 </span>            :     /// \brief Return a message containing the stack trace for the last exception
+<span class="lineNum">      33 </span>            :     ///        thrown in the current thread.
+<span class="lineNum">      34 </span>            :     ///
+<span class="lineNum">      35 </span>            :     /// \return a message containing the stack trace
+<span class="lineNum">      36 </span>            :     ///
+<span class="lineNum">      37 </span>            :     ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">      38 </span>            :     static std::string getExceptionTrace();
+<span class="lineNum">      39 </span>            : };
+<span class="lineNum">      40 </span>            : 
+<span class="lineNum">      41 </span>            : 
+<span class="lineNum">      42 </span>            : ///
+<span class="lineNum">      43 </span>            : /// \brief This is the base class for the exceptions thrown by the LUT class.
+<a name="44"><span class="lineNum">      44 </span>            : ///</a>
+<span class="lineNum">      45 </span>            : ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">      46 </span><span class="lineCov">         12 : class IMEBRA_API LutError: public std::runtime_error</span>
+<span class="lineNum">      47 </span>            : {
+<span class="lineNum">      48 </span>            : public:
+<span class="lineNum">      49 </span>            :     /// \brief Constructor.
+<span class="lineNum">      50 </span>            :     ///
+<span class="lineNum">      51 </span>            :     /// \param message the message to store into the exception
+<span class="lineNum">      52 </span>            :     ///
+<span class="lineNum">      53 </span>            :     ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">      54 </span>            :     explicit LutError(const std::string&amp; message);
+<span class="lineNum">      55 </span>            : };
+<span class="lineNum">      56 </span>            : 
+<span class="lineNum">      57 </span>            : 
+<span class="lineNum">      58 </span>            : ///
+<span class="lineNum">      59 </span>            : /// \brief This exception is thrown by the lut class when the the LUT
+<span class="lineNum">      60 </span>            : ///        information is corrupted.
+<a name="61"><span class="lineNum">      61 </span>            : ///</a>
+<span class="lineNum">      62 </span>            : ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">      63 </span><span class="lineCov">         12 : class IMEBRA_API LutCorruptedError: public LutError</span>
+<span class="lineNum">      64 </span>            : {
+<span class="lineNum">      65 </span>            : public:
+<span class="lineNum">      66 </span>            :     /// \brief Constructor.
+<span class="lineNum">      67 </span>            :     ///
+<span class="lineNum">      68 </span>            :     /// \param message the message to store into the exception
+<span class="lineNum">      69 </span>            :     ///
+<span class="lineNum">      70 </span>            :     ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">      71 </span>            :     explicit LutCorruptedError(const std::string&amp; message);
+<span class="lineNum">      72 </span>            : };
+<span class="lineNum">      73 </span>            : 
+<span class="lineNum">      74 </span>            : 
+<span class="lineNum">      75 </span>            : /// \brief Base class for the exceptions that report a missing element
+<span class="lineNum">      76 </span>            : ///        (Image, Tag, group, etc).
+<a name="77"><span class="lineNum">      77 </span>            : ///</a>
+<span class="lineNum">      78 </span>            : ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">      79 </span><span class="lineCov">     292089 : class IMEBRA_API MissingDataElementError: public std::runtime_error</span>
+<span class="lineNum">      80 </span>            : {
+<span class="lineNum">      81 </span>            : public:
+<span class="lineNum">      82 </span>            :     /// \brief Constructor.
+<span class="lineNum">      83 </span>            :     ///
+<span class="lineNum">      84 </span>            :     /// \param message the message to store into the exception
+<span class="lineNum">      85 </span>            :     ///
+<span class="lineNum">      86 </span>            :     ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">      87 </span>            :     explicit MissingDataElementError(const std::string&amp; message);
+<span class="lineNum">      88 </span>            : };
+<span class="lineNum">      89 </span>            : 
+<span class="lineNum">      90 </span>            : 
+<span class="lineNum">      91 </span>            : /// \brief This exception is thrown when the client tries to read a tag from
+<span class="lineNum">      92 </span>            : ///        a group that does not exist.
+<a name="93"><span class="lineNum">      93 </span>            : ///</a>
+<span class="lineNum">      94 </span>            : ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">      95 </span><span class="lineCov">     185158 : class IMEBRA_API MissingGroupError: public MissingDataElementError</span>
+<span class="lineNum">      96 </span>            : {
+<span class="lineNum">      97 </span>            : public:
+<span class="lineNum">      98 </span>            :     /// \brief Constructor.
+<span class="lineNum">      99 </span>            :     ///
+<span class="lineNum">     100 </span>            :     /// \param message the message to store into the exception
+<span class="lineNum">     101 </span>            :     ///
+<span class="lineNum">     102 </span>            :     ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     103 </span>            :     explicit MissingGroupError(const std::string&amp; message);
+<span class="lineNum">     104 </span>            : };
+<span class="lineNum">     105 </span>            : 
+<span class="lineNum">     106 </span>            : 
+<span class="lineNum">     107 </span>            : /// \brief This exception is thrown when the client tries to read a value from
+<span class="lineNum">     108 </span>            : ///        a tag that does not exist (inside an existing group).
+<a name="109"><span class="lineNum">     109 </span>            : ///</a>
+<span class="lineNum">     110 </span>            : ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     111 </span><span class="lineCov">      95625 : class IMEBRA_API MissingTagError: public MissingDataElementError</span>
+<span class="lineNum">     112 </span>            : {
+<span class="lineNum">     113 </span>            : public:
+<span class="lineNum">     114 </span>            :     /// \brief Constructor.
+<span class="lineNum">     115 </span>            :     ///
+<span class="lineNum">     116 </span>            :     /// \param message the message to store into the exception
+<span class="lineNum">     117 </span>            :     ///
+<span class="lineNum">     118 </span>            :     ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     119 </span>            :     explicit MissingTagError(const std::string&amp; message);
+<span class="lineNum">     120 </span>            : };
+<span class="lineNum">     121 </span>            : 
+<span class="lineNum">     122 </span>            : 
+<span class="lineNum">     123 </span>            : /// \brief This exception is thrown when the client tries to read a value from
+<span class="lineNum">     124 </span>            : ///        a buffer that does not exist (inside an existing tag).
+<a name="125"><span class="lineNum">     125 </span>            : ///</a>
+<span class="lineNum">     126 </span>            : ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     127 </span><span class="lineNoCov">          0 : class IMEBRA_API MissingBufferError: public MissingDataElementError</span>
+<span class="lineNum">     128 </span>            : {
+<span class="lineNum">     129 </span>            : public:
+<span class="lineNum">     130 </span>            :     /// \brief Constructor.
+<span class="lineNum">     131 </span>            :     ///
+<span class="lineNum">     132 </span>            :     /// \param message the message to store into the exception
+<span class="lineNum">     133 </span>            :     ///
+<span class="lineNum">     134 </span>            :     ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     135 </span>            :     explicit MissingBufferError(const std::string&amp; message);
+<span class="lineNum">     136 </span>            : };
+<span class="lineNum">     137 </span>            : 
+<span class="lineNum">     138 </span>            : 
+<span class="lineNum">     139 </span>            : /// \brief This exception is thrown when the client tries to read a value from
+<span class="lineNum">     140 </span>            : ///        an element that does not exist (inside an existing buffer).
+<a name="141"><span class="lineNum">     141 </span>            : ///</a>
+<span class="lineNum">     142 </span>            : ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     143 </span><span class="lineCov">      11319 : class IMEBRA_API MissingItemError: public MissingDataElementError</span>
+<span class="lineNum">     144 </span>            : {
+<span class="lineNum">     145 </span>            : public:
+<span class="lineNum">     146 </span>            :     /// \brief Constructor.
+<span class="lineNum">     147 </span>            :     ///
+<span class="lineNum">     148 </span>            :     /// \param message the message to store into the exception
+<span class="lineNum">     149 </span>            :     ///
+<span class="lineNum">     150 </span>            :     ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     151 </span>            :     explicit MissingItemError(const std::string&amp; message);
+<span class="lineNum">     152 </span>            : };
+<span class="lineNum">     153 </span>            : 
+<span class="lineNum">     154 </span>            : 
+<span class="lineNum">     155 </span>            : /// \brief The base exception for all the exceptions thrown by the function
+<span class="lineNum">     156 </span>            : ///        in baseStream.
+<a name="157"><span class="lineNum">     157 </span>            : ///</a>
+<span class="lineNum">     158 </span>            : ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     159 </span><span class="lineCov">        735 : class IMEBRA_API StreamError: public std::runtime_error</span>
+<span class="lineNum">     160 </span>            : {
+<span class="lineNum">     161 </span>            : public:
+<span class="lineNum">     162 </span>            :     /// \brief Constructor.
+<span class="lineNum">     163 </span>            :     ///
+<span class="lineNum">     164 </span>            :     /// \param message the message to store into the exception
+<span class="lineNum">     165 </span>            :     ///
+<span class="lineNum">     166 </span>            :     ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     167 </span>            :     explicit StreamError(const std::string&amp; message);
+<span class="lineNum">     168 </span>            : };
+<span class="lineNum">     169 </span>            : 
+<span class="lineNum">     170 </span>            : 
+<span class="lineNum">     171 </span>            : ///
+<span class="lineNum">     172 </span>            : /// \brief Exception thrown when the stream cannot be open.
+<a name="173"><span class="lineNum">     173 </span>            : ///</a>
+<span class="lineNum">     174 </span>            : ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     175 </span><span class="lineCov">         18 : class IMEBRA_API StreamOpenError : public StreamError</span>
+<span class="lineNum">     176 </span>            : {
+<span class="lineNum">     177 </span>            : public:
+<span class="lineNum">     178 </span>            :     /// \brief Constructor.
+<span class="lineNum">     179 </span>            :     ///
+<span class="lineNum">     180 </span>            :     /// \param message the message to store into the exception
+<span class="lineNum">     181 </span>            :     ///
+<span class="lineNum">     182 </span>            :     ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     183 </span>            :     explicit StreamOpenError(const std::string&amp; message);
+<span class="lineNum">     184 </span>            : };
+<span class="lineNum">     185 </span>            : 
+<span class="lineNum">     186 </span>            : 
+<span class="lineNum">     187 </span>            : ///
+<span class="lineNum">     188 </span>            : /// \brief Exception thrown when there is an error during the read phase.
+<a name="189"><span class="lineNum">     189 </span>            : ///</a>
+<span class="lineNum">     190 </span>            : ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     191 </span><span class="lineNoCov">          0 : class IMEBRA_API StreamReadError : public StreamError</span>
+<span class="lineNum">     192 </span>            : {
+<span class="lineNum">     193 </span>            : public:
+<span class="lineNum">     194 </span>            :     /// \brief Constructor.
+<span class="lineNum">     195 </span>            :     ///
+<span class="lineNum">     196 </span>            :     /// \param message the message to store into the exception
+<span class="lineNum">     197 </span>            :     ///
+<span class="lineNum">     198 </span>            :     ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     199 </span>            :     explicit StreamReadError(const std::string&amp; message);
+<span class="lineNum">     200 </span>            : };
+<span class="lineNum">     201 </span>            : 
+<span class="lineNum">     202 </span>            : 
+<span class="lineNum">     203 </span>            : ///
+<span class="lineNum">     204 </span>            : /// \brief Exception thrown when there is an error during the write phase.
+<a name="205"><span class="lineNum">     205 </span>            : ///</a>
+<span class="lineNum">     206 </span>            : ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     207 </span><span class="lineNoCov">          0 : class IMEBRA_API StreamWriteError : public StreamError</span>
+<span class="lineNum">     208 </span>            : {
+<span class="lineNum">     209 </span>            : public:
+<span class="lineNum">     210 </span>            :     /// \brief Constructor.
+<span class="lineNum">     211 </span>            :     ///
+<span class="lineNum">     212 </span>            :     /// \param message the message to store into the exception
+<span class="lineNum">     213 </span>            :     ///
+<span class="lineNum">     214 </span>            :     ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     215 </span>            :     explicit StreamWriteError(const std::string&amp; message);
+<span class="lineNum">     216 </span>            : };
+<span class="lineNum">     217 </span>            : 
+<span class="lineNum">     218 </span>            : 
+<span class="lineNum">     219 </span>            : /// \brief Exception thrown when there are problems while closing of the
+<span class="lineNum">     220 </span>            : ///        stream.
+<a name="221"><span class="lineNum">     221 </span>            : ///</a>
+<span class="lineNum">     222 </span>            : ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     223 </span><span class="lineNoCov">          0 : class IMEBRA_API StreamCloseError : public StreamError</span>
+<span class="lineNum">     224 </span>            : {
+<span class="lineNum">     225 </span>            : public:
+<span class="lineNum">     226 </span>            :     /// \brief Constructor.
+<span class="lineNum">     227 </span>            :     ///
+<span class="lineNum">     228 </span>            :     /// \param message the message to store into the exception
+<span class="lineNum">     229 </span>            :     ///
+<span class="lineNum">     230 </span>            :     ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     231 </span>            :     explicit StreamCloseError(const std::string&amp; message);
+<span class="lineNum">     232 </span>            : };
+<span class="lineNum">     233 </span>            : 
+<span class="lineNum">     234 </span>            : 
+<span class="lineNum">     235 </span>            : ///
+<span class="lineNum">     236 </span>            : /// \brief The peer refused the attempted connection.
+<a name="237"><span class="lineNum">     237 </span>            : ///</a>
+<span class="lineNum">     238 </span>            : ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     239 </span><span class="lineCov">          3 : class IMEBRA_API TCPConnectionRefused: public StreamOpenError</span>
+<span class="lineNum">     240 </span>            : {
+<span class="lineNum">     241 </span>            : public:
+<span class="lineNum">     242 </span>            :     explicit TCPConnectionRefused(const std::string&amp; message);
+<span class="lineNum">     243 </span>            : };
+<span class="lineNum">     244 </span>            : 
+<span class="lineNum">     245 </span>            : 
+<span class="lineNum">     246 </span>            : ///
+<span class="lineNum">     247 </span>            : /// \brief The specified address is already in use by another socket.
+<a name="248"><span class="lineNum">     248 </span>            : ///</a>
+<span class="lineNum">     249 </span>            : ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     250 </span><span class="lineNoCov">          0 : class IMEBRA_API TCPAddressAlreadyInUse: public StreamOpenError</span>
+<span class="lineNum">     251 </span>            : {
+<span class="lineNum">     252 </span>            : public:
+<span class="lineNum">     253 </span>            :     explicit TCPAddressAlreadyInUse(const std::string&amp; message);
+<span class="lineNum">     254 </span>            : };
+<span class="lineNum">     255 </span>            : 
+<span class="lineNum">     256 </span>            : 
+<span class="lineNum">     257 </span>            : ///
+<span class="lineNum">     258 </span>            : /// \brief The application does not have the permissions to carry out the
+<span class="lineNum">     259 </span>            : ///        operation
+<a name="260"><span class="lineNum">     260 </span>            : ///</a>
+<span class="lineNum">     261 </span>            : ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     262 </span><span class="lineNoCov">          0 : class IMEBRA_API PermissionDeniedError: public std::runtime_error</span>
+<span class="lineNum">     263 </span>            : {
+<span class="lineNum">     264 </span>            : public:
+<span class="lineNum">     265 </span>            :     explicit PermissionDeniedError(const std::string&amp; message);
+<span class="lineNum">     266 </span>            : };
+<span class="lineNum">     267 </span>            : 
+<span class="lineNum">     268 </span>            : 
+<span class="lineNum">     269 </span>            : ///
+<span class="lineNum">     270 </span>            : /// \brief Base class for the exceptions thrown by TCPAddress.
+<a name="271"><span class="lineNum">     271 </span>            : ///</a>
+<span class="lineNum">     272 </span>            : ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     273 </span><span class="lineCov">          6 : class IMEBRA_API AddressError: public std::runtime_error</span>
+<span class="lineNum">     274 </span>            : {
+<span class="lineNum">     275 </span>            : public:
+<span class="lineNum">     276 </span>            :     /// \brief Constructor.
+<span class="lineNum">     277 </span>            :     ///
+<span class="lineNum">     278 </span>            :     /// \param message the message to store into the exception
+<span class="lineNum">     279 </span>            :     ///
+<span class="lineNum">     280 </span>            :     ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     281 </span>            :     explicit AddressError(const std::string&amp; message);
+<span class="lineNum">     282 </span>            : };
+<span class="lineNum">     283 </span>            : 
+<span class="lineNum">     284 </span>            : 
+<span class="lineNum">     285 </span>            : /// \brief Exception thrown by TCPAddress when a temporary malfunction
+<span class="lineNum">     286 </span>            : ///        prevented the address resolution. Trying again may cancel the error
+<span class="lineNum">     287 </span>            : ///        condition.
+<a name="288"><span class="lineNum">     288 </span>            : ///</a>
+<span class="lineNum">     289 </span>            : ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     290 </span><span class="lineNoCov">          0 : class IMEBRA_API AddressTryAgainError: public AddressError</span>
+<span class="lineNum">     291 </span>            : {
+<span class="lineNum">     292 </span>            : public:
+<span class="lineNum">     293 </span>            :     /// \brief Constructor.
+<span class="lineNum">     294 </span>            :     ///
+<span class="lineNum">     295 </span>            :     /// \param message the message to store into the exception
+<span class="lineNum">     296 </span>            :     ///
+<span class="lineNum">     297 </span>            :     ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     298 </span>            :     explicit AddressTryAgainError(const std::string&amp; message);
+<span class="lineNum">     299 </span>            : };
+<span class="lineNum">     300 </span>            : 
+<span class="lineNum">     301 </span>            : 
+<span class="lineNum">     302 </span>            : /// \brief Exception thrown by TCPAddress when the name cannot be resolved.
+<a name="303"><span class="lineNum">     303 </span>            : ///</a>
+<span class="lineNum">     304 </span>            : ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     305 </span><span class="lineCov">          3 : class IMEBRA_API AddressNoNameError: public AddressError</span>
+<span class="lineNum">     306 </span>            : {
+<span class="lineNum">     307 </span>            : public:
+<span class="lineNum">     308 </span>            :     /// \brief Constructor.
+<span class="lineNum">     309 </span>            :     ///
+<span class="lineNum">     310 </span>            :     /// \param message the message to store into the exception
+<span class="lineNum">     311 </span>            :     ///
+<span class="lineNum">     312 </span>            :     ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     313 </span>            :     explicit AddressNoNameError(const std::string&amp; message);
+<span class="lineNum">     314 </span>            : };
+<span class="lineNum">     315 </span>            : 
+<span class="lineNum">     316 </span>            : 
+<span class="lineNum">     317 </span>            : /// \brief Exception thrown by TCPAddress when the specified service is
+<span class="lineNum">     318 </span>            : ///        not supported.
+<a name="319"><span class="lineNum">     319 </span>            : ///</a>
+<span class="lineNum">     320 </span>            : ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     321 </span><span class="lineCov">          3 : class IMEBRA_API AddressServiceNotSupportedError: public AddressError</span>
+<span class="lineNum">     322 </span>            : {
+<span class="lineNum">     323 </span>            : public:
+<span class="lineNum">     324 </span>            :     /// \brief Constructor.
+<span class="lineNum">     325 </span>            :     ///
+<span class="lineNum">     326 </span>            :     /// \param message the message to store into the exception
+<span class="lineNum">     327 </span>            :     ///
+<span class="lineNum">     328 </span>            :     ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     329 </span>            :     explicit AddressServiceNotSupportedError(const std::string&amp; message);
+<span class="lineNum">     330 </span>            : };
+<span class="lineNum">     331 </span>            : 
+<span class="lineNum">     332 </span>            : 
+<span class="lineNum">     333 </span>            : /// \brief Base class for the exceptions thrown by the DicomDictionary.
+<a name="334"><span class="lineNum">     334 </span>            : ///</a>
+<span class="lineNum">     335 </span>            : ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     336 </span><span class="lineCov">          6 : class IMEBRA_API DictionaryError: public std::runtime_error</span>
+<span class="lineNum">     337 </span>            : {
+<span class="lineNum">     338 </span>            : public:
+<span class="lineNum">     339 </span>            :     /// \brief Constructor.
+<span class="lineNum">     340 </span>            :     ///
+<span class="lineNum">     341 </span>            :     /// \param message the message to store into the exception
+<span class="lineNum">     342 </span>            :     ///
+<span class="lineNum">     343 </span>            :     ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     344 </span>            :     explicit DictionaryError(const std::string&amp; message);
+<span class="lineNum">     345 </span>            : };
+<span class="lineNum">     346 </span>            : 
+<span class="lineNum">     347 </span>            : 
+<span class="lineNum">     348 </span>            : /// \brief This exception is thrown by the DicomDictionary when it must return
+<span class="lineNum">     349 </span>            : ///        information for a tag that the DICOM standard does not define.
+<a name="350"><span class="lineNum">     350 </span>            : ///</a>
+<span class="lineNum">     351 </span>            : ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     352 </span><span class="lineCov">          6 : class IMEBRA_API DictionaryUnknownTagError: public DictionaryError</span>
+<span class="lineNum">     353 </span>            : {
+<span class="lineNum">     354 </span>            : public:
+<span class="lineNum">     355 </span>            :     /// \brief Constructor.
+<span class="lineNum">     356 </span>            :     ///
+<span class="lineNum">     357 </span>            :     /// \param message the message to store into the exception
+<span class="lineNum">     358 </span>            :     ///
+<span class="lineNum">     359 </span>            :     ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     360 </span>            :     explicit DictionaryUnknownTagError(const std::string&amp; message);
+<span class="lineNum">     361 </span>            : };
+<span class="lineNum">     362 </span>            : 
+<span class="lineNum">     363 </span>            : 
+<span class="lineNum">     364 </span>            : /// \brief This exception is thrown by the DicomDictionary when it must return
+<span class="lineNum">     365 </span>            : ///        information for a VR (data type) that the DICOM standard does not
+<span class="lineNum">     366 </span>            : ///        define.
+<a name="367"><span class="lineNum">     367 </span>            : ///</a>
+<span class="lineNum">     368 </span>            : ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     369 </span><span class="lineNoCov">          0 : class IMEBRA_API DictionaryUnknownDataTypeError: public DictionaryError</span>
+<span class="lineNum">     370 </span>            : {
+<span class="lineNum">     371 </span>            : public:
+<span class="lineNum">     372 </span>            :     /// \brief Constructor.
+<span class="lineNum">     373 </span>            :     ///
+<span class="lineNum">     374 </span>            :     /// \param message the message to store into the exception
+<span class="lineNum">     375 </span>            :     ///
+<span class="lineNum">     376 </span>            :     ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     377 </span>            :     explicit DictionaryUnknownDataTypeError(const std::string&amp; message);
+<span class="lineNum">     378 </span>            : };
+<span class="lineNum">     379 </span>            : 
+<span class="lineNum">     380 </span>            : 
+<span class="lineNum">     381 </span>            : /// \brief Base class for the exceptions thrown by charsetConversion.
+<a name="382"><span class="lineNum">     382 </span>            : ///</a>
+<span class="lineNum">     383 </span>            : ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     384 </span><span class="lineNoCov">          0 : class IMEBRA_API CharsetConversionError: public std::runtime_error</span>
+<span class="lineNum">     385 </span>            : {
+<span class="lineNum">     386 </span>            : public:
+<span class="lineNum">     387 </span>            :     /// \brief Constructor.
+<span class="lineNum">     388 </span>            :     ///
+<span class="lineNum">     389 </span>            :     /// \param message the message to store into the exception
+<span class="lineNum">     390 </span>            :     ///
+<span class="lineNum">     391 </span>            :     ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     392 </span>            :     explicit CharsetConversionError(const std::string&amp; message);
+<span class="lineNum">     393 </span>            : };
+<span class="lineNum">     394 </span>            : 
+<span class="lineNum">     395 </span>            : 
+<span class="lineNum">     396 </span>            : /// \brief Exception thrown when the requested charset is not supported by the
+<span class="lineNum">     397 </span>            : ///        DICOM standard.
+<a name="398"><span class="lineNum">     398 </span>            : ///</a>
+<span class="lineNum">     399 </span>            : ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     400 </span><span class="lineNoCov">          0 : class IMEBRA_API CharsetConversionNoTableError: public CharsetConversionError</span>
+<span class="lineNum">     401 </span>            : {
+<span class="lineNum">     402 </span>            : public:
+<span class="lineNum">     403 </span>            :     /// \brief Constructor.
+<span class="lineNum">     404 </span>            :     ///
+<span class="lineNum">     405 </span>            :     /// \param message the message to store into the exception
+<span class="lineNum">     406 </span>            :     ///
+<span class="lineNum">     407 </span>            :     ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     408 </span>            :     explicit CharsetConversionNoTableError(const std::string&amp; message);
+<span class="lineNum">     409 </span>            : };
+<span class="lineNum">     410 </span>            : 
+<span class="lineNum">     411 </span>            : 
+<span class="lineNum">     412 </span>            : /// \brief Exception thrown when the requested charset is not supported by
+<span class="lineNum">     413 </span>            : ///        the system.
+<a name="414"><span class="lineNum">     414 </span>            : ///</a>
+<span class="lineNum">     415 </span>            : ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     416 </span><span class="lineNoCov">          0 : class IMEBRA_API CharsetConversionNoSupportedTableError: public CharsetConversionError</span>
+<span class="lineNum">     417 </span>            : {
+<span class="lineNum">     418 </span>            : public:
+<span class="lineNum">     419 </span>            :     /// \brief Constructor.
+<span class="lineNum">     420 </span>            :     ///
+<span class="lineNum">     421 </span>            :     /// \param message the message to store into the exception
+<span class="lineNum">     422 </span>            :     ///
+<span class="lineNum">     423 </span>            :     ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     424 </span>            :     explicit CharsetConversionNoSupportedTableError(const std::string&amp; message);
+<span class="lineNum">     425 </span>            : };
+<span class="lineNum">     426 </span>            : 
+<span class="lineNum">     427 </span>            : 
+<span class="lineNum">     428 </span>            : /// \brief This exception is thrown when a conversion from an unicode string
+<span class="lineNum">     429 </span>            : ///        causes the dicom dataSet to change its default charset.
+<span class="lineNum">     430 </span>            : ///
+<span class="lineNum">     431 </span>            : /// For instace, the default charset is ISO IR 6 but a value written by the
+<span class="lineNum">     432 </span>            : /// application in one tag causes the default charset to switch to
+<span class="lineNum">     433 </span>            : /// ISO 2022 IR 100.
+<a name="434"><span class="lineNum">     434 </span>            : ///</a>
+<span class="lineNum">     435 </span>            : ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     436 </span><span class="lineNoCov">          0 : class IMEBRA_API CharsetListDiffDefaultError: public CharsetConversionError</span>
+<span class="lineNum">     437 </span>            : {
+<span class="lineNum">     438 </span>            : public:
+<span class="lineNum">     439 </span>            :     /// \brief Constructor.
+<span class="lineNum">     440 </span>            :     ///
+<span class="lineNum">     441 </span>            :     /// \param message the message to store into the exception
+<span class="lineNum">     442 </span>            :     ///
+<span class="lineNum">     443 </span>            :     ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     444 </span>            :     explicit CharsetListDiffDefaultError(const std::string&amp; message);
+<span class="lineNum">     445 </span>            : };
+<span class="lineNum">     446 </span>            : 
+<span class="lineNum">     447 </span>            : 
+<span class="lineNum">     448 </span>            : /// \brief This is the base class for the exceptions thrown by the codec derived classes.
+<a name="449"><span class="lineNum">     449 </span>            : ///</a>
+<span class="lineNum">     450 </span>            : ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     451 </span><span class="lineCov">         66 : class IMEBRA_API CodecError: public std::runtime_error</span>
+<span class="lineNum">     452 </span>            : {
+<span class="lineNum">     453 </span>            : public:
+<span class="lineNum">     454 </span>            :     /// \brief Constructor.
+<span class="lineNum">     455 </span>            :     ///
+<span class="lineNum">     456 </span>            :     /// \param message the message to store into the exception
+<span class="lineNum">     457 </span>            :     ///
+<span class="lineNum">     458 </span>            :     ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     459 </span>            :     explicit CodecError(const std::string&amp; message);
+<span class="lineNum">     460 </span>            : };
+<span class="lineNum">     461 </span>            : 
+<span class="lineNum">     462 </span>            : 
+<span class="lineNum">     463 </span>            : /// \brief This exception is thrown when the file being parsed is not valid
+<span class="lineNum">     464 </span>            : ///        for the codec.
+<a name="465"><span class="lineNum">     465 </span>            : ///</a>
+<span class="lineNum">     466 </span>            : ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     467 </span><span class="lineCov">         48 : class IMEBRA_API CodecWrongFormatError: public CodecError</span>
+<span class="lineNum">     468 </span>            : {
+<span class="lineNum">     469 </span>            : public:
+<span class="lineNum">     470 </span>            :     /// \brief Constructor.
+<span class="lineNum">     471 </span>            :     ///
+<span class="lineNum">     472 </span>            :     /// \param message the message to store into the exception
+<span class="lineNum">     473 </span>            :     ///
+<span class="lineNum">     474 </span>            :     ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     475 </span>            :     explicit CodecWrongFormatError(const std::string&amp; message);
+<span class="lineNum">     476 </span>            : };
+<span class="lineNum">     477 </span>            : 
+<span class="lineNum">     478 </span>            : 
+<span class="lineNum">     479 </span>            : /// \brief This exception is thrown when the file being parsed is corrupted.
+<a name="480"><span class="lineNum">     480 </span>            : ///</a>
+<span class="lineNum">     481 </span>            : ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     482 </span><span class="lineCov">         18 : class IMEBRA_API CodecCorruptedFileError: public CodecError</span>
+<span class="lineNum">     483 </span>            : {
+<span class="lineNum">     484 </span>            : public:
+<span class="lineNum">     485 </span>            :     /// \brief Constructor.
+<span class="lineNum">     486 </span>            :     ///
+<span class="lineNum">     487 </span>            :     /// \param message the message to store into the exception
+<span class="lineNum">     488 </span>            :     ///
+<span class="lineNum">     489 </span>            :     ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     490 </span>            :     explicit CodecCorruptedFileError(const std::string&amp; message);
+<span class="lineNum">     491 </span>            : };
+<span class="lineNum">     492 </span>            : 
+<span class="lineNum">     493 </span>            : 
+<span class="lineNum">     494 </span>            : /// \brief This exception is thrown when the transfer syntax is not recognized
+<span class="lineNum">     495 </span>            : ///        by the codec.
+<a name="496"><span class="lineNum">     496 </span>            : ///</a>
+<span class="lineNum">     497 </span>            : ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     498 </span><span class="lineNoCov">          0 : class IMEBRA_API CodecWrongTransferSyntaxError: public CodecError</span>
+<span class="lineNum">     499 </span>            : {
+<span class="lineNum">     500 </span>            : public:
+<span class="lineNum">     501 </span>            :     /// \brief Constructor.
+<span class="lineNum">     502 </span>            :     ///
+<span class="lineNum">     503 </span>            :     /// \param message the message to store into the exception
+<span class="lineNum">     504 </span>            :     ///
+<span class="lineNum">     505 </span>            :     ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     506 </span>            :     explicit CodecWrongTransferSyntaxError(const std::string&amp; message);
+<span class="lineNum">     507 </span>            : };
+<span class="lineNum">     508 </span>            : 
+<span class="lineNum">     509 </span>            : 
+<span class="lineNum">     510 </span>            : /// \brief This exception is thrown when the codec reads a file that contains
+<span class="lineNum">     511 </span>            : ///        an image that is too big according to the codecFactory settings.
+<span class="lineNum">     512 </span>            : ///
+<span class="lineNum">     513 </span>            : /// Consider using CodecFactory::setMaximumImageSize() to change the allowed
+<span class="lineNum">     514 </span>            : /// maximum image size.
+<a name="515"><span class="lineNum">     515 </span>            : ///</a>
+<span class="lineNum">     516 </span>            : ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     517 </span><span class="lineNoCov">          0 : class IMEBRA_API CodecImageTooBigError: public CodecError</span>
+<span class="lineNum">     518 </span>            : {
+<span class="lineNum">     519 </span>            : public:
+<span class="lineNum">     520 </span>            :     /// \brief Constructor.
+<span class="lineNum">     521 </span>            :     ///
+<span class="lineNum">     522 </span>            :     /// \param message the message to store into the exception
+<span class="lineNum">     523 </span>            :     ///
+<span class="lineNum">     524 </span>            :     ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     525 </span>            :     explicit CodecImageTooBigError(const std::string&amp; message);
+<span class="lineNum">     526 </span>            : };
+<span class="lineNum">     527 </span>            : 
+<span class="lineNum">     528 </span>            : 
+<span class="lineNum">     529 </span>            : 
+<span class="lineNum">     530 </span>            : /// \brief This exception is thrown when the codec is attempting to create a
+<span class="lineNum">     531 </span>            : ///        sequence with an incompatible data type.
+<a name="532"><span class="lineNum">     532 </span>            : ///</a>
+<span class="lineNum">     533 </span>            : ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     534 </span><span class="lineNoCov">          0 : class IMEBRA_API InvalidSequenceItemError: public CodecError</span>
+<span class="lineNum">     535 </span>            : {
+<span class="lineNum">     536 </span>            : public:
+<span class="lineNum">     537 </span>            :     /// \brief Constructor.
+<span class="lineNum">     538 </span>            :     ///
+<span class="lineNum">     539 </span>            :     /// \param message the message to store into the exception
+<span class="lineNum">     540 </span>            :     ///
+<span class="lineNum">     541 </span>            :     ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     542 </span>            :     explicit InvalidSequenceItemError(const std::string&amp; message);
+<span class="lineNum">     543 </span>            : };
+<span class="lineNum">     544 </span>            : 
+<span class="lineNum">     545 </span>            : 
+<span class="lineNum">     546 </span>            : /// \brief Base class for the exceptions thrown by the data handlers.
+<a name="547"><span class="lineNum">     547 </span>            : ///</a>
+<span class="lineNum">     548 </span>            : ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     549 </span><span class="lineCov">        396 : class IMEBRA_API DataHandlerError: public std::runtime_error</span>
+<span class="lineNum">     550 </span>            : {
+<span class="lineNum">     551 </span>            : public:
+<span class="lineNum">     552 </span>            :     /// \brief Constructor.
+<span class="lineNum">     553 </span>            :     ///
+<span class="lineNum">     554 </span>            :     /// \param message the message to store into the exception
+<span class="lineNum">     555 </span>            :     ///
+<span class="lineNum">     556 </span>            :     ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     557 </span>            :     explicit DataHandlerError(const std::string&amp; message);
+<span class="lineNum">     558 </span>            : };
+<span class="lineNum">     559 </span>            : 
+<span class="lineNum">     560 </span>            : 
+<span class="lineNum">     561 </span>            : /// \brief This exception is thrown when a data handler cannot convert a value from
+<span class="lineNum">     562 </span>            : ///        one data type to a different data type.
+<a name="563"><span class="lineNum">     563 </span>            : ///</a>
+<span class="lineNum">     564 </span>            : ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     565 </span><span class="lineCov">        354 : class IMEBRA_API DataHandlerConversionError: public DataHandlerError</span>
+<span class="lineNum">     566 </span>            : {
+<span class="lineNum">     567 </span>            : public:
+<span class="lineNum">     568 </span>            :     /// \brief Constructor.
+<span class="lineNum">     569 </span>            :     ///
+<span class="lineNum">     570 </span>            :     /// \param message the message to store into the exception
+<span class="lineNum">     571 </span>            :     ///
+<span class="lineNum">     572 </span>            :     ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     573 </span>            :     explicit DataHandlerConversionError(const std::string&amp; message);
+<span class="lineNum">     574 </span>            : };
+<span class="lineNum">     575 </span>            : 
+<span class="lineNum">     576 </span>            : 
+<span class="lineNum">     577 </span>            : /// \brief This exception is thrown when the data handler's content is corrupted.
+<a name="578"><span class="lineNum">     578 </span>            : ///</a>
+<span class="lineNum">     579 </span>            : ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     580 </span><span class="lineNoCov">          0 : class IMEBRA_API DataHandlerCorruptedBufferError: public DataHandlerError</span>
+<span class="lineNum">     581 </span>            : {
+<span class="lineNum">     582 </span>            : public:
+<span class="lineNum">     583 </span>            :     /// \brief Constructor.
+<span class="lineNum">     584 </span>            :     ///
+<span class="lineNum">     585 </span>            :     /// \param message the message to store into the exception
+<span class="lineNum">     586 </span>            :     ///
+<span class="lineNum">     587 </span>            :     ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     588 </span>            :     explicit DataHandlerCorruptedBufferError(const std::string&amp; message);
+<span class="lineNum">     589 </span>            : };
+<span class="lineNum">     590 </span>            : 
+<span class="lineNum">     591 </span>            : 
+<span class="lineNum">     592 </span>            : /// \brief This exception is thrown when the client tries to write invalid data
+<span class="lineNum">     593 </span>            : ///        into a data handler.
+<a name="594"><span class="lineNum">     594 </span>            : ///</a>
+<span class="lineNum">     595 </span>            : ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     596 </span><span class="lineCov">         42 : class IMEBRA_API DataHandlerInvalidDataError: public DataHandlerError</span>
+<span class="lineNum">     597 </span>            : {
+<span class="lineNum">     598 </span>            : public:
+<span class="lineNum">     599 </span>            :     /// \brief Constructor.
+<span class="lineNum">     600 </span>            :     ///
+<span class="lineNum">     601 </span>            :     /// \param message the message to store into the exception
+<span class="lineNum">     602 </span>            :     ///
+<span class="lineNum">     603 </span>            :     ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     604 </span>            :     explicit DataHandlerInvalidDataError(const std::string&amp; message);
+<span class="lineNum">     605 </span>            : };
+<span class="lineNum">     606 </span>            : 
+<span class="lineNum">     607 </span>            : /// \brief This is the base class for the exceptions thrown by the dataSet.
+<a name="608"><span class="lineNum">     608 </span>            : ///</a>
+<span class="lineNum">     609 </span>            : ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     610 </span><span class="lineNoCov">          0 : class IMEBRA_API DataSetError: public std::runtime_error</span>
+<span class="lineNum">     611 </span>            : {
+<span class="lineNum">     612 </span>            : public:
+<span class="lineNum">     613 </span>            :     /// \brief Constructor.
+<span class="lineNum">     614 </span>            :     ///
+<span class="lineNum">     615 </span>            :     /// \param message the message to store into the exception
+<span class="lineNum">     616 </span>            :     ///
+<span class="lineNum">     617 </span>            :     ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     618 </span>            :     explicit DataSetError(const std::string&amp; message);
+<span class="lineNum">     619 </span>            : };
+<span class="lineNum">     620 </span>            : 
+<span class="lineNum">     621 </span>            : 
+<span class="lineNum">     622 </span>            : /// \brief This exception is thrown when the application is trying to store an
+<span class="lineNum">     623 </span>            : ///        image in the dataSet but the dataSet already stores other images
+<span class="lineNum">     624 </span>            : ///        that have different attributes.
+<a name="625"><span class="lineNum">     625 </span>            : ///</a>
+<span class="lineNum">     626 </span>            : ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     627 </span><span class="lineNoCov">          0 : class IMEBRA_API DataSetDifferentFormatError: public DataSetError</span>
+<span class="lineNum">     628 </span>            : {
+<span class="lineNum">     629 </span>            : public:
+<span class="lineNum">     630 </span>            :     /// \brief Constructor.
+<span class="lineNum">     631 </span>            :     ///
+<span class="lineNum">     632 </span>            :     /// \param message the message to store into the exception
+<span class="lineNum">     633 </span>            :     ///
+<span class="lineNum">     634 </span>            :     ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     635 </span>            :     explicit DataSetDifferentFormatError(const std::string&amp; message);
+<span class="lineNum">     636 </span>            : };
+<span class="lineNum">     637 </span>            : 
+<span class="lineNum">     638 </span>            : 
+<span class="lineNum">     639 </span>            : /// \brief This exception is thrown when an unknown transfer syntax is being
+<span class="lineNum">     640 </span>            : ///        used while reading or writing a stream.
+<a name="641"><span class="lineNum">     641 </span>            : ///</a>
+<span class="lineNum">     642 </span>            : ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     643 </span><span class="lineNoCov">          0 : class IMEBRA_API DataSetUnknownTransferSyntaxError: public DataSetError</span>
+<span class="lineNum">     644 </span>            : {
+<span class="lineNum">     645 </span>            : public:
+<span class="lineNum">     646 </span>            :     /// \brief Constructor.
+<span class="lineNum">     647 </span>            :     ///
+<span class="lineNum">     648 </span>            :     /// \param message the message to store into the exception
+<span class="lineNum">     649 </span>            :     ///
+<span class="lineNum">     650 </span>            :     ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     651 </span>            :     explicit DataSetUnknownTransferSyntaxError(const std::string&amp; message);
+<span class="lineNum">     652 </span>            : };
+<span class="lineNum">     653 </span>            : 
+<span class="lineNum">     654 </span>            : 
+<span class="lineNum">     655 </span>            : /// \brief This exception is thrown when the application is storing several
+<span class="lineNum">     656 </span>            : ///        images in the dataSet but doesn't store them in the right order.
+<span class="lineNum">     657 </span>            : ///
+<span class="lineNum">     658 </span>            : /// The application must store the images following the frame order,
+<span class="lineNum">     659 </span>            : /// without skipping frames.
+<a name="660"><span class="lineNum">     660 </span>            : ///</a>
+<span class="lineNum">     661 </span>            : ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     662 </span><span class="lineNoCov">          0 : class IMEBRA_API DataSetWrongFrameError: public DataSetError</span>
+<span class="lineNum">     663 </span>            : {
+<span class="lineNum">     664 </span>            : public:
+<span class="lineNum">     665 </span>            :     /// \brief Constructor.
+<span class="lineNum">     666 </span>            :     ///
+<span class="lineNum">     667 </span>            :     /// \param message the message to store into the exception
+<span class="lineNum">     668 </span>            :     ///
+<span class="lineNum">     669 </span>            :     ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     670 </span>            :     explicit DataSetWrongFrameError(const std::string&amp; message);
+<span class="lineNum">     671 </span>            : };
+<span class="lineNum">     672 </span>            : 
+<span class="lineNum">     673 </span>            : 
+<span class="lineNum">     674 </span>            : /// \brief This exception is thrown when the application is trying to store
+<span class="lineNum">     675 </span>            : ///        an image in an old Dicom format.
+<span class="lineNum">     676 </span>            : ///
+<span class="lineNum">     677 </span>            : /// The application cannot store images in old Dicom formats (before Dicom3).
+<a name="678"><span class="lineNum">     678 </span>            : ///</a>
+<span class="lineNum">     679 </span>            : ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     680 </span><span class="lineNoCov">          0 : class IMEBRA_API DataSetOldFormatError: public DataSetError</span>
+<span class="lineNum">     681 </span>            : {
+<span class="lineNum">     682 </span>            : public:
+<span class="lineNum">     683 </span>            :     /// \brief Constructor.
+<span class="lineNum">     684 </span>            :     ///
+<span class="lineNum">     685 </span>            :     /// \param message the message to store into the exception
+<span class="lineNum">     686 </span>            :     ///
+<span class="lineNum">     687 </span>            :     ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     688 </span>            :     explicit DataSetOldFormatError(const std::string&amp; message);
+<span class="lineNum">     689 </span>            : };
+<span class="lineNum">     690 </span>            : 
+<span class="lineNum">     691 </span>            : 
+<span class="lineNum">     692 </span>            : /// \brief This exception is thrown when the an image that doesn't exist is
+<span class="lineNum">     693 </span>            : ///        requested.
+<a name="694"><span class="lineNum">     694 </span>            : ///</a>
+<span class="lineNum">     695 </span>            : ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     696 </span><span class="lineNoCov">          0 : class IMEBRA_API DataSetImageDoesntExistError: public DataSetError</span>
+<span class="lineNum">     697 </span>            : {
+<span class="lineNum">     698 </span>            : public:
+<span class="lineNum">     699 </span>            :     /// \brief Constructor.
+<span class="lineNum">     700 </span>            :     ///
+<span class="lineNum">     701 </span>            :     /// \param message the message to store into the exception
+<span class="lineNum">     702 </span>            :     ///
+<span class="lineNum">     703 </span>            :     ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     704 </span>            :     explicit DataSetImageDoesntExistError(const std::string&amp; message);
+<span class="lineNum">     705 </span>            : };
+<span class="lineNum">     706 </span>            : 
+<span class="lineNum">     707 </span>            : /// \brief This exception is thrown when the the client tries to store a
+<span class="lineNum">     708 </span>            : ///        palette color image into the dataset.
+<a name="709"><span class="lineNum">     709 </span>            : ///</a>
+<span class="lineNum">     710 </span>            : ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     711 </span><span class="lineNoCov">          0 : class IMEBRA_API DataSetImagePaletteColorIsReadOnly: public DataSetError</span>
+<span class="lineNum">     712 </span>            : {
+<span class="lineNum">     713 </span>            : public:
+<span class="lineNum">     714 </span>            :     /// \brief Constructor.
+<span class="lineNum">     715 </span>            :     ///
+<span class="lineNum">     716 </span>            :     /// \param message the message to store into the exception
+<span class="lineNum">     717 </span>            :     ///
+<span class="lineNum">     718 </span>            :     ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     719 </span>            :     explicit DataSetImagePaletteColorIsReadOnly(const std::string&amp; message);
+<span class="lineNum">     720 </span>            : };
+<span class="lineNum">     721 </span>            : 
+<span class="lineNum">     722 </span>            : /// \brief This exception is thrown when the basic offset table is corrupted.
+<a name="723"><span class="lineNum">     723 </span>            : ///</a>
+<span class="lineNum">     724 </span>            : ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     725 </span><span class="lineNoCov">          0 : class IMEBRA_API DataSetCorruptedOffsetTableError: public DataSetError</span>
+<span class="lineNum">     726 </span>            : {
+<span class="lineNum">     727 </span>            : public:
+<span class="lineNum">     728 </span>            :     /// \brief Constructor.
+<span class="lineNum">     729 </span>            :     ///
+<span class="lineNum">     730 </span>            :     /// \param message the message to store into the exception
+<span class="lineNum">     731 </span>            :     ///
+<span class="lineNum">     732 </span>            :     ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     733 </span>            :     explicit DataSetCorruptedOffsetTableError(const std::string&amp; message);
+<span class="lineNum">     734 </span>            : };
+<span class="lineNum">     735 </span>            : 
+<span class="lineNum">     736 </span>            : 
+<span class="lineNum">     737 </span>            : /// \brief Base class from which the exceptions thrown by DicomDirEntry and
+<span class="lineNum">     738 </span>            : ///        DicomDir classes.
+<span class="lineNum">     739 </span>            : ///
+<a name="740"><span class="lineNum">     740 </span>            : ///////////////////////////////////////////////////////////////////////////////</a>
+<span class="lineNum">     741 </span>            : ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     742 </span><span class="lineNoCov">          0 : class IMEBRA_API DicomDirError: public std::runtime_error</span>
+<span class="lineNum">     743 </span>            : {
+<span class="lineNum">     744 </span>            : public:
+<span class="lineNum">     745 </span>            :     /// \brief Constructor.
+<span class="lineNum">     746 </span>            :     ///
+<span class="lineNum">     747 </span>            :     /// \param message the message to store into the exception
+<span class="lineNum">     748 </span>            :     ///
+<span class="lineNum">     749 </span>            :     ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     750 </span>            :     explicit DicomDirError(const std::string&amp; message);
+<span class="lineNum">     751 </span>            : };
+<span class="lineNum">     752 </span>            : 
+<span class="lineNum">     753 </span>            : 
+<span class="lineNum">     754 </span>            : /// \brief This exception is thrown when a call to
+<span class="lineNum">     755 </span>            : ///        DicomDir::setFirstRootRecord() or DicomDirEntry::setNextRecord()
+<span class="lineNum">     756 </span>            : ///        or DicomDirEntry::setFirstChildRecord() causes a circular reference
+<span class="lineNum">     757 </span>            : ///        between DicomDirEntry objects.
+<a name="758"><span class="lineNum">     758 </span>            : ///</a>
+<span class="lineNum">     759 </span>            : ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     760 </span><span class="lineNoCov">          0 : class IMEBRA_API DicomDirCircularReferenceError: public DicomDirError</span>
+<span class="lineNum">     761 </span>            : {
+<span class="lineNum">     762 </span>            : public:
+<span class="lineNum">     763 </span>            :     /// \brief Constructor.
+<span class="lineNum">     764 </span>            :     ///
+<span class="lineNum">     765 </span>            :     /// \param message the message to store into the exception
+<span class="lineNum">     766 </span>            :     ///
+<span class="lineNum">     767 </span>            :     ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     768 </span>            :     explicit DicomDirCircularReferenceError(const std::string&amp; message);
+<span class="lineNum">     769 </span>            : };
+<span class="lineNum">     770 </span>            : 
+<span class="lineNum">     771 </span>            : 
+<span class="lineNum">     772 </span>            : /// \brief Exception thrown when an unknown record type
+<span class="lineNum">     773 </span>            : ///        is detected in a DicomDirEntry.
+<a name="774"><span class="lineNum">     774 </span>            : ///</a>
+<span class="lineNum">     775 </span>            : ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     776 </span><span class="lineNoCov">          0 : class IMEBRA_API DicomDirUnknownDirectoryRecordTypeError: public DicomDirError</span>
+<span class="lineNum">     777 </span>            : {
+<span class="lineNum">     778 </span>            : public:
+<span class="lineNum">     779 </span>            :     /// \brief Constructor.
+<span class="lineNum">     780 </span>            :     ///
+<span class="lineNum">     781 </span>            :     /// \param message the message to store into the exception
+<span class="lineNum">     782 </span>            :     ///
+<span class="lineNum">     783 </span>            :     ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     784 </span>            :     explicit DicomDirUnknownDirectoryRecordTypeError(const std::string&amp; message);
+<span class="lineNum">     785 </span>            : };
+<span class="lineNum">     786 </span>            : 
+<span class="lineNum">     787 </span>            : 
+<span class="lineNum">     788 </span>            : /// \brief Base class for the exceptions thrown by the Huffman codec.
+<a name="789"><span class="lineNum">     789 </span>            : ///</a>
+<span class="lineNum">     790 </span>            : ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     791 </span><span class="lineCov">         18 : class IMEBRA_API HuffmanError: public std::runtime_error</span>
+<span class="lineNum">     792 </span>            : {
+<span class="lineNum">     793 </span>            : public:
+<span class="lineNum">     794 </span>            :     /// \brief Constructor.
+<span class="lineNum">     795 </span>            :     ///
+<span class="lineNum">     796 </span>            :     /// \param message the message to store into the exception
+<span class="lineNum">     797 </span>            :     ///
+<span class="lineNum">     798 </span>            :     ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     799 </span>            :     explicit HuffmanError(const std::string&amp; message);
+<span class="lineNum">     800 </span>            : };
+<span class="lineNum">     801 </span>            : 
+<span class="lineNum">     802 </span>            : 
+<span class="lineNum">     803 </span>            : /// \brief Exception thrown when the Huffman codec cannot create the Huffman
+<span class="lineNum">     804 </span>            : ///        codes.
+<a name="805"><span class="lineNum">     805 </span>            : ///</a>
+<span class="lineNum">     806 </span>            : ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     807 </span><span class="lineCov">          9 : class IMEBRA_API HuffmanCreateTableError: public HuffmanError</span>
+<span class="lineNum">     808 </span>            : {
+<span class="lineNum">     809 </span>            : public:
+<span class="lineNum">     810 </span>            :     /// \brief Constructor.
+<span class="lineNum">     811 </span>            :     ///
+<span class="lineNum">     812 </span>            :     /// \param message the message to store into the exception
+<span class="lineNum">     813 </span>            :     ///
+<span class="lineNum">     814 </span>            :     ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     815 </span>            :     explicit HuffmanCreateTableError(const std::string&amp; message);
+<span class="lineNum">     816 </span>            : };
+<span class="lineNum">     817 </span>            : 
+<span class="lineNum">     818 </span>            : 
+<span class="lineNum">     819 </span>            : /// \brief Exception thrown when the Huffman codec tries to read an invalid
+<span class="lineNum">     820 </span>            : ///        code.
+<a name="821"><span class="lineNum">     821 </span>            : ///</a>
+<span class="lineNum">     822 </span>            : ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     823 </span><span class="lineCov">          9 : class IMEBRA_API HuffmanReadError : public HuffmanError</span>
+<span class="lineNum">     824 </span>            : {
+<span class="lineNum">     825 </span>            : public:
+<span class="lineNum">     826 </span>            :     /// \brief Constructor.
+<span class="lineNum">     827 </span>            :     ///
+<span class="lineNum">     828 </span>            :     /// \param message the message to store into the exception
+<span class="lineNum">     829 </span>            :     ///
+<span class="lineNum">     830 </span>            :     ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     831 </span>            :     explicit HuffmanReadError(const std::string&amp; message);
+<span class="lineNum">     832 </span>            : };
+<span class="lineNum">     833 </span>            : 
+<span class="lineNum">     834 </span>            : 
+<span class="lineNum">     835 </span>            : /// \brief Exception thrown when the Huffman codec tries to write an invalid
+<span class="lineNum">     836 </span>            : ///        code.
+<a name="837"><span class="lineNum">     837 </span>            : ///</a>
+<span class="lineNum">     838 </span>            : ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     839 </span><span class="lineNoCov">          0 : class IMEBRA_API HuffmanWriteError : public HuffmanError</span>
+<span class="lineNum">     840 </span>            : {
+<span class="lineNum">     841 </span>            : public:
+<span class="lineNum">     842 </span>            :     /// \brief Constructor.
+<span class="lineNum">     843 </span>            :     ///
+<span class="lineNum">     844 </span>            :     /// \param message the message to store into the exception
+<span class="lineNum">     845 </span>            :     ///
+<span class="lineNum">     846 </span>            :     ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     847 </span>            :     explicit HuffmanWriteError(const std::string&amp; message);
+<span class="lineNum">     848 </span>            : };
+<span class="lineNum">     849 </span>            : 
+<span class="lineNum">     850 </span>            : 
+<span class="lineNum">     851 </span>            : /// \brief This is the base class for the exceptions thrown by the Image class.
+<a name="852"><span class="lineNum">     852 </span>            : ///</a>
+<span class="lineNum">     853 </span>            : ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     854 </span><span class="lineNoCov">          0 : class IMEBRA_API ImageError: public std::runtime_error</span>
+<span class="lineNum">     855 </span>            : {
+<span class="lineNum">     856 </span>            : public:
+<span class="lineNum">     857 </span>            :     /// \brief Constructor.
+<span class="lineNum">     858 </span>            :     ///
+<span class="lineNum">     859 </span>            :     /// \param message the message to store into the exception
+<span class="lineNum">     860 </span>            :     ///
+<span class="lineNum">     861 </span>            :     ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     862 </span>            :     explicit ImageError(const std::string&amp; message);
+<span class="lineNum">     863 </span>            : };
+<span class="lineNum">     864 </span>            : 
+<span class="lineNum">     865 </span>            : /// \brief This exception is thrown when an unknown depth is specified as a
+<span class="lineNum">     866 </span>            : ///        parameter.
+<a name="867"><span class="lineNum">     867 </span>            : ///</a>
+<span class="lineNum">     868 </span>            : ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     869 </span><span class="lineNoCov">          0 : class IMEBRA_API ImageUnknownDepthError: public ImageError</span>
+<span class="lineNum">     870 </span>            : {
+<span class="lineNum">     871 </span>            : public:
+<span class="lineNum">     872 </span>            :     /// \brief Constructor.
+<span class="lineNum">     873 </span>            :     ///
+<span class="lineNum">     874 </span>            :     /// \param message the message to store into the exception
+<span class="lineNum">     875 </span>            :     ///
+<span class="lineNum">     876 </span>            :     ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     877 </span>            :     explicit ImageUnknownDepthError(const std::string&amp; message);
+<span class="lineNum">     878 </span>            : };
+<span class="lineNum">     879 </span>            : 
+<span class="lineNum">     880 </span>            : 
+<span class="lineNum">     881 </span>            : /// \brief This exception is thrown when an unknown color space is specified
+<span class="lineNum">     882 </span>            : ///        in the function create().
+<a name="883"><span class="lineNum">     883 </span>            : ///</a>
+<span class="lineNum">     884 </span>            : ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     885 </span><span class="lineNoCov">          0 : class IMEBRA_API ImageUnknownColorSpaceError: public ImageError</span>
+<span class="lineNum">     886 </span>            : {
+<span class="lineNum">     887 </span>            : public:
+<span class="lineNum">     888 </span>            :     /// \brief Constructor.
+<span class="lineNum">     889 </span>            :     ///
+<span class="lineNum">     890 </span>            :     /// \param message the message to store into the exception
+<span class="lineNum">     891 </span>            :     ///
+<span class="lineNum">     892 </span>            :     ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     893 </span>            :     explicit ImageUnknownColorSpaceError(const std::string&amp; message);
+<span class="lineNum">     894 </span>            : };
+<span class="lineNum">     895 </span>            : 
+<span class="lineNum">     896 </span>            : 
+<span class="lineNum">     897 </span>            : /// \brief This exception is thrown when an invalid size in pixels is
+<span class="lineNum">     898 </span>            : ///        specified in the Image constructor.
+<a name="899"><span class="lineNum">     899 </span>            : ///</a>
+<span class="lineNum">     900 </span>            : ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     901 </span><span class="lineNoCov">          0 : class IMEBRA_API ImageInvalidSizeError: public ImageError</span>
+<span class="lineNum">     902 </span>            : {
+<span class="lineNum">     903 </span>            : public:
+<span class="lineNum">     904 </span>            :     /// \brief Constructor.
+<span class="lineNum">     905 </span>            :     ///
+<span class="lineNum">     906 </span>            :     /// \param message the message to store into the exception
+<span class="lineNum">     907 </span>            :     ///
+<span class="lineNum">     908 </span>            :     ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     909 </span>            :     explicit ImageInvalidSizeError(const std::string&amp; message);
+<span class="lineNum">     910 </span>            : };
+<span class="lineNum">     911 </span>            : 
+<span class="lineNum">     912 </span>            : 
+<span class="lineNum">     913 </span>            : /// \brief Base class for the exceptions thrown by the transforms.
+<a name="914"><span class="lineNum">     914 </span>            : ///</a>
+<span class="lineNum">     915 </span>            : ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     916 </span><span class="lineNoCov">          0 : class IMEBRA_API TransformError: public std::runtime_error</span>
+<span class="lineNum">     917 </span>            : {
+<span class="lineNum">     918 </span>            : public:
+<span class="lineNum">     919 </span>            :     /// \brief Constructor.
+<span class="lineNum">     920 </span>            :     ///
+<span class="lineNum">     921 </span>            :     /// \param message the message to store into the exception
+<span class="lineNum">     922 </span>            :     ///
+<span class="lineNum">     923 </span>            :     ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     924 </span>            :     explicit TransformError(const std::string&amp; message);
+<span class="lineNum">     925 </span>            : };
+<span class="lineNum">     926 </span>            : 
+<span class="lineNum">     927 </span>            : /// \brief Exception thrown when the image areas to be processed are out
+<span class="lineNum">     928 </span>            : ///        of bounds.
+<a name="929"><span class="lineNum">     929 </span>            : ///</a>
+<span class="lineNum">     930 </span>            : ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     931 </span><span class="lineNoCov">          0 : class IMEBRA_API TransformInvalidAreaError: public TransformError</span>
+<span class="lineNum">     932 </span>            : {
+<span class="lineNum">     933 </span>            : public:
+<span class="lineNum">     934 </span>            :     /// \brief Constructor.
+<span class="lineNum">     935 </span>            :     ///
+<span class="lineNum">     936 </span>            :     /// \param message the message to store into the exception
+<span class="lineNum">     937 </span>            :     ///
+<span class="lineNum">     938 </span>            :     ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     939 </span>            :     explicit TransformInvalidAreaError(const std::string&amp; message);
+<span class="lineNum">     940 </span>            : };
+<span class="lineNum">     941 </span>            : 
+<span class="lineNum">     942 </span>            : 
+<span class="lineNum">     943 </span>            : /// \brief Exception thrown when a Transform cannot process images with
+<span class="lineNum">     944 </span>            : ///        different high bit.
+<a name="945"><span class="lineNum">     945 </span>            : ///</a>
+<span class="lineNum">     946 </span>            : ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     947 </span><span class="lineNoCov">          0 : class IMEBRA_API TransformDifferentHighBitError: public TransformError</span>
+<span class="lineNum">     948 </span>            : {
+<span class="lineNum">     949 </span>            : public:
+<span class="lineNum">     950 </span>            :     /// \brief Constructor.
+<span class="lineNum">     951 </span>            :     ///
+<span class="lineNum">     952 </span>            :     /// \param message the message to store into the exception
+<span class="lineNum">     953 </span>            :     ///
+<span class="lineNum">     954 </span>            :     ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     955 </span>            :     explicit TransformDifferentHighBitError(const std::string&amp; message);
+<span class="lineNum">     956 </span>            : };
+<span class="lineNum">     957 </span>            : 
+<span class="lineNum">     958 </span>            : 
+<span class="lineNum">     959 </span>            : /// \brief This is the base class for the exceptions thrown by
+<span class="lineNum">     960 </span>            : ///        the color transform classes.
+<a name="961"><span class="lineNum">     961 </span>            : ///</a>
+<span class="lineNum">     962 </span>            : ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     963 </span><span class="lineNoCov">          0 : class IMEBRA_API ColorTransformError: public TransformError</span>
+<span class="lineNum">     964 </span>            : {
+<span class="lineNum">     965 </span>            : public:
+<span class="lineNum">     966 </span>            :     /// \brief Constructor.
+<span class="lineNum">     967 </span>            :     ///
+<span class="lineNum">     968 </span>            :     /// \param message the message to store into the exception
+<span class="lineNum">     969 </span>            :     ///
+<span class="lineNum">     970 </span>            :     ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     971 </span>            :     explicit ColorTransformError(const std::string&amp; message);
+<span class="lineNum">     972 </span>            : };
+<span class="lineNum">     973 </span>            : 
+<span class="lineNum">     974 </span>            : 
+<span class="lineNum">     975 </span>            : /// \brief This exception is thrown when a color transform must convert between
+<span class="lineNum">     976 </span>            : ///        two color spaces that it does not support.
+<a name="977"><span class="lineNum">     977 </span>            : ///</a>
+<span class="lineNum">     978 </span>            : ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     979 </span><span class="lineNoCov">          0 : class IMEBRA_API ColorTransformWrongColorSpaceError: public ColorTransformError</span>
+<span class="lineNum">     980 </span>            : {
+<span class="lineNum">     981 </span>            : public:
+<span class="lineNum">     982 </span>            :     /// \brief Constructor.
+<span class="lineNum">     983 </span>            :     ///
+<span class="lineNum">     984 </span>            :     /// \param message the message to store into the exception
+<span class="lineNum">     985 </span>            :     ///
+<span class="lineNum">     986 </span>            :     ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     987 </span>            :     explicit ColorTransformWrongColorSpaceError(const std::string&amp; message);
+<span class="lineNum">     988 </span>            : };
+<span class="lineNum">     989 </span>            : 
+<span class="lineNum">     990 </span>            : 
+<span class="lineNum">     991 </span>            : /// \brief This is the base class for the exceptions thrown by
+<span class="lineNum">     992 </span>            : ///        colorTransformsFactory.
+<a name="993"><span class="lineNum">     993 </span>            : ///</a>
+<span class="lineNum">     994 </span>            : ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">     995 </span><span class="lineNoCov">          0 : class IMEBRA_API ColorTransformsFactoryError: public TransformError</span>
+<span class="lineNum">     996 </span>            : {
+<span class="lineNum">     997 </span>            : public:
+<span class="lineNum">     998 </span>            :     /// \brief Constructor.
+<span class="lineNum">     999 </span>            :     ///
+<span class="lineNum">    1000 </span>            :     /// \param message the message to store into the exception
+<span class="lineNum">    1001 </span>            :     ///
+<span class="lineNum">    1002 </span>            :     ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">    1003 </span>            :     explicit ColorTransformsFactoryError(const std::string&amp; message);
+<span class="lineNum">    1004 </span>            : };
+<span class="lineNum">    1005 </span>            : 
+<span class="lineNum">    1006 </span>            : 
+<span class="lineNum">    1007 </span>            : /// \brief This exception is thrown by the function
+<span class="lineNum">    1008 </span>            : ///        ColorTransformsFactory::getTransform() when it cannot find any
+<span class="lineNum">    1009 </span>            : ///        transform that can convert the specified color spaces.
+<a name="1010"><span class="lineNum">    1010 </span>            : ///</a>
+<span class="lineNum">    1011 </span>            : ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">    1012 </span><span class="lineNoCov">          0 : class IMEBRA_API ColorTransformsFactoryNoTransformError: public ColorTransformsFactoryError</span>
+<span class="lineNum">    1013 </span>            : {
+<span class="lineNum">    1014 </span>            : public:
+<span class="lineNum">    1015 </span>            :     /// \brief Constructor.
+<span class="lineNum">    1016 </span>            :     ///
+<span class="lineNum">    1017 </span>            :     /// \param message the message to store into the exception
+<span class="lineNum">    1018 </span>            :     ///
+<span class="lineNum">    1019 </span>            :     ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">    1020 </span>            :     explicit ColorTransformsFactoryNoTransformError(const std::string&amp; message);
+<span class="lineNum">    1021 </span>            : };
+<a name="1022"><span class="lineNum">    1022 </span>            : </a>
+<span class="lineNum">    1023 </span>            : 
+<span class="lineNum">    1024 </span><span class="lineNoCov">          0 : class IMEBRA_API TransformHighBitError: public TransformError</span>
+<span class="lineNum">    1025 </span>            : {
+<span class="lineNum">    1026 </span>            : public:
+<span class="lineNum">    1027 </span>            :     /// \brief Constructor.
+<span class="lineNum">    1028 </span>            :     ///
+<span class="lineNum">    1029 </span>            :     /// \param message the message to store into the exception
+<span class="lineNum">    1030 </span>            :     ///
+<span class="lineNum">    1031 </span>            :     ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">    1032 </span>            :     explicit TransformHighBitError(const std::string&amp; message);
+<span class="lineNum">    1033 </span>            : };
+<a name="1034"><span class="lineNum">    1034 </span>            : </a>
+<span class="lineNum">    1035 </span>            : 
+<span class="lineNum">    1036 </span><span class="lineNoCov">          0 : class IMEBRA_API TransformHighBitDifferentColorSpacesError: public TransformHighBitError</span>
+<span class="lineNum">    1037 </span>            : {
+<span class="lineNum">    1038 </span>            : public:
+<span class="lineNum">    1039 </span>            :     /// \brief Constructor.
+<span class="lineNum">    1040 </span>            :     ///
+<span class="lineNum">    1041 </span>            :     /// \param message the message to store into the exception
+<span class="lineNum">    1042 </span>            :     ///
+<span class="lineNum">    1043 </span>            :     ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">    1044 </span>            :     explicit TransformHighBitDifferentColorSpacesError(const std::string&amp; message);
+<span class="lineNum">    1045 </span>            : };
+<span class="lineNum">    1046 </span>            : 
+<span class="lineNum">    1047 </span>            : 
+<span class="lineNum">    1048 </span>            : /// \brief Exception thrown when an attempt to read past the end of the file
+<span class="lineNum">    1049 </span>            : ///        is made.
+<a name="1050"><span class="lineNum">    1050 </span>            : ///</a>
+<span class="lineNum">    1051 </span>            : ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">    1052 </span><span class="lineCov">        717 : class IMEBRA_API StreamEOFError : public StreamError</span>
+<span class="lineNum">    1053 </span>            : {
+<span class="lineNum">    1054 </span>            : public:
+<span class="lineNum">    1055 </span>            :     /// \brief Constructor.
+<span class="lineNum">    1056 </span>            :     ///
+<span class="lineNum">    1057 </span>            :     /// \param message the message to store into the exception
+<span class="lineNum">    1058 </span>            :     ///
+<span class="lineNum">    1059 </span>            :     ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">    1060 </span>            :     explicit StreamEOFError(const std::string&amp; message);
+<span class="lineNum">    1061 </span>            : };
+<span class="lineNum">    1062 </span>            : 
+<span class="lineNum">    1063 </span>            : 
+<span class="lineNum">    1064 </span>            : /// \brief Exception thrown when a stream has been closed
+<a name="1065"><span class="lineNum">    1065 </span>            : ///</a>
+<span class="lineNum">    1066 </span>            : ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">    1067 </span><span class="lineCov">        240 : class IMEBRA_API StreamClosedError: public StreamEOFError</span>
+<span class="lineNum">    1068 </span>            : {
+<span class="lineNum">    1069 </span>            : public:
+<span class="lineNum">    1070 </span>            :     /// \brief Constructor.
+<span class="lineNum">    1071 </span>            :     ///
+<span class="lineNum">    1072 </span>            :     /// \param message the message to store into the exception
+<span class="lineNum">    1073 </span>            :     ///
+<span class="lineNum">    1074 </span>            :     ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">    1075 </span>            :     explicit StreamClosedError(const std::string&amp; message);
+<span class="lineNum">    1076 </span>            : };
+<span class="lineNum">    1077 </span>            : 
+<span class="lineNum">    1078 </span>            : 
+<span class="lineNum">    1079 </span>            : /// \brief Exception thrown when a jpeg tag is found but wasn't expected.
+<a name="1080"><span class="lineNum">    1080 </span>            : ///</a>
+<span class="lineNum">    1081 </span>            : ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">    1082 </span><span class="lineNoCov">          0 : class IMEBRA_API StreamJpegTagInStreamError : public StreamError</span>
+<span class="lineNum">    1083 </span>            : {
+<span class="lineNum">    1084 </span>            : public:
+<span class="lineNum">    1085 </span>            :     /// \brief Constructor.
+<span class="lineNum">    1086 </span>            :     ///
+<span class="lineNum">    1087 </span>            :     /// \param message the message to store into the exception
+<span class="lineNum">    1088 </span>            :     ///
+<span class="lineNum">    1089 </span>            :     ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">    1090 </span>            :     explicit StreamJpegTagInStreamError(const std::string&amp; message);
+<span class="lineNum">    1091 </span>            : };
+<span class="lineNum">    1092 </span>            : 
+<span class="lineNum">    1093 </span>            : 
+<span class="lineNum">    1094 </span>            : /// \brief This exception is thrown by modalityVOILUT when the images passed
+<span class="lineNum">    1095 </span>            : ///        to the transform are not monochromatic.
+<a name="1096"><span class="lineNum">    1096 </span>            : ///</a>
+<span class="lineNum">    1097 </span>            : ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">    1098 </span><span class="lineNoCov">          0 : class IMEBRA_API ModalityVOILUTError: public TransformError</span>
+<span class="lineNum">    1099 </span>            : {
+<span class="lineNum">    1100 </span>            : public:
+<span class="lineNum">    1101 </span>            :     /// \brief Constructor.
+<span class="lineNum">    1102 </span>            :     ///
+<span class="lineNum">    1103 </span>            :     /// \param message the message to store into the exception
+<span class="lineNum">    1104 </span>            :     ///
+<span class="lineNum">    1105 </span>            :     ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">    1106 </span>            :     explicit ModalityVOILUTError(const std::string&amp; message);
+<span class="lineNum">    1107 </span>            : };
+<span class="lineNum">    1108 </span>            : 
+<span class="lineNum">    1109 </span>            : 
+<span class="lineNum">    1110 </span>            : /// \brief This is the base class for the exceptions thrown by the dicom
+<span class="lineNum">    1111 </span>            : ///        codec (dicomCodec).
+<a name="1112"><span class="lineNum">    1112 </span>            : ///</a>
+<span class="lineNum">    1113 </span>            : ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">    1114 </span><span class="lineNoCov">          0 : class IMEBRA_API DicomCodecError: public CodecError</span>
+<span class="lineNum">    1115 </span>            : {
+<span class="lineNum">    1116 </span>            : public:
+<span class="lineNum">    1117 </span>            :     /// \brief Constructor.
+<span class="lineNum">    1118 </span>            :     ///
+<span class="lineNum">    1119 </span>            :     /// \param message the message to store into the exception
+<span class="lineNum">    1120 </span>            :     ///
+<span class="lineNum">    1121 </span>            :     ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">    1122 </span>            :     explicit DicomCodecError(const std::string&amp; message);
+<span class="lineNum">    1123 </span>            : };
+<span class="lineNum">    1124 </span>            : 
+<span class="lineNum">    1125 </span>            : 
+<span class="lineNum">    1126 </span>            : /// \brief This exception is thrown when dicomCodec::parseStream reaches the
+<span class="lineNum">    1127 </span>            : ///        maximum depth for embedded datasets.
+<a name="1128"><span class="lineNum">    1128 </span>            : ///</a>
+<span class="lineNum">    1129 </span>            : ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">    1130 </span><span class="lineNoCov">          0 : class IMEBRA_API DicomCodecDepthLimitReachedError: public DicomCodecError</span>
+<span class="lineNum">    1131 </span>            : {
+<span class="lineNum">    1132 </span>            : public:
+<span class="lineNum">    1133 </span>            :     /// \brief Constructor.
+<span class="lineNum">    1134 </span>            :     ///
+<span class="lineNum">    1135 </span>            :     /// \param message the message to store into the exception
+<span class="lineNum">    1136 </span>            :     ///
+<span class="lineNum">    1137 </span>            :     ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">    1138 </span>            :     explicit DicomCodecDepthLimitReachedError(const std::string&amp;message);
+<span class="lineNum">    1139 </span>            : 
+<span class="lineNum">    1140 </span>            : };
+<span class="lineNum">    1141 </span>            : 
+<span class="lineNum">    1142 </span>            : 
+<span class="lineNum">    1143 </span>            : /// \brief Base class for the exceptions thrown by the jpeg codec.
+<a name="1144"><span class="lineNum">    1144 </span>            : ///</a>
+<span class="lineNum">    1145 </span>            : ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">    1146 </span><span class="lineNoCov">          0 : class IMEBRA_API JpegCodecError: public CodecError</span>
+<span class="lineNum">    1147 </span>            : {
+<span class="lineNum">    1148 </span>            : public:
+<span class="lineNum">    1149 </span>            :     /// \brief Constructor.
+<span class="lineNum">    1150 </span>            :     ///
+<span class="lineNum">    1151 </span>            :     /// \param message the message to store into the exception
+<span class="lineNum">    1152 </span>            :     ///
+<span class="lineNum">    1153 </span>            :     ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">    1154 </span>            :     explicit JpegCodecError(const std::string&amp; message);
+<span class="lineNum">    1155 </span>            : };
+<span class="lineNum">    1156 </span>            : 
+<span class="lineNum">    1157 </span>            : 
+<span class="lineNum">    1158 </span>            : /// \brief Exception thrown when the jpeg variant cannot be handled.
+<a name="1159"><span class="lineNum">    1159 </span>            : ///</a>
+<span class="lineNum">    1160 </span>            : ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">    1161 </span><span class="lineNoCov">          0 : class IMEBRA_API JpegCodecCannotHandleSyntaxError: public JpegCodecError</span>
+<span class="lineNum">    1162 </span>            : {
+<span class="lineNum">    1163 </span>            : public:
+<span class="lineNum">    1164 </span>            :     /// \brief Constructor.
+<span class="lineNum">    1165 </span>            :     ///
+<span class="lineNum">    1166 </span>            :     /// \param message the message to store into the exception
+<span class="lineNum">    1167 </span>            :     ///
+<span class="lineNum">    1168 </span>            :     ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">    1169 </span>            :     explicit JpegCodecCannotHandleSyntaxError(const std::string&amp; message);
+<span class="lineNum">    1170 </span>            : };
+<a name="1171"><span class="lineNum">    1171 </span>            : </a>
+<span class="lineNum">    1172 </span>            : 
+<span class="lineNum">    1173 </span><span class="lineNoCov">          0 : class IMEBRA_API ImebraBadAlloc: public std::bad_alloc</span>
+<span class="lineNum">    1174 </span>            : {
+<span class="lineNum">    1175 </span>            : };
+<span class="lineNum">    1176 </span>            : 
+<span class="lineNum">    1177 </span>            : 
+<span class="lineNum">    1178 </span>            : /// \brief Base exception for errors in ReadMemory and ReadWriteMemory.
+<a name="1179"><span class="lineNum">    1179 </span>            : ///</a>
+<span class="lineNum">    1180 </span>            : ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">    1181 </span><span class="lineCov">          9 : class IMEBRA_API MemoryError: public std::runtime_error</span>
+<span class="lineNum">    1182 </span>            : {
+<span class="lineNum">    1183 </span>            : public:
+<span class="lineNum">    1184 </span>            :     /// \brief Constructor.
+<span class="lineNum">    1185 </span>            :     ///
+<span class="lineNum">    1186 </span>            :     /// \param message the message to store into the exception
+<span class="lineNum">    1187 </span>            :     ///
+<span class="lineNum">    1188 </span>            :     ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">    1189 </span>            :     explicit MemoryError(const std::string&amp; message);
+<span class="lineNum">    1190 </span>            : };
+<span class="lineNum">    1191 </span>            : 
+<span class="lineNum">    1192 </span>            : 
+<span class="lineNum">    1193 </span>            : /// \brief Exception throw when the memory size is too small for the requested
+<span class="lineNum">    1194 </span>            : ///        operation.
+<a name="1195"><span class="lineNum">    1195 </span>            : ///</a>
+<span class="lineNum">    1196 </span>            : ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">    1197 </span><span class="lineCov">          9 : class IMEBRA_API MemorySizeError: public MemoryError</span>
+<span class="lineNum">    1198 </span>            : {
+<span class="lineNum">    1199 </span>            : public:
+<span class="lineNum">    1200 </span>            :     /// \brief Constructor.
+<span class="lineNum">    1201 </span>            :     ///
+<span class="lineNum">    1202 </span>            :     /// \param message the message to store into the exception
+<span class="lineNum">    1203 </span>            :     ///
+<span class="lineNum">    1204 </span>            :     ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">    1205 </span>            :     explicit MemorySizeError(const std::string&amp; message);
+<span class="lineNum">    1206 </span>            : };
+<span class="lineNum">    1207 </span>            : 
+<span class="lineNum">    1208 </span>            : 
+<span class="lineNum">    1209 </span>            : /// \brief Exception thrown by the ACSE services (negotiation).
+<a name="1210"><span class="lineNum">    1210 </span>            : ///</a>
+<span class="lineNum">    1211 </span>            : ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">    1212 </span><span class="lineCov">       3057 : class IMEBRA_API AcseError: public std::runtime_error</span>
+<span class="lineNum">    1213 </span>            : {
+<span class="lineNum">    1214 </span>            : public:
+<span class="lineNum">    1215 </span>            :     /// \brief Constructor.
+<span class="lineNum">    1216 </span>            :     ///
+<span class="lineNum">    1217 </span>            :     /// \param message the message to store into the exception
+<span class="lineNum">    1218 </span>            :     ///
+<span class="lineNum">    1219 </span>            :     ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">    1220 </span>            :     explicit AcseError(const std::string&amp; message);
+<span class="lineNum">    1221 </span>            : };
+<span class="lineNum">    1222 </span>            : 
+<span class="lineNum">    1223 </span>            : 
+<span class="lineNum">    1224 </span>            : /// \brief Exception thrown by the ACSE services when an ACSE message is
+<span class="lineNum">    1225 </span>            : ///        corrupted.
+<a name="1226"><span class="lineNum">    1226 </span>            : ///</a>
+<span class="lineNum">    1227 </span>            : ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">    1228 </span><span class="lineNoCov">          0 : class IMEBRA_API AcseCorruptedMessageError: public AcseError</span>
+<span class="lineNum">    1229 </span>            : {
+<span class="lineNum">    1230 </span>            : public:
+<span class="lineNum">    1231 </span>            :     /// \brief Constructor.
+<span class="lineNum">    1232 </span>            :     ///
+<span class="lineNum">    1233 </span>            :     /// \param message the message to store into the exception
+<span class="lineNum">    1234 </span>            :     ///
+<span class="lineNum">    1235 </span>            :     ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">    1236 </span>            :     explicit AcseCorruptedMessageError(const std::string&amp; message);
+<span class="lineNum">    1237 </span>            : };
+<span class="lineNum">    1238 </span>            : 
+<span class="lineNum">    1239 </span>            : 
+<span class="lineNum">    1240 </span>            : ///
+<span class="lineNum">    1241 </span>            : /// \brief Exception thrown when no transfer syntax was negotiated for a
+<span class="lineNum">    1242 </span>            : ///        presentation context.
+<a name="1243"><span class="lineNum">    1243 </span>            : ///</a>
+<span class="lineNum">    1244 </span>            : ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">    1245 </span><span class="lineCov">          9 : class IMEBRA_API AcseNoTransferSyntaxError: public AcseError</span>
+<span class="lineNum">    1246 </span>            : {
+<span class="lineNum">    1247 </span>            : public:
+<span class="lineNum">    1248 </span>            :     explicit AcseNoTransferSyntaxError(const std::string&amp; message);
+<span class="lineNum">    1249 </span>            : };
+<span class="lineNum">    1250 </span>            : 
+<span class="lineNum">    1251 </span>            : 
+<span class="lineNum">    1252 </span>            : /// \brief Exception thrown by the ACSE services when the message's
+<span class="lineNum">    1253 </span>            : ///        presentation context was not requested during the
+<span class="lineNum">    1254 </span>            : ///        association negotiation.
+<a name="1255"><span class="lineNum">    1255 </span>            : ///</a>
+<span class="lineNum">    1256 </span>            : ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">    1257 </span><span class="lineCov">          6 : class IMEBRA_API AcsePresentationContextNotRequestedError: public AcseError</span>
+<span class="lineNum">    1258 </span>            : {
+<span class="lineNum">    1259 </span>            : public:
+<span class="lineNum">    1260 </span>            :     /// \brief Constructor.
+<span class="lineNum">    1261 </span>            :     ///
+<span class="lineNum">    1262 </span>            :     /// \param message the message to store into the exception
+<span class="lineNum">    1263 </span>            :     ///
+<span class="lineNum">    1264 </span>            :     ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">    1265 </span>            :     explicit AcsePresentationContextNotRequestedError(const std::string&amp; message);
+<span class="lineNum">    1266 </span>            : };
+<span class="lineNum">    1267 </span>            : 
+<span class="lineNum">    1268 </span>            : 
+<span class="lineNum">    1269 </span>            : /// \brief Exception thrown by the ACSE services when a command is sent to
+<span class="lineNum">    1270 </span>            : ///        a destination that cannot accept it
+<a name="1271"><span class="lineNum">    1271 </span>            : ///</a>
+<span class="lineNum">    1272 </span>            : ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">    1273 </span><span class="lineCov">          3 : class IMEBRA_API AcseWrongRoleError: public AcseError</span>
+<span class="lineNum">    1274 </span>            : {
+<span class="lineNum">    1275 </span>            : public:
+<span class="lineNum">    1276 </span>            :     /// \brief Constructor.
+<span class="lineNum">    1277 </span>            :     ///
+<span class="lineNum">    1278 </span>            :     /// \param message the message to store into the exception
+<span class="lineNum">    1279 </span>            :     ///
+<span class="lineNum">    1280 </span>            :     ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">    1281 </span>            :     explicit AcseWrongRoleError(const std::string&amp; message);
+<span class="lineNum">    1282 </span>            : };
+<span class="lineNum">    1283 </span>            : 
+<span class="lineNum">    1284 </span>            : 
+<span class="lineNum">    1285 </span>            : ///
+<span class="lineNum">    1286 </span>            : /// \brief Base class for the exception related to a wrong message ID.
+<a name="1287"><span class="lineNum">    1287 </span>            : ///</a>
+<span class="lineNum">    1288 </span>            : ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">    1289 </span><span class="lineCov">       3030 : class IMEBRA_API AcseWrongIdError: public AcseError</span>
+<span class="lineNum">    1290 </span>            : {
+<span class="lineNum">    1291 </span>            : public:
+<span class="lineNum">    1292 </span>            :     explicit AcseWrongIdError(const std::string&amp; message);
+<span class="lineNum">    1293 </span>            : };
+<span class="lineNum">    1294 </span>            : 
+<span class="lineNum">    1295 </span>            : 
+<span class="lineNum">    1296 </span>            : ///
+<span class="lineNum">    1297 </span>            : /// \brief Exception thrown when a response ID is related to a command that
+<span class="lineNum">    1298 </span>            : ///        has already been responded to or was never sent.
+<a name="1299"><span class="lineNum">    1299 </span>            : ///</a>
+<span class="lineNum">    1300 </span>            : ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">    1301 </span><span class="lineCov">       3027 : class IMEBRA_API AcseWrongResponseIdError: public AcseWrongIdError</span>
+<span class="lineNum">    1302 </span>            : {
+<span class="lineNum">    1303 </span>            : public:
+<span class="lineNum">    1304 </span>            :     explicit AcseWrongResponseIdError(const std::string&amp; message);
+<span class="lineNum">    1305 </span>            : };
+<span class="lineNum">    1306 </span>            : 
+<span class="lineNum">    1307 </span>            : 
+<span class="lineNum">    1308 </span>            : ///
+<span class="lineNum">    1309 </span>            : /// \brief Exception thrown when a command has a wrong message ID.
+<a name="1310"><span class="lineNum">    1310 </span>            : ///</a>
+<span class="lineNum">    1311 </span>            : ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">    1312 </span><span class="lineCov">          3 : class IMEBRA_API AcseWrongCommandIdError: public AcseWrongIdError</span>
+<span class="lineNum">    1313 </span>            : {
+<span class="lineNum">    1314 </span>            : public:
+<span class="lineNum">    1315 </span>            :     explicit AcseWrongCommandIdError(const std::string&amp; message);
+<span class="lineNum">    1316 </span>            : };
+<span class="lineNum">    1317 </span>            : 
+<span class="lineNum">    1318 </span>            : 
+<span class="lineNum">    1319 </span>            : ///
+<span class="lineNum">    1320 </span>            : /// \brief Base class for the association rejection exceptions.
+<a name="1321"><span class="lineNum">    1321 </span>            : ///</a>
+<span class="lineNum">    1322 </span>            : ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">    1323 </span><span class="lineCov">          6 : class IMEBRA_API AcseRejectedAssociationError: public AcseError</span>
+<span class="lineNum">    1324 </span>            : {
+<span class="lineNum">    1325 </span>            : public:
+<span class="lineNum">    1326 </span>            :     explicit AcseRejectedAssociationError(const std::string&amp; message, bool bPermanent);
+<span class="lineNum">    1327 </span>            : 
+<span class="lineNum">    1328 </span>            :     ///
+<span class="lineNum">    1329 </span>            :     /// \brief Returns true if the rejection is permanent.
+<span class="lineNum">    1330 </span>            :     ///
+<span class="lineNum">    1331 </span>            :     /// \return true if the rejection is permanent, false otherwise
+<span class="lineNum">    1332 </span>            :     ///
+<span class="lineNum">    1333 </span>            :     ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">    1334 </span>            :     bool isPermanent() const;
+<span class="lineNum">    1335 </span>            : 
+<span class="lineNum">    1336 </span>            :     ///
+<span class="lineNum">    1337 </span>            :     /// \brief Returns true if the rejection is temporary.
+<span class="lineNum">    1338 </span>            :     ///
+<span class="lineNum">    1339 </span>            :     /// \return true if the rejection is temporary, false otherwise
+<span class="lineNum">    1340 </span>            :     ///
+<span class="lineNum">    1341 </span>            :     ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">    1342 </span>            :     bool isTemporary() const;
+<span class="lineNum">    1343 </span>            : 
+<span class="lineNum">    1344 </span>            : private:
+<span class="lineNum">    1345 </span>            :     const bool m_bPermanent;
+<span class="lineNum">    1346 </span>            : };
+<span class="lineNum">    1347 </span>            : 
+<span class="lineNum">    1348 </span>            : 
+<span class="lineNum">    1349 </span>            : ///
+<span class="lineNum">    1350 </span>            : /// \brief Generic exception thrown when the association is rejected.
+<a name="1351"><span class="lineNum">    1351 </span>            : ///</a>
+<span class="lineNum">    1352 </span>            : ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">    1353 </span><span class="lineNoCov">          0 : class IMEBRA_API AcseSCUNoReasonGivenError: public AcseRejectedAssociationError</span>
+<span class="lineNum">    1354 </span>            : {
+<span class="lineNum">    1355 </span>            : public:
+<span class="lineNum">    1356 </span>            :     explicit AcseSCUNoReasonGivenError(const std::string&amp; message, bool bPermanent);
+<span class="lineNum">    1357 </span>            : };
+<span class="lineNum">    1358 </span>            : 
+<span class="lineNum">    1359 </span>            : 
+<span class="lineNum">    1360 </span>            : ///
+<span class="lineNum">    1361 </span>            : /// \brief Exception thrown when the association is rejected because the
+<span class="lineNum">    1362 </span>            : ///        application context name is not supported.
+<a name="1363"><span class="lineNum">    1363 </span>            : ///</a>
+<span class="lineNum">    1364 </span>            : ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">    1365 </span><span class="lineNoCov">          0 : class IMEBRA_API AcseSCUApplicationContextNameNotSupportedError: public AcseRejectedAssociationError</span>
+<span class="lineNum">    1366 </span>            : {
+<span class="lineNum">    1367 </span>            : public:
+<span class="lineNum">    1368 </span>            :     explicit AcseSCUApplicationContextNameNotSupportedError(const std::string&amp; message, bool bPermanent);
+<span class="lineNum">    1369 </span>            : };
+<span class="lineNum">    1370 </span>            : 
+<span class="lineNum">    1371 </span>            : 
+<span class="lineNum">    1372 </span>            : ///
+<span class="lineNum">    1373 </span>            : /// \brief Exception thrown when the association is rejected because the
+<span class="lineNum">    1374 </span>            : ///        calling AE title is not recognized.
+<a name="1375"><span class="lineNum">    1375 </span>            : ///</a>
+<span class="lineNum">    1376 </span>            : ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">    1377 </span><span class="lineNoCov">          0 : class IMEBRA_API AcseSCUCallingAETNotRecognizedError: public AcseRejectedAssociationError</span>
+<span class="lineNum">    1378 </span>            : {
+<span class="lineNum">    1379 </span>            : public:
+<span class="lineNum">    1380 </span>            :     explicit AcseSCUCallingAETNotRecognizedError(const std::string&amp; message, bool bPermanent);
+<span class="lineNum">    1381 </span>            : };
+<span class="lineNum">    1382 </span>            : 
+<span class="lineNum">    1383 </span>            : 
+<span class="lineNum">    1384 </span>            : ///
+<span class="lineNum">    1385 </span>            : /// \brief Exception thrown when the association is rejected because the
+<span class="lineNum">    1386 </span>            : ///        called AE title is not recognized.
+<a name="1387"><span class="lineNum">    1387 </span>            : ///</a>
+<span class="lineNum">    1388 </span>            : ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">    1389 </span><span class="lineCov">          6 : class IMEBRA_API AcseSCUCalledAETNotRecognizedError: public AcseRejectedAssociationError</span>
+<span class="lineNum">    1390 </span>            : {
+<span class="lineNum">    1391 </span>            : public:
+<span class="lineNum">    1392 </span>            :     explicit AcseSCUCalledAETNotRecognizedError(const std::string&amp; message, bool bPermanent);
+<span class="lineNum">    1393 </span>            : };
+<span class="lineNum">    1394 </span>            : 
+<span class="lineNum">    1395 </span>            : 
+<span class="lineNum">    1396 </span>            : ///
+<span class="lineNum">    1397 </span>            : /// \brief Exception thrown when the association is rejected by the SCP
+<span class="lineNum">    1398 </span>            : ///        without any particular reason given.
+<a name="1399"><span class="lineNum">    1399 </span>            : ///</a>
+<span class="lineNum">    1400 </span>            : ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">    1401 </span><span class="lineNoCov">          0 : class IMEBRA_API AcseSCPNoReasonGivenError: public AcseRejectedAssociationError</span>
+<span class="lineNum">    1402 </span>            : {
+<span class="lineNum">    1403 </span>            : public:
+<span class="lineNum">    1404 </span>            :     explicit AcseSCPNoReasonGivenError(const std::string&amp; message, bool bPermanent);
+<span class="lineNum">    1405 </span>            : };
+<span class="lineNum">    1406 </span>            : 
+<span class="lineNum">    1407 </span>            : 
+<span class="lineNum">    1408 </span>            : ///
+<span class="lineNum">    1409 </span>            : /// \brief Exception thrown when the association is rejected by the SCP
+<span class="lineNum">    1410 </span>            : ///        because it does not support the requested protocol version.
+<a name="1411"><span class="lineNum">    1411 </span>            : ///</a>
+<span class="lineNum">    1412 </span>            : ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">    1413 </span><span class="lineNoCov">          0 : class IMEBRA_API AcseSCPAcseProtocolVersionNotSupportedError: public AcseRejectedAssociationError</span>
+<span class="lineNum">    1414 </span>            : {
+<span class="lineNum">    1415 </span>            : public:
+<span class="lineNum">    1416 </span>            :     explicit AcseSCPAcseProtocolVersionNotSupportedError(const std::string&amp; message, bool bPermanent);
+<span class="lineNum">    1417 </span>            : };
+<span class="lineNum">    1418 </span>            : 
+<span class="lineNum">    1419 </span>            : 
+<span class="lineNum">    1420 </span>            : ///
+<span class="lineNum">    1421 </span>            : /// \brief Exception thrown when the association is rejected by the SCP
+<span class="lineNum">    1422 </span>            : ///        because the selected presentation context is reserved.
+<a name="1423"><span class="lineNum">    1423 </span>            : ///</a>
+<span class="lineNum">    1424 </span>            : ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">    1425 </span><span class="lineNoCov">          0 : class IMEBRA_API AcseSCPPresentationReservedError: public AcseRejectedAssociationError</span>
+<span class="lineNum">    1426 </span>            : {
+<span class="lineNum">    1427 </span>            : public:
+<span class="lineNum">    1428 </span>            :     explicit AcseSCPPresentationReservedError(const std::string&amp; message, bool bPermanent);
+<span class="lineNum">    1429 </span>            : };
+<span class="lineNum">    1430 </span>            : 
+<span class="lineNum">    1431 </span>            : 
+<span class="lineNum">    1432 </span>            : ///
+<span class="lineNum">    1433 </span>            : /// \brief Exception thrown when the association is rejected by the SCP
+<span class="lineNum">    1434 </span>            : ///        because there is a temporary congestion.
+<a name="1435"><span class="lineNum">    1435 </span>            : ///</a>
+<span class="lineNum">    1436 </span>            : ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">    1437 </span><span class="lineNoCov">          0 : class IMEBRA_API AcseSCPPresentationTemporaryCongestionError: public AcseRejectedAssociationError</span>
+<span class="lineNum">    1438 </span>            : {
+<span class="lineNum">    1439 </span>            : public:
+<span class="lineNum">    1440 </span>            :     explicit AcseSCPPresentationTemporaryCongestionError(const std::string&amp; message, bool bPermanent);
+<span class="lineNum">    1441 </span>            : };
+<span class="lineNum">    1442 </span>            : 
+<span class="lineNum">    1443 </span>            : 
+<span class="lineNum">    1444 </span>            : ///
+<span class="lineNum">    1445 </span>            : /// \brief Exception thrown when the association is rejected by the SCP
+<span class="lineNum">    1446 </span>            : ///        because is out of resources.
+<a name="1447"><span class="lineNum">    1447 </span>            : ///</a>
+<span class="lineNum">    1448 </span>            : ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">    1449 </span><span class="lineNoCov">          0 : class IMEBRA_API AcseSCPPresentationLocalLimitExcededError: public AcseRejectedAssociationError</span>
+<span class="lineNum">    1450 </span>            : {
+<span class="lineNum">    1451 </span>            : public:
+<span class="lineNum">    1452 </span>            :     explicit AcseSCPPresentationLocalLimitExcededError(const std::string&amp; message, bool bPermanent);
+<span class="lineNum">    1453 </span>            : };
+<span class="lineNum">    1454 </span>            : 
+<span class="lineNum">    1455 </span>            : 
+<span class="lineNum">    1456 </span>            : ///
+<span class="lineNum">    1457 </span>            : /// \brief Exception thrown when too many simultaneous operations have been
+<span class="lineNum">    1458 </span>            : ///        requested.
+<a name="1459"><span class="lineNum">    1459 </span>            : ///</a>
+<span class="lineNum">    1460 </span>            : ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">    1461 </span><span class="lineNoCov">          0 : class IMEBRA_API AcseTooManyOperationsPerformedError: public AcseError</span>
+<span class="lineNum">    1462 </span>            : {
+<span class="lineNum">    1463 </span>            : public:
+<span class="lineNum">    1464 </span>            :     explicit AcseTooManyOperationsPerformedError(const std::string&amp; message);
+<span class="lineNum">    1465 </span>            : };
+<span class="lineNum">    1466 </span>            : 
+<span class="lineNum">    1467 </span>            : 
+<span class="lineNum">    1468 </span>            : ///
+<span class="lineNum">    1469 </span>            : /// \brief Exception thrown when too many simultaneous operations have been
+<span class="lineNum">    1470 </span>            : ///        invoked.
+<a name="1471"><span class="lineNum">    1471 </span>            : ///</a>
+<span class="lineNum">    1472 </span>            : ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">    1473 </span><span class="lineCov">          3 : class IMEBRA_API AcseTooManyOperationsInvokedError: public AcseError</span>
+<span class="lineNum">    1474 </span>            : {
+<span class="lineNum">    1475 </span>            : public:
+<span class="lineNum">    1476 </span>            :     explicit AcseTooManyOperationsInvokedError(const std::string&amp; message);
+<span class="lineNum">    1477 </span>            : };
+<span class="lineNum">    1478 </span>            : 
+<span class="lineNum">    1479 </span>            : 
+<span class="lineNum">    1480 </span>            : ///
+<span class="lineNum">    1481 </span>            : /// \brief Exception thrown when a command does not have a payload but it
+<span class="lineNum">    1482 </span>            : ///        should have one.
+<a name="1483"><span class="lineNum">    1483 </span>            : ///</a>
+<span class="lineNum">    1484 </span>            : ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">    1485 </span><span class="lineNoCov">          0 : class IMEBRA_API AcseNoPayloadError: public AcseError</span>
+<span class="lineNum">    1486 </span>            : {
+<span class="lineNum">    1487 </span>            : public:
+<span class="lineNum">    1488 </span>            :     explicit AcseNoPayloadError(const std::string&amp; message);
+<span class="lineNum">    1489 </span>            : };
+<span class="lineNum">    1490 </span>            : 
+<span class="lineNum">    1491 </span>            : 
+<span class="lineNum">    1492 </span>            : ///
+<span class="lineNum">    1493 </span>            : /// \brief Base class for the exceptions thrown by the DIMSE services.
+<a name="1494"><span class="lineNum">    1494 </span>            : ///</a>
+<span class="lineNum">    1495 </span>            : ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">    1496 </span><span class="lineNoCov">          0 : class IMEBRA_API DimseError: public std::runtime_error</span>
+<span class="lineNum">    1497 </span>            : {
+<span class="lineNum">    1498 </span>            : public:
+<span class="lineNum">    1499 </span>            :     explicit DimseError(const std::string&amp; message);
+<span class="lineNum">    1500 </span>            : };
+<span class="lineNum">    1501 </span>            : 
+<span class="lineNum">    1502 </span>            : 
+<span class="lineNum">    1503 </span>            : ///
+<span class="lineNum">    1504 </span>            : /// \brief Exception thrown when a DIMSE command cannot be validated.
+<a name="1505"><span class="lineNum">    1505 </span>            : ///</a>
+<span class="lineNum">    1506 </span>            : ///////////////////////////////////////////////////////////////////////////////
+<span class="lineNum">    1507 </span><span class="lineNoCov">          0 : class IMEBRA_API DimseInvalidCommand: public DimseError</span>
+<span class="lineNum">    1508 </span>            : {
+<span class="lineNum">    1509 </span>            : public:
+<span class="lineNum">    1510 </span>            :     explicit DimseInvalidCommand(const std::string&amp; message);
+<span class="lineNum">    1511 </span>            : };
+<span class="lineNum">    1512 </span>            : 
+<span class="lineNum">    1513 </span>            : }
+<span class="lineNum">    1514 </span>            : 
+<span class="lineNum">    1515 </span>            : #endif // !defined(imebraExceptions__INCLUDED_)
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.13</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

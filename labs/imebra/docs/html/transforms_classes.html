@@ -1,0 +1,1118 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Transforms classes &mdash; Imebra 4.5.2.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="copyright" title="Copyright" href="copyright.html" />
+    <link rel="next" title="Memory management classes" href="memory_management_classes.html" />
+    <link rel="prev" title="Imaging classes" href="imaging_classes.html" /> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Imebra
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                4.5.2
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Download Imebra</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="download.html">Downloading Imebra</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Legal</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="copyright.html">Copyright</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gplv2.html">GNU General Public License</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Introduction</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changes_log.html">Changes log</a></li>
+</ul>
+<p class="caption"><span class="caption-text">User documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="compiling_imebra.html">Compiling Imebra</a></li>
+<li class="toctree-l1"><a class="reference internal" href="add_to_project.html">Adding Imebra to your project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quick_tour.html">Getting started</a></li>
+</ul>
+<p class="caption"><span class="caption-text">API</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="objects_lifecycle.html">Objects lifecycle and Object ownership</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dicom_data_classes.html">DICOM dataSet &amp; tags classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stream_classes.html">Stream classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="imaging_classes.html">Imaging classes</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Transforms classes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#base-transform-class">Base Transform class</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#transform">Transform</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#c">C++</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#objective-c-swift">Objective-C/Swift</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#transformschain">TransformsChain</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id1">C++</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id2">Objective-C/Swift</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#modality-and-presentation-transforms">Modality and Presentation transforms</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#voilut">VOILUT</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id3">C++</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id4">Objective-C/Swift</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#modalityvoilut">ModalityVOILUT</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id5">C++</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id6">Objective-C/Swift</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#rendering-transforms">Rendering transforms</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#transformhighbit">TransformHighBit</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id7">C++</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id8">Objective-C/Swift</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#colortransformsfactory">ColorTransformsFactory</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id9">C++</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id10">Objective-C/Swift</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="memory_management_classes.html">Memory management classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="acse_classes.html">ACSE classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dimse_classes.html">DIMSE classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dicomdir_classes.html">DICOMDIR classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dicom_dictionary_classes.html">DICOM dictionary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="definition_classes.html">Definitions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="exception_classes.html">Exceptions</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Build distributions</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="build_distribution.html">Creating the source distribution from the code in the VCS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="build_distribution.html#versioning">Versioning</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Requirements &amp; Risks</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="risks_requirements.html">Requirements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="risks_requirements.html#risks">Risks</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Standard operating procedures</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="sop.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sop.html#sops">SOPs</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Imebra</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Transforms classes</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/transforms_classes.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="transforms-classes">
+<span id="transform-classes"></span><h1>Transforms classes<a class="headerlink" href="#transforms-classes" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>This chapter describes the transform classes. Transform classes apply a transform algorithm to an input image and return the
+result in an output image.</p>
+<p>The following classes are described in this chapter:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="38%" />
+<col width="37%" />
+<col width="25%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">C++ class</th>
+<th class="head">Objective-C/Swift class</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><a class="reference internal" href="#_CPPv3N6imebra9TransformE" title="imebra::Transform"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">imebra::Transform</span></code></a></td>
+<td><a class="reference internal" href="#_CPPv315ImebraTransform" title="ImebraTransform"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">ImebraTransform</span></code></a></td>
+<td>Base class for all the
+transforms</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#_CPPv3N6imebra15TransformsChainE" title="imebra::TransformsChain"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">imebra::TransformsChain</span></code></a></td>
+<td><a class="reference internal" href="#_CPPv321ImebraTransformsChain" title="ImebraTransformsChain"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">ImebraTransformsChain</span></code></a></td>
+<td>Apply a sequence of transforms</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#_CPPv3N6imebra6VOILUTE" title="imebra::VOILUT"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">imebra::VOILUT</span></code></a></td>
+<td><a class="reference internal" href="#_CPPv312ImebraVOILUT" title="ImebraVOILUT"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">ImebraVOILUT</span></code></a></td>
+<td>Apply a presentation VOI or
+LUT</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#_CPPv3N6imebra14ModalityVOILUTE" title="imebra::ModalityVOILUT"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">imebra::ModalityVOILUT</span></code></a></td>
+<td><a class="reference internal" href="#_CPPv320ImebraModalityVOILUT" title="ImebraModalityVOILUT"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">ImebraModalityVOILUT</span></code></a></td>
+<td>Apply the modality VOI or
+LUT</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#_CPPv3N6imebra16TransformHighBitE" title="imebra::TransformHighBit"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">imebra::TransformHighBit</span></code></a></td>
+<td><a class="reference internal" href="#_CPPv322ImebraTransformHighBit" title="ImebraTransformHighBit"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">ImebraTransformHighBit</span></code></a></td>
+<td>Shift the pixels bits</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#_CPPv3N6imebra22ColorTransformsFactoryE" title="imebra::ColorTransformsFactory"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">imebra::ColorTransformsFactory</span></code></a></td>
+<td><a class="reference internal" href="#_CPPv328ImebraColorTransformsFactory" title="ImebraColorTransformsFactory"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">ImebraColorTransformsFactory</span></code></a></td>
+<td>Transform the color space</td>
+</tr>
+</tbody>
+</table>
+<div class="figure" id="id11" style="width: 100%">
+<a class="reference external image-reference" href="_images/transforms.jpg"><img alt="Transforms classes" src="_images/transforms.jpg" /></a>
+<p class="caption"><span class="caption-text">Class diagram of the transforms classes</span></p>
+</div>
+</div>
+<div class="section" id="base-transform-class">
+<h2>Base Transform class<a class="headerlink" href="#base-transform-class" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="transform">
+<h3>Transform<a class="headerlink" href="#transform" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="c">
+<h4>C++<a class="headerlink" href="#c" title="Permalink to this headline">¶</a></h4>
+<dl class="class">
+<dt id="_CPPv3N6imebra9TransformE">
+<span id="_CPPv2N6imebra9TransformE"></span><span id="imebra::Transform"></span><span class="target" id="classimebra_1_1_transform"></span><em class="property">class </em><code class="descname">Transform</code><a class="headerlink" href="#_CPPv3N6imebra9TransformE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Represents a transform: a transform takes one <a class="reference internal" href="imaging_classes.html#classimebra_1_1_image"><span class="std std-ref">Image</span></a> as input, processes it and outputs the processed <a class="reference internal" href="imaging_classes.html#classimebra_1_1_image"><span class="std std-ref">Image</span></a>. </p>
+<p>Subclassed by <a class="reference internal" href="#classimebra_1_1_modality_v_o_i_l_u_t"><span class="std std-ref">imebra::ModalityVOILUT</span></a>, <a class="reference internal" href="#classimebra_1_1_transform_high_bit"><span class="std std-ref">imebra::TransformHighBit</span></a>, <a class="reference internal" href="#classimebra_1_1_transforms_chain"><span class="std std-ref">imebra::TransformsChain</span></a>, <a class="reference internal" href="#classimebra_1_1_v_o_i_l_u_t"><span class="std std-ref">imebra::VOILUT</span></a></p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric">Public Functions</p>
+<dl class="function">
+<dt id="_CPPv3NK6imebra9Transform7isEmptyEv">
+<span id="_CPPv2NK6imebra9Transform7isEmptyEv"></span><span id="imebra::Transform::isEmptyC"></span><span class="target" id="classimebra_1_1_transform_1a0e8b26790744a1564610bee167e2b088"></span>bool <code class="descname">isEmpty</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv3NK6imebra9Transform7isEmptyEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Returns true if the transform doesn’t perform any processing (the output image will be identical to the input one). </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>true if the <a class="reference internal" href="#classimebra_1_1_transform"><span class="std std-ref">Transform</span></a> doesn’t perform any processing </dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3NK6imebra9Transform19allocateOutputImageERK5ImageNSt8uint32_tENSt8uint32_tE">
+<span id="_CPPv2NK6imebra9Transform19allocateOutputImageERK5ImageNSt8uint32_tENSt8uint32_tE"></span><span id="imebra::Transform::allocateOutputImage__ImageCR.std::uint32_t.std::uint32_tC"></span><span class="target" id="classimebra_1_1_transform_1ade30cf685392060b3fb08eaff86d6941"></span><a class="reference internal" href="imaging_classes.html#_CPPv3N6imebra5ImageE" title="imebra::Image">Image</a> *<code class="descname">allocateOutputImage</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="imaging_classes.html#_CPPv3N6imebra5ImageE" title="imebra::Image">Image</a> &amp;<em>inputImage</em>, std::uint32_t <em>width</em>, std::uint32_t <em>height</em><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv3NK6imebra9Transform19allocateOutputImageERK5ImageNSt8uint32_tENSt8uint32_tE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Allocate an image ready to accomodate the result of the image processing performed by the <a class="reference internal" href="#classimebra_1_1_transform_1aec7df6701e1415ab0f280490bce37371"><span class="std std-ref">runTransform()</span></a> method. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>an image ready to be passed as outputImage to <a class="reference internal" href="#classimebra_1_1_transform_1aec7df6701e1415ab0f280490bce37371"><span class="std std-ref">runTransform()</span></a> </dd>
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">inputImage</span></code>: the image that will be set as the input of the <a class="reference internal" href="#classimebra_1_1_transform_1aec7df6701e1415ab0f280490bce37371"><span class="std std-ref">runTransform()</span></a> method </li>
+<li><code class="docutils literal notranslate"><span class="pre">width</span></code>: the width of the output image </li>
+<li><code class="docutils literal notranslate"><span class="pre">height</span></code>: the height of the output image </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3NK6imebra9Transform12runTransformERK5ImageNSt8uint32_tENSt8uint32_tENSt8uint32_tENSt8uint32_tER5ImageNSt8uint32_tENSt8uint32_tE">
+<span id="_CPPv2NK6imebra9Transform12runTransformERK5ImageNSt8uint32_tENSt8uint32_tENSt8uint32_tENSt8uint32_tER5ImageNSt8uint32_tENSt8uint32_tE"></span><span id="imebra::Transform::runTransform__ImageCR.std::uint32_t.std::uint32_t.std::uint32_t.std::uint32_t.ImageR.std::uint32_t.std::uint32_tC"></span><span class="target" id="classimebra_1_1_transform_1aec7df6701e1415ab0f280490bce37371"></span>void <code class="descname">runTransform</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="imaging_classes.html#_CPPv3N6imebra5ImageE" title="imebra::Image">Image</a> &amp;<em>inputImage</em>, std::uint32_t <em>inputTopLeftX</em>, std::uint32_t <em>inputTopLeftY</em>, std::uint32_t <em>inputWidth</em>, std::uint32_t <em>inputHeight</em>, <a class="reference internal" href="imaging_classes.html#_CPPv3N6imebra5ImageE" title="imebra::Image">Image</a> &amp;<em>outputImage</em>, std::uint32_t <em>outputTopLeftX</em>, std::uint32_t <em>outputTopLeftY</em><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv3NK6imebra9Transform12runTransformERK5ImageNSt8uint32_tENSt8uint32_tENSt8uint32_tENSt8uint32_tER5ImageNSt8uint32_tENSt8uint32_tE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Run the processing function of the <a class="reference internal" href="#classimebra_1_1_transform"><span class="std std-ref">Transform</span></a>. </p>
+<p><dl class="docutils">
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">inputImage</span></code>: the image to use as input </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="objective-c-swift">
+<h4>Objective-C/Swift<a class="headerlink" href="#objective-c-swift" title="Permalink to this headline">¶</a></h4>
+<dl class="class">
+<dt id="_CPPv315ImebraTransform">
+<span id="_CPPv215ImebraTransform"></span><span id="ImebraTransform"></span><span class="target" id="interface_imebra_transform"></span><em class="property">class </em><code class="descname">ImebraTransform</code> : <em class="property">public</em> NSObject<a class="headerlink" href="#_CPPv315ImebraTransform" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Represents a transform: a transform takes one <a class="reference internal" href="imaging_classes.html#interface_imebra_image"><span class="std std-ref">ImebraImage</span></a> as input, processes it and outputs the processed <a class="reference internal" href="imaging_classes.html#interface_imebra_image"><span class="std std-ref">ImebraImage</span></a>. </p>
+<p>Subclassed by <a class="reference internal" href="#interface_imebra_modality_v_o_i_l_u_t"><span class="std std-ref">ImebraModalityVOILUT</span></a>, <a class="reference internal" href="#interface_imebra_transform_high_bit"><span class="std std-ref">ImebraTransformHighBit</span></a>, <a class="reference internal" href="#interface_imebra_transforms_chain"><span class="std std-ref">ImebraTransformsChain</span></a>, <a class="reference internal" href="#interface_imebra_v_o_i_l_u_t"><span class="std std-ref">ImebraVOILUT</span></a></p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric">Public Functions</p>
+<dl class="function">
+<dt>
+<span class="target" id="interface_imebra_transform_1a9c787a60e82634997941b919d1451788"></span><code class="descname">ImebraImage* ImebraTransform::allocateOutputImage:width:height:error:(ImebraImage  * pInputImage, unsigned int width, unsigned int height, NSError ** pError)</code></dt>
+<dd><p>Allocate an image ready to accomodate the result of the image processing performed by the runTransform() method. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>an image ready to be passed as outputImage to runTransform() </dd>
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">pInputImage</span></code>: the image that will be set as the input of the runTransform() method </li>
+<li><code class="docutils literal notranslate"><span class="pre">width</span></code>: the width of the output image </li>
+<li><code class="docutils literal notranslate"><span class="pre">height</span></code>: the height of the output image </li>
+<li><code class="docutils literal notranslate"><span class="pre">pError</span></code>: set to a NSError derived class in case of error </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<span class="target" id="interface_imebra_transform_1a43d05146a2554eda68a9b0ffef63d134"></span><code class="descname">void ImebraTransform::runTransform:inputTopLeftX:inputTopLeftY:inputWidth:inputHeight:outputImage:outputTopLeftX:outputTopLeftY:error:(ImebraImage  * pInputImage, unsigned int inputTopLeftX, unsigned int inputTopLeftY, unsigned int inputWidth, unsigned int inputHeight, ImebraImage  * pOutputImage, unsigned int outputTopLeftX, unsigned int outputTopLeftY, (swift_error(nonnull_error)) __attribute__)</code></dt>
+<dd><p>Run the processing function of the <a class="reference internal" href="#interface_imebra_transform"><span class="std std-ref">ImebraTransform</span></a>. </p>
+<p><dl class="docutils">
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">inputImage</span></code>: the image to use as input </li>
+<li><code class="docutils literal notranslate"><span class="pre">inputTopLeftX</span></code>: the horizontal position of the top-left pixel to process </li>
+<li><code class="docutils literal notranslate"><span class="pre">inputTopLeftY</span></code>: the vertical position of the top-left pixel to process </li>
+<li><code class="docutils literal notranslate"><span class="pre">inputWidth</span></code>: the horizontal number of pixels to process </li>
+<li><code class="docutils literal notranslate"><span class="pre">inputHeight</span></code>: the vertical number of pixels to process </li>
+<li><code class="docutils literal notranslate"><span class="pre">outputTopLeftX</span></code>: the horizontal position on the output image of the top left processed pixel </li>
+<li><code class="docutils literal notranslate"><span class="pre">outputTopLeftY</span></code>: the vertical position on the output image of the top left processed pixel </li>
+<li><code class="docutils literal notranslate"><span class="pre">pError</span></code>: set to a NSError derived class in case of error </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric">Property</p>
+<dl class="member">
+<dt>
+<span class="target" id="interface_imebra_transform_1a774ffd5e143354a985d2abec5a92ec82"></span><em class="property">property </em><code class="descname">ImebraTransform::isEmpty</code></dt>
+<dd><p>Returns true if the transform doesn’t perform any processing (the output image will be identical to the input one). </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="transformschain">
+<h3>TransformsChain<a class="headerlink" href="#transformschain" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id1">
+<h4>C++<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h4>
+<dl class="class">
+<dt id="_CPPv3N6imebra15TransformsChainE">
+<span id="_CPPv2N6imebra15TransformsChainE"></span><span id="imebra::TransformsChain"></span><span class="target" id="classimebra_1_1_transforms_chain"></span><em class="property">class </em><code class="descname">TransformsChain</code> : <em class="property">public</em> imebra::<a class="reference internal" href="#_CPPv3N6imebra9TransformE" title="imebra::Transform">Transform</a><a class="headerlink" href="#_CPPv3N6imebra15TransformsChainE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>The <a class="reference internal" href="#classimebra_1_1_transforms_chain"><span class="std std-ref">TransformsChain</span></a> applies a series of Transforms to the input image. </p>
+<p>Transforms can be added to the chain by using <a class="reference internal" href="#classimebra_1_1_transforms_chain_1a036926507a501c677cb2f577c7f7f93a"><span class="std std-ref">addTransform()</span></a>. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric">Public Functions</p>
+<dl class="function">
+<dt id="_CPPv3N6imebra15TransformsChain15TransformsChainEv">
+<span id="_CPPv2N6imebra15TransformsChain15TransformsChainEv"></span><span id="imebra::TransformsChain::TransformsChain"></span><span class="target" id="classimebra_1_1_transforms_chain_1affca0ab40ad60fb52fe95217f20077cd"></span><code class="descname">TransformsChain</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N6imebra15TransformsChain15TransformsChainEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Constructor. </p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N6imebra15TransformsChain12addTransformERK9Transform">
+<span id="_CPPv2N6imebra15TransformsChain12addTransformERK9Transform"></span><span id="imebra::TransformsChain::addTransform__TransformCR"></span><span class="target" id="classimebra_1_1_transforms_chain_1a036926507a501c677cb2f577c7f7f93a"></span>void <code class="descname">addTransform</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv3N6imebra9TransformE" title="imebra::Transform">Transform</a> &amp;<em>transform</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N6imebra15TransformsChain12addTransformERK9Transform" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Add a transform to the chain of transforms that will be applied to the input image. </p>
+<p><dl class="docutils">
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">transform</span></code>: the <a class="reference internal" href="#classimebra_1_1_transform"><span class="std std-ref">Transform</span></a> to add to the chain of transforms </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="id2">
+<h4>Objective-C/Swift<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h4>
+<dl class="class">
+<dt id="_CPPv321ImebraTransformsChain">
+<span id="_CPPv221ImebraTransformsChain"></span><span id="ImebraTransformsChain"></span><span class="target" id="interface_imebra_transforms_chain"></span><em class="property">class </em><code class="descname">ImebraTransformsChain</code> : <em class="property">public</em> <a class="reference internal" href="#_CPPv315ImebraTransform" title="ImebraTransform">ImebraTransform</a><a class="headerlink" href="#_CPPv321ImebraTransformsChain" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p><a class="reference internal" href="#interface_imebra_transforms_chain"><span class="std std-ref">ImebraTransformsChain</span></a> applies a series of ImebraTransforms to the input image. </p>
+<p>Transforms can be added to the chain by using addTransform(). </p>
+</dd></dl>
+
+</div>
+</div>
+</div>
+<div class="section" id="modality-and-presentation-transforms">
+<h2>Modality and Presentation transforms<a class="headerlink" href="#modality-and-presentation-transforms" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="voilut">
+<h3>VOILUT<a class="headerlink" href="#voilut" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id3">
+<h4>C++<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h4>
+<dl class="class">
+<dt id="_CPPv3N6imebra6VOILUTE">
+<span id="_CPPv2N6imebra6VOILUTE"></span><span id="imebra::VOILUT"></span><span class="target" id="classimebra_1_1_v_o_i_l_u_t"></span><em class="property">class </em><code class="descname">VOILUT</code> : <em class="property">public</em> imebra::<a class="reference internal" href="#_CPPv3N6imebra9TransformE" title="imebra::Transform">Transform</a><a class="headerlink" href="#_CPPv3N6imebra6VOILUTE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>A <a class="reference internal" href="#classimebra_1_1_v_o_i_l_u_t"><span class="std std-ref">VOILUT</span></a> transform enhances the visibility of a specific range of brightness in an image. </p>
+<p>The client can use <a class="reference internal" href="#classimebra_1_1_v_o_i_l_u_t"><span class="std std-ref">VOILUT</span></a> in three ways:<ul class="simple">
+<li>by declaring the minimum and maximum values of the pixels that must be visible via the method <a class="reference internal" href="#classimebra_1_1_v_o_i_l_u_t_1a5654e4a2d4471736bb56665f72647296"><span class="std std-ref">setCenterWidth()</span></a></li>
+<li>by declaring a LUT via the method <a class="reference internal" href="#classimebra_1_1_v_o_i_l_u_t_1ab207581804aa74ce9a79fe03fb49e05e"><span class="std std-ref">setLUT()</span></a></li>
+<li>by letting the transform calculate the most appropriate center/width values via the method <a class="reference internal" href="#classimebra_1_1_v_o_i_l_u_t_1a3553fae48463f16163a7292f1851fd25"><span class="std std-ref">applyOptimalVOI()</span></a></li>
+</ul>
+</p>
+<p>The <a class="reference internal" href="dicom_data_classes.html#classimebra_1_1_data_set"><span class="std std-ref">DataSet</span></a> may already supply suitable values for the methods <a class="reference internal" href="#classimebra_1_1_v_o_i_l_u_t_1a5654e4a2d4471736bb56665f72647296"><span class="std std-ref">setCenterWidth()</span></a> and <a class="reference internal" href="#classimebra_1_1_v_o_i_l_u_t_1ab207581804aa74ce9a79fe03fb49e05e"><span class="std std-ref">setLUT()</span></a>.</p>
+<p>In order to retrieve from the <a class="reference internal" href="dicom_data_classes.html#classimebra_1_1_data_set"><span class="std std-ref">DataSet</span></a> the suggested center/width values, call <a class="reference internal" href="dicom_data_classes.html#classimebra_1_1_data_set_1a08881970f437016c630f8440abdda90a"><span class="std std-ref">DataSet.getVOIs()</span></a>.</p>
+<p>To get from the <a class="reference internal" href="dicom_data_classes.html#classimebra_1_1_data_set"><span class="std std-ref">DataSet</span></a> a list of LUTs that can be used with the <a class="reference internal" href="#classimebra_1_1_v_o_i_l_u_t"><span class="std std-ref">VOILUT</span></a> transform use DataSet.getLUT(TagId(tagId_t::VOILUTSequence_0028_3010), X) where X is a 0 base index (the <a class="reference internal" href="dicom_data_classes.html#classimebra_1_1_data_set"><span class="std std-ref">DataSet</span></a> may provide more than one LUT for the <a class="reference internal" href="#classimebra_1_1_v_o_i_l_u_t"><span class="std std-ref">VOILUT</span></a> transform). </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric">Public Functions</p>
+<dl class="function">
+<dt id="_CPPv3N6imebra6VOILUT6VOILUTEv">
+<span id="_CPPv2N6imebra6VOILUT6VOILUTEv"></span><span id="imebra::VOILUT::VOILUT"></span><span class="target" id="classimebra_1_1_v_o_i_l_u_t_1abf9cf02e2ebd2636716fb541f517ccbc"></span><code class="descname">VOILUT</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N6imebra6VOILUT6VOILUTEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Constructor. </p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N6imebra6VOILUT15applyOptimalVOIERK5ImageNSt8uint32_tENSt8uint32_tENSt8uint32_tENSt8uint32_tE">
+<span id="_CPPv2N6imebra6VOILUT15applyOptimalVOIERK5ImageNSt8uint32_tENSt8uint32_tENSt8uint32_tENSt8uint32_tE"></span><span id="imebra::VOILUT::applyOptimalVOI__ImageCR.std::uint32_t.std::uint32_t.std::uint32_t.std::uint32_t"></span><span class="target" id="classimebra_1_1_v_o_i_l_u_t_1a3553fae48463f16163a7292f1851fd25"></span>void <code class="descname">applyOptimalVOI</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="imaging_classes.html#_CPPv3N6imebra5ImageE" title="imebra::Image">Image</a> &amp;<em>inputImage</em>, std::uint32_t <em>topLeftX</em>, std::uint32_t <em>topLeftY</em>, std::uint32_t <em>width</em>, std::uint32_t <em>height</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N6imebra6VOILUT15applyOptimalVOIERK5ImageNSt8uint32_tENSt8uint32_tENSt8uint32_tENSt8uint32_tE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Find the optimal VOI settings for a specific image’s area and apply it with <a class="reference internal" href="#classimebra_1_1_v_o_i_l_u_t_1a5654e4a2d4471736bb56665f72647296"><span class="std std-ref">setCenterWidth()</span></a>. </p>
+<p><dl class="docutils">
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">inputImage</span></code>: the image to analyze </li>
+<li><code class="docutils literal notranslate"><span class="pre">topLeftX</span></code>: the horizontal coordinate of the top-left angle of the area to analyze </li>
+<li><code class="docutils literal notranslate"><span class="pre">topLeftY</span></code>: the vertical coordinate of the top-left angle of the area to analyze </li>
+<li><code class="docutils literal notranslate"><span class="pre">width</span></code>: the width of the area to analyze </li>
+<li><code class="docutils literal notranslate"><span class="pre">height</span></code>: the height of the area to analyze </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N6imebra6VOILUT14setCenterWidthEdd">
+<span id="_CPPv2N6imebra6VOILUT14setCenterWidthEdd"></span><span id="imebra::VOILUT::setCenterWidth__double.double"></span><span class="target" id="classimebra_1_1_v_o_i_l_u_t_1a5654e4a2d4471736bb56665f72647296"></span>void <code class="descname">setCenterWidth</code><span class="sig-paren">(</span>double <em>center</em>, double <em>width</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N6imebra6VOILUT14setCenterWidthEdd" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Set the VOI settings applied by the transform. </p>
+<p><dl class="docutils">
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">center</span></code>: the VOI center </li>
+<li><code class="docutils literal notranslate"><span class="pre">width</span></code>: the VOI width </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N6imebra6VOILUT6setLUTERK3LUT">
+<span id="_CPPv2N6imebra6VOILUT6setLUTERK3LUT"></span><span id="imebra::VOILUT::setLUT__LUTCR"></span><span class="target" id="classimebra_1_1_v_o_i_l_u_t_1ab207581804aa74ce9a79fe03fb49e05e"></span>void <code class="descname">setLUT</code><span class="sig-paren">(</span><em class="property">const</em> LUT &amp;<em>lut</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N6imebra6VOILUT6setLUTERK3LUT" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Set the LUT that will be used by the transform to enhance the contrast. </p>
+<p>The LUTs to be used for the <a class="reference internal" href="#classimebra_1_1_v_o_i_l_u_t"><span class="std std-ref">VOILUT</span></a> transform are stored in the <a class="reference internal" href="dicom_data_classes.html#classimebra_1_1_data_set"><span class="std std-ref">DataSet</span></a>’s sequence tagId_t::VOILUTSequence_0028_3010 (group 0x0028, tag 0x3010). Each item in the sequence stores a single LUT.</p>
+<p>Use <a class="reference internal" href="dicom_data_classes.html#classimebra_1_1_data_set_1af828670ac04a6cbcec76f084682455af"><span class="std std-ref">DataSet::getLUT()</span></a> to retrieve the LUT from the <a class="reference internal" href="dicom_data_classes.html#classimebra_1_1_data_set"><span class="std std-ref">DataSet</span></a>.</p>
+<p><dl class="docutils">
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">lut</span></code>: the LUT to apply </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3NK6imebra6VOILUT9getCenterEv">
+<span id="_CPPv2NK6imebra6VOILUT9getCenterEv"></span><span id="imebra::VOILUT::getCenterC"></span><span class="target" id="classimebra_1_1_v_o_i_l_u_t_1a483486abe3b11975e84219db53d3bc78"></span>double <code class="descname">getCenter</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv3NK6imebra6VOILUT9getCenterEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Retrieve the VOI center applied by the transform. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>the VOI center applied by the transform </dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3NK6imebra6VOILUT8getWidthEv">
+<span id="_CPPv2NK6imebra6VOILUT8getWidthEv"></span><span id="imebra::VOILUT::getWidthC"></span><span class="target" id="classimebra_1_1_v_o_i_l_u_t_1a59565e6b817f9bb7b18aa155e105f277"></span>double <code class="descname">getWidth</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv3NK6imebra6VOILUT8getWidthEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Retrieve the VOI width applied by the transform. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>the VOI width applied by the transform </dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="id4">
+<h4>Objective-C/Swift<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h4>
+<dl class="class">
+<dt id="_CPPv312ImebraVOILUT">
+<span id="_CPPv212ImebraVOILUT"></span><span id="ImebraVOILUT"></span><span class="target" id="interface_imebra_v_o_i_l_u_t"></span><em class="property">class </em><code class="descname">ImebraVOILUT</code> : <em class="property">public</em> <a class="reference internal" href="#_CPPv315ImebraTransform" title="ImebraTransform">ImebraTransform</a><a class="headerlink" href="#_CPPv312ImebraVOILUT" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>A VOILUT transform enhances the visibility of a specific range of brightness in an image. </p>
+<p>The client can use VOILUT in three ways:<ul class="simple">
+<li>by declaring the minimum and maximum values of the pixels that must be visible via the method setCenterWidth()</li>
+<li>by declaring a LUT via the method setLUT()</li>
+<li>by letting the transform calculate the most appropriate center/width values via the method applyOptimalVOI()</li>
+</ul>
+</p>
+<p><a class="reference internal" href="dicom_data_classes.html#interface_imebra_data_set"><span class="std std-ref">ImebraDataSet</span></a> may already supply suitable values for the methods setCenterWidth() and setLUT().</p>
+<p>In order to retrieve from the dataset the suggested center/width values, call ImebraDataSet::getVOIs().</p>
+<p>To get from the dataset a list of LUTs that can be used with the VOILUT transform use ImebraDataSet::getLUT(TagId(ImebraTagId_t::ImebraVOILUTSequence_0028_3010), X) where X is a 0 base index (the dataset may provide more than one LUT for the VOILUT transform). </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric">Public Functions</p>
+<dl class="function">
+<dt id="_CPPv3N12ImebraVOILUT4initEv">
+<span id="_CPPv2N12ImebraVOILUT4initEv"></span><span id="ImebraVOILUT::init"></span><span class="target" id="interface_imebra_v_o_i_l_u_t_1a4d73b8671cc7c54a45a6d612508bc3dc"></span>id <code class="descname">init</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N12ImebraVOILUT4initEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Initializer. </p>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<span class="target" id="interface_imebra_v_o_i_l_u_t_1a4b23d46c0eaad7f155c1cd169841bc00"></span><code class="descname">void ImebraVOILUT::applyOptimalVOI:inputTopLeftX:inputTopLeftY:inputWidth:inputHeight:error:(ImebraImage  * pInputImage, unsigned int inputTopLeftX, unsigned int inputTopLeftY, unsigned int inputWidth, unsigned int inputHeight, (swift_error(nonnull_error)) __attribute__)</code></dt>
+<dd><p>Find the optimal VOI settings for a specific image’s area and apply it with setCenterWidth(). </p>
+<p><dl class="docutils">
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">pInputImage</span></code>: the image to analyze </li>
+<li><code class="docutils literal notranslate"><span class="pre">topLeftX</span></code>: the horizontal coordinate of the top-left angle of the area to analyze </li>
+<li><code class="docutils literal notranslate"><span class="pre">topLeftY</span></code>: the vertical coordinate of the top-left angle of the area to analyze </li>
+<li><code class="docutils literal notranslate"><span class="pre">width</span></code>: the width of the area to analyze </li>
+<li><code class="docutils literal notranslate"><span class="pre">height</span></code>: the height of the area to analyze </li>
+<li><code class="docutils literal notranslate"><span class="pre">pError</span></code>: set to a NSError derived class in case of error </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<span class="target" id="interface_imebra_v_o_i_l_u_t_1af61bdea0939dc970053f54e429538211"></span><code class="descname">void ImebraVOILUT::setCenter:width:(double center, double width)</code></dt>
+<dd><p>Set the VOI settings applied by the transform. </p>
+<p><dl class="docutils">
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">center</span></code>: the VOI center </li>
+<li><code class="docutils literal notranslate"><span class="pre">width</span></code>: the VOI width </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<span class="target" id="interface_imebra_v_o_i_l_u_t_1ad40a5d8269a9f0f081aad2378c29f773"></span><code class="descname">void ImebraVOILUT::setLUT:(ImebraLUT  * pLUT)</code></dt>
+<dd><p>Set the LUT that will be used by the transform to enhance the contrast. </p>
+<p>The LUTs to be used for the VOILUT transform are stored in the dataset’s sequence ImebraTagId_t::ImebraVOILUTSequence_0028_3010 (group 0x0028, tag 0x3010). Each item in the sequence stores a single LUT.</p>
+<p>Use ImebraDataSet::getLUT() to retrieve the LUT from the DataSet.</p>
+<p><dl class="docutils">
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">pLut</span></code>: the LUT to apply </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric">Property</p>
+<dl class="member">
+<dt>
+<span class="target" id="interface_imebra_v_o_i_l_u_t_1adc5676f536c722e5c60e7d824ee3d995"></span><em class="property">property </em><code class="descname">ImebraVOILUT::center</code></dt>
+<dd><p>Retrieve the VOI center applied by the transform. </p>
+</dd></dl>
+
+<dl class="member">
+<dt>
+<span class="target" id="interface_imebra_v_o_i_l_u_t_1aff09061103877ef1a85dff8ddd1c116c"></span><em class="property">property </em><code class="descname">ImebraVOILUT::width</code></dt>
+<dd><p>Retrieve the VOI width applied by the transform. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="modalityvoilut">
+<h3>ModalityVOILUT<a class="headerlink" href="#modalityvoilut" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id5">
+<h4>C++<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h4>
+<dl class="class">
+<dt id="_CPPv3N6imebra14ModalityVOILUTE">
+<span id="_CPPv2N6imebra14ModalityVOILUTE"></span><span id="imebra::ModalityVOILUT"></span><span class="target" id="classimebra_1_1_modality_v_o_i_l_u_t"></span><em class="property">class </em><code class="descname">ModalityVOILUT</code> : <em class="property">public</em> imebra::<a class="reference internal" href="#_CPPv3N6imebra9TransformE" title="imebra::Transform">Transform</a><a class="headerlink" href="#_CPPv3N6imebra14ModalityVOILUTE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>The <a class="reference internal" href="#classimebra_1_1_modality_v_o_i_l_u_t"><span class="std std-ref">ModalityVOILUT</span></a> transform applies the Modality VOI or LUT to the input image. </p>
+<p>The Modality VOI/LUT applies a rescale intercept and a slope to transform the pixel values of the image into values that are meaningful to the application.</p>
+<p>For instance, the original pixel values could store a device specific value that has a meaning only when used by the device that generated it: applying the rescale slope/intercept to pixel value converts the original values into optical density or other known measurement units (e.g. Hounsfield).</p>
+<p>When the transformation is not linear, then a LUT (lookup table) is applied. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric">Public Functions</p>
+<dl class="function">
+<dt id="_CPPv3N6imebra14ModalityVOILUT14ModalityVOILUTERK7DataSet">
+<span id="_CPPv2N6imebra14ModalityVOILUT14ModalityVOILUTERK7DataSet"></span><span id="imebra::ModalityVOILUT::ModalityVOILUT__DataSetCR"></span><span class="target" id="classimebra_1_1_modality_v_o_i_l_u_t_1a7ea78585131eebab6d863b0334b4785d"></span><code class="descname">ModalityVOILUT</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="dicom_data_classes.html#_CPPv3N6imebra7DataSetE" title="imebra::DataSet">DataSet</a> &amp;<em>dataset</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N6imebra14ModalityVOILUT14ModalityVOILUTERK7DataSet" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Constructor. </p>
+<p><dl class="docutils">
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">dataset</span></code>: the <a class="reference internal" href="dicom_data_classes.html#classimebra_1_1_data_set"><span class="std std-ref">DataSet</span></a> from which the modality VOI or LUT data is retrieved </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="id6">
+<h4>Objective-C/Swift<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h4>
+<dl class="class">
+<dt id="_CPPv320ImebraModalityVOILUT">
+<span id="_CPPv220ImebraModalityVOILUT"></span><span id="ImebraModalityVOILUT"></span><span class="target" id="interface_imebra_modality_v_o_i_l_u_t"></span><em class="property">class </em><code class="descname">ImebraModalityVOILUT</code> : <em class="property">public</em> <a class="reference internal" href="#_CPPv315ImebraTransform" title="ImebraTransform">ImebraTransform</a><a class="headerlink" href="#_CPPv320ImebraModalityVOILUT" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>The <a class="reference internal" href="#interface_imebra_modality_v_o_i_l_u_t"><span class="std std-ref">ImebraModalityVOILUT</span></a> transform applies the Modality VOI or LUT to the input image. </p>
+<p>The Modality VOI/LUT applies a rescale intercept and a slope to transform the pixel values of the image into values that are meaningful to the application.</p>
+<p>For instance, the original pixel values could store a device specific value that has a meaning only when used by the device that generated it: applying the rescale slope/intercept to pixel value converts the original values into optical density or other known measurement units (e.g. Hounsfield).</p>
+<p>When the transformation is not linear, then a LUT (lookup table) is applied. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric">Public Functions</p>
+<dl class="function">
+<dt>
+<span class="target" id="interface_imebra_modality_v_o_i_l_u_t_1a5dfa931e6fc5c7d30ed635ddfd72d3c4"></span><code class="descname">id ImebraModalityVOILUT::initWithDataSet:(ImebraDataSet  * pDataSet)</code></dt>
+<dd><p>Initializer. </p>
+<p><dl class="docutils">
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">pDataset</span></code>: the <a class="reference internal" href="dicom_data_classes.html#interface_imebra_data_set"><span class="std std-ref">ImebraDataSet</span></a> from which the modality VOI or LUT data is retrieved </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</div>
+</div>
+</div>
+<div class="section" id="rendering-transforms">
+<h2>Rendering transforms<a class="headerlink" href="#rendering-transforms" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="transformhighbit">
+<h3>TransformHighBit<a class="headerlink" href="#transformhighbit" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id7">
+<h4>C++<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h4>
+<dl class="class">
+<dt id="_CPPv3N6imebra16TransformHighBitE">
+<span id="_CPPv2N6imebra16TransformHighBitE"></span><span id="imebra::TransformHighBit"></span><span class="target" id="classimebra_1_1_transform_high_bit"></span><em class="property">class </em><code class="descname">TransformHighBit</code> : <em class="property">public</em> imebra::<a class="reference internal" href="#_CPPv3N6imebra9TransformE" title="imebra::Transform">Transform</a><a class="headerlink" href="#_CPPv3N6imebra16TransformHighBitE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>The <a class="reference internal" href="#classimebra_1_1_transform_high_bit"><span class="std std-ref">TransformHighBit</span></a> transform shifts the input image’s values so they match the high-bit settings of the <a class="reference internal" href="#classimebra_1_1_transform"><span class="std std-ref">Transform</span></a> output image. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric">Public Functions</p>
+<dl class="function">
+<dt id="_CPPv3N6imebra16TransformHighBit16TransformHighBitEv">
+<span id="_CPPv2N6imebra16TransformHighBit16TransformHighBitEv"></span><span id="imebra::TransformHighBit::TransformHighBit"></span><span class="target" id="classimebra_1_1_transform_high_bit_1a659eadfbce154bf40ddd08ed683be7a1"></span><code class="descname">TransformHighBit</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N6imebra16TransformHighBit16TransformHighBitEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Constructor. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="id8">
+<h4>Objective-C/Swift<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h4>
+<dl class="class">
+<dt id="_CPPv322ImebraTransformHighBit">
+<span id="_CPPv222ImebraTransformHighBit"></span><span id="ImebraTransformHighBit"></span><span class="target" id="interface_imebra_transform_high_bit"></span><em class="property">class </em><code class="descname">ImebraTransformHighBit</code> : <em class="property">public</em> <a class="reference internal" href="#_CPPv315ImebraTransform" title="ImebraTransform">ImebraTransform</a><a class="headerlink" href="#_CPPv322ImebraTransformHighBit" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p><a class="reference internal" href="#interface_imebra_transform_high_bit"><span class="std std-ref">ImebraTransformHighBit</span></a> shifts the input image’s values so they match the high-bit settings of the output image. </p>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="colortransformsfactory">
+<h3>ColorTransformsFactory<a class="headerlink" href="#colortransformsfactory" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id9">
+<h4>C++<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h4>
+<dl class="class">
+<dt id="_CPPv3N6imebra22ColorTransformsFactoryE">
+<span id="_CPPv2N6imebra22ColorTransformsFactoryE"></span><span id="imebra::ColorTransformsFactory"></span><span class="target" id="classimebra_1_1_color_transforms_factory"></span><em class="property">class </em><code class="descname">ColorTransformsFactory</code><a class="headerlink" href="#_CPPv3N6imebra22ColorTransformsFactoryE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p><a class="reference internal" href="#classimebra_1_1_color_transforms_factory"><span class="std std-ref">ColorTransformsFactory</span></a> has the knowledge about the color spaces supported by the library: it can construct <a class="reference internal" href="#classimebra_1_1_transform"><span class="std std-ref">Transform</span></a> objects that transform images’ content from one color space to another and can return specific information about the supported color spaces. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric">Public Static Functions</p>
+<dl class="function">
+<dt id="_CPPv3N6imebra22ColorTransformsFactory19normalizeColorSpaceERKNSt6stringE">
+<span id="_CPPv2N6imebra22ColorTransformsFactory19normalizeColorSpaceERKNSt6stringE"></span><span id="imebra::ColorTransformsFactory::normalizeColorSpace__ssCR"></span><span class="target" id="classimebra_1_1_color_transforms_factory_1a5c3b9484192aba078418cc522c1558f3"></span><em class="property">static</em> std::string <code class="descname">normalizeColorSpace</code><span class="sig-paren">(</span><em class="property">const</em> std::string &amp;<em>colorSpace</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N6imebra22ColorTransformsFactory19normalizeColorSpaceERKNSt6stringE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Normalize the name of a color space. </p>
+<p>DICOM color spaces may contain additional information like the subsampling factor.</p>
+<p>This method removes the additional information contained in the color space name and makes it upper-case, so it can be compared with other normalized color space names.</p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>the normalized color space name </dd>
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">colorSpace</span></code>: the color space name to normalize </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N6imebra22ColorTransformsFactory12isMonochromeERKNSt6stringE">
+<span id="_CPPv2N6imebra22ColorTransformsFactory12isMonochromeERKNSt6stringE"></span><span id="imebra::ColorTransformsFactory::isMonochrome__ssCR"></span><span class="target" id="classimebra_1_1_color_transforms_factory_1a66c2035c9b0ea74a3db05581fa195852"></span><em class="property">static</em> bool <code class="descname">isMonochrome</code><span class="sig-paren">(</span><em class="property">const</em> std::string &amp;<em>colorSpace</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N6imebra22ColorTransformsFactory12isMonochromeERKNSt6stringE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Returns true if the specified color space name represents a monochromatic color space. </p>
+<p>The method takes care of normalizing the color space before analyzing it.</p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>true if the normalized color space name represents a monochromatic color space </dd>
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">colorSpace</span></code>: the color space to test </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N6imebra22ColorTransformsFactory13isSubsampledXERKNSt6stringE">
+<span id="_CPPv2N6imebra22ColorTransformsFactory13isSubsampledXERKNSt6stringE"></span><span id="imebra::ColorTransformsFactory::isSubsampledX__ssCR"></span><span class="target" id="classimebra_1_1_color_transforms_factory_1a18c9ce2209dde3067db9d67ad684ad6c"></span><em class="property">static</em> bool <code class="descname">isSubsampledX</code><span class="sig-paren">(</span><em class="property">const</em> std::string &amp;<em>colorSpace</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N6imebra22ColorTransformsFactory13isSubsampledXERKNSt6stringE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Returns true if the specified color space name contains additional information that specifies that the pixels are subsampled horizontally. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>true if the color space name specifies that each pixel is subsampled horizontally </dd>
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">colorSpace</span></code>: the color space to test for additional information about horizontal subsampling </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N6imebra22ColorTransformsFactory13isSubsampledYERKNSt6stringE">
+<span id="_CPPv2N6imebra22ColorTransformsFactory13isSubsampledYERKNSt6stringE"></span><span id="imebra::ColorTransformsFactory::isSubsampledY__ssCR"></span><span class="target" id="classimebra_1_1_color_transforms_factory_1a82d9f4de5be72e3da72afe6a4505c336"></span><em class="property">static</em> bool <code class="descname">isSubsampledY</code><span class="sig-paren">(</span><em class="property">const</em> std::string &amp;<em>colorSpace</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N6imebra22ColorTransformsFactory13isSubsampledYERKNSt6stringE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Returns true if the specified color space name contains additional information that specifies that the pixels are subsampled vertically. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>true if the color space name specifies that each pixel is subsampled vertically </dd>
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">colorSpace</span></code>: the color space to test for additional information about vertical subsampling </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N6imebra22ColorTransformsFactory12canSubsampleERKNSt6stringE">
+<span id="_CPPv2N6imebra22ColorTransformsFactory12canSubsampleERKNSt6stringE"></span><span id="imebra::ColorTransformsFactory::canSubsample__ssCR"></span><span class="target" id="classimebra_1_1_color_transforms_factory_1ab73c59e7dc546fb935befdcb13d46945"></span><em class="property">static</em> bool <code class="descname">canSubsample</code><span class="sig-paren">(</span><em class="property">const</em> std::string &amp;<em>colorSpace</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N6imebra22ColorTransformsFactory12canSubsampleERKNSt6stringE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Returns true if the specified color space name supports subsampling information. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>true if subsampling information can be added to the specified color space name </dd>
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">colorSpace</span></code>: the color space to test </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N6imebra22ColorTransformsFactory14makeSubsampledERKNSt6stringEbb">
+<span id="_CPPv2N6imebra22ColorTransformsFactory14makeSubsampledERKNSt6stringEbb"></span><span id="imebra::ColorTransformsFactory::makeSubsampled__ssCR.b.b"></span><span class="target" id="classimebra_1_1_color_transforms_factory_1af44b94952deb6e8000ac97ab629f7215"></span><em class="property">static</em> std::string <code class="descname">makeSubsampled</code><span class="sig-paren">(</span><em class="property">const</em> std::string &amp;<em>colorSpace</em>, bool <em>bSubsampleX</em>, bool <em>bSubsampleY</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N6imebra22ColorTransformsFactory14makeSubsampledERKNSt6stringEbb" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Add subsampling information to the specified color space name. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>the specified color space name with additional information about the pixels subsampling </dd>
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">colorSpace</span></code>: the color space to which the subsampling information must be added </li>
+<li><code class="docutils literal notranslate"><span class="pre">bSubsampleX</span></code>: true if the pixels are subsampled horizontally </li>
+<li><code class="docutils literal notranslate"><span class="pre">bSubsampleY</span></code>: true if the pixels are subsampled vertically </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N6imebra22ColorTransformsFactory19getNumberOfChannelsERKNSt6stringE">
+<span id="_CPPv2N6imebra22ColorTransformsFactory19getNumberOfChannelsERKNSt6stringE"></span><span id="imebra::ColorTransformsFactory::getNumberOfChannels__ssCR"></span><span class="target" id="classimebra_1_1_color_transforms_factory_1afef1e0bcd68466aee8c8f4f96150b985"></span><em class="property">static</em> std::uint32_t <code class="descname">getNumberOfChannels</code><span class="sig-paren">(</span><em class="property">const</em> std::string &amp;<em>colorSpace</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N6imebra22ColorTransformsFactory19getNumberOfChannelsERKNSt6stringE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Returns the number of color channels necessary for the specified color space. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>the number of color channels necessary to the specified color space </dd>
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">colorSpace</span></code>: the color space name </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N6imebra22ColorTransformsFactory12getTransformERKNSt6stringERKNSt6stringE">
+<span id="_CPPv2N6imebra22ColorTransformsFactory12getTransformERKNSt6stringERKNSt6stringE"></span><span id="imebra::ColorTransformsFactory::getTransform__ssCR.ssCR"></span><span class="target" id="classimebra_1_1_color_transforms_factory_1a3147b9ec37760b84f221a045a69cb5de"></span><em class="property">static</em> <a class="reference internal" href="#_CPPv3N6imebra9TransformE" title="imebra::Transform">Transform</a> *<code class="descname">getTransform</code><span class="sig-paren">(</span><em class="property">const</em> std::string &amp;<em>startColorSpace</em>, <em class="property">const</em> std::string &amp;<em>endColorSpace</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N6imebra22ColorTransformsFactory12getTransformERKNSt6stringERKNSt6stringE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Returns a <a class="reference internal" href="#classimebra_1_1_transform"><span class="std std-ref">Transform</span></a> object able to transform an image’s content from one color space to another one. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>a <a class="reference internal" href="#classimebra_1_1_transform"><span class="std std-ref">Transform</span></a> object able to transform the image’s content from input color space to output one </dd>
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">startColorSpace</span></code>: the color space of the input image’s content </li>
+<li><code class="docutils literal notranslate"><span class="pre">endColorSpace</span></code>: the color space of the output image’s content </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="id10">
+<h4>Objective-C/Swift<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h4>
+<dl class="class">
+<dt id="_CPPv328ImebraColorTransformsFactory">
+<span id="_CPPv228ImebraColorTransformsFactory"></span><span id="ImebraColorTransformsFactory"></span><span class="target" id="interface_imebra_color_transforms_factory"></span><em class="property">class </em><code class="descname">ImebraColorTransformsFactory</code> : <em class="property">public</em> NSObject<a class="headerlink" href="#_CPPv328ImebraColorTransformsFactory" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p><a class="reference internal" href="#interface_imebra_color_transforms_factory"><span class="std std-ref">ImebraColorTransformsFactory</span></a> has the knowledge about the color spaces supported by the library: it can construct <a class="reference internal" href="#interface_imebra_transform"><span class="std std-ref">ImebraTransform</span></a> objects that transform images’ content from one color space to another and can return specific information about the supported color spaces. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric">Public Static Functions</p>
+<dl class="function">
+<dt>
+<span class="target" id="interface_imebra_color_transforms_factory_1a9307b63f4e6c961d8dab04a45ef15b97"></span><code class="descname">NSString* ImebraColorTransformsFactory::normalizeColorSpace:(NSString * colorSpace)</code></dt>
+<dd><p>Normalize the name of a color space. </p>
+<p>DICOM color spaces may contain additional information like the subsampling factor.</p>
+<p>This method removes the additional information contained in the color space name and makes it upper-case, so it can be compared with other normalized color space names.</p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>the normalized color space name </dd>
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">colorSpace</span></code>: the color space name to normalize </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<span class="target" id="interface_imebra_color_transforms_factory_1a141739586cfc4e2f1b2536500fc12c39"></span><code class="descname">BOOL ImebraColorTransformsFactory::isMonochrome:(NSString * colorSpace)</code></dt>
+<dd><p>Returns true if the specified color space name represents a monochromatic color space. </p>
+<p>The method takes care of normalizing the color space before analyzing it.</p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>true if the normalized color space name represents a monochromatic color space </dd>
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">colorSpace</span></code>: the color space to test </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<span class="target" id="interface_imebra_color_transforms_factory_1aba8016dfd36c4ad90894994eb931c720"></span><code class="descname">BOOL ImebraColorTransformsFactory::isSubsampledX:(NSString * colorSpace)</code></dt>
+<dd><p>Returns true if the specified color space name contains additional information that specifies that the pixels are subsampled horizontally. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>true if the color space name specifies that each pixel is subsampled horizontally </dd>
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">colorSpace</span></code>: the color space to test for additional information about horizontal subsampling </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<span class="target" id="interface_imebra_color_transforms_factory_1a51cdfd5bf9cdf43ee175b1cfd736804b"></span><code class="descname">BOOL ImebraColorTransformsFactory::isSubsampledY:(NSString * colorSpace)</code></dt>
+<dd><p>Returns true if the specified color space name contains additional information that specifies that the pixels are subsampled vertically. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>true if the color space name specifies that each pixel is subsampled vertically </dd>
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">colorSpace</span></code>: the color space to test for additional information about vertical subsampling </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<span class="target" id="interface_imebra_color_transforms_factory_1a6e3d77951e69151affcf7bc45097fc76"></span><code class="descname">BOOL ImebraColorTransformsFactory::canSubsample:(NSString * colorSpace)</code></dt>
+<dd><p>Returns true if the specified color space name supports subsampling information. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>true if subsampling information can be added to the specified color space name </dd>
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">colorSpace</span></code>: the color space to test </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<span class="target" id="interface_imebra_color_transforms_factory_1a40ba358bf93e85aa21fbe94496679823"></span><code class="descname">NSString* ImebraColorTransformsFactory::makeSubsampled:subSampleX:subSampleY:(NSString * colorSpace, BOOL bSubSampleX, BOOL bSubSampleY)</code></dt>
+<dd><p>Add subsampling information to the specified color space name. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>the specified color space name with additional information about the pixels subsampling </dd>
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">colorSpace</span></code>: the color space to which the subsampling information must be added </li>
+<li><code class="docutils literal notranslate"><span class="pre">bSubSampleX</span></code>: true if the pixels are subsampled horizontally </li>
+<li><code class="docutils literal notranslate"><span class="pre">bSubSampleY</span></code>: true if the pixels are subsampled vertically </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<span class="target" id="interface_imebra_color_transforms_factory_1aa8a26de5a21700474005a54f57009955"></span><code class="descname">unsigned int ImebraColorTransformsFactory::getNumberOfChannels:(NSString * colorSpace)</code></dt>
+<dd><p>Returns the number of color channels necessary for the specified color space. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>the number of color channels necessary to the specified color space </dd>
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">colorSpace</span></code>: the color space name </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<span class="target" id="interface_imebra_color_transforms_factory_1ae1360f04fc06a8b98694c75acce9aa66"></span><code class="descname">ImebraTransform* ImebraColorTransformsFactory::getTransform:finalColorSpace:error:(NSString * startColorSpace, NSString * endColorSpace, NSError ** pError)</code></dt>
+<dd><p>Returns a <a class="reference internal" href="#interface_imebra_transform"><span class="std std-ref">ImebraTransform</span></a> object able to transform an image’s content from one color space to another one. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>a <a class="reference internal" href="#interface_imebra_transform"><span class="std std-ref">ImebraTransform</span></a> object able to transform the image’s content from input color space to output one </dd>
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">startColorSpace</span></code>: the color space of the input image’s content </li>
+<li><code class="docutils literal notranslate"><span class="pre">endColorSpace</span></code>: the color space of the output image’s content </li>
+<li><code class="docutils literal notranslate"><span class="pre">pError</span></code>: set if an error occurs </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="memory_management_classes.html" class="btn btn-neutral float-right" title="Memory management classes" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="imaging_classes.html" class="btn btn-neutral" title="Imaging classes" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; <a href="copyright.html">Copyright</a> 2016, Paolo Brandoli.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'4.5.2.1',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  <script type="text/javascript" src="_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

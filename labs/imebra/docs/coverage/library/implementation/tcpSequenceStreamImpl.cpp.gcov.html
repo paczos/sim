@@ -1,0 +1,854 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - extracted.info - library/implementation/tcpSequenceStreamImpl.cpp</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">library/implementation</a> - tcpSequenceStreamImpl.cpp<span style="font-size: 80%;"> (source / <a href="tcpSequenceStreamImpl.cpp.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">extracted.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">152</td>
+            <td class="headerCovTableEntry">213</td>
+            <td class="headerCovTableEntryLo">71.4 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2019-03-13 14:48:54</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">27</td>
+            <td class="headerCovTableEntry">37</td>
+            <td class="headerCovTableEntryLo">73.0 %</td>
+          </tr>
+          <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : /*</a>
+<span class="lineNum">       2 </span>            : Copyright 2005 - 2017 by Paolo Brandoli/Binarno s.p.
+<span class="lineNum">       3 </span>            : 
+<span class="lineNum">       4 </span>            : Imebra is available for free under the GNU General Public License.
+<span class="lineNum">       5 </span>            : 
+<span class="lineNum">       6 </span>            : The full text of the license is available in the file license.rst
+<span class="lineNum">       7 </span>            :  in the project root folder.
+<span class="lineNum">       8 </span>            : 
+<span class="lineNum">       9 </span>            : If you do not want to be bound by the GPL terms (such as the requirement
+<span class="lineNum">      10 </span>            :  that your application must also be GPL), you may purchase a commercial
+<span class="lineNum">      11 </span>            :  license for Imebra from the Imebra’s website (http://imebra.com).
+<span class="lineNum">      12 </span>            : */
+<span class="lineNum">      13 </span>            : 
+<span class="lineNum">      14 </span>            : /*! \file tcpSequenceStreamImpl.cpp
+<span class="lineNum">      15 </span>            :     \brief Implementation of the the TCP stream used by the imebra library.
+<span class="lineNum">      16 </span>            : 
+<span class="lineNum">      17 </span>            : */
+<span class="lineNum">      18 </span>            : 
+<span class="lineNum">      19 </span>            : #include &quot;tcpSequenceStreamImpl.h&quot;
+<span class="lineNum">      20 </span>            : #include &quot;../include/imebra/exceptions.h&quot;
+<span class="lineNum">      21 </span>            : #include &lt;string.h&gt;
+<span class="lineNum">      22 </span>            : 
+<span class="lineNum">      23 </span>            : #ifdef IMEBRA_WINDOWS
+<span class="lineNum">      24 </span>            : 
+<span class="lineNum">      25 </span>            : #include &lt;Ws2tcpip.h&gt;
+<span class="lineNum">      26 </span>            : 
+<span class="lineNum">      27 </span>            : #else
+<span class="lineNum">      28 </span>            : 
+<span class="lineNum">      29 </span>            : #include &lt;sys/types.h&gt;
+<span class="lineNum">      30 </span>            : #include &lt;sys/socket.h&gt;
+<span class="lineNum">      31 </span>            : #include &lt;unistd.h&gt;
+<span class="lineNum">      32 </span>            : #include &lt;fcntl.h&gt;
+<span class="lineNum">      33 </span>            : #include &lt;poll.h&gt;
+<span class="lineNum">      34 </span>            : #include &lt;netinet/in.h&gt;
+<span class="lineNum">      35 </span>            : 
+<span class="lineNum">      36 </span>            : #endif
+<span class="lineNum">      37 </span>            : 
+<span class="lineNum">      38 </span>            : namespace imebra
+<span class="lineNum">      39 </span>            : {
+<span class="lineNum">      40 </span>            : 
+<span class="lineNum">      41 </span>            : namespace implementation
+<span class="lineNum">      42 </span>            : {
+<span class="lineNum">      43 </span>            : 
+<span class="lineNum">      44 </span>            : 
+<span class="lineNum">      45 </span>            : #ifdef IMEBRA_WINDOWS
+<span class="lineNum">      46 </span>            : 
+<span class="lineNum">      47 </span>            : initWinsock::initWinsock()
+<span class="lineNum">      48 </span>            : {
+<span class="lineNum">      49 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">      50 </span>            : 
+<span class="lineNum">      51 </span>            :     WSADATA wsaData;
+<span class="lineNum">      52 </span>            : 
+<span class="lineNum">      53 </span>            :     if(WSAStartup(MAKEWORD(2, 2), &amp;wsaData) != 0)
+<span class="lineNum">      54 </span>            :     {
+<span class="lineNum">      55 </span>            :         IMEBRA_THROW(std::runtime_error, &quot;WSA socket initialization failure&quot;);
+<span class="lineNum">      56 </span>            :     }
+<span class="lineNum">      57 </span>            :     IMEBRA_FUNCTION_END();
+<span class="lineNum">      58 </span>            : }
+<span class="lineNum">      59 </span>            : 
+<span class="lineNum">      60 </span>            : initWinsock::~initWinsock()
+<span class="lineNum">      61 </span>            : {
+<span class="lineNum">      62 </span>            :     WSACleanup();
+<span class="lineNum">      63 </span>            : }
+<span class="lineNum">      64 </span>            : 
+<span class="lineNum">      65 </span>            : std::shared_ptr&lt;initWinsock&gt; initWinsock::getWinsockInitialization()
+<span class="lineNum">      66 </span>            : {
+<span class="lineNum">      67 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">      68 </span>            : 
+<span class="lineNum">      69 </span>            :     static std::shared_ptr&lt;initWinsock&gt; m_initWinsock(std::make_shared&lt;initWinsock&gt;());
+<span class="lineNum">      70 </span>            : 
+<span class="lineNum">      71 </span>            :     return m_initWinsock;
+<span class="lineNum">      72 </span>            : 
+<span class="lineNum">      73 </span>            :     IMEBRA_FUNCTION_END();
+<span class="lineNum">      74 </span>            : }
+<span class="lineNum">      75 </span>            : 
+<span class="lineNum">      76 </span>            : #endif
+<span class="lineNum">      77 </span>            : 
+<span class="lineNum">      78 </span>            : 
+<span class="lineNum">      79 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">      80 </span>            : //
+<span class="lineNum">      81 </span>            : // SocketTimeout is used only internally when a TCP
+<span class="lineNum">      82 </span>            : //  timeout is detected
+<a name="83"><span class="lineNum">      83 </span>            : //</a>
+<span class="lineNum">      84 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">      85 </span><span class="lineNoCov">          0 : class SocketTimeout: public  std::runtime_error</span>
+<a name="86"><span class="lineNum">      86 </span>            : {</a>
+<span class="lineNum">      87 </span>            : public:
+<span class="lineNum">      88 </span><span class="lineNoCov">          0 :     SocketTimeout(const std::string&amp; message):</span>
+<span class="lineNum">      89 </span><span class="lineNoCov">          0 :         std::runtime_error(message)</span>
+<span class="lineNum">      90 </span>            :     {
+<span class="lineNum">      91 </span><span class="lineNoCov">          0 :     }</span>
+<span class="lineNum">      92 </span>            : };
+<span class="lineNum">      93 </span>            : 
+<span class="lineNum">      94 </span>            : 
+<span class="lineNum">      95 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">      96 </span>            : //
+<span class="lineNum">      97 </span>            : // Throw an exception according to the result of a socket
+<span class="lineNum">      98 </span>            : //  operation and the content of errno
+<a name="99"><span class="lineNum">      99 </span>            : //</a>
+<span class="lineNum">     100 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     101 </span><span class="lineCov">      25213 : long throwTcpException(long socketOperationResult)</span>
+<span class="lineNum">     102 </span>            : {
+<span class="lineNum">     103 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">     104 </span>            : 
+<span class="lineNum">     105 </span><span class="lineCov">      25213 :     if(socketOperationResult &gt;= 0)</span>
+<span class="lineNum">     106 </span>            :     {
+<span class="lineNum">     107 </span><span class="lineCov">      25193 :         return socketOperationResult;</span>
+<span class="lineNum">     108 </span>            :     }
+<span class="lineNum">     109 </span>            : 
+<span class="lineNum">     110 </span>            : #ifdef IMEBRA_WINDOWS
+<span class="lineNum">     111 </span>            :     int error(WSAGetLastError());
+<span class="lineNum">     112 </span>            :     switch(error)
+<span class="lineNum">     113 </span>            :     {
+<span class="lineNum">     114 </span>            :         case WSAETIMEDOUT:
+<span class="lineNum">     115 </span>            :                 IMEBRA_THROW(SocketTimeout, &quot;Timed out&quot;);
+<span class="lineNum">     116 </span>            :     case WSAEHOSTDOWN:
+<span class="lineNum">     117 </span>            :         IMEBRA_THROW(SocketTimeout, &quot;Host is down&quot;);
+<span class="lineNum">     118 </span>            :     case WSAECONNREFUSED:
+<span class="lineNum">     119 </span>            :         IMEBRA_THROW(TCPConnectionRefused, &quot;Connection refused&quot;);
+<span class="lineNum">     120 </span>            :     case WSAENOBUFS:
+<span class="lineNum">     121 </span>            :     case WSAEMFILE:
+<span class="lineNum">     122 </span>            :         throw std::bad_alloc();
+<span class="lineNum">     123 </span>            :     case WSAEINPROGRESS:
+<span class="lineNum">     124 </span>            :         return socketOperationResult;
+<span class="lineNum">     125 </span>            :     case WSAEFAULT:
+<span class="lineNum">     126 </span>            :         IMEBRA_THROW(std::logic_error, &quot;Invalid address space&quot;);
+<span class="lineNum">     127 </span>            :     case WSAEACCES:
+<span class="lineNum">     128 </span>            :         IMEBRA_THROW(PermissionDeniedError, &quot;Permission denied&quot;);
+<span class="lineNum">     129 </span>            :     case WSAEINVAL:
+<span class="lineNum">     130 </span>            :         IMEBRA_THROW(std::logic_error, &quot;Invalid argument&quot;);
+<span class="lineNum">     131 </span>            :     case WSAENOTSOCK:
+<span class="lineNum">     132 </span>            :         IMEBRA_THROW(std::logic_error, &quot;Operation on invalid socket&quot;);
+<span class="lineNum">     133 </span>            :     case WSAEWOULDBLOCK:
+<span class="lineNum">     134 </span>            :                 IMEBRA_THROW(SocketTimeout, &quot;Timed out&quot;);
+<span class="lineNum">     135 </span>            :     case EPIPE:
+<span class="lineNum">     136 </span>            :     case WSAECONNRESET:
+<span class="lineNum">     137 </span>            :     case WSAENOTCONN:
+<span class="lineNum">     138 </span>            :         case WSAECONNABORTED:
+<span class="lineNum">     139 </span>            :     case WSAENETRESET:
+<span class="lineNum">     140 </span>            :         IMEBRA_THROW(StreamClosedError, &quot;Socket closed&quot;);
+<span class="lineNum">     141 </span>            :     case WSAEADDRINUSE:
+<span class="lineNum">     142 </span>            :         IMEBRA_THROW(TCPAddressAlreadyInUse, &quot;The specified address is already in use.&quot;);
+<span class="lineNum">     143 </span>            : 
+<span class="lineNum">     144 </span>            :     }
+<span class="lineNum">     145 </span>            : #else
+<span class="lineNum">     146 </span><span class="lineCov">         20 :     int error = errno;</span>
+<span class="lineNum">     147 </span><span class="lineCov">         20 :     switch(error)</span>
+<span class="lineNum">     148 </span>            :     {
+<span class="lineNum">     149 </span><span class="lineCov">          1 :     case ECONNREFUSED:</span>
+<span class="lineNum">     150 </span><span class="lineCov">          1 :         IMEBRA_THROW(TCPConnectionRefused, &quot;Connection refused&quot;)</span>
+<span class="lineNum">     151 </span><span class="lineNoCov">          0 :     case EHOSTDOWN:</span>
+<span class="lineNum">     152 </span><span class="lineNoCov">          0 :         IMEBRA_THROW(TCPConnectionRefused, &quot;The host is down&quot;)</span>
+<span class="lineNum">     153 </span><span class="lineNoCov">          0 :     case ENOBUFS:</span>
+<span class="lineNum">     154 </span>            :     case ENOMEM:
+<span class="lineNum">     155 </span>            :     case EMFILE:
+<span class="lineNum">     156 </span><span class="lineNoCov">          0 :         throw std::bad_alloc();</span>
+<span class="lineNum">     157 </span><span class="lineCov">         14 :     case EINPROGRESS:</span>
+<span class="lineNum">     158 </span><span class="lineCov">         14 :         return socketOperationResult;</span>
+<span class="lineNum">     159 </span><span class="lineNoCov">          0 :     case EFAULT:</span>
+<span class="lineNum">     160 </span><span class="lineNoCov">          0 :         IMEBRA_THROW(std::logic_error, &quot;Invalid address space&quot;);</span>
+<span class="lineNum">     161 </span><span class="lineNoCov">          0 :     case EACCES:</span>
+<span class="lineNum">     162 </span><span class="lineNoCov">          0 :         IMEBRA_THROW(PermissionDeniedError, &quot;Permission denied&quot;);</span>
+<span class="lineNum">     163 </span><span class="lineNoCov">          0 :     case EINVAL:</span>
+<span class="lineNum">     164 </span><span class="lineNoCov">          0 :         IMEBRA_THROW(std::logic_error, &quot;Invalid argument&quot;);</span>
+<span class="lineNum">     165 </span><span class="lineNoCov">          0 :     case ENOTSOCK:</span>
+<span class="lineNum">     166 </span><span class="lineNoCov">          0 :         IMEBRA_THROW(std::logic_error, &quot;Operation on invalid socket&quot;);</span>
+<span class="lineNum">     167 </span><span class="lineNoCov">          0 :     case ENOTCONN:</span>
+<span class="lineNum">     168 </span>            :     case EWOULDBLOCK:
+<span class="lineNum">     169 </span>            :     case EINTR:
+<span class="lineNum">     170 </span><span class="lineNoCov">          0 :         IMEBRA_THROW(SocketTimeout, &quot;Timed out&quot;);</span>
+<span class="lineNum">     171 </span><span class="lineCov">          5 :     case EPIPE:</span>
+<span class="lineNum">     172 </span>            :     case ECONNRESET:
+<span class="lineNum">     173 </span>            :     case ECONNABORTED:
+<span class="lineNum">     174 </span><span class="lineCov">          5 :         IMEBRA_THROW(StreamClosedError, &quot;Socket closed&quot;);</span>
+<span class="lineNum">     175 </span><span class="lineNoCov">          0 :     case EADDRINUSE:</span>
+<span class="lineNum">     176 </span><span class="lineNoCov">          0 :         IMEBRA_THROW(TCPAddressAlreadyInUse, &quot;The specified address is already in use.&quot;)</span>
+<span class="lineNum">     177 </span>            :     }
+<span class="lineNum">     178 </span>            : #endif
+<span class="lineNum">     179 </span><span class="lineNoCov">          0 :     IMEBRA_THROW(StreamError, &quot;Unexpected TCP error (code &quot; &lt;&lt; error &lt;&lt; &quot;)&quot;);</span>
+<span class="lineNum">     180 </span>            : 
+<span class="lineNum">     181 </span><span class="lineCov">          6 :     IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">     182 </span>            : }
+<span class="lineNum">     183 </span>            : 
+<span class="lineNum">     184 </span>            : 
+<span class="lineNum">     185 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     186 </span>            : //
+<span class="lineNum">     187 </span>            : // Throw an exception based on the result of a tcp
+<span class="lineNum">     188 </span>            : //  addr operation
+<a name="189"><span class="lineNum">     189 </span>            : //</a>
+<span class="lineNum">     190 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     191 </span><span class="lineCov">         23 : void throwAddrException(int addrOperationResult)</span>
+<span class="lineNum">     192 </span>            : {
+<span class="lineNum">     193 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">     194 </span>            : 
+<span class="lineNum">     195 </span><span class="lineCov">         23 :     if(addrOperationResult == 0)</span>
+<span class="lineNum">     196 </span>            :     {
+<span class="lineNum">     197 </span><span class="lineCov">         21 :         return;</span>
+<span class="lineNum">     198 </span>            :     }
+<span class="lineNum">     199 </span>            : 
+<span class="lineNum">     200 </span><span class="lineCov">          2 :     const char* errorDescription = gai_strerror(addrOperationResult);</span>
+<span class="lineNum">     201 </span>            : 
+<span class="lineNum">     202 </span><span class="lineCov">          2 :     switch(addrOperationResult)</span>
+<span class="lineNum">     203 </span>            :     {
+<span class="lineNum">     204 </span><span class="lineNoCov">          0 :     case EAI_AGAIN:</span>
+<span class="lineNum">     205 </span><span class="lineNoCov">          0 :         IMEBRA_THROW(AddressTryAgainError, errorDescription);</span>
+<span class="lineNum">     206 </span><span class="lineNoCov">          0 :     case EAI_FAIL:</span>
+<span class="lineNum">     207 </span><span class="lineNoCov">          0 :         IMEBRA_THROW(AddressError, errorDescription);</span>
+<span class="lineNum">     208 </span><span class="lineNoCov">          0 :     case EAI_MEMORY:</span>
+<span class="lineNum">     209 </span><span class="lineNoCov">          0 :         throw std::bad_alloc();</span>
+<span class="lineNum">     210 </span><span class="lineCov">          1 :     case EAI_NONAME:</span>
+<span class="lineNum">     211 </span><span class="lineCov">          1 :         IMEBRA_THROW(AddressNoNameError, errorDescription);</span>
+<span class="lineNum">     212 </span><span class="lineCov">          1 :     case EAI_SERVICE:</span>
+<span class="lineNum">     213 </span><span class="lineCov">          1 :         IMEBRA_THROW(AddressServiceNotSupportedError, errorDescription);</span>
+<span class="lineNum">     214 </span>            : #ifndef IMEBRA_WINDOWS
+<span class="lineNum">     215 </span><span class="lineNoCov">          0 :     case EAI_SYSTEM:</span>
+<span class="lineNum">     216 </span><span class="lineNoCov">          0 :         throwTcpException(-1);</span>
+<span class="lineNum">     217 </span><span class="lineNoCov">          0 :         break;</span>
+<span class="lineNum">     218 </span>            : #endif
+<span class="lineNum">     219 </span><span class="lineNoCov">          0 :     default:</span>
+<span class="lineNum">     220 </span><span class="lineNoCov">          0 :         IMEBRA_THROW(AddressError, &quot;Unexpected TCP Address error &quot; &lt;&lt; errorDescription &lt;&lt; &quot; code: &quot; &lt;&lt; addrOperationResult);</span>
+<span class="lineNum">     221 </span>            :     }
+<span class="lineNum">     222 </span>            : 
+<span class="lineNum">     223 </span><span class="lineCov">          2 :     IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">     224 </span>            : }
+<span class="lineNum">     225 </span>            : 
+<span class="lineNum">     226 </span>            : 
+<span class="lineNum">     227 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     228 </span>            : //
+<span class="lineNum">     229 </span>            : // tcpAddress constructors
+<a name="230"><span class="lineNum">     230 </span>            : //</a>
+<span class="lineNum">     231 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     232 </span><span class="lineCov">         11 : tcpAddress::tcpAddress(const std::string&amp; node, const std::string&amp; service, passiveSocket_t passiveSocket):</span>
+<span class="lineNum">     233 </span>            :     m_node(node),
+<span class="lineNum">     234 </span><span class="lineCov">         13 :     m_service(service)</span>
+<span class="lineNum">     235 </span>            : {
+<span class="lineNum">     236 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">     237 </span>            : 
+<span class="lineNum">     238 </span>            :     INIT_WINSOCK;
+<span class="lineNum">     239 </span>            : 
+<span class="lineNum">     240 </span>            :     addrinfo hints;
+<span class="lineNum">     241 </span><span class="lineCov">         11 :     ::memset(&amp;hints, 0, sizeof(hints));</span>
+<span class="lineNum">     242 </span><span class="lineCov">         11 :     hints.ai_socktype = SOCK_STREAM;</span>
+<span class="lineNum">     243 </span><span class="lineCov">         11 :     hints.ai_family = AF_INET;</span>
+<span class="lineNum">     244 </span><span class="lineCov">         11 :     hints.ai_protocol = IPPROTO_TCP;</span>
+<span class="lineNum">     245 </span><span class="lineCov">         11 :     hints.ai_flags = (passiveSocket == passiveSocket_t::passive ? AI_PASSIVE : 0);</span>
+<span class="lineNum">     246 </span>            : 
+<span class="lineNum">     247 </span><span class="lineCov">         11 :     const char* pNode(node.empty() ? 0 : node.c_str());</span>
+<span class="lineNum">     248 </span><span class="lineCov">         11 :     const char* pService(service.empty() ? 0 : service.c_str());</span>
+<span class="lineNum">     249 </span><span class="lineCov">         11 :     addrinfo* address(0);</span>
+<span class="lineNum">     250 </span><span class="lineCov">         11 :     throwAddrException(getaddrinfo(pNode, pService, &amp;hints, &amp;address));</span>
+<span class="lineNum">     251 </span>            : 
+<span class="lineNum">     252 </span><span class="lineCov">          9 :     m_sockAddr.resize(address-&gt;ai_addrlen);</span>
+<span class="lineNum">     253 </span><span class="lineCov">          9 :     ::memcpy(&amp;(m_sockAddr[0]), address-&gt;ai_addr, address-&gt;ai_addrlen);</span>
+<span class="lineNum">     254 </span><span class="lineCov">          9 :     freeaddrinfo(address);</span>
+<span class="lineNum">     255 </span>            : 
+<span class="lineNum">     256 </span><span class="lineCov">          2 :     IMEBRA_FUNCTION_END();</span>
+<a name="257"><span class="lineNum">     257 </span><span class="lineCov">          9 : }</span></a>
+<span class="lineNum">     258 </span>            : 
+<span class="lineNum">     259 </span><span class="lineCov">         12 : tcpAddress::tcpAddress(const sockaddr&amp; address, socklen_t addressLength)</span>
+<span class="lineNum">     260 </span>            : {
+<span class="lineNum">     261 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">     262 </span>            : 
+<span class="lineNum">     263 </span>            :     INIT_WINSOCK;
+<span class="lineNum">     264 </span>            : 
+<span class="lineNum">     265 </span>            :     char host[NI_MAXHOST];
+<span class="lineNum">     266 </span>            :     char service[NI_MAXSERV];
+<span class="lineNum">     267 </span><span class="lineCov">         12 :     throwAddrException(getnameinfo(&amp;address, addressLength, host, sizeof(host), service, sizeof(service), 0));</span>
+<span class="lineNum">     268 </span>            : 
+<span class="lineNum">     269 </span><span class="lineCov">         12 :     m_sockAddr.resize(addressLength);</span>
+<span class="lineNum">     270 </span><span class="lineCov">         12 :     ::memcpy(&amp;(m_sockAddr[0]), &amp;address, addressLength);</span>
+<span class="lineNum">     271 </span><span class="lineCov">         12 :     m_node = host;</span>
+<span class="lineNum">     272 </span><span class="lineCov">         12 :     m_service = service;</span>
+<span class="lineNum">     273 </span>            : 
+<span class="lineNum">     274 </span><span class="lineNoCov">          0 :     IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">     275 </span><span class="lineCov">         12 : }</span>
+<span class="lineNum">     276 </span>            : 
+<span class="lineNum">     277 </span>            : 
+<span class="lineNum">     278 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     279 </span>            : //
+<span class="lineNum">     280 </span>            : // Destructor
+<a name="281"><span class="lineNum">     281 </span>            : //</a>
+<span class="lineNum">     282 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     283 </span><span class="lineCov">         19 : tcpAddress::~tcpAddress()</span>
+<span class="lineNum">     284 </span>            : {
+<span class="lineNum">     285 </span><span class="lineCov">         19 : }</span>
+<span class="lineNum">     286 </span>            : 
+<span class="lineNum">     287 </span>            : 
+<span class="lineNum">     288 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     289 </span>            : //
+<span class="lineNum">     290 </span>            : // Return the node part of the address
+<a name="291"><span class="lineNum">     291 </span>            : //</a>
+<span class="lineNum">     292 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     293 </span><span class="lineNoCov">          0 : std::string tcpAddress::getNode() const</span>
+<span class="lineNum">     294 </span>            : {
+<span class="lineNum">     295 </span><span class="lineNoCov">          0 :     return m_node;</span>
+<span class="lineNum">     296 </span>            : }
+<span class="lineNum">     297 </span>            : 
+<span class="lineNum">     298 </span>            : 
+<span class="lineNum">     299 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     300 </span>            : //
+<span class="lineNum">     301 </span>            : // Return the service part of the address
+<a name="302"><span class="lineNum">     302 </span>            : //</a>
+<span class="lineNum">     303 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     304 </span><span class="lineNoCov">          0 : std::string tcpAddress::getService() const</span>
+<span class="lineNum">     305 </span>            : {
+<span class="lineNum">     306 </span><span class="lineNoCov">          0 :     return m_service;</span>
+<span class="lineNum">     307 </span>            : }
+<span class="lineNum">     308 </span>            : 
+<span class="lineNum">     309 </span>            : 
+<span class="lineNum">     310 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     311 </span>            : //
+<span class="lineNum">     312 </span>            : // Return a sockaddr structure representing the address
+<span class="lineNum">     313 </span>            : // The structure is owned by tcpAddress.
+<a name="314"><span class="lineNum">     314 </span>            : //</a>
+<span class="lineNum">     315 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     316 </span><span class="lineCov">         17 : const sockaddr* tcpAddress::getSockAddr() const</span>
+<span class="lineNum">     317 </span>            : {
+<span class="lineNum">     318 </span><span class="lineCov">         17 :     return (const sockaddr*)(m_sockAddr.data());</span>
+<span class="lineNum">     319 </span>            : }
+<span class="lineNum">     320 </span>            : 
+<span class="lineNum">     321 </span>            : 
+<span class="lineNum">     322 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     323 </span>            : //
+<span class="lineNum">     324 </span>            : // Return the length of the structure returned by
+<span class="lineNum">     325 </span>            : //  getSockAddr().
+<a name="326"><span class="lineNum">     326 </span>            : //</a>
+<span class="lineNum">     327 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     328 </span><span class="lineCov">         17 : socklen_t tcpAddress::getSockAddrLen() const</span>
+<span class="lineNum">     329 </span>            : {
+<span class="lineNum">     330 </span><span class="lineCov">         17 :     return (socklen_t)m_sockAddr.size();</span>
+<span class="lineNum">     331 </span>            : }
+<span class="lineNum">     332 </span>            : 
+<span class="lineNum">     333 </span>            : 
+<span class="lineNum">     334 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     335 </span>            : //
+<span class="lineNum">     336 </span>            : // Return the address' family.
+<a name="337"><span class="lineNum">     337 </span>            : //</a>
+<span class="lineNum">     338 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     339 </span><span class="lineCov">         17 : int tcpAddress::getFamily() const</span>
+<span class="lineNum">     340 </span>            : {
+<span class="lineNum">     341 </span><span class="lineCov">         17 :     return AF_INET;</span>
+<span class="lineNum">     342 </span>            : }
+<span class="lineNum">     343 </span>            : 
+<span class="lineNum">     344 </span>            : 
+<span class="lineNum">     345 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     346 </span>            : //
+<span class="lineNum">     347 </span>            : // Return the address' type
+<a name="348"><span class="lineNum">     348 </span>            : //</a>
+<span class="lineNum">     349 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     350 </span><span class="lineCov">         17 : int tcpAddress::getType() const</span>
+<span class="lineNum">     351 </span>            : {
+<span class="lineNum">     352 </span><span class="lineCov">         17 :     return SOCK_STREAM;</span>
+<span class="lineNum">     353 </span>            : }
+<span class="lineNum">     354 </span>            : 
+<span class="lineNum">     355 </span>            : 
+<span class="lineNum">     356 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     357 </span>            : //
+<span class="lineNum">     358 </span>            : // Return the address' protocol
+<a name="359"><span class="lineNum">     359 </span>            : //</a>
+<span class="lineNum">     360 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     361 </span><span class="lineCov">         17 : int tcpAddress::getProtocol() const</span>
+<span class="lineNum">     362 </span>            : {
+<span class="lineNum">     363 </span><span class="lineCov">         17 :     return IPPROTO_TCP;</span>
+<span class="lineNum">     364 </span>            : }
+<span class="lineNum">     365 </span>            : 
+<span class="lineNum">     366 </span>            : 
+<span class="lineNum">     367 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     368 </span>            : //
+<span class="lineNum">     369 </span>            : // Class used to coordinate a graceful termination of
+<span class="lineNum">     370 </span>            : // long running functions (listen read and write)
+<a name="371"><span class="lineNum">     371 </span>            : //</a>
+<span class="lineNum">     372 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     373 </span><span class="lineCov">      12574 : tcpBaseSocket::tcpTerminateWaiting::tcpTerminateWaiting(tcpBaseSocket&amp; terminateObject):</span>
+<span class="lineNum">     374 </span><span class="lineCov">      12574 :     m_terminateObject(terminateObject)</span>
+<span class="lineNum">     375 </span>            : {
+<span class="lineNum">     376 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">     377 </span>            : 
+<span class="lineNum">     378 </span>            :     INIT_WINSOCK;
+<span class="lineNum">     379 </span>            : 
+<span class="lineNum">     380 </span><span class="lineCov">      25148 :     std::unique_lock&lt;std::mutex&gt; lock(m_terminateObject.m_waitingMutex);</span>
+<span class="lineNum">     381 </span><span class="lineCov">      12574 :     if(m_terminateObject.m_bTerminate.load())</span>
+<span class="lineNum">     382 </span>            :     {
+<span class="lineNum">     383 </span><span class="lineNoCov">          0 :         IMEBRA_THROW(StreamClosedError, &quot;The socket has been closed&quot;);</span>
+<span class="lineNum">     384 </span>            :     }
+<span class="lineNum">     385 </span><span class="lineCov">      12574 :     std::atomic_fetch_add(&amp;(m_terminateObject.m_waiting), 1);</span>
+<span class="lineNum">     386 </span>            : 
+<span class="lineNum">     387 </span><span class="lineNoCov">          0 :     IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">     388 </span><span class="lineCov">      12574 : }</span>
+<a name="389"><span class="lineNum">     389 </span>            : </a>
+<span class="lineNum">     390 </span>            : 
+<span class="lineNum">     391 </span><span class="lineCov">      25148 : tcpBaseSocket::tcpTerminateWaiting::~tcpTerminateWaiting()</span>
+<span class="lineNum">     392 </span>            : {
+<span class="lineNum">     393 </span><span class="lineCov">      25148 :     std::unique_lock&lt;std::mutex&gt; lock(m_terminateObject.m_waitingMutex);</span>
+<span class="lineNum">     394 </span><span class="lineCov">      12574 :     std::atomic_fetch_sub(&amp;(m_terminateObject.m_waiting), 1);</span>
+<span class="lineNum">     395 </span><span class="lineCov">      12574 :     m_terminateObject.m_waitingCondition.notify_all();</span>
+<span class="lineNum">     396 </span><span class="lineCov">      12574 : }</span>
+<span class="lineNum">     397 </span>            : 
+<span class="lineNum">     398 </span>            : 
+<span class="lineNum">     399 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     400 </span>            : ///
+<span class="lineNum">     401 </span>            : /// Base class for tcpSequenceStream and tcpListener
+<a name="402"><span class="lineNum">     402 </span>            : ///</a>
+<span class="lineNum">     403 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     404 </span><span class="lineCov">         29 : tcpBaseSocket::tcpBaseSocket(int socket):</span>
+<span class="lineNum">     405 </span><span class="lineCov">         29 :     m_socket(socket), m_bTerminate(false), m_waiting(0)</span>
+<span class="lineNum">     406 </span>            : {
+<span class="lineNum">     407 </span>            :     // Set timeout
+<span class="lineNum">     408 </span>            : #ifdef IMEBRA_WINDOWS
+<span class="lineNum">     409 </span>            : 
+<span class="lineNum">     410 </span>            :     INIT_WINSOCK;
+<span class="lineNum">     411 </span>            :     std::uint32_t timeout(IMEBRA_TCP_TIMEOUT_MS);
+<span class="lineNum">     412 </span>            :     setsockopt(m_socket, SOL_SOCKET, SO_RCVTIMEO, (const char*)&amp;timeout, sizeof(timeout));
+<span class="lineNum">     413 </span>            :     setsockopt(m_socket, SOL_SOCKET, SO_SNDTIMEO, (const char*)&amp;timeout, sizeof(timeout));
+<span class="lineNum">     414 </span>            : 
+<span class="lineNum">     415 </span>            : #else
+<span class="lineNum">     416 </span>            :     timeval timeout;
+<span class="lineNum">     417 </span><span class="lineCov">         29 :     timeout.tv_sec = 0;</span>
+<span class="lineNum">     418 </span><span class="lineCov">         29 :     timeout.tv_usec = IMEBRA_TCP_TIMEOUT_MS * 1000;</span>
+<span class="lineNum">     419 </span><span class="lineCov">         29 :     setsockopt(m_socket, SOL_SOCKET, SO_RCVTIMEO, &amp;timeout, sizeof(timeout));</span>
+<span class="lineNum">     420 </span><span class="lineCov">         29 :     setsockopt(m_socket, SOL_SOCKET, SO_SNDTIMEO, &amp;timeout, sizeof(timeout));</span>
+<span class="lineNum">     421 </span>            : #endif
+<span class="lineNum">     422 </span><span class="lineCov">         29 : }</span>
+<a name="423"><span class="lineNum">     423 </span>            : </a>
+<span class="lineNum">     424 </span>            : 
+<span class="lineNum">     425 </span><span class="lineCov">         58 : tcpBaseSocket::~tcpBaseSocket()</span>
+<span class="lineNum">     426 </span>            : {
+<span class="lineNum">     427 </span><span class="lineCov">         29 :     if(m_socket &gt;= 0)</span>
+<span class="lineNum">     428 </span>            :     {
+<span class="lineNum">     429 </span>            : #ifdef IMEBRA_WINDOWS
+<span class="lineNum">     430 </span>            :         ::closesocket(m_socket);
+<span class="lineNum">     431 </span>            : #else
+<span class="lineNum">     432 </span><span class="lineCov">         29 :         ::close(m_socket);</span>
+<span class="lineNum">     433 </span>            : #endif
+<span class="lineNum">     434 </span>            :     }
+<span class="lineNum">     435 </span><span class="lineCov">         29 : }</span>
+<a name="436"><span class="lineNum">     436 </span>            : </a>
+<span class="lineNum">     437 </span>            : 
+<span class="lineNum">     438 </span><span class="lineCov">         20 : void tcpBaseSocket::setBlockingMode(bool bBlocking)</span>
+<span class="lineNum">     439 </span>            : {
+<span class="lineNum">     440 </span>            : #ifdef IMEBRA_WINDOWS
+<span class="lineNum">     441 </span>            :     unsigned long block(bBlocking ? 0 : 1);
+<span class="lineNum">     442 </span>            :     throwTcpException(ioctlsocket(m_socket, FIONBIO, &amp;block));
+<span class="lineNum">     443 </span>            : #else
+<span class="lineNum">     444 </span>            :     // Enable blocking mode
+<span class="lineNum">     445 </span><span class="lineCov">         20 :     int flags = (int)throwTcpException(fcntl(m_socket, F_GETFL, 0));</span>
+<span class="lineNum">     446 </span><span class="lineCov">         20 :     if(bBlocking)</span>
+<span class="lineNum">     447 </span>            :     {
+<span class="lineNum">     448 </span><span class="lineCov">          3 :         throwTcpException(fcntl(m_socket, F_SETFL, flags &amp; ~O_NONBLOCK));</span>
+<span class="lineNum">     449 </span>            :     }
+<span class="lineNum">     450 </span>            :     else
+<span class="lineNum">     451 </span>            :     {
+<span class="lineNum">     452 </span><span class="lineCov">         17 :         throwTcpException(fcntl(m_socket, F_SETFL, flags | O_NONBLOCK));</span>
+<span class="lineNum">     453 </span>            :     }
+<span class="lineNum">     454 </span>            : #endif
+<span class="lineNum">     455 </span><span class="lineCov">         20 : }</span>
+<a name="456"><span class="lineNum">     456 </span>            : </a>
+<span class="lineNum">     457 </span>            : 
+<span class="lineNum">     458 </span><span class="lineCov">         31 : void tcpBaseSocket::terminate()</span>
+<span class="lineNum">     459 </span>            : {
+<span class="lineNum">     460 </span><span class="lineCov">         31 :     m_bTerminate.store(true);</span>
+<span class="lineNum">     461 </span><span class="lineCov">         62 :     std::unique_lock&lt;std::mutex&gt; lock(m_waitingMutex);</span>
+<span class="lineNum">     462 </span><span class="lineCov">         62 :     while(m_waiting.load() &gt; 0)</span>
+<span class="lineNum">     463 </span>            :     {
+<span class="lineNum">     464 </span><span class="lineNoCov">          0 :         m_waitingCondition.wait(lock);</span>
+<span class="lineNum">     465 </span>            :     }
+<a name="466"><span class="lineNum">     466 </span><span class="lineCov">         31 : }</span></a>
+<span class="lineNum">     467 </span>            : 
+<span class="lineNum">     468 </span><span class="lineCov">      12574 : void tcpBaseSocket::isTerminating()</span>
+<span class="lineNum">     469 </span>            : {
+<span class="lineNum">     470 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">     471 </span>            : 
+<span class="lineNum">     472 </span><span class="lineCov">      12574 :     if(m_bTerminate.load())</span>
+<span class="lineNum">     473 </span>            :     {
+<span class="lineNum">     474 </span><span class="lineNoCov">          0 :         IMEBRA_THROW(StreamClosedError, &quot;The socket has been closed&quot;);</span>
+<span class="lineNum">     475 </span>            :     }
+<span class="lineNum">     476 </span>            : 
+<span class="lineNum">     477 </span><span class="lineNoCov">          0 :     IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">     478 </span><span class="lineCov">      12574 : }</span>
+<a name="479"><span class="lineNum">     479 </span>            : </a>
+<span class="lineNum">     480 </span>            : 
+<span class="lineNum">     481 </span><span class="lineCov">      12562 : void tcpBaseSocket::poll(pollType_t pollType)</span>
+<span class="lineNum">     482 </span>            : {
+<span class="lineNum">     483 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">     484 </span>            : 
+<span class="lineNum">     485 </span>            : #ifdef IMEBRA_WINDOWS
+<span class="lineNum">     486 </span>            :     fd_set readSockets;
+<span class="lineNum">     487 </span>            :     fd_set writeSockets;
+<span class="lineNum">     488 </span>            :     fd_set errorSockets;
+<span class="lineNum">     489 </span>            :     FD_ZERO(&amp;readSockets);
+<span class="lineNum">     490 </span>            :     FD_ZERO(&amp;writeSockets);
+<span class="lineNum">     491 </span>            :     FD_ZERO(&amp;errorSockets);
+<span class="lineNum">     492 </span>            :     if(pollType == pollType_t::read)
+<span class="lineNum">     493 </span>            :     {
+<span class="lineNum">     494 </span>            :         FD_SET(m_socket, &amp;readSockets);
+<span class="lineNum">     495 </span>            :     }
+<span class="lineNum">     496 </span>            :     else
+<span class="lineNum">     497 </span>            :     {
+<span class="lineNum">     498 </span>            :         FD_SET(m_socket, &amp;writeSockets);
+<span class="lineNum">     499 </span>            :     }
+<span class="lineNum">     500 </span>            :     timeval timeout;
+<span class="lineNum">     501 </span>            :     timeout.tv_sec = IMEBRA_TCP_TIMEOUT_MS / 1000;
+<span class="lineNum">     502 </span>            :     timeout.tv_usec = (IMEBRA_TCP_TIMEOUT_MS - timeout.tv_sec * 1000) * 1000;
+<span class="lineNum">     503 </span>            :     throwTcpException(::select(m_socket + 1, &amp;readSockets, &amp;writeSockets, &amp;errorSockets, &amp;timeout));
+<span class="lineNum">     504 </span>            : #else
+<span class="lineNum">     505 </span><span class="lineCov">      12562 :     short flags = pollType == pollType_t::read ? POLLIN : POLLOUT;</span>
+<span class="lineNum">     506 </span>            :     pollfd fds[1];
+<span class="lineNum">     507 </span><span class="lineCov">      12562 :     fds[0].fd = m_socket;</span>
+<span class="lineNum">     508 </span><span class="lineCov">      12562 :     fds[0].events = flags;</span>
+<span class="lineNum">     509 </span><span class="lineCov">      12562 :     fds[0].revents = 0;</span>
+<span class="lineNum">     510 </span><span class="lineCov">      12562 :     long pollResult = throwTcpException(::poll(fds, 1, IMEBRA_TCP_TIMEOUT_MS));</span>
+<span class="lineNum">     511 </span>            : 
+<span class="lineNum">     512 </span><span class="lineCov">      12562 :     if(pollResult == 0 || (fds[0].revents &amp; flags) != 0)</span>
+<span class="lineNum">     513 </span>            :     {
+<span class="lineNum">     514 </span><span class="lineCov">      12562 :         return;</span>
+<span class="lineNum">     515 </span>            :     }
+<span class="lineNum">     516 </span>            : 
+<span class="lineNum">     517 </span><span class="lineNoCov">          0 :     if((fds[0].revents &amp; POLLHUP) != 0)</span>
+<span class="lineNum">     518 </span>            :     {
+<span class="lineNum">     519 </span><span class="lineNoCov">          0 :         IMEBRA_THROW(StreamClosedError, &quot;Stream closed&quot;);</span>
+<span class="lineNum">     520 </span>            :     }
+<span class="lineNum">     521 </span>            : 
+<span class="lineNum">     522 </span><span class="lineNoCov">          0 :     if((fds[0].revents &amp; POLLERR) != 0)</span>
+<span class="lineNum">     523 </span>            :     {
+<span class="lineNum">     524 </span><span class="lineNoCov">          0 :         IMEBRA_THROW(TCPConnectionRefused, &quot;Stream closed&quot;);</span>
+<span class="lineNum">     525 </span>            :     }
+<span class="lineNum">     526 </span>            : 
+<span class="lineNum">     527 </span>            : #endif
+<span class="lineNum">     528 </span>            : 
+<span class="lineNum">     529 </span><span class="lineNoCov">          0 :     IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">     530 </span>            : 
+<span class="lineNum">     531 </span>            : }
+<span class="lineNum">     532 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     533 </span>            : //
+<span class="lineNum">     534 </span>            : // TCP I/O class constructors
+<a name="535"><span class="lineNum">     535 </span>            : //</a>
+<span class="lineNum">     536 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     537 </span><span class="lineCov">         12 : tcpSequenceStream::tcpSequenceStream(int tcpSocket, std::shared_ptr&lt;tcpAddress&gt; pAddress):</span>
+<span class="lineNum">     538 </span>            :     tcpBaseSocket(tcpSocket),
+<span class="lineNum">     539 </span><span class="lineCov">         12 :     m_pAddress(pAddress)</span>
+<span class="lineNum">     540 </span>            : {
+<a name="541"><span class="lineNum">     541 </span><span class="lineCov">         12 : }</span></a>
+<span class="lineNum">     542 </span>            : 
+<span class="lineNum">     543 </span><span class="lineCov">         14 : tcpSequenceStream::tcpSequenceStream(std::shared_ptr&lt;tcpAddress&gt; pAddress):</span>
+<span class="lineNum">     544 </span><span class="lineCov">         14 :     tcpBaseSocket((int)throwTcpException(socket(pAddress-&gt;getFamily(), pAddress-&gt;getType(), pAddress-&gt;getProtocol()))),</span>
+<span class="lineNum">     545 </span><span class="lineCov">         28 :     m_pAddress(pAddress)</span>
+<span class="lineNum">     546 </span>            : {
+<span class="lineNum">     547 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">     548 </span>            : 
+<span class="lineNum">     549 </span>            : #if !defined(IMEBRA_WINDOWS) &amp;&amp; (__linux__ != 1)
+<span class="lineNum">     550 </span>            :     // Disable SIGPIPE
+<span class="lineNum">     551 </span>            :     int sigpipe = 1;
+<span class="lineNum">     552 </span>            :     setsockopt(m_socket, SOL_SOCKET, SO_NOSIGPIPE, (void *)&amp;sigpipe, sizeof(sigpipe));
+<span class="lineNum">     553 </span>            : #endif
+<span class="lineNum">     554 </span>            : 
+<span class="lineNum">     555 </span>            :     // Connect in non-blocking mode, then enable blocking
+<span class="lineNum">     556 </span><span class="lineCov">         14 :     setBlockingMode(false);</span>
+<span class="lineNum">     557 </span>            : 
+<span class="lineNum">     558 </span>            : #ifdef IMEBRA_WINDOWS
+<span class="lineNum">     559 </span>            :     int connectReturn(connect(m_socket, pAddress-&gt;getSockAddr(), pAddress-&gt;getSockAddrLen()));
+<span class="lineNum">     560 </span>            :         if (connectReturn &lt; 0 &amp;&amp; WSAGetLastError() != WSAEWOULDBLOCK)
+<span class="lineNum">     561 </span>            :         {
+<span class="lineNum">     562 </span>            :                 throwTcpException(connectReturn);
+<span class="lineNum">     563 </span>            :         }
+<span class="lineNum">     564 </span>            : #else
+<span class="lineNum">     565 </span><span class="lineCov">         14 :     throwTcpException(connect(m_socket, pAddress-&gt;getSockAddr(), pAddress-&gt;getSockAddrLen()));</span>
+<span class="lineNum">     566 </span>            : #endif
+<span class="lineNum">     567 </span>            : 
+<span class="lineNum">     568 </span><span class="lineNoCov">          0 :     IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">     569 </span><span class="lineCov">         14 : }</span>
+<span class="lineNum">     570 </span>            : 
+<span class="lineNum">     571 </span>            : 
+<span class="lineNum">     572 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     573 </span>            : //
+<span class="lineNum">     574 </span>            : // Destructor
+<a name="575"><span class="lineNum">     575 </span>            : //</a>
+<span class="lineNum">     576 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     577 </span><span class="lineCov">         52 : tcpSequenceStream::~tcpSequenceStream()</span>
+<span class="lineNum">     578 </span>            : {
+<span class="lineNum">     579 </span><span class="lineCov">         26 :     terminate();</span>
+<span class="lineNum">     580 </span>            : 
+<span class="lineNum">     581 </span>            : #ifdef IMEBRA_WINDOWS
+<span class="lineNum">     582 </span>            :     shutdown(m_socket, SD_BOTH);
+<span class="lineNum">     583 </span>            : #else
+<span class="lineNum">     584 </span><span class="lineCov">         26 :     shutdown(m_socket, SHUT_RDWR);</span>
+<span class="lineNum">     585 </span>            : #endif
+<span class="lineNum">     586 </span><span class="lineCov">         26 : }</span>
+<span class="lineNum">     587 </span>            : 
+<span class="lineNum">     588 </span>            : 
+<span class="lineNum">     589 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     590 </span>            : //
+<span class="lineNum">     591 </span>            : // Read from TCP stream
+<a name="592"><span class="lineNum">     592 </span>            : //</a>
+<span class="lineNum">     593 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     594 </span><span class="lineCov">         54 : size_t tcpSequenceStream::read(std::uint8_t* pBuffer, size_t bufferLength)</span>
+<span class="lineNum">     595 </span>            : {
+<span class="lineNum">     596 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">     597 </span>            : 
+<span class="lineNum">     598 </span><span class="lineCov">        108 :     tcpTerminateWaiting waiting(*this);</span>
+<span class="lineNum">     599 </span>            : 
+<span class="lineNum">     600 </span><span class="lineCov">         54 :     if(bufferLength == 0)</span>
+<span class="lineNum">     601 </span>            :     {
+<span class="lineNum">     602 </span><span class="lineNoCov">          0 :         isTerminating();</span>
+<span class="lineNum">     603 </span><span class="lineNoCov">          0 :         return 0;</span>
+<span class="lineNum">     604 </span>            :     }
+<span class="lineNum">     605 </span>            : 
+<span class="lineNum">     606 </span>            :     // Wait for data. Exit only when data arrives or the
+<span class="lineNum">     607 </span>            :     // termination is triggered
+<span class="lineNum">     608 </span>            :     ///////////////////////////////////////////////////////////
+<span class="lineNum">     609 </span>            :     for(;;)
+<span class="lineNum">     610 </span>            :     {
+<span class="lineNum">     611 </span><span class="lineCov">         54 :         isTerminating();</span>
+<span class="lineNum">     612 </span>            : 
+<span class="lineNum">     613 </span>            :         try
+<span class="lineNum">     614 </span>            :         {
+<span class="lineNum">     615 </span><span class="lineCov">         54 :             poll(pollType_t::read);</span>
+<span class="lineNum">     616 </span>            : 
+<span class="lineNum">     617 </span>            :             // Read anyway. (windows may not signal an error on the
+<span class="lineNum">     618 </span>            :             // socket via poll, so we will get it via read)
+<span class="lineNum">     619 </span>            :             ///////////////////////////////////////////////////////////
+<span class="lineNum">     620 </span><span class="lineCov">         54 :             long receivedBytes(throwTcpException(recv(m_socket, (char*)pBuffer, bufferLength, 0)));</span>
+<span class="lineNum">     621 </span><span class="lineCov">         54 :             if(receivedBytes == 0)</span>
+<span class="lineNum">     622 </span>            :             {
+<span class="lineNum">     623 </span><span class="lineCov">         10 :                 return 0;</span>
+<span class="lineNum">     624 </span>            :             }
+<span class="lineNum">     625 </span>            :             else
+<span class="lineNum">     626 </span>            :             {
+<span class="lineNum">     627 </span><span class="lineCov">         44 :                 return (size_t)receivedBytes;</span>
+<span class="lineNum">     628 </span>            :             }
+<span class="lineNum">     629 </span>            :         }
+<span class="lineNum">     630 </span><span class="lineNoCov">          0 :         catch(const SocketTimeout&amp;)</span>
+<span class="lineNum">     631 </span>            :         {
+<span class="lineNum">     632 </span>            :             // Ignore timeout
+<span class="lineNum">     633 </span>            :         }
+<span class="lineNum">     634 </span><span class="lineNoCov">          0 :     }</span>
+<span class="lineNum">     635 </span>            : 
+<span class="lineNum">     636 </span><span class="lineNoCov">          0 :     IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">     637 </span>            : }
+<span class="lineNum">     638 </span>            : 
+<span class="lineNum">     639 </span>            : 
+<span class="lineNum">     640 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     641 </span>            : //
+<span class="lineNum">     642 </span>            : // Write into the TCP stream
+<a name="643"><span class="lineNum">     643 </span>            : //</a>
+<span class="lineNum">     644 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     645 </span><span class="lineCov">      12508 : void tcpSequenceStream::write(const std::uint8_t* pBuffer, size_t bufferLength)</span>
+<span class="lineNum">     646 </span>            : {
+<span class="lineNum">     647 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">     648 </span>            : 
+<span class="lineNum">     649 </span><span class="lineCov">      25016 :     tcpTerminateWaiting waiting(*this);</span>
+<span class="lineNum">     650 </span>            : 
+<span class="lineNum">     651 </span>            :     // Don't send zero bytes buffer (this is done via shutdown)
+<span class="lineNum">     652 </span>            :     ///////////////////////////////////////////////////////////
+<span class="lineNum">     653 </span><span class="lineCov">      12508 :     if(bufferLength == 0)</span>
+<span class="lineNum">     654 </span>            :     {
+<span class="lineNum">     655 </span><span class="lineNoCov">          0 :         return;</span>
+<span class="lineNum">     656 </span>            :     }
+<span class="lineNum">     657 </span>            : 
+<span class="lineNum">     658 </span>            :     // Loop until the data is sent or the termination is
+<span class="lineNum">     659 </span>            :     // triggered
+<span class="lineNum">     660 </span>            :     ///////////////////////////////////////////////////////////
+<span class="lineNum">     661 </span><span class="lineCov">      25010 :     for(size_t totalSentBytes(0); totalSentBytes != bufferLength; /* incremented in the loop */)</span>
+<span class="lineNum">     662 </span>            :     {
+<span class="lineNum">     663 </span><span class="lineCov">      12508 :         isTerminating();</span>
+<span class="lineNum">     664 </span>            :         try
+<span class="lineNum">     665 </span>            :         {
+<span class="lineNum">     666 </span><span class="lineCov">      12508 :             poll(pollType_t::write);</span>
+<span class="lineNum">     667 </span>            : 
+<span class="lineNum">     668 </span>            :             // Write anyway. (windows may not signal an error on the
+<span class="lineNum">     669 </span>            :             // socket via poll, so we will get it via write)
+<span class="lineNum">     670 </span>            :             ///////////////////////////////////////////////////////////
+<span class="lineNum">     671 </span>            : #if (__linux__ == 1)
+<span class="lineNum">     672 </span><span class="lineCov">      12508 :             long sentBytes = throwTcpException((long)send(m_socket, (const char*)(pBuffer + totalSentBytes), bufferLength - totalSentBytes, MSG_NOSIGNAL));</span>
+<span class="lineNum">     673 </span>            : #else
+<span class="lineNum">     674 </span>            :             long sentBytes = throwTcpException((long)send(m_socket, (const char*)(pBuffer + totalSentBytes), bufferLength - totalSentBytes, 0));
+<span class="lineNum">     675 </span>            : #endif
+<span class="lineNum">     676 </span>            : 
+<span class="lineNum">     677 </span><span class="lineCov">      12502 :             totalSentBytes += (size_t)sentBytes;</span>
+<span class="lineNum">     678 </span>            :         }
+<span class="lineNum">     679 </span><span class="lineNoCov">          0 :         catch(const SocketTimeout&amp;)</span>
+<span class="lineNum">     680 </span>            :         {
+<span class="lineNum">     681 </span>            :             // Ignore timeout
+<span class="lineNum">     682 </span>            :         }
+<span class="lineNum">     683 </span>            :     }
+<span class="lineNum">     684 </span>            : 
+<span class="lineNum">     685 </span><span class="lineCov">          6 :     IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">     686 </span>            : }
+<span class="lineNum">     687 </span>            : 
+<span class="lineNum">     688 </span>            : 
+<span class="lineNum">     689 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     690 </span>            : //
+<span class="lineNum">     691 </span>            : // Get the address of the connected peer
+<a name="692"><span class="lineNum">     692 </span>            : //</a>
+<span class="lineNum">     693 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     694 </span><span class="lineNoCov">          0 : std::shared_ptr&lt;tcpAddress&gt; tcpSequenceStream::getPeerAddress() const</span>
+<span class="lineNum">     695 </span>            : {
+<span class="lineNum">     696 </span><span class="lineNoCov">          0 :     return m_pAddress;</span>
+<a name="697"><span class="lineNum">     697 </span>            : }</a>
+<span class="lineNum">     698 </span>            : 
+<span class="lineNum">     699 </span><span class="lineCov">         28 : void tcpSequenceStream::terminate()</span>
+<span class="lineNum">     700 </span>            : {
+<span class="lineNum">     701 </span><span class="lineCov">         28 :     tcpBaseSocket::terminate();</span>
+<span class="lineNum">     702 </span><span class="lineCov">         28 : }</span>
+<span class="lineNum">     703 </span>            : 
+<span class="lineNum">     704 </span>            : 
+<span class="lineNum">     705 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     706 </span>            : //
+<span class="lineNum">     707 </span>            : // TCP listener constructor
+<a name="708"><span class="lineNum">     708 </span>            : //</a>
+<span class="lineNum">     709 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     710 </span><span class="lineCov">          3 : tcpListener::tcpListener(std::shared_ptr&lt;tcpAddress&gt; pAddress):</span>
+<span class="lineNum">     711 </span><span class="lineCov">          3 :     tcpBaseSocket((int)throwTcpException(socket(pAddress-&gt;getFamily(), pAddress-&gt;getType(), pAddress-&gt;getProtocol())))</span>
+<span class="lineNum">     712 </span>            : {
+<span class="lineNum">     713 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">     714 </span>            : 
+<span class="lineNum">     715 </span>            :     // Connect in non-blocking mode, then enable blocking
+<span class="lineNum">     716 </span><span class="lineCov">          3 :     setBlockingMode(false);</span>
+<span class="lineNum">     717 </span>            : 
+<span class="lineNum">     718 </span><span class="lineCov">          3 :     throwTcpException(bind(m_socket, pAddress-&gt;getSockAddr(), pAddress-&gt;getSockAddrLen()));</span>
+<span class="lineNum">     719 </span><span class="lineCov">          3 :     throwTcpException(listen(m_socket, SOMAXCONN));</span>
+<span class="lineNum">     720 </span>            : 
+<span class="lineNum">     721 </span><span class="lineCov">          3 :     setBlockingMode(true);</span>
+<span class="lineNum">     722 </span>            : 
+<span class="lineNum">     723 </span><span class="lineNoCov">          0 :     IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">     724 </span><span class="lineCov">          3 : }</span>
+<span class="lineNum">     725 </span>            : 
+<span class="lineNum">     726 </span>            : 
+<span class="lineNum">     727 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     728 </span>            : //
+<span class="lineNum">     729 </span>            : // Destructor
+<a name="730"><span class="lineNum">     730 </span>            : //</a>
+<span class="lineNum">     731 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     732 </span><span class="lineCov">          6 : tcpListener::~tcpListener()</span>
+<span class="lineNum">     733 </span>            : {
+<span class="lineNum">     734 </span><span class="lineCov">          3 :     terminate();</span>
+<span class="lineNum">     735 </span><span class="lineCov">          3 : }</span>
+<span class="lineNum">     736 </span>            : 
+<span class="lineNum">     737 </span>            : 
+<span class="lineNum">     738 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     739 </span>            : //
+<span class="lineNum">     740 </span>            : // Listen for incoming connections and accepts them
+<a name="741"><span class="lineNum">     741 </span>            : //</a>
+<span class="lineNum">     742 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     743 </span><span class="lineCov">         12 : std::shared_ptr&lt;tcpSequenceStream&gt; tcpListener::waitForConnection()</span>
+<span class="lineNum">     744 </span>            : {
+<span class="lineNum">     745 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">     746 </span>            : 
+<span class="lineNum">     747 </span><span class="lineCov">         24 :     tcpTerminateWaiting waiting(*this);</span>
+<span class="lineNum">     748 </span>            : 
+<span class="lineNum">     749 </span>            :     // Wait for connections until terminated
+<span class="lineNum">     750 </span>            :     ///////////////////////////////////////////////////////////
+<span class="lineNum">     751 </span>            :     for(;;)
+<span class="lineNum">     752 </span>            :     {
+<span class="lineNum">     753 </span><span class="lineCov">         12 :         isTerminating();</span>
+<span class="lineNum">     754 </span>            : 
+<span class="lineNum">     755 </span>            :         sockaddr_in addr;
+<span class="lineNum">     756 </span><span class="lineCov">         12 :         socklen_t sockaddrLen(sizeof(addr));</span>
+<span class="lineNum">     757 </span>            :         try
+<span class="lineNum">     758 </span>            :         {
+<span class="lineNum">     759 </span><span class="lineCov">         12 :             int acceptedSocket = (int)throwTcpException(accept(m_socket, (sockaddr*)&amp;addr, &amp;sockaddrLen));</span>
+<span class="lineNum">     760 </span>            : 
+<span class="lineNum">     761 </span><span class="lineCov">         24 :             std::shared_ptr&lt;tcpAddress&gt; pPeerAddress(std::make_shared&lt;tcpAddress&gt;(*((sockaddr*)&amp;addr), sockaddrLen));</span>
+<span class="lineNum">     762 </span><span class="lineCov">         24 :             return std::make_shared&lt;tcpSequenceStream&gt;(acceptedSocket, pPeerAddress);</span>
+<span class="lineNum">     763 </span>            :         }
+<span class="lineNum">     764 </span><span class="lineNoCov">          0 :         catch(const SocketTimeout&amp;)</span>
+<span class="lineNum">     765 </span>            :         {
+<span class="lineNum">     766 </span>            :             // Timed out. retry
+<span class="lineNum">     767 </span>            :         }
+<span class="lineNum">     768 </span><span class="lineNoCov">          0 :     }</span>
+<span class="lineNum">     769 </span>            : 
+<span class="lineNum">     770 </span><span class="lineNoCov">          0 :     IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">     771 </span>            : }
+<span class="lineNum">     772 </span>            : 
+<span class="lineNum">     773 </span>            : 
+<span class="lineNum">     774 </span>            : } // namespace implementation
+<span class="lineNum">     775 </span>            : 
+<span class="lineNum">     776 </span>            : } // namespace imebra
+<span class="lineNum">     777 </span>            : 
+<span class="lineNum">     778 </span>            : 
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.13</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

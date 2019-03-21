@@ -1,0 +1,407 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - extracted.info - library/implementation/dataHandlerStringImpl.cpp</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">library/implementation</a> - dataHandlerStringImpl.cpp<span style="font-size: 80%;"> (source / <a href="dataHandlerStringImpl.cpp.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">extracted.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">98</td>
+            <td class="headerCovTableEntry">109</td>
+            <td class="headerCovTableEntryMed">89.9 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2019-03-13 14:48:54</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">17</td>
+            <td class="headerCovTableEntry">20</td>
+            <td class="headerCovTableEntryMed">85.0 %</td>
+          </tr>
+          <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : /*</a>
+<span class="lineNum">       2 </span>            : Copyright 2005 - 2017 by Paolo Brandoli/Binarno s.p.
+<span class="lineNum">       3 </span>            : 
+<span class="lineNum">       4 </span>            : Imebra is available for free under the GNU General Public License.
+<span class="lineNum">       5 </span>            : 
+<span class="lineNum">       6 </span>            : The full text of the license is available in the file license.rst
+<span class="lineNum">       7 </span>            :  in the project root folder.
+<span class="lineNum">       8 </span>            : 
+<span class="lineNum">       9 </span>            : If you do not want to be bound by the GPL terms (such as the requirement 
+<span class="lineNum">      10 </span>            :  that your application must also be GPL), you may purchase a commercial 
+<span class="lineNum">      11 </span>            :  license for Imebra from the Imebra’s website (http://imebra.com).
+<span class="lineNum">      12 </span>            : */
+<span class="lineNum">      13 </span>            : 
+<span class="lineNum">      14 </span>            : /*! \file dataHandlerString.cpp
+<span class="lineNum">      15 </span>            :     \brief Implementation of the base class for the string handlers.
+<span class="lineNum">      16 </span>            : 
+<span class="lineNum">      17 </span>            : */
+<span class="lineNum">      18 </span>            : 
+<span class="lineNum">      19 </span>            : #include &lt;sstream&gt;
+<span class="lineNum">      20 </span>            : #include &lt;iomanip&gt;
+<span class="lineNum">      21 </span>            : 
+<span class="lineNum">      22 </span>            : #include &quot;exceptionImpl.h&quot;
+<span class="lineNum">      23 </span>            : #include &quot;dataHandlerStringImpl.h&quot;
+<span class="lineNum">      24 </span>            : #include &quot;memoryImpl.h&quot;
+<span class="lineNum">      25 </span>            : #include &quot;bufferImpl.h&quot;
+<span class="lineNum">      26 </span>            : 
+<span class="lineNum">      27 </span>            : namespace imebra
+<span class="lineNum">      28 </span>            : {
+<span class="lineNum">      29 </span>            : 
+<span class="lineNum">      30 </span>            : namespace implementation
+<span class="lineNum">      31 </span>            : {
+<span class="lineNum">      32 </span>            : 
+<span class="lineNum">      33 </span>            : namespace handlers
+<span class="lineNum">      34 </span>            : {
+<span class="lineNum">      35 </span>            : 
+<span class="lineNum">      36 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">      37 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">      38 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">      39 </span>            : //
+<span class="lineNum">      40 </span>            : //
+<span class="lineNum">      41 </span>            : //
+<span class="lineNum">      42 </span>            : // dataHandlerString
+<span class="lineNum">      43 </span>            : //
+<span class="lineNum">      44 </span>            : //
+<span class="lineNum">      45 </span>            : //
+<span class="lineNum">      46 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">      47 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">      48 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">      49 </span>            : 
+<span class="lineNum">      50 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">      51 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">      52 </span>            : //
+<span class="lineNum">      53 </span>            : //
+<span class="lineNum">      54 </span>            : // Constructor
+<span class="lineNum">      55 </span>            : //
+<span class="lineNum">      56 </span>            : //
+<a name="57"><span class="lineNum">      57 </span>            : ///////////////////////////////////////////////////////////</a>
+<span class="lineNum">      58 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">      59 </span><span class="lineCov">     132992 : readingDataHandlerString::readingDataHandlerString(const memory &amp;parseMemory, tagVR_t dataType, const char separator, const uint8_t paddingByte):</span>
+<span class="lineNum">      60 </span><span class="lineCov">     132992 :     readingDataHandler(dataType)</span>
+<span class="lineNum">      61 </span>            : {
+<span class="lineNum">      62 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">      63 </span>            : 
+<span class="lineNum">      64 </span><span class="lineCov">     266178 :     std::string parseString((const char*)parseMemory.data(), parseMemory.size());</span>
+<span class="lineNum">      65 </span><span class="lineCov">     380012 :     while(!parseString.empty() &amp;&amp; (parseString.back() == (char)paddingByte || parseString.back() == 0))</span>
+<span class="lineNum">      66 </span>            :     {
+<span class="lineNum">      67 </span><span class="lineCov">     123478 :         parseString.pop_back();</span>
+<span class="lineNum">      68 </span>            :     }
+<span class="lineNum">      69 </span>            : 
+<span class="lineNum">      70 </span><span class="lineCov">     133215 :     if(separator == 0)</span>
+<span class="lineNum">      71 </span>            :     {
+<span class="lineNum">      72 </span><span class="lineCov">      94669 :         m_strings.push_back(parseString);</span>
+<span class="lineNum">      73 </span><span class="lineCov">      94555 :         return;</span>
+<span class="lineNum">      74 </span>            :     }
+<span class="lineNum">      75 </span>            : 
+<span class="lineNum">      76 </span><span class="lineCov">      38546 :     for(size_t firstPosition(0); ;)</span>
+<span class="lineNum">      77 </span>            :     {
+<span class="lineNum">      78 </span><span class="lineCov">      38562 :         size_t nextPosition = parseString.find(separator, firstPosition);</span>
+<span class="lineNum">      79 </span><span class="lineCov">      38562 :         if(nextPosition == std::string::npos)</span>
+<span class="lineNum">      80 </span>            :         {
+<span class="lineNum">      81 </span><span class="lineCov">      38546 :             m_strings.push_back(parseString.substr(firstPosition));</span>
+<span class="lineNum">      82 </span><span class="lineCov">      38546 :             return;</span>
+<span class="lineNum">      83 </span>            :         }
+<span class="lineNum">      84 </span><span class="lineCov">         16 :         m_strings.push_back(parseString.substr(firstPosition, nextPosition - firstPosition));</span>
+<span class="lineNum">      85 </span><span class="lineCov">         16 :         firstPosition = ++nextPosition;</span>
+<span class="lineNum">      86 </span><span class="lineCov">         16 :     }</span>
+<span class="lineNum">      87 </span>            : 
+<span class="lineNum">      88 </span><span class="lineNoCov">          0 :     IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">      89 </span>            : }
+<span class="lineNum">      90 </span>            : 
+<span class="lineNum">      91 </span>            : 
+<span class="lineNum">      92 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">      93 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">      94 </span>            : //
+<span class="lineNum">      95 </span>            : //
+<span class="lineNum">      96 </span>            : // Destructor
+<span class="lineNum">      97 </span>            : //
+<span class="lineNum">      98 </span>            : //
+<a name="99"><span class="lineNum">      99 </span>            : ///////////////////////////////////////////////////////////</a>
+<span class="lineNum">     100 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     101 </span><span class="lineCov">     952722 : readingDataHandler::~readingDataHandler()</span>
+<span class="lineNum">     102 </span>            : {
+<span class="lineNum">     103 </span><span class="lineCov">     952722 : }</span>
+<span class="lineNum">     104 </span>            : 
+<a name="105"><span class="lineNum">     105 </span>            : // Get the data element as a signed long</a>
+<span class="lineNum">     106 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     107 </span><span class="lineCov">          5 : std::int32_t readingDataHandlerString::getSignedLong(const size_t index) const</span>
+<span class="lineNum">     108 </span>            : {
+<span class="lineNum">     109 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">     110 </span>            : 
+<span class="lineNum">     111 </span><span class="lineCov">         10 :     std::istringstream conversion(getString(index));</span>
+<span class="lineNum">     112 </span>            :     std::int32_t value;
+<span class="lineNum">     113 </span><span class="lineCov">          5 :     if(!(conversion &gt;&gt; value))</span>
+<span class="lineNum">     114 </span>            :     {
+<span class="lineNum">     115 </span><span class="lineCov">          1 :         IMEBRA_THROW(DataHandlerConversionError, &quot;Cannot convert &quot; &lt;&lt; m_strings.at(index) &lt;&lt; &quot; to a number&quot;);</span>
+<span class="lineNum">     116 </span>            :     }
+<span class="lineNum">     117 </span><span class="lineCov">          8 :     return value;</span>
+<span class="lineNum">     118 </span>            : 
+<span class="lineNum">     119 </span><span class="lineCov">          1 :     IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">     120 </span>            : }
+<span class="lineNum">     121 </span>            : 
+<a name="122"><span class="lineNum">     122 </span>            : // Get the data element as an unsigned long</a>
+<span class="lineNum">     123 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     124 </span><span class="lineCov">      15909 : std::uint32_t readingDataHandlerString::getUnsignedLong(const size_t index) const</span>
+<span class="lineNum">     125 </span>            : {
+<span class="lineNum">     126 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">     127 </span>            : 
+<span class="lineNum">     128 </span><span class="lineCov">      31818 :     std::istringstream conversion(getString(index));</span>
+<span class="lineNum">     129 </span>            :     std::uint32_t value;
+<span class="lineNum">     130 </span><span class="lineCov">      15909 :     if(!(conversion &gt;&gt; value))</span>
+<span class="lineNum">     131 </span>            :     {
+<span class="lineNum">     132 </span><span class="lineCov">          1 :         IMEBRA_THROW(DataHandlerConversionError, &quot;Cannot convert &quot; &lt;&lt; m_strings.at(index) &lt;&lt; &quot; to a number&quot;);</span>
+<span class="lineNum">     133 </span>            :     }
+<span class="lineNum">     134 </span><span class="lineCov">      31816 :     return value;</span>
+<span class="lineNum">     135 </span>            : 
+<span class="lineNum">     136 </span><span class="lineCov">          1 :     IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">     137 </span>            : }
+<span class="lineNum">     138 </span>            : 
+<a name="139"><span class="lineNum">     139 </span>            : // Get the data element as a double</a>
+<span class="lineNum">     140 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     141 </span><span class="lineCov">         28 : double readingDataHandlerString::getDouble(const size_t index) const</span>
+<span class="lineNum">     142 </span>            : {
+<span class="lineNum">     143 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">     144 </span>            : 
+<span class="lineNum">     145 </span><span class="lineCov">         51 :     std::istringstream conversion(getString(index));</span>
+<span class="lineNum">     146 </span>            :     double value;
+<span class="lineNum">     147 </span><span class="lineCov">         23 :     if(!(conversion &gt;&gt; value))</span>
+<span class="lineNum">     148 </span>            :     {
+<span class="lineNum">     149 </span><span class="lineCov">          2 :         IMEBRA_THROW(DataHandlerConversionError, &quot;Cannot convert &quot; &lt;&lt; m_strings.at(index) &lt;&lt; &quot; to a number&quot;);</span>
+<span class="lineNum">     150 </span>            :     }
+<span class="lineNum">     151 </span><span class="lineCov">         42 :     return value;</span>
+<span class="lineNum">     152 </span>            : 
+<span class="lineNum">     153 </span><span class="lineCov">          7 :     IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">     154 </span>            : }
+<span class="lineNum">     155 </span>            : 
+<a name="156"><span class="lineNum">     156 </span>            : // Get the data element as a string</a>
+<span class="lineNum">     157 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     158 </span><span class="lineCov">     133019 : std::string readingDataHandlerString::getString(const size_t index) const</span>
+<span class="lineNum">     159 </span>            : {
+<span class="lineNum">     160 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">     161 </span>            : 
+<span class="lineNum">     162 </span><span class="lineCov">     133019 :     if(index &gt;= getSize())</span>
+<span class="lineNum">     163 </span>            :     {
+<span class="lineNum">     164 </span><span class="lineCov">          7 :         IMEBRA_THROW(MissingItemError, &quot;Missing item &quot; &lt;&lt; index);</span>
+<span class="lineNum">     165 </span>            :     }
+<span class="lineNum">     166 </span>            : 
+<span class="lineNum">     167 </span><span class="lineCov">     133010 :     return m_strings.at(index);</span>
+<span class="lineNum">     168 </span>            : 
+<span class="lineNum">     169 </span><span class="lineCov">          7 :     IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">     170 </span>            : }
+<span class="lineNum">     171 </span>            : 
+<a name="172"><span class="lineNum">     172 </span>            : // Get the data element as an unicode string</a>
+<span class="lineNum">     173 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     174 </span><span class="lineCov">          1 : std::wstring readingDataHandlerString::getUnicodeString(const size_t index) const</span>
+<span class="lineNum">     175 </span>            : {
+<span class="lineNum">     176 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">     177 </span>            : 
+<span class="lineNum">     178 </span><span class="lineCov">          2 :     charsetsList::tCharsetsList charsets;</span>
+<span class="lineNum">     179 </span><span class="lineCov">          1 :     charsets.push_back(&quot;ISO 2022 IR 6&quot;);</span>
+<span class="lineNum">     180 </span><span class="lineCov">          1 :     return dicomConversion::convertToUnicode(getString(index), charsets);</span>
+<span class="lineNum">     181 </span>            : 
+<span class="lineNum">     182 </span><span class="lineCov">          1 :     IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">     183 </span>            : }
+<span class="lineNum">     184 </span>            : 
+<a name="185"><span class="lineNum">     185 </span>            : // Retrieve the data element as a string</a>
+<span class="lineNum">     186 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     187 </span><span class="lineCov">     140438 : size_t readingDataHandlerString::getSize() const</span>
+<span class="lineNum">     188 </span>            : {
+<span class="lineNum">     189 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">     190 </span>            : 
+<span class="lineNum">     191 </span><span class="lineCov">     140438 :     return m_strings.size();</span>
+<span class="lineNum">     192 </span>            : 
+<span class="lineNum">     193 </span>            :     IMEBRA_FUNCTION_END();
+<a name="194"><span class="lineNum">     194 </span>            : }</a>
+<span class="lineNum">     195 </span>            : 
+<span class="lineNum">     196 </span><span class="lineCov">      70062 : writingDataHandlerString::writingDataHandlerString(const std::shared_ptr&lt;buffer&gt; &amp;pBuffer, tagVR_t dataType, const char separator, const size_t unitSize, const size_t maxSize, const uint8_t paddingByte):</span>
+<span class="lineNum">     197 </span><span class="lineCov">      70062 :     writingDataHandler(pBuffer, dataType, paddingByte), m_separator(separator), m_unitSize(unitSize), m_maxSize(maxSize)</span>
+<span class="lineNum">     198 </span>            : {
+<a name="199"><span class="lineNum">     199 </span><span class="lineCov">      70108 : }</span></a>
+<span class="lineNum">     200 </span>            : 
+<span class="lineNum">     201 </span><span class="lineCov">     140246 : writingDataHandlerString::~writingDataHandlerString()</span>
+<span class="lineNum">     202 </span>            : {
+<span class="lineNum">     203 </span><span class="lineCov">     140277 :     std::string completeString;</span>
+<span class="lineNum">     204 </span><span class="lineCov">     140429 :     for(size_t stringsIterator(0); stringsIterator != m_strings.size(); ++stringsIterator)</span>
+<span class="lineNum">     205 </span>            :     {
+<span class="lineNum">     206 </span><span class="lineCov">      70162 :         if(stringsIterator != 0)</span>
+<span class="lineNum">     207 </span>            :         {
+<span class="lineNum">     208 </span><span class="lineCov">         11 :             completeString += m_separator;</span>
+<span class="lineNum">     209 </span>            :         }
+<span class="lineNum">     210 </span><span class="lineCov">      70162 :         completeString += m_strings.at(stringsIterator);</span>
+<span class="lineNum">     211 </span>            :     }
+<span class="lineNum">     212 </span>            : 
+<span class="lineNum">     213 </span><span class="lineCov">     140541 :     std::shared_ptr&lt;memory&gt; commitMemory = std::make_shared&lt;memory&gt;(completeString.size());</span>
+<span class="lineNum">     214 </span><span class="lineCov">      70042 :     commitMemory-&gt;assign((std::uint8_t*)completeString.data(), completeString.size());</span>
+<span class="lineNum">     215 </span>            : 
+<span class="lineNum">     216 </span>            :     // The buffer's size must be an even number
+<span class="lineNum">     217 </span>            :     ///////////////////////////////////////////////////////////
+<span class="lineNum">     218 </span><span class="lineCov">      70065 :     size_t memorySize = commitMemory-&gt;size();</span>
+<span class="lineNum">     219 </span><span class="lineCov">      70110 :     if((memorySize &amp; 0x1) != 0)</span>
+<span class="lineNum">     220 </span>            :     {
+<span class="lineNum">     221 </span><span class="lineCov">      68813 :         commitMemory-&gt;resize(++memorySize);</span>
+<span class="lineNum">     222 </span><span class="lineCov">      68966 :         *(commitMemory-&gt;data() + (memorySize - 1)) = m_paddingByte;</span>
+<span class="lineNum">     223 </span>            :     }
+<span class="lineNum">     224 </span>            : 
+<span class="lineNum">     225 </span><span class="lineCov">      70094 :     m_buffer-&gt;commit(commitMemory);</span>
+<span class="lineNum">     226 </span><span class="lineCov">      70223 : }</span>
+<span class="lineNum">     227 </span>            : 
+<a name="228"><span class="lineNum">     228 </span>            : // Set the data element as a signed long</a>
+<span class="lineNum">     229 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     230 </span><span class="lineCov">          2 : void writingDataHandlerString::setSignedLong(const size_t index, const std::int32_t value)</span>
+<span class="lineNum">     231 </span>            : {
+<span class="lineNum">     232 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">     233 </span>            : 
+<span class="lineNum">     234 </span><span class="lineCov">          4 :     std::ostringstream conversion;</span>
+<span class="lineNum">     235 </span><span class="lineCov">          2 :     conversion &lt;&lt; value;</span>
+<span class="lineNum">     236 </span><span class="lineCov">          2 :     setString(index, conversion.str());</span>
+<span class="lineNum">     237 </span>            : 
+<span class="lineNum">     238 </span><span class="lineNoCov">          0 :     IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">     239 </span><span class="lineCov">          2 : }</span>
+<span class="lineNum">     240 </span>            : 
+<a name="241"><span class="lineNum">     241 </span>            : // Set the data element as an unsigned long</a>
+<span class="lineNum">     242 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     243 </span><span class="lineCov">       6061 : void writingDataHandlerString::setUnsignedLong(const size_t index, const std::uint32_t value)</span>
+<span class="lineNum">     244 </span>            : {
+<span class="lineNum">     245 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">     246 </span>            : 
+<span class="lineNum">     247 </span><span class="lineCov">      12122 :     std::ostringstream conversion;</span>
+<span class="lineNum">     248 </span><span class="lineCov">       6061 :     conversion &lt;&lt; value;</span>
+<span class="lineNum">     249 </span><span class="lineCov">       6061 :     setString(index, conversion.str());</span>
+<span class="lineNum">     250 </span>            : 
+<span class="lineNum">     251 </span><span class="lineNoCov">          0 :     IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">     252 </span><span class="lineCov">       6061 : }</span>
+<span class="lineNum">     253 </span>            : 
+<a name="254"><span class="lineNum">     254 </span>            : // Set the data element as a double</a>
+<span class="lineNum">     255 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     256 </span><span class="lineCov">         11 : void writingDataHandlerString::setDouble(const size_t index, const double value)</span>
+<span class="lineNum">     257 </span>            : {
+<span class="lineNum">     258 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">     259 </span>            : 
+<span class="lineNum">     260 </span><span class="lineCov">         22 :     std::ostringstream conversion;</span>
+<span class="lineNum">     261 </span><span class="lineCov">         11 :     conversion &lt;&lt; value;</span>
+<span class="lineNum">     262 </span><span class="lineCov">         11 :     setString(index, conversion.str());</span>
+<span class="lineNum">     263 </span>            : 
+<span class="lineNum">     264 </span><span class="lineNoCov">          0 :     IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">     265 </span><span class="lineCov">         11 : }</span>
+<span class="lineNum">     266 </span>            : 
+<a name="267"><span class="lineNum">     267 </span>            : // Set the buffer's size, in data elements</a>
+<span class="lineNum">     268 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     269 </span><span class="lineCov">      70044 : void writingDataHandlerString::setSize(const size_t elementsNumber)</span>
+<span class="lineNum">     270 </span>            : {
+<span class="lineNum">     271 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">     272 </span>            : 
+<span class="lineNum">     273 </span><span class="lineCov">      70044 :     m_strings.resize(elementsNumber);</span>
+<span class="lineNum">     274 </span>            : 
+<span class="lineNum">     275 </span><span class="lineNoCov">          0 :     IMEBRA_FUNCTION_END();</span>
+<a name="276"><span class="lineNum">     276 </span><span class="lineCov">      70175 : }</span></a>
+<span class="lineNum">     277 </span>            : 
+<span class="lineNum">     278 </span><span class="lineCov">      69993 : size_t writingDataHandlerString::getSize() const</span>
+<span class="lineNum">     279 </span>            : {
+<span class="lineNum">     280 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">     281 </span>            : 
+<span class="lineNum">     282 </span><span class="lineCov">      69993 :     return m_strings.size();</span>
+<span class="lineNum">     283 </span>            : 
+<span class="lineNum">     284 </span>            :     IMEBRA_FUNCTION_END();
+<a name="285"><span class="lineNum">     285 </span>            : }</a>
+<span class="lineNum">     286 </span>            : 
+<span class="lineNum">     287 </span><span class="lineCov">      70009 : void writingDataHandlerString::setString(const size_t index, const std::string&amp; value)</span>
+<span class="lineNum">     288 </span>            : {
+<span class="lineNum">     289 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">     290 </span>            : 
+<span class="lineNum">     291 </span><span class="lineCov">      70009 :     if(m_separator == 0 &amp;&amp; index != 0)</span>
+<span class="lineNum">     292 </span>            :     {
+<span class="lineNum">     293 </span><span class="lineCov">          2 :         IMEBRA_THROW(DataHandlerInvalidDataError, &quot;Cannot insert more than one item in this string tag&quot;);</span>
+<span class="lineNum">     294 </span>            :     }
+<span class="lineNum">     295 </span><span class="lineCov">      70007 :     if(index &gt;= getSize())</span>
+<span class="lineNum">     296 </span>            :     {
+<span class="lineNum">     297 </span><span class="lineCov">       2000 :         setSize(index + 1);</span>
+<span class="lineNum">     298 </span>            :     }
+<span class="lineNum">     299 </span><span class="lineCov">      69998 :     m_strings[index] = value;</span>
+<span class="lineNum">     300 </span>            : 
+<span class="lineNum">     301 </span><span class="lineCov">      70219 :     validate();</span>
+<span class="lineNum">     302 </span>            : 
+<span class="lineNum">     303 </span><span class="lineCov">          6 :     IMEBRA_FUNCTION_END();</span>
+<a name="304"><span class="lineNum">     304 </span><span class="lineCov">      70023 : }</span></a>
+<span class="lineNum">     305 </span>            : 
+<span class="lineNum">     306 </span><span class="lineNoCov">          0 : void writingDataHandlerString::setUnicodeString(const size_t index, const std::wstring&amp; value)</span>
+<span class="lineNum">     307 </span>            : {
+<span class="lineNum">     308 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">     309 </span>            : 
+<span class="lineNum">     310 </span><span class="lineNoCov">          0 :     charsetsList::tCharsetsList charsets;</span>
+<span class="lineNum">     311 </span><span class="lineNoCov">          0 :     charsets.push_back(&quot;ISO_IR 6&quot;);</span>
+<span class="lineNum">     312 </span><span class="lineNoCov">          0 :     setString(index, dicomConversion::convertFromUnicode(value, &amp;charsets));</span>
+<span class="lineNum">     313 </span>            : 
+<span class="lineNum">     314 </span><span class="lineNoCov">          0 :     IMEBRA_FUNCTION_END();</span>
+<a name="315"><span class="lineNum">     315 </span><span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     316 </span>            : 
+<span class="lineNum">     317 </span><span class="lineCov">      70042 : void writingDataHandlerString::validate() const</span>
+<span class="lineNum">     318 </span>            : {
+<span class="lineNum">     319 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">     320 </span>            : 
+<span class="lineNum">     321 </span><span class="lineCov">      70042 :     validateStringContainer(m_strings, m_maxSize, m_unitSize, m_separator != 0);</span>
+<span class="lineNum">     322 </span>            : 
+<span class="lineNum">     323 </span><span class="lineCov">          4 :     IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">     324 </span><span class="lineCov">      70013 : }</span>
+<span class="lineNum">     325 </span>            : 
+<span class="lineNum">     326 </span>            : 
+<span class="lineNum">     327 </span>            : } // namespace handlers
+<span class="lineNum">     328 </span>            : 
+<span class="lineNum">     329 </span>            : } // namespace implementation
+<span class="lineNum">     330 </span>            : 
+<span class="lineNum">     331 </span>            : } // namespace imebra
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.13</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

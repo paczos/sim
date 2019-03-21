@@ -1,0 +1,1829 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - extracted.info - library/implementation/dataSetImpl.cpp</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">library/implementation</a> - dataSetImpl.cpp<span style="font-size: 80%;"> (source / <a href="dataSetImpl.cpp.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">extracted.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">485</td>
+            <td class="headerCovTableEntry">565</td>
+            <td class="headerCovTableEntryMed">85.8 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2019-03-13 14:48:54</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">68</td>
+            <td class="headerCovTableEntry">69</td>
+            <td class="headerCovTableEntryHi">98.6 %</td>
+          </tr>
+          <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : /*</a>
+<span class="lineNum">       2 </span>            : Copyright 2005 - 2017 by Paolo Brandoli/Binarno s.p.
+<span class="lineNum">       3 </span>            : 
+<span class="lineNum">       4 </span>            : Imebra is available for free under the GNU General Public License.
+<span class="lineNum">       5 </span>            : 
+<span class="lineNum">       6 </span>            : The full text of the license is available in the file license.rst
+<span class="lineNum">       7 </span>            :  in the project root folder.
+<span class="lineNum">       8 </span>            : 
+<span class="lineNum">       9 </span>            : If you do not want to be bound by the GPL terms (such as the requirement 
+<span class="lineNum">      10 </span>            :  that your application must also be GPL), you may purchase a commercial 
+<span class="lineNum">      11 </span>            :  license for Imebra from the Imebra’s website (http://imebra.com).
+<span class="lineNum">      12 </span>            : */
+<span class="lineNum">      13 </span>            : 
+<span class="lineNum">      14 </span>            : /*! \file dataSet.cpp
+<span class="lineNum">      15 </span>            :     \brief Implementation of the class dataSet.
+<span class="lineNum">      16 </span>            : 
+<span class="lineNum">      17 </span>            : */
+<span class="lineNum">      18 </span>            : 
+<span class="lineNum">      19 </span>            : #include &quot;exceptionImpl.h&quot;
+<span class="lineNum">      20 </span>            : #include &quot;streamReaderImpl.h&quot;
+<span class="lineNum">      21 </span>            : #include &quot;streamWriterImpl.h&quot;
+<span class="lineNum">      22 </span>            : #include &quot;memoryStreamImpl.h&quot;
+<span class="lineNum">      23 </span>            : #include &quot;dataSetImpl.h&quot;
+<span class="lineNum">      24 </span>            : #include &quot;dataHandlerNumericImpl.h&quot;
+<span class="lineNum">      25 </span>            : #include &quot;dicomDictImpl.h&quot;
+<span class="lineNum">      26 </span>            : #include &quot;codecFactoryImpl.h&quot;
+<span class="lineNum">      27 </span>            : #include &quot;streamCodecImpl.h&quot;
+<span class="lineNum">      28 </span>            : #include &quot;imageCodecImpl.h&quot;
+<span class="lineNum">      29 </span>            : #include &quot;imageImpl.h&quot;
+<span class="lineNum">      30 </span>            : #include &quot;LUTImpl.h&quot;
+<span class="lineNum">      31 </span>            : #include &quot;colorTransformsFactoryImpl.h&quot;
+<span class="lineNum">      32 </span>            : #include &quot;transformsChainImpl.h&quot;
+<span class="lineNum">      33 </span>            : #include &quot;transformHighBitImpl.h&quot;
+<span class="lineNum">      34 </span>            : #include &quot;modalityVOILUTImpl.h&quot;
+<span class="lineNum">      35 </span>            : #include &quot;bufferImpl.h&quot;
+<span class="lineNum">      36 </span>            : #include &lt;iostream&gt;
+<span class="lineNum">      37 </span>            : #include &lt;string.h&gt;
+<span class="lineNum">      38 </span>            : 
+<span class="lineNum">      39 </span>            : 
+<span class="lineNum">      40 </span>            : namespace imebra
+<span class="lineNum">      41 </span>            : {
+<span class="lineNum">      42 </span>            : 
+<span class="lineNum">      43 </span>            : namespace implementation
+<span class="lineNum">      44 </span>            : {
+<span class="lineNum">      45 </span>            : 
+<span class="lineNum">      46 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">      47 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">      48 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">      49 </span>            : //
+<span class="lineNum">      50 </span>            : //
+<span class="lineNum">      51 </span>            : //
+<span class="lineNum">      52 </span>            : // dataSet
+<span class="lineNum">      53 </span>            : //
+<span class="lineNum">      54 </span>            : //
+<span class="lineNum">      55 </span>            : //
+<span class="lineNum">      56 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">      57 </span>            : ///////////////////////////////////////////////////////////
+<a name="58"><span class="lineNum">      58 </span>            : ///////////////////////////////////////////////////////////</a>
+<span class="lineNum">      59 </span>            : 
+<span class="lineNum">      60 </span><span class="lineCov">      38328 : dataSet::dataSet(): m_itemOffset(0)</span>
+<span class="lineNum">      61 </span>            : {
+<a name="62"><span class="lineNum">      62 </span><span class="lineCov">      38332 : }</span></a>
+<span class="lineNum">      63 </span>            : 
+<span class="lineNum">      64 </span><span class="lineCov">      46072 : dataSet::dataSet(const std::string&amp; transferSyntax): m_itemOffset(0)</span>
+<span class="lineNum">      65 </span>            : {
+<span class="lineNum">      66 </span><span class="lineCov">      46063 :     setString(0x0002, 0x0, 0x0010, 0, transferSyntax);</span>
+<span class="lineNum">      67 </span><span class="lineCov">      46150 : }</span>
+<span class="lineNum">      68 </span>            : 
+<span class="lineNum">      69 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">      70 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">      71 </span>            : //
+<span class="lineNum">      72 </span>            : //
+<span class="lineNum">      73 </span>            : // Retrieve the requested tag
+<span class="lineNum">      74 </span>            : //
+<span class="lineNum">      75 </span>            : //
+<a name="76"><span class="lineNum">      76 </span>            : ///////////////////////////////////////////////////////////</a>
+<span class="lineNum">      77 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">      78 </span><span class="lineCov">     990681 : std::shared_ptr&lt;data&gt; dataSet::getTag(std::uint16_t groupId, std::uint32_t order, std::uint16_t tagId) const</span>
+<span class="lineNum">      79 </span>            : {
+<span class="lineNum">      80 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">      81 </span>            : 
+<span class="lineNum">      82 </span><span class="lineCov">    1983467 :     std::lock_guard&lt;std::recursive_mutex&gt; lock(m_mutex);</span>
+<span class="lineNum">      83 </span>            : 
+<span class="lineNum">      84 </span><span class="lineCov">     992510 :     tGroups::const_iterator findGroup(m_groups.find(groupId));</span>
+<span class="lineNum">      85 </span><span class="lineCov">     988791 :     if(findGroup == m_groups.end())</span>
+<span class="lineNum">      86 </span>            :     {
+<span class="lineNum">      87 </span><span class="lineCov">      55504 :         IMEBRA_THROW(MissingGroupError, &quot;The requested group is missing&quot;);</span>
+<span class="lineNum">      88 </span>            :     }
+<span class="lineNum">      89 </span>            : 
+<span class="lineNum">      90 </span><span class="lineCov">     932454 :     if(findGroup-&gt;second.size() &lt;= order)</span>
+<span class="lineNum">      91 </span>            :     {
+<span class="lineNum">      92 </span><span class="lineCov">       6186 :         IMEBRA_THROW(MissingGroupError, &quot;The requested group is missing&quot;);</span>
+<span class="lineNum">      93 </span>            :     }
+<span class="lineNum">      94 </span>            : 
+<span class="lineNum">      95 </span><span class="lineCov">     925992 :     const tTags&amp; tagsMap = findGroup-&gt;second.at(order);</span>
+<span class="lineNum">      96 </span><span class="lineCov">     926660 :     tTags::const_iterator findTag(tagsMap.find(tagId));</span>
+<span class="lineNum">      97 </span><span class="lineCov">     927708 :     if(findTag == tagsMap.end())</span>
+<span class="lineNum">      98 </span>            :     {
+<span class="lineNum">      99 </span><span class="lineCov">      31875 :         IMEBRA_THROW(MissingTagError, &quot;The requested tag is missing&quot;);</span>
+<span class="lineNum">     100 </span>            :     }
+<span class="lineNum">     101 </span><span class="lineCov">    1795646 :     return findTag-&gt;second;</span>
+<span class="lineNum">     102 </span>            : 
+<span class="lineNum">     103 </span><span class="lineCov">      93645 :         IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">     104 </span>            : }
+<a name="105"><span class="lineNum">     105 </span>            : </a>
+<span class="lineNum">     106 </span>            : 
+<span class="lineNum">     107 </span><span class="lineCov">     490446 : std::shared_ptr&lt;data&gt; dataSet::getTagCreate(std::uint16_t groupId, std::uint32_t order, std::uint16_t tagId, tagVR_t tagVR)</span>
+<span class="lineNum">     108 </span>            : {
+<span class="lineNum">     109 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">     110 </span>            : 
+<span class="lineNum">     111 </span><span class="lineCov">     981874 :     std::lock_guard&lt;std::recursive_mutex&gt; lock(m_mutex);</span>
+<span class="lineNum">     112 </span>            : 
+<span class="lineNum">     113 </span><span class="lineCov">     491306 :     if(m_groups[groupId].size() &lt;= order)</span>
+<span class="lineNum">     114 </span>            :     {
+<span class="lineNum">     115 </span><span class="lineCov">     179363 :         m_groups[groupId].resize(order + 1);</span>
+<span class="lineNum">     116 </span>            :     }
+<span class="lineNum">     117 </span>            : 
+<span class="lineNum">     118 </span><span class="lineCov">     489454 :     if(m_groups[groupId][order][tagId] == 0)</span>
+<span class="lineNum">     119 </span>            :     {
+<span class="lineNum">     120 </span><span class="lineCov">     440544 :         m_groups[groupId][order][tagId] = std::make_shared&lt;data&gt;(tagVR, m_charsetsList);</span>
+<span class="lineNum">     121 </span>            :     }
+<span class="lineNum">     122 </span>            : 
+<span class="lineNum">     123 </span><span class="lineCov">     980489 :     return m_groups[groupId][order][tagId];</span>
+<span class="lineNum">     124 </span>            : 
+<span class="lineNum">     125 </span><span class="lineNoCov">          0 :     IMEBRA_FUNCTION_END();</span>
+<a name="126"><span class="lineNum">     126 </span>            : }</a>
+<span class="lineNum">     127 </span>            : 
+<span class="lineNum">     128 </span><span class="lineCov">         15 : std::shared_ptr&lt;data&gt; dataSet::getTagCreate(std::uint16_t groupId, std::uint32_t order, std::uint16_t tagId)</span>
+<span class="lineNum">     129 </span>            : {
+<span class="lineNum">     130 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">     131 </span>            : 
+<span class="lineNum">     132 </span><span class="lineCov">         15 :     return getTagCreate(groupId, order, tagId, dicomDictionary::getDicomDictionary()-&gt;getTagType(groupId, tagId));</span>
+<span class="lineNum">     133 </span>            : 
+<span class="lineNum">     134 </span><span class="lineNoCov">          0 :     IMEBRA_FUNCTION_END();</span>
+<a name="135"><span class="lineNum">     135 </span>            : }</a>
+<span class="lineNum">     136 </span>            : 
+<span class="lineNum">     137 </span><span class="lineCov">     211150 : bool dataSet::bufferExists(std::uint16_t groupId, std::uint32_t order, std::uint16_t tagId, size_t bufferId) const</span>
+<span class="lineNum">     138 </span>            : {
+<span class="lineNum">     139 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">     140 </span>            : 
+<span class="lineNum">     141 </span>            :     try
+<span class="lineNum">     142 </span>            :     {
+<span class="lineNum">     143 </span><span class="lineCov">     211150 :         return getTag(groupId, order, tagId)-&gt;bufferExists(bufferId);</span>
+<span class="lineNum">     144 </span>            :     }
+<span class="lineNum">     145 </span><span class="lineCov">      92917 :     catch(const MissingDataElementError&amp;)</span>
+<span class="lineNum">     146 </span>            :     {
+<span class="lineNum">     147 </span><span class="lineCov">      46458 :         return false;</span>
+<span class="lineNum">     148 </span>            :     }
+<span class="lineNum">     149 </span>            : 
+<span class="lineNum">     150 </span><span class="lineNoCov">          0 :     IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">     151 </span>            : }
+<span class="lineNum">     152 </span>            : 
+<span class="lineNum">     153 </span>            : 
+<span class="lineNum">     154 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     155 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     156 </span>            : //
+<span class="lineNum">     157 </span>            : //
+<span class="lineNum">     158 </span>            : // Retrieve the image from the structure
+<span class="lineNum">     159 </span>            : //
+<span class="lineNum">     160 </span>            : //
+<a name="161"><span class="lineNum">     161 </span>            : ///////////////////////////////////////////////////////////</a>
+<span class="lineNum">     162 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     163 </span><span class="lineCov">      11857 : std::shared_ptr&lt;image&gt; dataSet::getImage(std::uint32_t frameNumber) const</span>
+<span class="lineNum">     164 </span>            : {
+<span class="lineNum">     165 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">     166 </span>            : 
+<span class="lineNum">     167 </span><span class="lineCov">      23714 :     std::lock_guard&lt;std::recursive_mutex&gt; lock(m_mutex);</span>
+<span class="lineNum">     168 </span>            : 
+<span class="lineNum">     169 </span>            :         // Retrieve the transfer syntax
+<span class="lineNum">     170 </span>            :         ///////////////////////////////////////////////////////////
+<span class="lineNum">     171 </span><span class="lineCov">      23714 :     std::string transferSyntax = getString(0x0002, 0x0, 0x0010, 0, 0, &quot;1.2.840.10008.1.2&quot;);</span>
+<span class="lineNum">     172 </span>            : 
+<span class="lineNum">     173 </span>            :         // Get the right codec
+<span class="lineNum">     174 </span>            :         ///////////////////////////////////////////////////////////
+<span class="lineNum">     175 </span><span class="lineCov">      23714 :     std::shared_ptr&lt;const codecs::imageCodec&gt; pCodec(codecs::codecFactory::getCodecFactory()-&gt;getImageCodec(transferSyntax));</span>
+<span class="lineNum">     176 </span>            : 
+<span class="lineNum">     177 </span>            :     try
+<span class="lineNum">     178 </span>            :     {
+<span class="lineNum">     179 </span><span class="lineCov">      23714 :         std::shared_ptr&lt;implementation::data&gt; imageTag = getTag(0x7fe0, 0x0, 0x0010);</span>
+<span class="lineNum">     180 </span>            : 
+<span class="lineNum">     181 </span><span class="lineCov">      11857 :         const tagVR_t imageStreamDataType(imageTag-&gt;getDataType());</span>
+<span class="lineNum">     182 </span>            : 
+<span class="lineNum">     183 </span>            :         // Get the number of frames
+<span class="lineNum">     184 </span>            :         ///////////////////////////////////////////////////////////
+<span class="lineNum">     185 </span><span class="lineCov">      11857 :         std::uint32_t numberOfFrames = getUnsignedLong(0x0028, 0, 0x0008, 0, 0, 1);</span>
+<span class="lineNum">     186 </span>            : 
+<span class="lineNum">     187 </span><span class="lineCov">      11857 :         if(frameNumber &gt;= numberOfFrames)</span>
+<span class="lineNum">     188 </span>            :         {
+<span class="lineNum">     189 </span><span class="lineNoCov">          0 :             IMEBRA_THROW(DataSetImageDoesntExistError, &quot;The requested image doesn't exist&quot;);</span>
+<span class="lineNum">     190 </span>            :         }
+<span class="lineNum">     191 </span>            : 
+<span class="lineNum">     192 </span>            :         // Placeholder for the stream containing the image
+<span class="lineNum">     193 </span>            :         ///////////////////////////////////////////////////////////
+<span class="lineNum">     194 </span><span class="lineCov">      23714 :         std::shared_ptr&lt;streamReader&gt; imageStream;</span>
+<span class="lineNum">     195 </span>            : 
+<span class="lineNum">     196 </span>            :         // Retrieve the second item in the image's tag.
+<span class="lineNum">     197 </span>            :         // If the second item is present, then a multiframe
+<span class="lineNum">     198 </span>            :         //  image is present.
+<span class="lineNum">     199 </span>            :         ///////////////////////////////////////////////////////////
+<span class="lineNum">     200 </span><span class="lineCov">      11857 :         bool bDontNeedImagesPositions = false;</span>
+<span class="lineNum">     201 </span>            :         {
+<span class="lineNum">     202 </span><span class="lineCov">      11857 :             if(imageTag-&gt;bufferExists(1))</span>
+<span class="lineNum">     203 </span>            :             {
+<span class="lineNum">     204 </span><span class="lineCov">       2749 :                 std::uint32_t firstBufferId(0), endBufferId(0);</span>
+<span class="lineNum">     205 </span><span class="lineCov">       2749 :                 size_t totalLength(0);</span>
+<span class="lineNum">     206 </span><span class="lineCov">       2749 :                 if(imageTag-&gt;getBufferSize(0) == 0 &amp;&amp; numberOfFrames + 1 == imageTag-&gt;getBuffersCount())</span>
+<span class="lineNum">     207 </span>            :                 {
+<span class="lineNum">     208 </span><span class="lineNoCov">          0 :                     firstBufferId = frameNumber + 1;</span>
+<span class="lineNum">     209 </span><span class="lineNoCov">          0 :                     endBufferId = firstBufferId + 1;</span>
+<span class="lineNum">     210 </span><span class="lineNoCov">          0 :                     totalLength = imageTag-&gt;getBufferSize(firstBufferId);</span>
+<span class="lineNum">     211 </span>            :                 }
+<span class="lineNum">     212 </span>            :                 else
+<span class="lineNum">     213 </span>            :                 {
+<span class="lineNum">     214 </span><span class="lineCov">       2749 :                     totalLength = getFrameBufferIds(frameNumber, &amp;firstBufferId, &amp;endBufferId);</span>
+<span class="lineNum">     215 </span>            :                 }
+<span class="lineNum">     216 </span><span class="lineCov">       2749 :                 if(firstBufferId == endBufferId - 1)</span>
+<span class="lineNum">     217 </span>            :                 {
+<span class="lineNum">     218 </span><span class="lineCov">       2747 :                     imageStream = imageTag-&gt;getStreamReader(firstBufferId);</span>
+<span class="lineNum">     219 </span>            :                 }
+<span class="lineNum">     220 </span>            :                 else
+<span class="lineNum">     221 </span>            :                 {
+<span class="lineNum">     222 </span><span class="lineCov">          4 :                     std::shared_ptr&lt;memory&gt; temporaryMemory(std::make_shared&lt;memory&gt;(totalLength));</span>
+<span class="lineNum">     223 </span><span class="lineCov">          2 :                     const std::uint8_t* pDest = temporaryMemory-&gt;data();</span>
+<span class="lineNum">     224 </span><span class="lineCov">          8 :                     for(std::uint32_t scanBuffers = firstBufferId; scanBuffers != endBufferId; ++scanBuffers)</span>
+<span class="lineNum">     225 </span>            :                     {
+<span class="lineNum">     226 </span><span class="lineCov">         12 :                         std::shared_ptr&lt;handlers::readingDataHandlerRaw&gt; bufferHandler = imageTag-&gt;getReadingDataHandlerRaw(scanBuffers);</span>
+<span class="lineNum">     227 </span><span class="lineCov">          6 :                         const std::uint8_t* pSource = bufferHandler-&gt;getMemoryBuffer();</span>
+<span class="lineNum">     228 </span><span class="lineCov">          6 :                         ::memcpy((void*)pDest, (void*)pSource, bufferHandler-&gt;getSize());</span>
+<span class="lineNum">     229 </span><span class="lineCov">          6 :                         pDest += bufferHandler-&gt;getSize();</span>
+<span class="lineNum">     230 </span>            :                     }
+<span class="lineNum">     231 </span><span class="lineCov">          4 :                     std::shared_ptr&lt;baseStreamInput&gt; compositeStream(std::make_shared&lt;memoryStreamInput&gt;(temporaryMemory));</span>
+<span class="lineNum">     232 </span><span class="lineCov">          2 :                     imageStream = std::make_shared&lt;streamReader&gt;(compositeStream);</span>
+<span class="lineNum">     233 </span>            :                 }
+<span class="lineNum">     234 </span><span class="lineCov">       2749 :                 bDontNeedImagesPositions = true;</span>
+<span class="lineNum">     235 </span>            :             }
+<span class="lineNum">     236 </span>            :         }
+<span class="lineNum">     237 </span>            : 
+<span class="lineNum">     238 </span>            :         // If the image cannot be found, then probably we are
+<span class="lineNum">     239 </span>            :         //  handling an old dicom format.
+<span class="lineNum">     240 </span>            :         // Then try to read the image from the next group with
+<span class="lineNum">     241 </span>            :         //  id=0x7fe
+<span class="lineNum">     242 </span>            :         ///////////////////////////////////////////////////////////
+<span class="lineNum">     243 </span><span class="lineCov">      11857 :         if(imageStream == 0)</span>
+<span class="lineNum">     244 </span>            :         {
+<span class="lineNum">     245 </span>            :             try
+<span class="lineNum">     246 </span>            :             {
+<span class="lineNum">     247 </span><span class="lineCov">       9108 :                 imageStream = getStreamReader(0x7fe0, (std::uint16_t)frameNumber, 0x0010, 0x0);</span>
+<span class="lineNum">     248 </span><span class="lineCov">       2922 :                 bDontNeedImagesPositions = true;</span>
+<span class="lineNum">     249 </span>            :             }
+<span class="lineNum">     250 </span><span class="lineCov">       6186 :             catch(const MissingDataElementError&amp;)</span>
+<span class="lineNum">     251 </span>            :             {
+<span class="lineNum">     252 </span>            :                 // Nothing to do
+<span class="lineNum">     253 </span>            :             }
+<span class="lineNum">     254 </span>            :         }
+<span class="lineNum">     255 </span>            : 
+<span class="lineNum">     256 </span>            :         // We are dealing with an old dicom format that doesn't
+<span class="lineNum">     257 </span>            :         //  include the image offsets and stores all the images
+<span class="lineNum">     258 </span>            :         //  in one buffer
+<span class="lineNum">     259 </span>            :         ///////////////////////////////////////////////////////////
+<span class="lineNum">     260 </span><span class="lineCov">      11857 :         if(imageStream == 0)</span>
+<span class="lineNum">     261 </span>            :         {
+<span class="lineNum">     262 </span><span class="lineCov">       6186 :             imageStream = imageTag-&gt;getStreamReader(0x0);</span>
+<span class="lineNum">     263 </span>            : 
+<span class="lineNum">     264 </span>            :             // Reset an internal array that keeps track of the
+<span class="lineNum">     265 </span>            :             //  images position
+<span class="lineNum">     266 </span>            :             ///////////////////////////////////////////////////////////
+<span class="lineNum">     267 </span><span class="lineCov">       6186 :             if(m_imagesPositions.size() != numberOfFrames)</span>
+<span class="lineNum">     268 </span>            :             {
+<span class="lineNum">     269 </span><span class="lineCov">       2910 :                 m_imagesPositions.resize(numberOfFrames);</span>
+<span class="lineNum">     270 </span>            : 
+<span class="lineNum">     271 </span><span class="lineCov">      12006 :                 for(std::uint32_t resetImagesPositions = 0; resetImagesPositions != numberOfFrames; ++resetImagesPositions)</span>
+<span class="lineNum">     272 </span>            :                 {
+<span class="lineNum">     273 </span><span class="lineCov">       9096 :                     m_imagesPositions[resetImagesPositions] = 0;</span>
+<span class="lineNum">     274 </span>            :                 }
+<span class="lineNum">     275 </span>            : 
+<span class="lineNum">     276 </span>            :             }
+<span class="lineNum">     277 </span>            : 
+<span class="lineNum">     278 </span>            :             // Read all the images before the desidered one so we set
+<span class="lineNum">     279 </span>            :             //  reading position in the stream
+<span class="lineNum">     280 </span>            :             ///////////////////////////////////////////////////////////
+<span class="lineNum">     281 </span><span class="lineCov">      26994 :             for(std::uint32_t readImages = 0; readImages &lt; frameNumber; readImages++)</span>
+<span class="lineNum">     282 </span>            :             {
+<span class="lineNum">     283 </span><span class="lineCov">      20808 :                 size_t offsetPosition = m_imagesPositions[readImages];</span>
+<span class="lineNum">     284 </span><span class="lineCov">      23718 :                 if(offsetPosition == 0)</span>
+<span class="lineNum">     285 </span>            :                 {
+<span class="lineNum">     286 </span><span class="lineCov">       2910 :                     pCodec-&gt;getImage(*this, imageStream, imageStreamDataType);</span>
+<span class="lineNum">     287 </span><span class="lineCov">       2910 :                     m_imagesPositions[readImages] = imageStream-&gt;position();</span>
+<span class="lineNum">     288 </span><span class="lineCov">       2910 :                     continue;</span>
+<span class="lineNum">     289 </span>            :                 }
+<span class="lineNum">     290 </span><span class="lineCov">      17898 :                 if((m_imagesPositions[readImages + 1] == 0) || (readImages == (frameNumber - 1)))</span>
+<span class="lineNum">     291 </span>            :                 {
+<span class="lineNum">     292 </span><span class="lineCov">       3276 :                     imageStream-&gt;seek(offsetPosition);</span>
+<span class="lineNum">     293 </span>            :                 }
+<span class="lineNum">     294 </span>            :             }
+<span class="lineNum">     295 </span>            :         }
+<span class="lineNum">     296 </span>            : 
+<span class="lineNum">     297 </span><span class="lineCov">      11857 :         double pixelDistanceX = getDouble(0x0028, 0x0, 0x0030, 0, 0, 1);</span>
+<span class="lineNum">     298 </span><span class="lineCov">      11857 :         double pixelDistanceY = getDouble(0x0028, 0x0, 0x0030, 0, 1, 1);</span>
+<span class="lineNum">     299 </span>            : 
+<span class="lineNum">     300 </span><span class="lineCov">      23714 :         std::shared_ptr&lt;image&gt; pImage;</span>
+<span class="lineNum">     301 </span><span class="lineCov">      11863 :         pImage = pCodec-&gt;getImage(*this, imageStream, imageStreamDataType);</span>
+<span class="lineNum">     302 </span>            : 
+<span class="lineNum">     303 </span><span class="lineCov">      11851 :         if(!bDontNeedImagesPositions &amp;&amp; m_imagesPositions.size() &gt; frameNumber)</span>
+<span class="lineNum">     304 </span>            :         {
+<span class="lineNum">     305 </span><span class="lineCov">       6186 :             m_imagesPositions[frameNumber] = imageStream-&gt;position();</span>
+<span class="lineNum">     306 </span>            :         }
+<span class="lineNum">     307 </span>            : 
+<span class="lineNum">     308 </span>            :         // If the image has been returned correctly, then set
+<span class="lineNum">     309 </span>            :         //  the image's size
+<span class="lineNum">     310 </span>            :         ///////////////////////////////////////////////////////////
+<span class="lineNum">     311 </span><span class="lineCov">      11851 :         if(pImage != 0)</span>
+<span class="lineNum">     312 </span>            :         {
+<span class="lineNum">     313 </span>            :             std::uint32_t width, height;
+<span class="lineNum">     314 </span><span class="lineCov">      11851 :             pImage-&gt;getSize(&amp;width, &amp;height);</span>
+<span class="lineNum">     315 </span><span class="lineCov">      11851 :             pImage-&gt;setSizeMm(pixelDistanceX*(double)width, pixelDistanceY*(double)height);</span>
+<span class="lineNum">     316 </span>            :         }
+<span class="lineNum">     317 </span>            : 
+<span class="lineNum">     318 </span><span class="lineCov">      11851 :         if(pImage-&gt;getColorSpace() == &quot;PALETTE COLOR&quot;)</span>
+<span class="lineNum">     319 </span>            :         {
+<span class="lineNum">     320 </span><span class="lineCov">          8 :             std::shared_ptr&lt;lut&gt; red(std::make_shared&lt;lut&gt;(getReadingDataHandlerNumeric(0x0028, 0x0, 0x1101, 0), getReadingDataHandlerNumeric(0x0028, 0x0, 0x1201, 0), L&quot;&quot;, pImage-&gt;isSigned()));</span>
+<span class="lineNum">     321 </span><span class="lineCov">          8 :             std::shared_ptr&lt;lut&gt; green(std::make_shared&lt;lut&gt;(getReadingDataHandlerNumeric(0x0028, 0x0, 0x1102, 0), getReadingDataHandlerNumeric(0x0028, 0x0, 0x1202, 0), L&quot;&quot;, pImage-&gt;isSigned()));</span>
+<span class="lineNum">     322 </span><span class="lineCov">          8 :             std::shared_ptr&lt;lut&gt; blue(std::make_shared&lt;lut&gt;(getReadingDataHandlerNumeric(0x0028, 0x0, 0x1103, 0), getReadingDataHandlerNumeric(0x0028, 0x0, 0x1203, 0), L&quot;&quot;, pImage-&gt;isSigned()));</span>
+<span class="lineNum">     323 </span><span class="lineCov">          8 :             std::shared_ptr&lt;palette&gt; imagePalette(std::make_shared&lt;palette&gt;(red, green, blue));</span>
+<span class="lineNum">     324 </span><span class="lineCov">          4 :             pImage-&gt;setPalette(imagePalette);</span>
+<span class="lineNum">     325 </span>            :         }
+<span class="lineNum">     326 </span>            : 
+<span class="lineNum">     327 </span><span class="lineCov">      23702 :         return pImage;</span>
+<span class="lineNum">     328 </span>            :     }
+<span class="lineNum">     329 </span><span class="lineNoCov">          0 :     catch(const MissingDataElementError&amp;)</span>
+<span class="lineNum">     330 </span>            :     {
+<span class="lineNum">     331 </span><span class="lineNoCov">          0 :         IMEBRA_THROW(DataSetImageDoesntExistError, &quot;The requested image doesn't exist&quot;);</span>
+<span class="lineNum">     332 </span>            :     }
+<span class="lineNum">     333 </span>            : 
+<span class="lineNum">     334 </span><span class="lineCov">          6 :         IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">     335 </span>            : }
+<span class="lineNum">     336 </span>            : 
+<span class="lineNum">     337 </span>            : 
+<span class="lineNum">     338 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     339 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     340 </span>            : //
+<span class="lineNum">     341 </span>            : //
+<span class="lineNum">     342 </span>            : // Get an image from the dataset and apply the modality
+<span class="lineNum">     343 </span>            : //  transform.
+<span class="lineNum">     344 </span>            : //
+<span class="lineNum">     345 </span>            : //
+<a name="346"><span class="lineNum">     346 </span>            : ///////////////////////////////////////////////////////////</a>
+<span class="lineNum">     347 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     348 </span><span class="lineCov">          5 : std::shared_ptr&lt;image&gt; dataSet::getModalityImage(std::uint32_t frameNumber) const</span>
+<span class="lineNum">     349 </span>            : {
+<span class="lineNum">     350 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">     351 </span>            : 
+<span class="lineNum">     352 </span><span class="lineCov">         10 :     std::lock_guard&lt;std::recursive_mutex&gt; lock(m_mutex);</span>
+<span class="lineNum">     353 </span>            : 
+<span class="lineNum">     354 </span><span class="lineCov">         10 :     std::shared_ptr&lt;image&gt; originalImage = getImage(frameNumber);</span>
+<span class="lineNum">     355 </span>            : 
+<span class="lineNum">     356 </span><span class="lineCov">         10 :     std::shared_ptr&lt;transforms::colorTransforms::colorTransformsFactory&gt; colorFactory(transforms::colorTransforms::colorTransformsFactory::getColorTransformsFactory());</span>
+<span class="lineNum">     357 </span><span class="lineCov">          5 :     if(originalImage == 0 || !colorFactory-&gt;isMonochrome(originalImage-&gt;getColorSpace()))</span>
+<span class="lineNum">     358 </span>            :     {
+<span class="lineNum">     359 </span><span class="lineCov">          2 :         return originalImage;</span>
+<span class="lineNum">     360 </span>            :     }
+<span class="lineNum">     361 </span>            : 
+<span class="lineNum">     362 </span><span class="lineCov">          6 :     std::shared_ptr&lt;transforms::modalityVOILUT&gt; modalityVOILUT(std::make_shared&lt;transforms::modalityVOILUT&gt;(std::static_pointer_cast&lt;const dataSet&gt;(shared_from_this())));</span>
+<span class="lineNum">     363 </span>            : 
+<span class="lineNum">     364 </span>            :     // Convert to MONOCHROME2 if a modality transform is not present
+<span class="lineNum">     365 </span>            :     ////////////////////////////////////////////////////////////////
+<span class="lineNum">     366 </span><span class="lineCov">          3 :     if(modalityVOILUT-&gt;isEmpty())</span>
+<span class="lineNum">     367 </span>            :     {
+<span class="lineNum">     368 </span><span class="lineNoCov">          0 :         std::shared_ptr&lt;transforms::transform&gt; monochromeColorTransform(colorFactory-&gt;getTransform(originalImage-&gt;getColorSpace(), &quot;MONOCHROME2&quot;));</span>
+<span class="lineNum">     369 </span><span class="lineNoCov">          0 :         if(monochromeColorTransform != 0)</span>
+<span class="lineNum">     370 </span>            :         {
+<span class="lineNum">     371 </span>            :             std::uint32_t width, height;
+<span class="lineNum">     372 </span><span class="lineNoCov">          0 :             originalImage-&gt;getSize(&amp;width, &amp;height);</span>
+<span class="lineNum">     373 </span><span class="lineNoCov">          0 :             std::shared_ptr&lt;image&gt; outputImage = monochromeColorTransform-&gt;allocateOutputImage(originalImage-&gt;getDepth(),</span>
+<span class="lineNum">     374 </span><span class="lineNoCov">          0 :                                                                                                originalImage-&gt;getColorSpace(),</span>
+<span class="lineNum">     375 </span>            :                                                                                                originalImage-&gt;getHighBit(),
+<span class="lineNum">     376 </span><span class="lineNoCov">          0 :                                                                                                originalImage-&gt;getPalette(),</span>
+<span class="lineNum">     377 </span><span class="lineNoCov">          0 :                                                                                                width, height);</span>
+<span class="lineNum">     378 </span><span class="lineNoCov">          0 :             monochromeColorTransform-&gt;runTransform(originalImage, 0, 0, width, height, outputImage, 0, 0);</span>
+<span class="lineNum">     379 </span><span class="lineNoCov">          0 :             return outputImage;</span>
+<span class="lineNum">     380 </span>            :         }
+<span class="lineNum">     381 </span>            : 
+<span class="lineNum">     382 </span><span class="lineNoCov">          0 :         return originalImage;</span>
+<span class="lineNum">     383 </span>            :     }
+<span class="lineNum">     384 </span>            : 
+<span class="lineNum">     385 </span>            :     // Apply the modality VOI/LUT transform
+<span class="lineNum">     386 </span>            :     ///////////////////////////////////////
+<span class="lineNum">     387 </span>            :     std::uint32_t width, height;
+<span class="lineNum">     388 </span><span class="lineCov">          3 :     originalImage-&gt;getSize(&amp;width, &amp;height);</span>
+<span class="lineNum">     389 </span><span class="lineCov">          3 :     std::shared_ptr&lt;image&gt; outputImage = modalityVOILUT-&gt;allocateOutputImage(originalImage-&gt;getDepth(),</span>
+<span class="lineNum">     390 </span><span class="lineCov">          6 :                                                                              originalImage-&gt;getColorSpace(),</span>
+<span class="lineNum">     391 </span>            :                                                                              originalImage-&gt;getHighBit(),
+<span class="lineNum">     392 </span><span class="lineCov">          6 :                                                                              originalImage-&gt;getPalette(),</span>
+<span class="lineNum">     393 </span><span class="lineCov">         12 :                                                                              width, height);</span>
+<span class="lineNum">     394 </span><span class="lineCov">          3 :     modalityVOILUT-&gt;runTransform(originalImage, 0, 0, width, height, outputImage, 0, 0);</span>
+<span class="lineNum">     395 </span><span class="lineCov">          3 :     return outputImage;</span>
+<span class="lineNum">     396 </span>            : 
+<span class="lineNum">     397 </span><span class="lineNoCov">          0 :     IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">     398 </span>            : }
+<span class="lineNum">     399 </span>            : 
+<span class="lineNum">     400 </span>            : 
+<span class="lineNum">     401 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     402 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     403 </span>            : //
+<span class="lineNum">     404 </span>            : //
+<span class="lineNum">     405 </span>            : // Insert an image into the dataset
+<span class="lineNum">     406 </span>            : //
+<span class="lineNum">     407 </span>            : //
+<a name="408"><span class="lineNum">     408 </span>            : ///////////////////////////////////////////////////////////</a>
+<span class="lineNum">     409 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     410 </span><span class="lineCov">       6045 : void dataSet::setImage(std::uint32_t frameNumber, std::shared_ptr&lt;image&gt; pImage, imageQuality_t quality)</span>
+<span class="lineNum">     411 </span>            : {
+<span class="lineNum">     412 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">     413 </span>            : 
+<span class="lineNum">     414 </span><span class="lineCov">       7426 :     std::lock_guard&lt;std::recursive_mutex&gt; lock(m_mutex);</span>
+<span class="lineNum">     415 </span>            : 
+<span class="lineNum">     416 </span>            :         // bDontChangeAttributes is true if some images already
+<span class="lineNum">     417 </span>            :         //  exist in the dataset and we must save the new image
+<span class="lineNum">     418 </span>            :         //  using the attributes already stored
+<span class="lineNum">     419 </span>            :         ///////////////////////////////////////////////////////////
+<span class="lineNum">     420 </span><span class="lineCov">       6045 :     std::uint32_t numberOfFrames = getUnsignedLong(0x0028, 0, 0x0008, 0, 0, 0);</span>
+<span class="lineNum">     421 </span><span class="lineCov">       6045 :         if(frameNumber != numberOfFrames)</span>
+<span class="lineNum">     422 </span>            :         {
+<span class="lineNum">     423 </span><span class="lineNoCov">          0 :         IMEBRA_THROW(DataSetWrongFrameError, &quot;The frames must be inserted in sequence&quot;);</span>
+<span class="lineNum">     424 </span>            :         }
+<span class="lineNum">     425 </span><span class="lineCov">       6045 :         bool bDontChangeAttributes = (numberOfFrames != 0);</span>
+<span class="lineNum">     426 </span><span class="lineCov">       7426 :     std::string transferSyntax = getString(0x0002, 0x0, 0x0010, 0, 0, &quot;1.2.840.10008.1.2&quot;);</span>
+<span class="lineNum">     427 </span>            : 
+<span class="lineNum">     428 </span>            :         // Select the right codec
+<span class="lineNum">     429 </span>            :         ///////////////////////////////////////////////////////////
+<span class="lineNum">     430 </span><span class="lineCov">       7426 :     std::shared_ptr&lt;const codecs::imageCodec&gt; saveCodec(codecs::codecFactory::getCodecFactory()-&gt;getImageCodec(transferSyntax));</span>
+<span class="lineNum">     431 </span>            : 
+<span class="lineNum">     432 </span>            :         // Do we have to save the basic offset table?
+<span class="lineNum">     433 </span>            :         ///////////////////////////////////////////////////////////
+<span class="lineNum">     434 </span><span class="lineCov">       6045 :     std::uint16_t groupId(0x7fe0), tagId(0x0010); // The tag where the image must be stored</span>
+<span class="lineNum">     435 </span><span class="lineCov">       6045 :     bool bEncapsulated = saveCodec-&gt;encapsulated(transferSyntax) || bufferExists(groupId, 0x0, tagId, 0x1);</span>
+<span class="lineNum">     436 </span>            : 
+<span class="lineNum">     437 </span>            :         // Set the subsampling flags
+<span class="lineNum">     438 </span>            :         ///////////////////////////////////////////////////////////
+<span class="lineNum">     439 </span><span class="lineCov">       6045 :     bool bSubSampledX = (std::uint32_t)quality &gt; (std::uint32_t)imageQuality_t::high;</span>
+<span class="lineNum">     440 </span><span class="lineCov">       6045 :     bool bSubSampledY = (std::uint32_t)quality &gt; (std::uint32_t)imageQuality_t::medium;</span>
+<span class="lineNum">     441 </span><span class="lineCov">       6045 :         if( !transforms::colorTransforms::colorTransformsFactory::canSubsample(pImage-&gt;getColorSpace()) )</span>
+<span class="lineNum">     442 </span>            :         {
+<span class="lineNum">     443 </span><span class="lineCov">       3607 :                 bSubSampledX = bSubSampledY = false;</span>
+<span class="lineNum">     444 </span>            :         }
+<span class="lineNum">     445 </span>            : 
+<span class="lineNum">     446 </span><span class="lineCov">       6045 :     bool b2complement = pImage-&gt;isSigned();</span>
+<span class="lineNum">     447 </span><span class="lineCov">       6045 :     std::uint32_t channelsNumber = pImage-&gt;getChannelsNumber();</span>
+<span class="lineNum">     448 </span><span class="lineCov">       6045 :     std::uint8_t allocatedBits = (std::uint8_t)(saveCodec-&gt;suggestAllocatedBits(transferSyntax, pImage-&gt;getHighBit()));</span>
+<span class="lineNum">     449 </span><span class="lineCov">       6045 :     bool bInterleaved = (getUnsignedLong(0x0028, 0x0, 0x0006, 0, 0, channelsNumber &gt; 1 ? 0 : 1) == 0x0);</span>
+<span class="lineNum">     450 </span>            : 
+<span class="lineNum">     451 </span>            :         // If the attributes cannot be changed, then check the
+<span class="lineNum">     452 </span>            :         //  attributes already stored in the dataset
+<span class="lineNum">     453 </span>            :         ///////////////////////////////////////////////////////////
+<span class="lineNum">     454 </span><span class="lineCov">       6045 :         if(bDontChangeAttributes)</span>
+<span class="lineNum">     455 </span>            :         {
+<span class="lineNum">     456 </span><span class="lineCov">       8102 :         std::string currentColorSpace = getString(0x0028, 0x0, 0x0004, 0, 0);</span>
+<span class="lineNum">     457 </span><span class="lineCov">       4051 :         if(</span>
+<span class="lineNum">     458 </span><span class="lineCov">      12153 :                 transforms::colorTransforms::colorTransformsFactory::normalizeColorSpace(pImage-&gt;getColorSpace()) !=</span>
+<span class="lineNum">     459 </span><span class="lineCov">      12153 :                     transforms::colorTransforms::colorTransformsFactory::normalizeColorSpace(currentColorSpace) ||</span>
+<span class="lineNum">     460 </span><span class="lineCov">       8102 :                 bSubSampledX != transforms::colorTransforms::colorTransformsFactory::isSubsampledX(currentColorSpace) ||</span>
+<span class="lineNum">     461 </span><span class="lineCov">       8102 :                 bSubSampledY != transforms::colorTransforms::colorTransformsFactory::isSubsampledY(currentColorSpace) ||</span>
+<span class="lineNum">     462 </span><span class="lineCov">       8102 :                 b2complement != (getUnsignedLong(0x0028, 0, 0x0103, 0, 0) != 0) ||</span>
+<span class="lineNum">     463 </span><span class="lineCov">      24306 :                 allocatedBits != (std::uint8_t)getUnsignedLong(0x0028, 0x0, 0x0100, 0, 0) ||</span>
+<span class="lineNum">     464 </span><span class="lineCov">       4051 :                 channelsNumber != getUnsignedLong(0x0028, 0x0, 0x0002, 0, 0))</span>
+<span class="lineNum">     465 </span>            :         {
+<span class="lineNum">     466 </span><span class="lineNoCov">          0 :             IMEBRA_THROW(DataSetDifferentFormatError, &quot;An image already exists in the dataset and has different attributes&quot;);</span>
+<span class="lineNum">     467 </span>            :         }
+<span class="lineNum">     468 </span>            :         }
+<span class="lineNum">     469 </span>            : 
+<span class="lineNum">     470 </span>            :         // Select the data type OB if not already set in the
+<span class="lineNum">     471 </span>            :         //  dataset
+<span class="lineNum">     472 </span>            :         ///////////////////////////////////////////////////////////
+<span class="lineNum">     473 </span>            :     tagVR_t dataHandlerType;
+<span class="lineNum">     474 </span><span class="lineCov">       6045 :     if(transferSyntax == &quot;1.2.840.10008.1.2&quot;)</span>
+<span class="lineNum">     475 </span>            :     {
+<span class="lineNum">     476 </span><span class="lineCov">       1623 :         dataHandlerType = dicomDictionary::getDicomDictionary()-&gt;getTagType(0x7FE0, 0x0010);</span>
+<span class="lineNum">     477 </span>            :     }
+<span class="lineNum">     478 </span>            :     else
+<span class="lineNum">     479 </span>            :     {
+<span class="lineNum">     480 </span><span class="lineCov">       4422 :         dataHandlerType = (bEncapsulated || allocatedBits &lt;= 8) ? tagVR_t::OB : tagVR_t::OW;</span>
+<span class="lineNum">     481 </span>            :     }
+<span class="lineNum">     482 </span>            : 
+<span class="lineNum">     483 </span>            :         // Encapsulated mode. Check if we have the offsets table
+<span class="lineNum">     484 </span>            :         ///////////////////////////////////////////////////////////
+<span class="lineNum">     485 </span><span class="lineCov">       6045 :     std::uint32_t firstBufferId(0);</span>
+<span class="lineNum">     486 </span><span class="lineCov">       6045 :     if(bEncapsulated)</span>
+<span class="lineNum">     487 </span>            :         {
+<span class="lineNum">     488 </span>            :         try
+<span class="lineNum">     489 </span>            :         {
+<span class="lineNum">     490 </span><span class="lineCov">       1381 :             if(bufferExists(groupId, 0x0, tagId, 0))</span>
+<span class="lineNum">     491 </span>            :             {
+<span class="lineNum">     492 </span><span class="lineCov">        958 :                 dataHandlerType = getDataType(groupId, 0x0, tagId);</span>
+<span class="lineNum">     493 </span>            :             }
+<span class="lineNum">     494 </span>            :             else
+<span class="lineNum">     495 </span>            :             {
+<span class="lineNum">     496 </span><span class="lineCov">        423 :                 std::shared_ptr&lt;handlers::readingDataHandlerRaw&gt; imageHandler0 = getReadingDataHandlerRaw(groupId, 0x0, tagId, 0x0);</span>
+<span class="lineNum">     497 </span><span class="lineNoCov">          0 :                 size_t bufferSize(imageHandler0-&gt;getSize());</span>
+<span class="lineNum">     498 </span>            : 
+<span class="lineNum">     499 </span><span class="lineNoCov">          0 :                 if(bufferSize != 0 &amp;&amp; !bufferExists(groupId, 0x0, tagId, 0x1))</span>
+<span class="lineNum">     500 </span>            :                 {
+<span class="lineNum">     501 </span>            :                     // The first image must be moved forward, in order to
+<span class="lineNum">     502 </span>            :                     //  make some room for the offset table
+<span class="lineNum">     503 </span>            :                     ///////////////////////////////////////////////////////////
+<span class="lineNum">     504 </span><span class="lineNoCov">          0 :                     dataHandlerType = imageHandler0-&gt;getDataType();</span>
+<span class="lineNum">     505 </span><span class="lineNoCov">          0 :                     std::shared_ptr&lt;handlers::writingDataHandlerRaw&gt; moveFirstImage = getWritingDataHandlerRaw(groupId, 0x0, tagId, 0x1, dataHandlerType);</span>
+<span class="lineNum">     506 </span><span class="lineNoCov">          0 :                     moveFirstImage-&gt;setSize(bufferSize);</span>
+<span class="lineNum">     507 </span><span class="lineNoCov">          0 :                     ::memcpy(moveFirstImage-&gt;getMemoryBuffer(), imageHandler0-&gt;getMemoryBuffer(), bufferSize);</span>
+<span class="lineNum">     508 </span>            :                 }
+<span class="lineNum">     509 </span>            :             }
+<span class="lineNum">     510 </span>            :         }
+<span class="lineNum">     511 </span><span class="lineCov">        423 :         catch(const MissingDataElementError&amp;)</span>
+<span class="lineNum">     512 </span>            :         {
+<span class="lineNum">     513 </span>            :             // Nothing to do. No image has been stored yet
+<span class="lineNum">     514 </span>            :         }
+<span class="lineNum">     515 </span>            : 
+<span class="lineNum">     516 </span><span class="lineCov">       1381 :                 firstBufferId = getFirstAvailFrameBufferId();</span>
+<span class="lineNum">     517 </span>            :         }
+<span class="lineNum">     518 </span>            : 
+<span class="lineNum">     519 </span>            :         // Get a stream to save the image
+<span class="lineNum">     520 </span>            :     ///////////////////////////////////////////////////////////
+<span class="lineNum">     521 </span>            :     {
+<span class="lineNum">     522 </span><span class="lineCov">      12090 :         std::shared_ptr&lt;streamWriter&gt; outputStream;</span>
+<span class="lineNum">     523 </span><span class="lineCov">      12090 :         std::shared_ptr&lt;memory&gt; uncompressedImage(std::make_shared&lt;memory&gt;());</span>
+<span class="lineNum">     524 </span><span class="lineCov">       6045 :         if(bEncapsulated)</span>
+<span class="lineNum">     525 </span>            :         {
+<span class="lineNum">     526 </span><span class="lineCov">       1381 :             outputStream = getStreamWriter(groupId, 0, tagId, firstBufferId, dataHandlerType);</span>
+<span class="lineNum">     527 </span>            :         }
+<span class="lineNum">     528 </span>            :         else
+<span class="lineNum">     529 </span>            :         {
+<span class="lineNum">     530 </span><span class="lineCov">       9328 :             std::shared_ptr&lt;memoryStreamOutput&gt; memStream(std::make_shared&lt;memoryStreamOutput&gt;(uncompressedImage));</span>
+<span class="lineNum">     531 </span><span class="lineCov">       4664 :             outputStream = std::make_shared&lt;streamWriter&gt;(memStream);</span>
+<span class="lineNum">     532 </span>            :         }
+<span class="lineNum">     533 </span>            : 
+<span class="lineNum">     534 </span>            :         // Save the image in the stream
+<span class="lineNum">     535 </span>            :         ///////////////////////////////////////////////////////////
+<span class="lineNum">     536 </span><span class="lineCov">      12090 :         saveCodec-&gt;setImage(</span>
+<span class="lineNum">     537 </span>            :             outputStream,
+<span class="lineNum">     538 </span>            :             pImage,
+<span class="lineNum">     539 </span>            :             transferSyntax,
+<span class="lineNum">     540 </span>            :             quality,
+<span class="lineNum">     541 </span>            :             dataHandlerType,
+<span class="lineNum">     542 </span>            :             allocatedBits,
+<span class="lineNum">     543 </span>            :             bSubSampledX, bSubSampledY,
+<span class="lineNum">     544 </span>            :             bInterleaved,
+<span class="lineNum">     545 </span><span class="lineCov">       6045 :             b2complement);</span>
+<span class="lineNum">     546 </span>            : 
+<span class="lineNum">     547 </span><span class="lineCov">       6045 :         outputStream-&gt;flushDataBuffer();</span>
+<span class="lineNum">     548 </span>            : 
+<span class="lineNum">     549 </span><span class="lineCov">       6045 :         if(!bEncapsulated)</span>
+<span class="lineNum">     550 </span>            :         {
+<span class="lineNum">     551 </span><span class="lineCov">       4664 :             getTagCreate(groupId, 0, tagId, dataHandlerType)-&gt;getBufferCreate(firstBufferId)-&gt;appendMemory(uncompressedImage);</span>
+<span class="lineNum">     552 </span>            :         }
+<span class="lineNum">     553 </span>            :     }
+<span class="lineNum">     554 </span>            : 
+<span class="lineNum">     555 </span>            :         // The images' positions calculated by getImage are not
+<span class="lineNum">     556 </span>            :         //  valid now. They must be recalculated.
+<span class="lineNum">     557 </span>            :         ///////////////////////////////////////////////////////////
+<span class="lineNum">     558 </span><span class="lineCov">       6045 :         m_imagesPositions.clear();</span>
+<span class="lineNum">     559 </span>            : 
+<span class="lineNum">     560 </span>            :         // Write the attributes in the dataset
+<span class="lineNum">     561 </span>            :         ///////////////////////////////////////////////////////////
+<span class="lineNum">     562 </span><span class="lineCov">       6045 :         if(!bDontChangeAttributes)</span>
+<span class="lineNum">     563 </span>            :         {
+<span class="lineNum">     564 </span><span class="lineCov">       3988 :         std::shared_ptr&lt;handlers::writingDataHandler&gt; dataHandlerTransferSyntax = getWritingDataHandler(0x0002, 0x0, 0x0010, 0x0);</span>
+<span class="lineNum">     565 </span><span class="lineCov">       1994 :         dataHandlerTransferSyntax-&gt;setString(0, transferSyntax);</span>
+<span class="lineNum">     566 </span>            : 
+<span class="lineNum">     567 </span><span class="lineCov">       3988 :         std::string colorSpace = pImage-&gt;getColorSpace();</span>
+<span class="lineNum">     568 </span><span class="lineCov">       1994 :         setString(0x0028, 0x0, 0x0004, 0, transforms::colorTransforms::colorTransformsFactory::makeSubsampled(colorSpace, bSubSampledX, bSubSampledY));</span>
+<span class="lineNum">     569 </span><span class="lineCov">       1994 :         if(channelsNumber &gt; 1)</span>
+<span class="lineNum">     570 </span>            :         {
+<span class="lineNum">     571 </span><span class="lineCov">       1395 :             setUnsignedLong(0x0028, 0x0, 0x0006, 0, bInterleaved ? 0 : 1);</span>
+<span class="lineNum">     572 </span>            :         }
+<span class="lineNum">     573 </span><span class="lineCov">       1994 :         setUnsignedLong(0x0028, 0x0, 0x0100, 0, allocatedBits);            // allocated bits</span>
+<span class="lineNum">     574 </span><span class="lineCov">       1994 :         setUnsignedLong(0x0028, 0x0, 0x0101, 0, pImage-&gt;getHighBit() + 1); // stored bits</span>
+<span class="lineNum">     575 </span><span class="lineCov">       1994 :         setUnsignedLong(0x0028, 0x0, 0x0102, 0, pImage-&gt;getHighBit());     // high bit</span>
+<span class="lineNum">     576 </span><span class="lineCov">       1994 :         setUnsignedLong(0x0028, 0x0, 0x0103, 0, b2complement ? 1 : 0);</span>
+<span class="lineNum">     577 </span><span class="lineCov">       1994 :         setUnsignedLong(0x0028, 0x0, 0x0002, 0, channelsNumber);</span>
+<span class="lineNum">     578 </span>            :                 std::uint32_t imageWidth, imageHeight;
+<span class="lineNum">     579 </span><span class="lineCov">       1994 :                 pImage-&gt;getSize(&amp;imageWidth, &amp;imageHeight);</span>
+<span class="lineNum">     580 </span><span class="lineCov">       1994 :         setUnsignedLong(0x0028, 0x0, 0x0011, 0, imageWidth);</span>
+<span class="lineNum">     581 </span><span class="lineCov">       1994 :         setUnsignedLong(0x0028, 0x0, 0x0010, 0, imageHeight);</span>
+<span class="lineNum">     582 </span>            : 
+<span class="lineNum">     583 </span><span class="lineCov">       1994 :         if(colorSpace == &quot;PALETTE COLOR&quot;)</span>
+<span class="lineNum">     584 </span>            :                 {
+<span class="lineNum">     585 </span><span class="lineNoCov">          0 :             IMEBRA_THROW(DataSetImagePaletteColorIsReadOnly, &quot;Cannot set images with color space PALETTE COLOR&quot;);</span>
+<span class="lineNum">     586 </span>            :                 }
+<span class="lineNum">     587 </span>            : 
+<span class="lineNum">     588 </span>            :                 double imageSizeMmX, imageSizeMmY;
+<span class="lineNum">     589 </span><span class="lineCov">       1994 :                 pImage-&gt;getSizeMm(&amp;imageSizeMmX, &amp;imageSizeMmY);</span>
+<span class="lineNum">     590 </span>            : 
+<span class="lineNum">     591 </span>            :         }
+<span class="lineNum">     592 </span>            : 
+<span class="lineNum">     593 </span>            :         // Update the number of frames
+<span class="lineNum">     594 </span>            :         ///////////////////////////////////////////////////////////
+<span class="lineNum">     595 </span><span class="lineCov">       6045 :         numberOfFrames = frameNumber + 1;</span>
+<span class="lineNum">     596 </span><span class="lineCov">       6045 :     setUnsignedLong(0x0028, 0, 0x0008, 0, numberOfFrames );</span>
+<span class="lineNum">     597 </span>            : 
+<span class="lineNum">     598 </span>            :         // Update the offsets tag with the image's offsets
+<span class="lineNum">     599 </span>            :         ///////////////////////////////////////////////////////////
+<span class="lineNum">     600 </span><span class="lineCov">       6045 :         if(!bEncapsulated)</span>
+<span class="lineNum">     601 </span>            :         {
+<span class="lineNum">     602 </span><span class="lineCov">       4664 :                 return;</span>
+<span class="lineNum">     603 </span>            :         }
+<span class="lineNum">     604 </span>            : 
+<span class="lineNum">     605 </span><span class="lineCov">       1381 :         std::uint32_t calculatePosition(0);</span>
+<span class="lineNum">     606 </span><span class="lineCov">       2762 :     std::shared_ptr&lt;data&gt; tag(getTag(groupId, 0, tagId));</span>
+<span class="lineNum">     607 </span><span class="lineCov">       8582 :     for(std::uint32_t scanBuffers = 1; scanBuffers &lt; firstBufferId; ++scanBuffers)</span>
+<span class="lineNum">     608 </span>            :         {
+<span class="lineNum">     609 </span><span class="lineCov">       7201 :         calculatePosition += (std::uint32_t)tag-&gt;getBufferSize(scanBuffers);</span>
+<span class="lineNum">     610 </span><span class="lineCov">       7201 :                 calculatePosition += 8;</span>
+<span class="lineNum">     611 </span>            :         }
+<span class="lineNum">     612 </span><span class="lineCov">       2762 :     std::shared_ptr&lt;handlers::writingDataHandlerRaw&gt; offsetHandler(getWritingDataHandlerRaw(groupId, 0, tagId, 0, dataHandlerType));</span>
+<span class="lineNum">     613 </span><span class="lineCov">       1381 :     offsetHandler-&gt;setSize(4 * (frameNumber + 1));</span>
+<span class="lineNum">     614 </span><span class="lineCov">       2762 :     std::shared_ptr&lt;handlers::readingDataHandlerRaw&gt; originalOffsetHandler(getReadingDataHandlerRaw(groupId, 0, tagId, 0));</span>
+<span class="lineNum">     615 </span><span class="lineCov">       1381 :     originalOffsetHandler-&gt;copyTo(offsetHandler-&gt;getMemoryBuffer(), offsetHandler-&gt;getSize());</span>
+<span class="lineNum">     616 </span><span class="lineCov">       1381 :         std::uint8_t* pOffsetFrame(offsetHandler-&gt;getMemoryBuffer() + (frameNumber * 4));</span>
+<span class="lineNum">     617 </span><span class="lineCov">       1381 :         *( (std::uint32_t*)pOffsetFrame  ) = calculatePosition;</span>
+<span class="lineNum">     618 </span><span class="lineCov">       1381 :         streamController::adjustEndian(pOffsetFrame, 4, streamController::lowByteEndian, 1);</span>
+<span class="lineNum">     619 </span>            : 
+<span class="lineNum">     620 </span><span class="lineNoCov">          0 :         IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">     621 </span>            : }
+<span class="lineNum">     622 </span>            : 
+<span class="lineNum">     623 </span>            : 
+<span class="lineNum">     624 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     625 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     626 </span>            : //
+<span class="lineNum">     627 </span>            : // Get the offset, in bytes, of the specified frame
+<span class="lineNum">     628 </span>            : //
+<a name="629"><span class="lineNum">     629 </span>            : ///////////////////////////////////////////////////////////</a>
+<span class="lineNum">     630 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     631 </span><span class="lineCov">       5498 : std::uint32_t dataSet::getFrameOffset(std::uint32_t frameNumber) const</span>
+<span class="lineNum">     632 </span>            : {
+<span class="lineNum">     633 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">     634 </span>            : 
+<span class="lineNum">     635 </span>            :     try
+<span class="lineNum">     636 </span>            :     {
+<span class="lineNum">     637 </span>            :         // Retrieve the buffer containing the offsets
+<span class="lineNum">     638 </span>            :         ///////////////////////////////////////////////////////////
+<span class="lineNum">     639 </span><span class="lineCov">      10996 :         std::shared_ptr&lt;handlers::readingDataHandlerRaw&gt; framesPointer = getReadingDataHandlerRaw(0x7fe0, 0x0, 0x0010, 0);</span>
+<span class="lineNum">     640 </span>            : 
+<span class="lineNum">     641 </span>            :         // Get the offset table's size, in number of offsets
+<span class="lineNum">     642 </span>            :         ///////////////////////////////////////////////////////////
+<span class="lineNum">     643 </span><span class="lineCov">       5498 :         std::uint32_t offsetsCount = (std::uint32_t)(framesPointer-&gt;getSize() / sizeof(std::uint32_t));</span>
+<span class="lineNum">     644 </span>            : 
+<span class="lineNum">     645 </span>            :         // If the requested frame doesn't exist then return
+<span class="lineNum">     646 </span>            :         //  0xffffffff (the maximum value)
+<span class="lineNum">     647 </span>            :         ///////////////////////////////////////////////////////////
+<span class="lineNum">     648 </span><span class="lineCov">       5498 :         if(frameNumber &gt;= offsetsCount &amp;&amp; frameNumber != 0)</span>
+<span class="lineNum">     649 </span>            :         {
+<span class="lineNum">     650 </span><span class="lineCov">        833 :             return std::numeric_limits&lt;std::uint32_t&gt;::max();</span>
+<span class="lineNum">     651 </span>            :         }
+<span class="lineNum">     652 </span>            : 
+<span class="lineNum">     653 </span>            :         // Return the requested offset. If the requested frame is
+<span class="lineNum">     654 </span>            :         //  the first and is offset is not specified, then return
+<span class="lineNum">     655 </span>            :         //  0 (the first position)
+<span class="lineNum">     656 </span>            :         ///////////////////////////////////////////////////////////
+<span class="lineNum">     657 </span><span class="lineCov">       4665 :         if(frameNumber &lt; offsetsCount)</span>
+<span class="lineNum">     658 </span>            :         {
+<span class="lineNum">     659 </span><span class="lineCov">       4665 :             std::uint32_t* pOffsets = (std::uint32_t*)(framesPointer-&gt;getMemoryBuffer());</span>
+<span class="lineNum">     660 </span><span class="lineCov">       4665 :             std::uint32_t returnOffset(pOffsets[frameNumber]);</span>
+<span class="lineNum">     661 </span><span class="lineCov">       4665 :             streamController::adjustEndian((std::uint8_t*)&amp;returnOffset, 4, streamController::lowByteEndian);</span>
+<span class="lineNum">     662 </span><span class="lineCov">       4665 :             return returnOffset;</span>
+<span class="lineNum">     663 </span>            :         }
+<span class="lineNum">     664 </span><span class="lineNoCov">          0 :         return 0;</span>
+<span class="lineNum">     665 </span>            :     }
+<span class="lineNum">     666 </span><span class="lineNoCov">          0 :     catch(const MissingDataElementError&amp;)</span>
+<span class="lineNum">     667 </span>            :     {
+<span class="lineNum">     668 </span><span class="lineNoCov">          0 :         return 0xffffffff;</span>
+<span class="lineNum">     669 </span>            :     }
+<span class="lineNum">     670 </span>            : 
+<span class="lineNum">     671 </span><span class="lineNoCov">          0 :     IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">     672 </span>            : }
+<span class="lineNum">     673 </span>            : 
+<span class="lineNum">     674 </span>            : 
+<span class="lineNum">     675 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     676 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     677 </span>            : //
+<span class="lineNum">     678 </span>            : // Return the buffer that starts at the specified offset
+<span class="lineNum">     679 </span>            : //
+<a name="680"><span class="lineNum">     680 </span>            : ///////////////////////////////////////////////////////////</a>
+<span class="lineNum">     681 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     682 </span><span class="lineCov">       5498 : std::uint32_t dataSet::getFrameBufferId(std::uint32_t offset) const</span>
+<span class="lineNum">     683 </span>            : {
+<span class="lineNum">     684 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">     685 </span>            : 
+<span class="lineNum">     686 </span><span class="lineCov">      10996 :     std::shared_ptr&lt;data&gt; imageTag = getTag(0x7fe0, 0, 0x0010);</span>
+<span class="lineNum">     687 </span>            : 
+<span class="lineNum">     688 </span>            :     // Start from the buffer n. 1 (the buffer 0 contains
+<span class="lineNum">     689 </span>            :     //  the offset table
+<span class="lineNum">     690 </span>            :     ///////////////////////////////////////////////////////////
+<span class="lineNum">     691 </span><span class="lineCov">       5498 :     std::uint32_t scanBuffers(1);</span>
+<span class="lineNum">     692 </span>            : 
+<span class="lineNum">     693 </span><span class="lineCov">       5498 :     if(offset == std::numeric_limits&lt;std::uint32_t&gt;::max())</span>
+<span class="lineNum">     694 </span>            :     {
+<span class="lineNum">     695 </span><span class="lineCov">       6339 :         while(imageTag-&gt;bufferExists(scanBuffers))</span>
+<span class="lineNum">     696 </span>            :         {
+<span class="lineNum">     697 </span><span class="lineCov">       2753 :             ++scanBuffers;</span>
+<span class="lineNum">     698 </span>            :         }
+<span class="lineNum">     699 </span><span class="lineCov">        833 :         return scanBuffers;</span>
+<span class="lineNum">     700 </span>            :     }
+<span class="lineNum">     701 </span>            : 
+<span class="lineNum">     702 </span><span class="lineCov">      62281 :     while(offset != 0)</span>
+<span class="lineNum">     703 </span>            :     {
+<span class="lineNum">     704 </span>            :         // Calculate the total size of the buffer, including
+<span class="lineNum">     705 </span>            :         //  its descriptor (tag group and id and length)
+<span class="lineNum">     706 </span>            :         ///////////////////////////////////////////////////////////
+<span class="lineNum">     707 </span><span class="lineCov">      28808 :         std::uint32_t bufferSize = (std::uint32_t)imageTag-&gt;getBufferSize(scanBuffers);;</span>
+<span class="lineNum">     708 </span><span class="lineCov">      28808 :         bufferSize += 4; // one WORD for the group id, one WORD for the tag id</span>
+<span class="lineNum">     709 </span><span class="lineCov">      28808 :         bufferSize += 4; // one DWORD for the tag length</span>
+<span class="lineNum">     710 </span><span class="lineCov">      28808 :         if(bufferSize &gt; offset)</span>
+<span class="lineNum">     711 </span>            :         {
+<span class="lineNum">     712 </span><span class="lineNoCov">          0 :             IMEBRA_THROW(DataSetImageDoesntExistError, &quot;Image not in the offset table&quot;);</span>
+<span class="lineNum">     713 </span>            :         }
+<span class="lineNum">     714 </span><span class="lineCov">      28808 :         offset -= bufferSize;</span>
+<span class="lineNum">     715 </span><span class="lineCov">      28808 :         ++scanBuffers;</span>
+<span class="lineNum">     716 </span>            :     }
+<span class="lineNum">     717 </span>            : 
+<span class="lineNum">     718 </span><span class="lineCov">       4665 :     return scanBuffers;</span>
+<span class="lineNum">     719 </span>            : 
+<span class="lineNum">     720 </span><span class="lineNoCov">          0 :         IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">     721 </span>            : }
+<span class="lineNum">     722 </span>            : 
+<span class="lineNum">     723 </span>            : 
+<span class="lineNum">     724 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     725 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     726 </span>            : //
+<span class="lineNum">     727 </span>            : //
+<span class="lineNum">     728 </span>            : // Get the first buffer and the end buffer occupied by an
+<span class="lineNum">     729 </span>            : //  image
+<span class="lineNum">     730 </span>            : //
+<span class="lineNum">     731 </span>            : //
+<a name="732"><span class="lineNum">     732 </span>            : ///////////////////////////////////////////////////////////</a>
+<span class="lineNum">     733 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     734 </span><span class="lineCov">       2749 : size_t dataSet::getFrameBufferIds(std::uint32_t frameNumber, std::uint32_t* pFirstBuffer, std::uint32_t* pEndBuffer) const</span>
+<span class="lineNum">     735 </span>            : {
+<span class="lineNum">     736 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">     737 </span>            : 
+<span class="lineNum">     738 </span><span class="lineCov">       5498 :     std::lock_guard&lt;std::recursive_mutex&gt; lock(m_mutex);</span>
+<span class="lineNum">     739 </span>            : 
+<span class="lineNum">     740 </span>            :     try
+<span class="lineNum">     741 </span>            :     {
+<span class="lineNum">     742 </span><span class="lineCov">       2749 :         std::uint32_t startOffset = getFrameOffset(frameNumber);</span>
+<span class="lineNum">     743 </span><span class="lineCov">       2749 :         std::uint32_t endOffset = getFrameOffset(frameNumber + 1);</span>
+<span class="lineNum">     744 </span>            : 
+<span class="lineNum">     745 </span><span class="lineCov">       2749 :         if(startOffset == std::numeric_limits&lt;std::int32_t&gt;::max())</span>
+<span class="lineNum">     746 </span>            :         {
+<span class="lineNum">     747 </span><span class="lineNoCov">          0 :             IMEBRA_THROW(DataSetImageDoesntExistError, &quot;Image not in the table offset&quot;);</span>
+<span class="lineNum">     748 </span>            :         }
+<span class="lineNum">     749 </span>            : 
+<span class="lineNum">     750 </span><span class="lineCov">       2749 :         *pFirstBuffer = getFrameBufferId(startOffset);</span>
+<span class="lineNum">     751 </span><span class="lineCov">       2749 :         *pEndBuffer = getFrameBufferId(endOffset);</span>
+<span class="lineNum">     752 </span>            : 
+<span class="lineNum">     753 </span><span class="lineCov">       5498 :         std::shared_ptr&lt;data&gt; imageTag;</span>
+<span class="lineNum">     754 </span>            :         try
+<span class="lineNum">     755 </span>            :         {
+<span class="lineNum">     756 </span><span class="lineCov">       2749 :             imageTag = getTag(0x7fe0, 0, 0x0010);</span>
+<span class="lineNum">     757 </span>            :         }
+<span class="lineNum">     758 </span><span class="lineNoCov">          0 :         catch(MissingDataElementError&amp; e)</span>
+<span class="lineNum">     759 </span>            :         {
+<span class="lineNum">     760 </span><span class="lineNoCov">          0 :             return 0;</span>
+<span class="lineNum">     761 </span>            :         }
+<span class="lineNum">     762 </span>            : 
+<span class="lineNum">     763 </span><span class="lineCov">       2749 :         size_t totalSize(0);</span>
+<span class="lineNum">     764 </span><span class="lineCov">       5502 :         for(std::uint32_t scanBuffers(*pFirstBuffer); scanBuffers != *pEndBuffer; ++scanBuffers)</span>
+<span class="lineNum">     765 </span>            :         {
+<span class="lineNum">     766 </span><span class="lineCov">       2753 :             totalSize += imageTag-&gt;getBufferSize(scanBuffers);</span>
+<span class="lineNum">     767 </span>            :         }
+<span class="lineNum">     768 </span><span class="lineCov">       2749 :         return totalSize;</span>
+<span class="lineNum">     769 </span>            :     }
+<span class="lineNum">     770 </span><span class="lineNoCov">          0 :     catch(const MissingDataElementError&amp;)</span>
+<span class="lineNum">     771 </span>            :     {
+<span class="lineNum">     772 </span><span class="lineNoCov">          0 :         IMEBRA_THROW(DataSetCorruptedOffsetTableError, &quot;The basic offset table is corrupted&quot;);</span>
+<span class="lineNum">     773 </span>            :     }
+<span class="lineNum">     774 </span>            : 
+<span class="lineNum">     775 </span><span class="lineNoCov">          0 :         IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">     776 </span>            : }
+<span class="lineNum">     777 </span>            : 
+<span class="lineNum">     778 </span>            : 
+<span class="lineNum">     779 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     780 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     781 </span>            : //
+<span class="lineNum">     782 </span>            : //
+<span class="lineNum">     783 </span>            : // Return the id of the first available buffer that can
+<span class="lineNum">     784 </span>            : //  be used to store a new frame
+<span class="lineNum">     785 </span>            : //
+<span class="lineNum">     786 </span>            : //
+<a name="787"><span class="lineNum">     787 </span>            : ///////////////////////////////////////////////////////////</a>
+<span class="lineNum">     788 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     789 </span><span class="lineCov">       1381 : std::uint32_t dataSet::getFirstAvailFrameBufferId() const</span>
+<span class="lineNum">     790 </span>            : {
+<span class="lineNum">     791 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">     792 </span>            : 
+<span class="lineNum">     793 </span><span class="lineCov">       1381 :     std::uint32_t availableId(1);</span>
+<span class="lineNum">     794 </span><span class="lineCov">      15783 :     while(bufferExists(0x7fe0, 0, 0x0010, availableId))</span>
+<span class="lineNum">     795 </span>            :     {
+<span class="lineNum">     796 </span><span class="lineCov">       7201 :         ++availableId;</span>
+<span class="lineNum">     797 </span>            :     }
+<span class="lineNum">     798 </span>            : 
+<span class="lineNum">     799 </span><span class="lineCov">       1381 :         return availableId;</span>
+<span class="lineNum">     800 </span>            : 
+<span class="lineNum">     801 </span><span class="lineNoCov">          0 :         IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">     802 </span>            : }
+<span class="lineNum">     803 </span>            : 
+<span class="lineNum">     804 </span>            : 
+<span class="lineNum">     805 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     806 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     807 </span>            : //
+<span class="lineNum">     808 </span>            : //
+<span class="lineNum">     809 </span>            : // Retrieve a sequence item as a dataset
+<span class="lineNum">     810 </span>            : //
+<span class="lineNum">     811 </span>            : //
+<a name="812"><span class="lineNum">     812 </span>            : ///////////////////////////////////////////////////////////</a>
+<span class="lineNum">     813 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     814 </span><span class="lineCov">       7397 : std::shared_ptr&lt;dataSet&gt; dataSet::getSequenceItem(std::uint16_t groupId, std::uint32_t order, std::uint16_t tagId, size_t itemId) const</span>
+<span class="lineNum">     815 </span>            : {
+<span class="lineNum">     816 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">     817 </span>            : 
+<span class="lineNum">     818 </span><span class="lineCov">       7397 :     return getTag(groupId, order, tagId)-&gt;getSequenceItem(itemId);</span>
+<span class="lineNum">     819 </span>            : 
+<span class="lineNum">     820 </span><span class="lineCov">         11 :         IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">     821 </span>            : }
+<span class="lineNum">     822 </span>            : 
+<span class="lineNum">     823 </span>            : 
+<span class="lineNum">     824 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     825 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     826 </span>            : //
+<span class="lineNum">     827 </span>            : //
+<span class="lineNum">     828 </span>            : // Set a sequence item
+<span class="lineNum">     829 </span>            : //
+<span class="lineNum">     830 </span>            : //
+<a name="831"><span class="lineNum">     831 </span>            : ///////////////////////////////////////////////////////////</a>
+<span class="lineNum">     832 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     833 </span><span class="lineCov">       3690 : void dataSet::setSequenceItem(std::uint16_t groupId, std::uint32_t order, std::uint16_t tagId, size_t itemId, std::shared_ptr&lt;dataSet&gt; pDataSet)</span>
+<span class="lineNum">     834 </span>            : {
+<span class="lineNum">     835 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">     836 </span>            : 
+<span class="lineNum">     837 </span><span class="lineCov">       3690 :     pDataSet-&gt;setCharsetsList(m_charsetsList);</span>
+<span class="lineNum">     838 </span><span class="lineCov">       3690 :     getTagCreate(groupId, order, tagId, tagVR_t::SQ)-&gt;setSequenceItem(itemId, pDataSet);</span>
+<span class="lineNum">     839 </span>            : 
+<span class="lineNum">     840 </span><span class="lineNoCov">          0 :     IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">     841 </span><span class="lineCov">       3690 : }</span>
+<span class="lineNum">     842 </span>            : 
+<span class="lineNum">     843 </span>            : 
+<span class="lineNum">     844 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     845 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     846 </span>            : //
+<span class="lineNum">     847 </span>            : //
+<span class="lineNum">     848 </span>            : // Retrieve a LUT from the data set
+<span class="lineNum">     849 </span>            : //
+<span class="lineNum">     850 </span>            : //
+<a name="851"><span class="lineNum">     851 </span>            : ///////////////////////////////////////////////////////////</a>
+<span class="lineNum">     852 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     853 </span><span class="lineCov">         10 : std::shared_ptr&lt;lut&gt; dataSet::getLut(std::uint16_t groupId, std::uint16_t tagId, size_t lutId) const</span>
+<span class="lineNum">     854 </span>            : {
+<span class="lineNum">     855 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">     856 </span>            : 
+<span class="lineNum">     857 </span><span class="lineCov">         20 :     std::lock_guard&lt;std::recursive_mutex&gt; lock(m_mutex);</span>
+<span class="lineNum">     858 </span>            : 
+<span class="lineNum">     859 </span><span class="lineCov">         20 :     std::shared_ptr&lt;dataSet&gt; embeddedLUT = getSequenceItem(groupId, 0, tagId, lutId);</span>
+<span class="lineNum">     860 </span><span class="lineCov">         20 :     std::shared_ptr&lt;handlers::readingDataHandlerNumericBase&gt; descriptorHandle = embeddedLUT-&gt;getReadingDataHandlerNumeric(0x0028, 0x0, 0x3002, 0x0);</span>
+<span class="lineNum">     861 </span><span class="lineCov">         20 :     std::shared_ptr&lt;handlers::readingDataHandlerNumericBase&gt; dataHandle = embeddedLUT-&gt;getReadingDataHandlerNumeric(0x0028, 0x0, 0x3006, 0x0);</span>
+<span class="lineNum">     862 </span>            : 
+<span class="lineNum">     863 </span>            :     std::shared_ptr&lt;lut&gt; pLUT = std::make_shared&lt;lut&gt;(
+<span class="lineNum">     864 </span>            :         descriptorHandle,
+<span class="lineNum">     865 </span>            :         dataHandle,
+<span class="lineNum">     866 </span><span class="lineCov">         20 :         embeddedLUT-&gt;getUnicodeString(0x0028, 0x0, 0x3003, 0, 0, L&quot;&quot;),</span>
+<span class="lineNum">     867 </span><span class="lineCov">         36 :         getUnsignedLong(0x0028, 0, 0x0103, 0, 0, 0) != 0);</span>
+<span class="lineNum">     868 </span><span class="lineCov">         12 :         return pLUT;</span>
+<span class="lineNum">     869 </span>            : 
+<span class="lineNum">     870 </span><span class="lineCov">          4 :         IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">     871 </span>            : }
+<span class="lineNum">     872 </span>            : 
+<span class="lineNum">     873 </span>            : 
+<span class="lineNum">     874 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     875 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     876 </span>            : //
+<span class="lineNum">     877 </span>            : //
+<span class="lineNum">     878 </span>            : // Returns the settings for the values of interest
+<span class="lineNum">     879 </span>            : //
+<span class="lineNum">     880 </span>            : //
+<a name="881"><span class="lineNum">     881 </span>            : ///////////////////////////////////////////////////////////</a>
+<span class="lineNum">     882 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     883 </span><span class="lineCov">          2 : vois_t dataSet::getVOIs()</span>
+<span class="lineNum">     884 </span>            : {
+<span class="lineNum">     885 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">     886 </span>            : 
+<span class="lineNum">     887 </span><span class="lineCov">          4 :     vois_t vois;</span>
+<span class="lineNum">     888 </span>            : 
+<span class="lineNum">     889 </span>            :     try
+<span class="lineNum">     890 </span>            :     {
+<span class="lineNum">     891 </span><span class="lineCov">          4 :         for(size_t voiIndex(0); ; ++voiIndex)</span>
+<span class="lineNum">     892 </span>            :         {
+<span class="lineNum">     893 </span><span class="lineCov">          8 :             VOIDescription voi;</span>
+<span class="lineNum">     894 </span><span class="lineCov">          4 :             voi.center = getDouble(0x0028, 0, 0x1050, 0, voiIndex);</span>
+<span class="lineNum">     895 </span><span class="lineCov">          2 :             voi.width = getDouble(0x0028, 0, 0x1051, 0, voiIndex);</span>
+<span class="lineNum">     896 </span><span class="lineCov">          2 :             voi.description = getUnicodeString(0x0028, 0, 0x1055, 0, voiIndex, L&quot;&quot;);</span>
+<span class="lineNum">     897 </span><span class="lineCov">          2 :             vois.push_back(voi);</span>
+<span class="lineNum">     898 </span><span class="lineCov">          2 :         }</span>
+<span class="lineNum">     899 </span>            :     }
+<span class="lineNum">     900 </span><span class="lineCov">          2 :     catch(const MissingDataElementError&amp;)</span>
+<span class="lineNum">     901 </span>            :     {
+<span class="lineNum">     902 </span>            :         // VOI not present
+<span class="lineNum">     903 </span>            :     }
+<span class="lineNum">     904 </span>            : 
+<span class="lineNum">     905 </span><span class="lineCov">          4 :     return vois;</span>
+<span class="lineNum">     906 </span>            : 
+<span class="lineNum">     907 </span><span class="lineNoCov">          0 :     IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">     908 </span>            : }
+<span class="lineNum">     909 </span>            : 
+<span class="lineNum">     910 </span>            : 
+<span class="lineNum">     911 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     912 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     913 </span>            : //
+<span class="lineNum">     914 </span>            : //
+<span class="lineNum">     915 </span>            : // Get a tag as a signed long
+<span class="lineNum">     916 </span>            : //
+<span class="lineNum">     917 </span>            : //
+<a name="918"><span class="lineNum">     918 </span>            : ///////////////////////////////////////////////////////////</a>
+<span class="lineNum">     919 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     920 </span><span class="lineCov">       2779 : std::int32_t dataSet::getSignedLong(std::uint16_t groupId, std::uint32_t order, std::uint16_t tagId, size_t bufferId, size_t elementNumber) const</span>
+<span class="lineNum">     921 </span>            : {
+<span class="lineNum">     922 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">     923 </span>            : 
+<span class="lineNum">     924 </span><span class="lineCov">       2779 :     return getReadingDataHandler(groupId, order, tagId, bufferId)-&gt;getSignedLong(elementNumber);</span>
+<span class="lineNum">     925 </span>            : 
+<span class="lineNum">     926 </span><span class="lineCov">         23 :         IMEBRA_FUNCTION_END();</span>
+<a name="927"><span class="lineNum">     927 </span>            : }</a>
+<span class="lineNum">     928 </span>            : 
+<span class="lineNum">     929 </span><span class="lineCov">          2 : std::int32_t dataSet::getSignedLong(std::uint16_t groupId, std::uint32_t order, std::uint16_t tagId, size_t bufferId, size_t elementNumber, std::int32_t defaultValue) const</span>
+<span class="lineNum">     930 </span>            : {
+<span class="lineNum">     931 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">     932 </span>            : 
+<span class="lineNum">     933 </span>            :     try
+<span class="lineNum">     934 </span>            :     {
+<span class="lineNum">     935 </span><span class="lineCov">          2 :         return getSignedLong(groupId, order, tagId, bufferId, elementNumber);</span>
+<span class="lineNum">     936 </span>            :     }
+<span class="lineNum">     937 </span><span class="lineCov">          4 :     catch(const MissingDataElementError&amp;)</span>
+<span class="lineNum">     938 </span>            :     {
+<span class="lineNum">     939 </span><span class="lineCov">          2 :         return defaultValue;</span>
+<span class="lineNum">     940 </span>            :     }
+<span class="lineNum">     941 </span>            : 
+<span class="lineNum">     942 </span><span class="lineNoCov">          0 :     IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">     943 </span>            : }
+<span class="lineNum">     944 </span>            : 
+<span class="lineNum">     945 </span>            : 
+<span class="lineNum">     946 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     947 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     948 </span>            : //
+<span class="lineNum">     949 </span>            : //
+<span class="lineNum">     950 </span>            : // Set a tag as a signed long
+<span class="lineNum">     951 </span>            : //
+<span class="lineNum">     952 </span>            : //
+<a name="953"><span class="lineNum">     953 </span>            : ///////////////////////////////////////////////////////////</a>
+<span class="lineNum">     954 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     955 </span><span class="lineCov">          5 : void dataSet::setSignedLong(std::uint16_t groupId, std::uint32_t order, std::uint16_t tagId, size_t bufferId, std::int32_t newValue, tagVR_t tagVR)</span>
+<span class="lineNum">     956 </span>            : {
+<span class="lineNum">     957 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">     958 </span>            : 
+<span class="lineNum">     959 </span><span class="lineCov">         10 :     std::lock_guard&lt;std::recursive_mutex&gt; lock(m_mutex);</span>
+<span class="lineNum">     960 </span>            : 
+<span class="lineNum">     961 </span><span class="lineCov">         10 :     std::shared_ptr&lt;handlers::writingDataHandler&gt; dataHandler = getWritingDataHandler(groupId, order, tagId, bufferId, tagVR);</span>
+<span class="lineNum">     962 </span><span class="lineCov">          5 :     dataHandler-&gt;setSize(1);</span>
+<span class="lineNum">     963 </span><span class="lineCov">          5 :     dataHandler-&gt;setSignedLong(0, newValue);</span>
+<span class="lineNum">     964 </span>            : 
+<span class="lineNum">     965 </span><span class="lineCov">          1 :         IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">     966 </span><span class="lineCov">          4 : }</span>
+<a name="967"><span class="lineNum">     967 </span>            : </a>
+<span class="lineNum">     968 </span>            : 
+<span class="lineNum">     969 </span><span class="lineCov">          1 : void dataSet::setSignedLong(std::uint16_t groupId, std::uint32_t order, std::uint16_t tagId, size_t bufferId, std::int32_t newValue)</span>
+<span class="lineNum">     970 </span>            : {
+<span class="lineNum">     971 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">     972 </span>            : 
+<span class="lineNum">     973 </span><span class="lineCov">          1 :     setSignedLong(groupId, order, tagId, bufferId, newValue, dicomDictionary::getDicomDictionary()-&gt;getTagType(groupId, tagId));</span>
+<span class="lineNum">     974 </span>            : 
+<span class="lineNum">     975 </span><span class="lineCov">          1 :     IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">     976 </span><span class="lineNoCov">          0 : }</span>
+<span class="lineNum">     977 </span>            : 
+<span class="lineNum">     978 </span>            : 
+<span class="lineNum">     979 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     980 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     981 </span>            : //
+<span class="lineNum">     982 </span>            : //
+<span class="lineNum">     983 </span>            : // Get the requested tag as an unsigned long
+<span class="lineNum">     984 </span>            : //
+<span class="lineNum">     985 </span>            : //
+<a name="986"><span class="lineNum">     986 </span>            : ///////////////////////////////////////////////////////////</a>
+<span class="lineNum">     987 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     988 </span><span class="lineCov">     551297 : std::uint32_t dataSet::getUnsignedLong(std::uint16_t groupId, std::uint32_t order, std::uint16_t tagId, size_t bufferId, size_t elementNumber) const</span>
+<span class="lineNum">     989 </span>            : {
+<span class="lineNum">     990 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">     991 </span>            : 
+<span class="lineNum">     992 </span><span class="lineCov">     551297 :     return getReadingDataHandler(groupId, order, tagId, bufferId)-&gt;getUnsignedLong(elementNumber);</span>
+<span class="lineNum">     993 </span>            : 
+<span class="lineNum">     994 </span><span class="lineCov">      19478 :         IMEBRA_FUNCTION_END();</span>
+<a name="995"><span class="lineNum">     995 </span>            : }</a>
+<span class="lineNum">     996 </span>            : 
+<span class="lineNum">     997 </span><span class="lineCov">     337254 : std::uint32_t dataSet::getUnsignedLong(std::uint16_t groupId, std::uint32_t order, std::uint16_t tagId, size_t bufferId, size_t elementNumber, std::uint32_t defaultValue) const</span>
+<span class="lineNum">     998 </span>            : {
+<span class="lineNum">     999 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">    1000 </span>            : 
+<span class="lineNum">    1001 </span>            :     try
+<span class="lineNum">    1002 </span>            :     {
+<span class="lineNum">    1003 </span><span class="lineCov">     337254 :         return getUnsignedLong(groupId, order, tagId, bufferId, elementNumber);</span>
+<span class="lineNum">    1004 </span>            :     }
+<span class="lineNum">    1005 </span><span class="lineCov">      16884 :     catch(const MissingDataElementError&amp;)</span>
+<span class="lineNum">    1006 </span>            :     {
+<span class="lineNum">    1007 </span><span class="lineCov">       8442 :         return defaultValue;</span>
+<span class="lineNum">    1008 </span>            :     }
+<span class="lineNum">    1009 </span>            : 
+<span class="lineNum">    1010 </span><span class="lineNoCov">          0 :     IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">    1011 </span>            : }
+<span class="lineNum">    1012 </span>            : 
+<span class="lineNum">    1013 </span>            : 
+<span class="lineNum">    1014 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">    1015 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">    1016 </span>            : //
+<span class="lineNum">    1017 </span>            : //
+<span class="lineNum">    1018 </span>            : // Set the requested tag as an unsigned long
+<span class="lineNum">    1019 </span>            : //
+<span class="lineNum">    1020 </span>            : //
+<a name="1021"><span class="lineNum">    1021 </span>            : ///////////////////////////////////////////////////////////</a>
+<span class="lineNum">    1022 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">    1023 </span><span class="lineCov">     103234 : void dataSet::setUnsignedLong(std::uint16_t groupId, std::uint32_t order, std::uint16_t tagId, size_t bufferId, std::uint32_t newValue, tagVR_t tagVR)</span>
+<span class="lineNum">    1024 </span>            : {
+<span class="lineNum">    1025 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">    1026 </span>            : 
+<span class="lineNum">    1027 </span><span class="lineCov">     206397 :     std::lock_guard&lt;std::recursive_mutex&gt; lock(m_mutex);</span>
+<span class="lineNum">    1028 </span>            : 
+<span class="lineNum">    1029 </span><span class="lineCov">     206281 :     std::shared_ptr&lt;handlers::writingDataHandler&gt; dataHandler = getWritingDataHandler(groupId, order, tagId, bufferId, tagVR);</span>
+<span class="lineNum">    1030 </span><span class="lineCov">     103213 :     dataHandler-&gt;setSize(1);</span>
+<span class="lineNum">    1031 </span><span class="lineCov">     103123 :     dataHandler-&gt;setUnsignedLong(0, newValue);</span>
+<span class="lineNum">    1032 </span>            : 
+<span class="lineNum">    1033 </span><span class="lineCov">          1 :         IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">    1034 </span><span class="lineCov">     103267 : }</span>
+<a name="1035"><span class="lineNum">    1035 </span>            : </a>
+<span class="lineNum">    1036 </span>            : 
+<span class="lineNum">    1037 </span><span class="lineCov">      57189 : void dataSet::setUnsignedLong(std::uint16_t groupId, std::uint32_t order, std::uint16_t tagId, size_t bufferId, std::uint32_t newValue)</span>
+<span class="lineNum">    1038 </span>            : {
+<span class="lineNum">    1039 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">    1040 </span>            : 
+<span class="lineNum">    1041 </span><span class="lineCov">      57189 :     setUnsignedLong(groupId, order, tagId, bufferId, newValue, dicomDictionary::getDicomDictionary()-&gt;getTagType(groupId, tagId));</span>
+<span class="lineNum">    1042 </span>            : 
+<span class="lineNum">    1043 </span><span class="lineCov">          1 :     IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">    1044 </span><span class="lineCov">      57195 : }</span>
+<span class="lineNum">    1045 </span>            : 
+<span class="lineNum">    1046 </span>            : 
+<span class="lineNum">    1047 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">    1048 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">    1049 </span>            : //
+<span class="lineNum">    1050 </span>            : //
+<span class="lineNum">    1051 </span>            : // Get the requested tag as a double
+<span class="lineNum">    1052 </span>            : //
+<span class="lineNum">    1053 </span>            : //
+<a name="1054"><span class="lineNum">    1054 </span>            : ///////////////////////////////////////////////////////////</a>
+<span class="lineNum">    1055 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">    1056 </span><span class="lineCov">      27534 : double dataSet::getDouble(std::uint16_t groupId, std::uint32_t order, std::uint16_t tagId, size_t bufferId, size_t elementNumber) const</span>
+<span class="lineNum">    1057 </span>            : {
+<span class="lineNum">    1058 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">    1059 </span>            : 
+<span class="lineNum">    1060 </span><span class="lineCov">      27534 :     return getReadingDataHandler(groupId, order, tagId, bufferId)-&gt;getDouble(elementNumber);</span>
+<span class="lineNum">    1061 </span>            : 
+<span class="lineNum">    1062 </span><span class="lineCov">      23742 :         IMEBRA_FUNCTION_END();</span>
+<a name="1063"><span class="lineNum">    1063 </span>            : }</a>
+<span class="lineNum">    1064 </span>            : 
+<span class="lineNum">    1065 </span><span class="lineCov">      23722 : double dataSet::getDouble(std::uint16_t groupId, std::uint32_t order, std::uint16_t tagId, size_t bufferId, size_t elementNumber, double defaultValue) const</span>
+<span class="lineNum">    1066 </span>            : {
+<span class="lineNum">    1067 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">    1068 </span>            : 
+<span class="lineNum">    1069 </span>            :     try
+<span class="lineNum">    1070 </span>            :     {
+<span class="lineNum">    1071 </span><span class="lineCov">      23722 :         return getDouble(groupId, order, tagId, bufferId, elementNumber);</span>
+<span class="lineNum">    1072 </span>            :     }
+<span class="lineNum">    1073 </span><span class="lineCov">      47436 :     catch(const MissingDataElementError&amp;)</span>
+<span class="lineNum">    1074 </span>            :     {
+<span class="lineNum">    1075 </span><span class="lineCov">      23718 :         return defaultValue;</span>
+<span class="lineNum">    1076 </span>            :     }
+<span class="lineNum">    1077 </span>            : 
+<span class="lineNum">    1078 </span><span class="lineNoCov">          0 :     IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">    1079 </span>            : }
+<span class="lineNum">    1080 </span>            : 
+<span class="lineNum">    1081 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">    1082 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">    1083 </span>            : //
+<span class="lineNum">    1084 </span>            : //
+<span class="lineNum">    1085 </span>            : // Set the requested tag as a double
+<span class="lineNum">    1086 </span>            : //
+<span class="lineNum">    1087 </span>            : //
+<a name="1088"><span class="lineNum">    1088 </span>            : ///////////////////////////////////////////////////////////</a>
+<span class="lineNum">    1089 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">    1090 </span><span class="lineCov">       1851 : void dataSet::setDouble(std::uint16_t groupId, std::uint32_t order, std::uint16_t tagId, size_t bufferId, double newValue, tagVR_t tagVR)</span>
+<span class="lineNum">    1091 </span>            : {
+<span class="lineNum">    1092 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">    1093 </span>            : 
+<span class="lineNum">    1094 </span><span class="lineCov">       3702 :     std::lock_guard&lt;std::recursive_mutex&gt; lock(m_mutex);</span>
+<span class="lineNum">    1095 </span>            : 
+<span class="lineNum">    1096 </span><span class="lineCov">       3702 :     std::shared_ptr&lt;handlers::writingDataHandler&gt; dataHandler = getWritingDataHandler(groupId, order, tagId, bufferId, tagVR);</span>
+<span class="lineNum">    1097 </span><span class="lineCov">       1851 :     dataHandler-&gt;setSize(1);</span>
+<span class="lineNum">    1098 </span><span class="lineCov">       1851 :     dataHandler-&gt;setDouble(0, newValue);</span>
+<span class="lineNum">    1099 </span>            : 
+<span class="lineNum">    1100 </span><span class="lineCov">          1 :         IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">    1101 </span><span class="lineCov">       1850 : }</span>
+<a name="1102"><span class="lineNum">    1102 </span>            : </a>
+<span class="lineNum">    1103 </span>            : 
+<span class="lineNum">    1104 </span><span class="lineCov">       1847 : void dataSet::setDouble(std::uint16_t groupId, std::uint32_t order, std::uint16_t tagId, size_t bufferId, double newValue)</span>
+<span class="lineNum">    1105 </span>            : {
+<span class="lineNum">    1106 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">    1107 </span>            : 
+<span class="lineNum">    1108 </span><span class="lineCov">       1847 :     setDouble(groupId, order, tagId, bufferId, newValue, dicomDictionary::getDicomDictionary()-&gt;getTagType(groupId, tagId));</span>
+<span class="lineNum">    1109 </span>            : 
+<span class="lineNum">    1110 </span><span class="lineCov">          1 :     IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">    1111 </span><span class="lineCov">       1846 : }</span>
+<span class="lineNum">    1112 </span>            : 
+<span class="lineNum">    1113 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">    1114 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">    1115 </span>            : //
+<span class="lineNum">    1116 </span>            : //
+<span class="lineNum">    1117 </span>            : // Get the requested tag as a string
+<span class="lineNum">    1118 </span>            : //
+<span class="lineNum">    1119 </span>            : //
+<a name="1120"><span class="lineNum">    1120 </span>            : ///////////////////////////////////////////////////////////</a>
+<span class="lineNum">    1121 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">    1122 </span><span class="lineCov">     131939 : std::string dataSet::getString(std::uint16_t groupId, std::uint32_t order, std::uint16_t tagId, size_t bufferId, size_t elementNumber) const</span>
+<span class="lineNum">    1123 </span>            : {
+<span class="lineNum">    1124 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">    1125 </span>            : 
+<span class="lineNum">    1126 </span><span class="lineCov">     131939 :     return getReadingDataHandler(groupId, order, tagId, bufferId)-&gt;getString(elementNumber);</span>
+<span class="lineNum">    1127 </span>            : 
+<span class="lineNum">    1128 </span><span class="lineCov">         35 :         IMEBRA_FUNCTION_END();</span>
+<a name="1129"><span class="lineNum">    1129 </span>            : }</a>
+<span class="lineNum">    1130 </span>            : 
+<span class="lineNum">    1131 </span><span class="lineCov">      94355 : std::string dataSet::getString(std::uint16_t groupId, std::uint32_t order, std::uint16_t tagId, size_t bufferId, size_t elementNumber, const std::string&amp; defaultValue) const</span>
+<span class="lineNum">    1132 </span>            : {
+<span class="lineNum">    1133 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">    1134 </span>            : 
+<span class="lineNum">    1135 </span>            :     try
+<span class="lineNum">    1136 </span>            :     {
+<span class="lineNum">    1137 </span><span class="lineCov">      94355 :         return getString(groupId, order, tagId, bufferId, elementNumber);</span>
+<span class="lineNum">    1138 </span>            :     }
+<span class="lineNum">    1139 </span><span class="lineCov">          4 :     catch(const MissingDataElementError&amp;)</span>
+<span class="lineNum">    1140 </span>            :     {
+<span class="lineNum">    1141 </span><span class="lineCov">          2 :         return defaultValue;</span>
+<span class="lineNum">    1142 </span>            :     }
+<span class="lineNum">    1143 </span>            : 
+<span class="lineNum">    1144 </span><span class="lineNoCov">          0 :     IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">    1145 </span>            : }
+<span class="lineNum">    1146 </span>            : 
+<span class="lineNum">    1147 </span>            : 
+<span class="lineNum">    1148 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">    1149 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">    1150 </span>            : //
+<span class="lineNum">    1151 </span>            : //
+<span class="lineNum">    1152 </span>            : // Get the requested tag as an unicode string
+<span class="lineNum">    1153 </span>            : //
+<span class="lineNum">    1154 </span>            : //
+<a name="1155"><span class="lineNum">    1155 </span>            : ///////////////////////////////////////////////////////////</a>
+<span class="lineNum">    1156 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">    1157 </span><span class="lineCov">        128 : std::wstring dataSet::getUnicodeString(std::uint16_t groupId, std::uint32_t order, std::uint16_t tagId, size_t bufferId, size_t elementNumber) const</span>
+<span class="lineNum">    1158 </span>            : {
+<span class="lineNum">    1159 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">    1160 </span>            : 
+<span class="lineNum">    1161 </span><span class="lineCov">        128 :     return getReadingDataHandler(groupId, order, tagId, bufferId)-&gt;getUnicodeString(elementNumber);</span>
+<span class="lineNum">    1162 </span>            : 
+<span class="lineNum">    1163 </span><span class="lineCov">          6 :         IMEBRA_FUNCTION_END();</span>
+<a name="1164"><span class="lineNum">    1164 </span>            : }</a>
+<span class="lineNum">    1165 </span>            : 
+<span class="lineNum">    1166 </span><span class="lineCov">         13 : std::wstring dataSet::getUnicodeString(std::uint16_t groupId, std::uint32_t order, std::uint16_t tagId, size_t bufferId, size_t elementNumber, const std::wstring&amp; defaultValue) const</span>
+<span class="lineNum">    1167 </span>            : {
+<span class="lineNum">    1168 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">    1169 </span>            : 
+<span class="lineNum">    1170 </span>            :     try
+<span class="lineNum">    1171 </span>            :     {
+<span class="lineNum">    1172 </span><span class="lineCov">         13 :         return getUnicodeString(groupId, order, tagId, bufferId, elementNumber);</span>
+<span class="lineNum">    1173 </span>            :     }
+<span class="lineNum">    1174 </span><span class="lineCov">          8 :     catch(const MissingDataElementError&amp;)</span>
+<span class="lineNum">    1175 </span>            :     {
+<span class="lineNum">    1176 </span><span class="lineCov">          4 :         return defaultValue;</span>
+<span class="lineNum">    1177 </span>            :     }
+<span class="lineNum">    1178 </span>            : 
+<span class="lineNum">    1179 </span><span class="lineNoCov">          0 :     IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">    1180 </span>            : }
+<span class="lineNum">    1181 </span>            : 
+<span class="lineNum">    1182 </span>            : 
+<span class="lineNum">    1183 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">    1184 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">    1185 </span>            : //
+<span class="lineNum">    1186 </span>            : //
+<span class="lineNum">    1187 </span>            : // Set the requested tag as a string
+<span class="lineNum">    1188 </span>            : //
+<span class="lineNum">    1189 </span>            : //
+<a name="1190"><span class="lineNum">    1190 </span>            : ///////////////////////////////////////////////////////////</a>
+<span class="lineNum">    1191 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">    1192 </span><span class="lineCov">      63972 : void dataSet::setString(std::uint16_t groupId, std::uint32_t order, std::uint16_t tagId, size_t bufferId, const std::string&amp; newString, tagVR_t tagVR)</span>
+<span class="lineNum">    1193 </span>            : {
+<span class="lineNum">    1194 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">    1195 </span>            : 
+<span class="lineNum">    1196 </span><span class="lineCov">     127780 :     std::lock_guard&lt;std::recursive_mutex&gt; lock(m_mutex);</span>
+<span class="lineNum">    1197 </span>            : 
+<span class="lineNum">    1198 </span><span class="lineCov">     127889 :     std::shared_ptr&lt;handlers::writingDataHandler&gt; dataHandler = getWritingDataHandler(groupId, order, tagId, bufferId, tagVR);</span>
+<span class="lineNum">    1199 </span><span class="lineCov">      63985 :     dataHandler-&gt;setSize(1);</span>
+<span class="lineNum">    1200 </span><span class="lineCov">      63865 :     dataHandler-&gt;setString(0, newString);</span>
+<span class="lineNum">    1201 </span>            : 
+<span class="lineNum">    1202 </span><span class="lineCov">          9 :         IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">    1203 </span><span class="lineCov">      64114 : }</span>
+<a name="1204"><span class="lineNum">    1204 </span>            : </a>
+<span class="lineNum">    1205 </span>            : 
+<span class="lineNum">    1206 </span><span class="lineCov">      63957 : void dataSet::setString(std::uint16_t groupId, std::uint32_t order, std::uint16_t tagId, size_t bufferId, const std::string&amp; newString)</span>
+<span class="lineNum">    1207 </span>            : {
+<span class="lineNum">    1208 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">    1209 </span>            : 
+<span class="lineNum">    1210 </span><span class="lineCov">      63957 :     setString(groupId, order, tagId, bufferId, newString, dicomDictionary::getDicomDictionary()-&gt;getTagType(groupId, tagId));</span>
+<span class="lineNum">    1211 </span>            : 
+<span class="lineNum">    1212 </span><span class="lineNoCov">          0 :     IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">    1213 </span><span class="lineCov">      64050 : }</span>
+<span class="lineNum">    1214 </span>            : 
+<span class="lineNum">    1215 </span>            : 
+<span class="lineNum">    1216 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">    1217 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">    1218 </span>            : //
+<span class="lineNum">    1219 </span>            : //
+<span class="lineNum">    1220 </span>            : // Set the requested tag as a string
+<span class="lineNum">    1221 </span>            : //
+<span class="lineNum">    1222 </span>            : //
+<a name="1223"><span class="lineNum">    1223 </span>            : ///////////////////////////////////////////////////////////</a>
+<span class="lineNum">    1224 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">    1225 </span><span class="lineCov">          5 : void dataSet::setUnicodeString(std::uint16_t groupId, std::uint32_t order, std::uint16_t tagId, size_t bufferId, const std::wstring&amp; newString, tagVR_t tagVR)</span>
+<span class="lineNum">    1226 </span>            : {
+<span class="lineNum">    1227 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">    1228 </span>            : 
+<span class="lineNum">    1229 </span><span class="lineCov">         10 :     std::lock_guard&lt;std::recursive_mutex&gt; lock(m_mutex);</span>
+<span class="lineNum">    1230 </span>            : 
+<span class="lineNum">    1231 </span><span class="lineCov">         10 :     std::shared_ptr&lt;handlers::writingDataHandler&gt; dataHandler = getWritingDataHandler(groupId, order, tagId, bufferId, tagVR);</span>
+<span class="lineNum">    1232 </span><span class="lineCov">          5 :     dataHandler-&gt;setSize(1);</span>
+<span class="lineNum">    1233 </span><span class="lineCov">          5 :     dataHandler-&gt;setUnicodeString(0, newString);</span>
+<span class="lineNum">    1234 </span>            : 
+<span class="lineNum">    1235 </span><span class="lineNoCov">          0 :         IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">    1236 </span><span class="lineCov">          5 : }</span>
+<a name="1237"><span class="lineNum">    1237 </span>            : </a>
+<span class="lineNum">    1238 </span>            : 
+<span class="lineNum">    1239 </span><span class="lineCov">          4 : void dataSet::setUnicodeString(std::uint16_t groupId, std::uint32_t order, std::uint16_t tagId, size_t bufferId, const std::wstring&amp; newString)</span>
+<span class="lineNum">    1240 </span>            : {
+<span class="lineNum">    1241 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">    1242 </span>            : 
+<span class="lineNum">    1243 </span><span class="lineCov">          4 :     setUnicodeString(groupId, order, tagId, bufferId, newString, dicomDictionary::getDicomDictionary()-&gt;getTagType(groupId, tagId));</span>
+<span class="lineNum">    1244 </span>            : 
+<span class="lineNum">    1245 </span><span class="lineNoCov">          0 :     IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">    1246 </span><span class="lineCov">          4 : }</span>
+<a name="1247"><span class="lineNum">    1247 </span>            : </a>
+<span class="lineNum">    1248 </span>            : 
+<span class="lineNum">    1249 </span><span class="lineCov">          5 : void dataSet::setAge(std::uint16_t groupId, std::uint32_t order, std::uint16_t tagId, size_t bufferId, std::uint32_t age, ageUnit_t units)</span>
+<span class="lineNum">    1250 </span>            : {
+<span class="lineNum">    1251 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">    1252 </span>            : 
+<span class="lineNum">    1253 </span><span class="lineCov">         10 :     std::lock_guard&lt;std::recursive_mutex&gt; lock(m_mutex);</span>
+<span class="lineNum">    1254 </span>            : 
+<span class="lineNum">    1255 </span><span class="lineCov">         10 :     std::shared_ptr&lt;handlers::writingDataHandler&gt; dataHandler = getWritingDataHandler(groupId, order, tagId, bufferId, tagVR_t::AS);</span>
+<span class="lineNum">    1256 </span><span class="lineCov">          5 :     dataHandler-&gt;setSize(1);</span>
+<span class="lineNum">    1257 </span><span class="lineCov">          5 :     dataHandler-&gt;setAge(0, age, units);</span>
+<span class="lineNum">    1258 </span>            : 
+<span class="lineNum">    1259 </span><span class="lineNoCov">          0 :     IMEBRA_FUNCTION_END();</span>
+<a name="1260"><span class="lineNum">    1260 </span><span class="lineCov">          5 : }</span></a>
+<span class="lineNum">    1261 </span>            : 
+<span class="lineNum">    1262 </span><span class="lineCov">         36 : std::uint32_t dataSet::getAge(std::uint16_t groupId, std::uint32_t order, std::uint16_t tagId, size_t bufferId, size_t elementNumber, ageUnit_t* pUnits) const</span>
+<span class="lineNum">    1263 </span>            : {
+<span class="lineNum">    1264 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">    1265 </span>            : 
+<span class="lineNum">    1266 </span><span class="lineCov">         36 :     return getReadingDataHandler(groupId, order, tagId, bufferId)-&gt;getAge(elementNumber, pUnits);</span>
+<span class="lineNum">    1267 </span>            : 
+<span class="lineNum">    1268 </span><span class="lineCov">         30 :     IMEBRA_FUNCTION_END();</span>
+<a name="1269"><span class="lineNum">    1269 </span>            : }</a>
+<span class="lineNum">    1270 </span>            : 
+<span class="lineNum">    1271 </span><span class="lineCov">          1 : std::uint32_t dataSet::getAge(std::uint16_t groupId, std::uint32_t order, std::uint16_t tagId, size_t bufferId,</span>
+<span class="lineNum">    1272 </span>            :                               size_t elementNumber, ageUnit_t* pUnits,
+<span class="lineNum">    1273 </span>            :                               std::uint32_t defaultAge, ageUnit_t defaultUnits) const
+<span class="lineNum">    1274 </span>            : {
+<span class="lineNum">    1275 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">    1276 </span>            : 
+<span class="lineNum">    1277 </span>            :     try
+<span class="lineNum">    1278 </span>            :     {
+<span class="lineNum">    1279 </span><span class="lineCov">          1 :         return getAge(groupId, order, tagId, bufferId, elementNumber, pUnits);</span>
+<span class="lineNum">    1280 </span>            :     }
+<span class="lineNum">    1281 </span><span class="lineCov">          2 :     catch(const MissingDataElementError&amp;)</span>
+<span class="lineNum">    1282 </span>            :     {
+<span class="lineNum">    1283 </span><span class="lineCov">          1 :         *pUnits = defaultUnits;</span>
+<span class="lineNum">    1284 </span><span class="lineCov">          1 :         return defaultAge;</span>
+<span class="lineNum">    1285 </span>            :     }
+<span class="lineNum">    1286 </span>            : 
+<span class="lineNum">    1287 </span><span class="lineNoCov">          0 :     IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">    1288 </span>            : 
+<span class="lineNum">    1289 </span>            : }
+<a name="1290"><span class="lineNum">    1290 </span>            : </a>
+<span class="lineNum">    1291 </span>            : 
+<span class="lineNum">    1292 </span><span class="lineCov">          6 : void dataSet::setDate(std::uint16_t groupId, std::uint32_t order, std::uint16_t tagId, size_t bufferId, std::uint32_t year, std::uint32_t month, std::uint32_t day, std::uint32_t hour, std::uint32_t minutes, std::uint32_t seconds, std::uint32_t nanoseconds, std::int32_t offsetHours, std::int32_t offsetMinutes, tagVR_t tagVR)</span>
+<span class="lineNum">    1293 </span>            : {
+<span class="lineNum">    1294 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">    1295 </span>            : 
+<span class="lineNum">    1296 </span><span class="lineCov">         12 :     std::lock_guard&lt;std::recursive_mutex&gt; lock(m_mutex);</span>
+<span class="lineNum">    1297 </span>            : 
+<span class="lineNum">    1298 </span><span class="lineCov">         12 :     std::shared_ptr&lt;handlers::writingDataHandler&gt; dataHandler = getWritingDataHandler(groupId, order, tagId, bufferId, tagVR);</span>
+<span class="lineNum">    1299 </span><span class="lineCov">          6 :     dataHandler-&gt;setSize(1);</span>
+<span class="lineNum">    1300 </span><span class="lineCov">          6 :     dataHandler-&gt;setDate(0, year, month, day, hour, minutes, seconds, nanoseconds, offsetHours, offsetMinutes);</span>
+<span class="lineNum">    1301 </span>            : 
+<span class="lineNum">    1302 </span><span class="lineCov">          1 :     IMEBRA_FUNCTION_END();</span>
+<a name="1303"><span class="lineNum">    1303 </span><span class="lineCov">          5 : }</span></a>
+<span class="lineNum">    1304 </span>            : 
+<span class="lineNum">    1305 </span><span class="lineCov">          5 : void dataSet::setDate(std::uint16_t groupId, std::uint32_t order, std::uint16_t tagId, size_t bufferId, std::uint32_t year, std::uint32_t month, std::uint32_t day, std::uint32_t hour, std::uint32_t minutes, std::uint32_t seconds, std::uint32_t nanoseconds, std::int32_t offsetHours, std::int32_t offsetMinutes)</span>
+<span class="lineNum">    1306 </span>            : {
+<span class="lineNum">    1307 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">    1308 </span>            : 
+<span class="lineNum">    1309 </span><span class="lineCov">          5 :     setDate(groupId, order, tagId, bufferId, year, month, day, hour, minutes, seconds, nanoseconds, offsetHours, offsetMinutes, dicomDictionary::getDicomDictionary()-&gt;getTagType(groupId, tagId));</span>
+<span class="lineNum">    1310 </span>            : 
+<span class="lineNum">    1311 </span><span class="lineCov">          1 :     IMEBRA_FUNCTION_END();</span>
+<a name="1312"><span class="lineNum">    1312 </span><span class="lineCov">          4 : }</span></a>
+<span class="lineNum">    1313 </span>            : 
+<span class="lineNum">    1314 </span><span class="lineCov">         40 : void dataSet::getDate(uint16_t groupId, std::uint32_t order, std::uint16_t tagId, size_t bufferId, size_t elementNumber, std::uint32_t *pYear, std::uint32_t *pMonth, std::uint32_t *pDay, std::uint32_t *pHour, std::uint32_t *pMinutes, std::uint32_t *pSeconds, std::uint32_t *pNanoseconds, std::int32_t *pOffsetHours, std::int32_t *pOffsetMinutes) const</span>
+<span class="lineNum">    1315 </span>            : {
+<span class="lineNum">    1316 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">    1317 </span>            : 
+<span class="lineNum">    1318 </span><span class="lineCov">         40 :     return getReadingDataHandler(groupId, order, tagId, bufferId)-&gt;getDate(elementNumber, pYear, pMonth, pDay, pHour, pMinutes, pSeconds, pNanoseconds, pOffsetHours, pOffsetMinutes);</span>
+<span class="lineNum">    1319 </span>            : 
+<span class="lineNum">    1320 </span><span class="lineCov">         30 :     IMEBRA_FUNCTION_END();</span>
+<a name="1321"><span class="lineNum">    1321 </span>            : }</a>
+<span class="lineNum">    1322 </span>            : 
+<span class="lineNum">    1323 </span><span class="lineCov">          1 : void dataSet::getDate(std::uint16_t groupId, std::uint32_t order, std::uint16_t tagId, size_t bufferId, size_t elementNumber,</span>
+<span class="lineNum">    1324 </span>            :     std::uint32_t* pYear,
+<span class="lineNum">    1325 </span>            :     std::uint32_t* pMonth,
+<span class="lineNum">    1326 </span>            :     std::uint32_t* pDay,
+<span class="lineNum">    1327 </span>            :     std::uint32_t* pHour,
+<span class="lineNum">    1328 </span>            :     std::uint32_t* pMinutes,
+<span class="lineNum">    1329 </span>            :     std::uint32_t* pSeconds,
+<span class="lineNum">    1330 </span>            :     std::uint32_t* pNanoseconds,
+<span class="lineNum">    1331 </span>            :     std::int32_t* pOffsetHours,
+<span class="lineNum">    1332 </span>            :     std::int32_t* pOffsetMinutes,
+<span class="lineNum">    1333 </span>            :     std::uint32_t defaultYear,
+<span class="lineNum">    1334 </span>            :     std::uint32_t defaultMonth,
+<span class="lineNum">    1335 </span>            :     std::uint32_t defaultDay,
+<span class="lineNum">    1336 </span>            :     std::uint32_t defaultHour,
+<span class="lineNum">    1337 </span>            :     std::uint32_t defaultMinutes,
+<span class="lineNum">    1338 </span>            :     std::uint32_t defaultSeconds,
+<span class="lineNum">    1339 </span>            :     std::uint32_t defaultNanoseconds,
+<span class="lineNum">    1340 </span>            :     std::int32_t defaultOffsetHours,
+<span class="lineNum">    1341 </span>            :     std::int32_t defaultOffsetMinutes) const
+<span class="lineNum">    1342 </span>            : {
+<span class="lineNum">    1343 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">    1344 </span>            : 
+<span class="lineNum">    1345 </span>            :     try
+<span class="lineNum">    1346 </span>            :     {
+<span class="lineNum">    1347 </span><span class="lineCov">          1 :         return getDate(groupId, order, tagId, bufferId, elementNumber,</span>
+<span class="lineNum">    1348 </span><span class="lineNoCov">          0 :                             pYear, pMonth, pDay, pHour, pMinutes, pSeconds, pNanoseconds, pOffsetHours, pOffsetMinutes);</span>
+<span class="lineNum">    1349 </span>            :     }
+<span class="lineNum">    1350 </span><span class="lineCov">          2 :     catch(const MissingDataElementError&amp;)</span>
+<span class="lineNum">    1351 </span>            :     {
+<span class="lineNum">    1352 </span><span class="lineCov">          1 :         *pYear = defaultYear;</span>
+<span class="lineNum">    1353 </span><span class="lineCov">          1 :         *pMonth = defaultMonth;</span>
+<span class="lineNum">    1354 </span><span class="lineCov">          1 :         *pDay = defaultDay;</span>
+<span class="lineNum">    1355 </span><span class="lineCov">          1 :         *pHour = defaultHour;</span>
+<span class="lineNum">    1356 </span><span class="lineCov">          1 :         *pMinutes = defaultMinutes;</span>
+<span class="lineNum">    1357 </span><span class="lineCov">          1 :         *pSeconds = defaultSeconds;</span>
+<span class="lineNum">    1358 </span><span class="lineCov">          1 :         *pNanoseconds = defaultNanoseconds;</span>
+<span class="lineNum">    1359 </span><span class="lineCov">          1 :         *pOffsetHours = defaultOffsetHours;</span>
+<span class="lineNum">    1360 </span><span class="lineCov">          1 :         *pOffsetMinutes = defaultOffsetMinutes;</span>
+<span class="lineNum">    1361 </span>            :     }
+<span class="lineNum">    1362 </span>            : 
+<span class="lineNum">    1363 </span><span class="lineNoCov">          0 :     IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">    1364 </span>            : }
+<span class="lineNum">    1365 </span>            : 
+<span class="lineNum">    1366 </span>            : 
+<span class="lineNum">    1367 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">    1368 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">    1369 </span>            : //
+<span class="lineNum">    1370 </span>            : //
+<span class="lineNum">    1371 </span>            : // Get a data handler for the requested tag
+<span class="lineNum">    1372 </span>            : //
+<span class="lineNum">    1373 </span>            : //
+<a name="1374"><span class="lineNum">    1374 </span>            : ///////////////////////////////////////////////////////////</a>
+<span class="lineNum">    1375 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">    1376 </span><span class="lineCov">     717318 : std::shared_ptr&lt;handlers::readingDataHandler&gt; dataSet::getReadingDataHandler(std::uint16_t groupId, std::uint32_t order, std::uint16_t tagId, size_t bufferId) const</span>
+<span class="lineNum">    1377 </span>            : {
+<span class="lineNum">    1378 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">    1379 </span>            : 
+<span class="lineNum">    1380 </span><span class="lineCov">     717318 :     return getTag(groupId, order, tagId)-&gt;getReadingDataHandler(bufferId);</span>
+<span class="lineNum">    1381 </span>            : 
+<span class="lineNum">    1382 </span><span class="lineCov">      39591 :         IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">    1383 </span>            : }
+<a name="1384"><span class="lineNum">    1384 </span>            : </a>
+<span class="lineNum">    1385 </span>            : 
+<span class="lineNum">    1386 </span><span class="lineCov">     174897 : std::shared_ptr&lt;handlers::writingDataHandler&gt; dataSet::getWritingDataHandler(std::uint16_t groupId, std::uint32_t order, std::uint16_t tagId, size_t bufferId, tagVR_t tagVR)</span>
+<span class="lineNum">    1387 </span>            : {
+<span class="lineNum">    1388 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">    1389 </span>            : 
+<span class="lineNum">    1390 </span><span class="lineCov">     349590 :     std::shared_ptr&lt;data&gt; tag(getTagCreate(groupId, order, tagId, tagVR));</span>
+<span class="lineNum">    1391 </span>            : 
+<span class="lineNum">    1392 </span><span class="lineCov">     349502 :     return tag-&gt;getWritingDataHandler(bufferId);</span>
+<span class="lineNum">    1393 </span>            : 
+<span class="lineNum">    1394 </span><span class="lineNoCov">          0 :     IMEBRA_FUNCTION_END();</span>
+<a name="1395"><span class="lineNum">    1395 </span>            : }</a>
+<span class="lineNum">    1396 </span>            : 
+<span class="lineNum">    1397 </span><span class="lineCov">       5707 : std::shared_ptr&lt;handlers::writingDataHandler&gt; dataSet::getWritingDataHandler(std::uint16_t groupId, std::uint32_t order, std::uint16_t tagId, size_t bufferId)</span>
+<span class="lineNum">    1398 </span>            : {
+<span class="lineNum">    1399 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">    1400 </span>            : 
+<span class="lineNum">    1401 </span><span class="lineCov">       5707 :     return getWritingDataHandler(groupId, order, tagId, bufferId, dicomDictionary::getDicomDictionary()-&gt;getTagType(groupId, tagId));</span>
+<span class="lineNum">    1402 </span>            : 
+<span class="lineNum">    1403 </span><span class="lineNoCov">          0 :     IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">    1404 </span>            : }
+<span class="lineNum">    1405 </span>            : 
+<span class="lineNum">    1406 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">    1407 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">    1408 </span>            : //
+<span class="lineNum">    1409 </span>            : //
+<span class="lineNum">    1410 </span>            : // Get a stream reader that works on the specified tag
+<span class="lineNum">    1411 </span>            : //
+<span class="lineNum">    1412 </span>            : //
+<a name="1413"><span class="lineNum">    1413 </span>            : ///////////////////////////////////////////////////////////</a>
+<span class="lineNum">    1414 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">    1415 </span><span class="lineCov">       9108 : std::shared_ptr&lt;streamReader&gt; dataSet::getStreamReader(std::uint16_t groupId, std::uint32_t order, std::uint16_t tagId, size_t bufferId) const</span>
+<span class="lineNum">    1416 </span>            : {
+<span class="lineNum">    1417 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">    1418 </span>            : 
+<span class="lineNum">    1419 </span><span class="lineCov">       9108 :     return getTag(groupId, order, tagId)-&gt;getStreamReader(bufferId);</span>
+<span class="lineNum">    1420 </span>            : 
+<span class="lineNum">    1421 </span><span class="lineCov">       6186 :         IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">    1422 </span>            : }
+<span class="lineNum">    1423 </span>            : 
+<span class="lineNum">    1424 </span>            : 
+<span class="lineNum">    1425 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">    1426 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">    1427 </span>            : //
+<span class="lineNum">    1428 </span>            : //
+<span class="lineNum">    1429 </span>            : // Retrieve a stream writer for the specified tag
+<span class="lineNum">    1430 </span>            : //
+<span class="lineNum">    1431 </span>            : //
+<a name="1432"><span class="lineNum">    1432 </span>            : ///////////////////////////////////////////////////////////</a>
+<span class="lineNum">    1433 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">    1434 </span><span class="lineCov">       1381 : std::shared_ptr&lt;streamWriter&gt; dataSet::getStreamWriter(std::uint16_t groupId, std::uint32_t order, std::uint16_t tagId, size_t bufferId, tagVR_t dataType)</span>
+<span class="lineNum">    1435 </span>            : {
+<span class="lineNum">    1436 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">    1437 </span>            : 
+<span class="lineNum">    1438 </span><span class="lineCov">       1381 :     return getTagCreate(groupId, order, tagId, dataType)-&gt;getStreamWriter(bufferId);</span>
+<span class="lineNum">    1439 </span>            : 
+<span class="lineNum">    1440 </span><span class="lineNoCov">          0 :         IMEBRA_FUNCTION_END();</span>
+<a name="1441"><span class="lineNum">    1441 </span>            : }</a>
+<span class="lineNum">    1442 </span>            : 
+<span class="lineNum">    1443 </span><span class="lineNoCov">          0 : std::shared_ptr&lt;streamWriter&gt; dataSet::getStreamWriter(std::uint16_t groupId, std::uint32_t order, std::uint16_t tagId, size_t bufferId)</span>
+<span class="lineNum">    1444 </span>            : {
+<span class="lineNum">    1445 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">    1446 </span>            : 
+<span class="lineNum">    1447 </span><span class="lineNoCov">          0 :     return getStreamWriter(groupId, order, tagId, bufferId, dicomDictionary::getDicomDictionary()-&gt;getTagType(groupId, tagId));</span>
+<span class="lineNum">    1448 </span>            : 
+<span class="lineNum">    1449 </span><span class="lineNoCov">          0 :     IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">    1450 </span>            : }
+<span class="lineNum">    1451 </span>            : 
+<span class="lineNum">    1452 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">    1453 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">    1454 </span>            : //
+<span class="lineNum">    1455 </span>            : //
+<span class="lineNum">    1456 </span>            : // Get a raw data handler for the requested tag
+<span class="lineNum">    1457 </span>            : //
+<span class="lineNum">    1458 </span>            : //
+<a name="1459"><span class="lineNum">    1459 </span>            : ///////////////////////////////////////////////////////////</a>
+<span class="lineNum">    1460 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">    1461 </span><span class="lineCov">      18307 : std::shared_ptr&lt;handlers::readingDataHandlerRaw&gt; dataSet::getReadingDataHandlerRaw(std::uint16_t groupId, std::uint32_t order, std::uint16_t tagId, size_t bufferId) const</span>
+<span class="lineNum">    1462 </span>            : {
+<span class="lineNum">    1463 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">    1464 </span>            : 
+<span class="lineNum">    1465 </span><span class="lineCov">      18307 :     return getTag(groupId, order, tagId)-&gt;getReadingDataHandlerRaw(bufferId);</span>
+<span class="lineNum">    1466 </span>            : 
+<span class="lineNum">    1467 </span><span class="lineCov">        423 :         IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">    1468 </span>            : }
+<a name="1469"><span class="lineNum">    1469 </span>            : </a>
+<span class="lineNum">    1470 </span>            : 
+<span class="lineNum">    1471 </span><span class="lineCov">     237572 : std::shared_ptr&lt;handlers::writingDataHandlerRaw&gt; dataSet::getWritingDataHandlerRaw(std::uint16_t groupId, std::uint32_t order, std::uint16_t tagId, size_t bufferId, tagVR_t tagVR)</span>
+<span class="lineNum">    1472 </span>            : {
+<span class="lineNum">    1473 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">    1474 </span>            : 
+<span class="lineNum">    1475 </span><span class="lineCov">     475544 :     std::shared_ptr&lt;data&gt; tag = getTagCreate(groupId, order, tagId, tagVR);</span>
+<span class="lineNum">    1476 </span>            : 
+<span class="lineNum">    1477 </span><span class="lineCov">     476476 :     return tag-&gt;getWritingDataHandlerRaw(bufferId);</span>
+<span class="lineNum">    1478 </span>            : 
+<span class="lineNum">    1479 </span><span class="lineNoCov">          0 :     IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">    1480 </span>            : }
+<a name="1481"><span class="lineNum">    1481 </span>            : </a>
+<span class="lineNum">    1482 </span>            : 
+<span class="lineNum">    1483 </span><span class="lineCov">          1 : std::shared_ptr&lt;handlers::writingDataHandlerRaw&gt; dataSet::getWritingDataHandlerRaw(std::uint16_t groupId, std::uint32_t order, std::uint16_t tagId, size_t bufferId)</span>
+<span class="lineNum">    1484 </span>            : {
+<span class="lineNum">    1485 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">    1486 </span>            : 
+<span class="lineNum">    1487 </span><span class="lineCov">          1 :     return getWritingDataHandlerRaw(groupId, order, tagId, bufferId, dicomDictionary::getDicomDictionary()-&gt;getTagType(groupId, tagId));</span>
+<span class="lineNum">    1488 </span>            : 
+<span class="lineNum">    1489 </span><span class="lineNoCov">          0 :     IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">    1490 </span>            : }
+<a name="1491"><span class="lineNum">    1491 </span>            : </a>
+<span class="lineNum">    1492 </span>            : 
+<span class="lineNum">    1493 </span><span class="lineCov">       1240 : std::shared_ptr&lt;handlers::readingDataHandlerNumericBase&gt; dataSet::getReadingDataHandlerNumeric(std::uint16_t groupId, std::uint32_t order, std::uint16_t tagId, size_t bufferId) const</span>
+<span class="lineNum">    1494 </span>            : {
+<span class="lineNum">    1495 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">    1496 </span>            : 
+<span class="lineNum">    1497 </span><span class="lineCov">       1240 :     return getTag(groupId, order, tagId)-&gt;getReadingDataHandlerNumeric(bufferId);</span>
+<span class="lineNum">    1498 </span>            : 
+<span class="lineNum">    1499 </span><span class="lineNoCov">          0 :     IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">    1500 </span>            : }
+<a name="1501"><span class="lineNum">    1501 </span>            : </a>
+<span class="lineNum">    1502 </span>            : 
+<span class="lineNum">    1503 </span><span class="lineCov">        848 : std::shared_ptr&lt;handlers::writingDataHandlerNumericBase&gt; dataSet::getWritingDataHandlerNumeric(std::uint16_t groupId, std::uint32_t order, std::uint16_t tagId, size_t bufferId, tagVR_t tagVR)</span>
+<span class="lineNum">    1504 </span>            : {
+<span class="lineNum">    1505 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">    1506 </span>            : 
+<span class="lineNum">    1507 </span><span class="lineCov">       1696 :     std::shared_ptr&lt;data&gt; tag = getTagCreate(groupId, order, tagId, tagVR);</span>
+<span class="lineNum">    1508 </span>            : 
+<span class="lineNum">    1509 </span><span class="lineCov">       1696 :     return tag-&gt;getWritingDataHandlerNumeric(bufferId);</span>
+<span class="lineNum">    1510 </span>            : 
+<span class="lineNum">    1511 </span><span class="lineNoCov">          0 :     IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">    1512 </span>            : }
+<a name="1513"><span class="lineNum">    1513 </span>            : </a>
+<span class="lineNum">    1514 </span>            : 
+<span class="lineNum">    1515 </span><span class="lineCov">          1 : std::shared_ptr&lt;handlers::writingDataHandlerNumericBase&gt; dataSet::getWritingDataHandlerNumeric(std::uint16_t groupId, std::uint32_t order, std::uint16_t tagId, size_t bufferId)</span>
+<span class="lineNum">    1516 </span>            : {
+<span class="lineNum">    1517 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">    1518 </span>            : 
+<span class="lineNum">    1519 </span><span class="lineCov">          1 :     return getWritingDataHandlerNumeric(groupId, order, tagId, bufferId, dicomDictionary::getDicomDictionary()-&gt;getTagType(groupId, tagId));</span>
+<span class="lineNum">    1520 </span>            : 
+<span class="lineNum">    1521 </span><span class="lineNoCov">          0 :     IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">    1522 </span>            : }
+<span class="lineNum">    1523 </span>            : 
+<span class="lineNum">    1524 </span>            : 
+<span class="lineNum">    1525 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">    1526 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">    1527 </span>            : //
+<span class="lineNum">    1528 </span>            : //
+<span class="lineNum">    1529 </span>            : // Get the data type of a tag
+<span class="lineNum">    1530 </span>            : //
+<span class="lineNum">    1531 </span>            : //
+<a name="1532"><span class="lineNum">    1532 </span>            : ///////////////////////////////////////////////////////////</a>
+<span class="lineNum">    1533 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">    1534 </span><span class="lineCov">       4649 : tagVR_t dataSet::getDataType(std::uint16_t groupId, std::uint32_t order, std::uint16_t tagId) const</span>
+<span class="lineNum">    1535 </span>            : {
+<span class="lineNum">    1536 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">    1537 </span>            : 
+<span class="lineNum">    1538 </span><span class="lineCov">       4649 :     return getTag(groupId, order, tagId)-&gt;getDataType();</span>
+<span class="lineNum">    1539 </span>            : 
+<span class="lineNum">    1540 </span><span class="lineNoCov">          0 :         IMEBRA_FUNCTION_END();</span>
+<a name="1541"><span class="lineNum">    1541 </span>            : }</a>
+<span class="lineNum">    1542 </span>            : 
+<span class="lineNum">    1543 </span><span class="lineCov">      14378 : void dataSet::updateCharsetTag()</span>
+<span class="lineNum">    1544 </span>            : {
+<span class="lineNum">    1545 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">    1546 </span>            : 
+<span class="lineNum">    1547 </span><span class="lineCov">      28756 :     std::lock_guard&lt;std::recursive_mutex&gt; lock(m_mutex);</span>
+<span class="lineNum">    1548 </span>            : 
+<span class="lineNum">    1549 </span><span class="lineCov">      28756 :     charsetsList::tCharsetsList charsets;</span>
+<span class="lineNum">    1550 </span><span class="lineCov">      14378 :         getCharsetsList(&amp;charsets);</span>
+<span class="lineNum">    1551 </span><span class="lineCov">      14378 :     if(!charsets.empty())</span>
+<span class="lineNum">    1552 </span>            :     {
+<span class="lineNum">    1553 </span><span class="lineCov">       3724 :         std::shared_ptr&lt;handlers::writingDataHandler&gt; charsetHandler(getWritingDataHandler(0x0008, 0, 0x0005, 0));</span>
+<span class="lineNum">    1554 </span><span class="lineCov">       1862 :         charsetHandler-&gt;setSize((std::uint32_t)(charsets.size()));</span>
+<span class="lineNum">    1555 </span><span class="lineCov">       1862 :         std::uint32_t pointer(0);</span>
+<span class="lineNum">    1556 </span><span class="lineCov">       3731 :         for(charsetsList::tCharsetsList::iterator scanCharsets = charsets.begin(); scanCharsets != charsets.end(); ++scanCharsets)</span>
+<span class="lineNum">    1557 </span>            :         {
+<span class="lineNum">    1558 </span><span class="lineCov">       1869 :             charsetHandler-&gt;setString(pointer++, *scanCharsets);</span>
+<span class="lineNum">    1559 </span>            :         }
+<span class="lineNum">    1560 </span>            :     }
+<span class="lineNum">    1561 </span>            : 
+<span class="lineNum">    1562 </span><span class="lineNoCov">          0 :     IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">    1563 </span><span class="lineCov">      14378 : }</span>
+<span class="lineNum">    1564 </span>            : 
+<span class="lineNum">    1565 </span>            : 
+<span class="lineNum">    1566 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">    1567 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">    1568 </span>            : //
+<span class="lineNum">    1569 </span>            : //
+<span class="lineNum">    1570 </span>            : // Update the list of the used charsets
+<span class="lineNum">    1571 </span>            : //
+<span class="lineNum">    1572 </span>            : //
+<a name="1573"><span class="lineNum">    1573 </span>            : ///////////////////////////////////////////////////////////</a>
+<span class="lineNum">    1574 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">    1575 </span><span class="lineCov">       3776 : void dataSet::updateTagsCharset()</span>
+<span class="lineNum">    1576 </span>            : {
+<span class="lineNum">    1577 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">    1578 </span>            : 
+<span class="lineNum">    1579 </span><span class="lineCov">       7552 :     std::lock_guard&lt;std::recursive_mutex&gt; lock(m_mutex);</span>
+<span class="lineNum">    1580 </span>            : 
+<span class="lineNum">    1581 </span><span class="lineCov">       7552 :     charsetsList::tCharsetsList charsets;</span>
+<span class="lineNum">    1582 </span>            :     try
+<span class="lineNum">    1583 </span>            :     {
+<span class="lineNum">    1584 </span><span class="lineCov">       7481 :         std::shared_ptr&lt;handlers::readingDataHandler&gt; charsetHandler(getReadingDataHandler(0x0008, 0, 0x0005, 0));</span>
+<span class="lineNum">    1585 </span><span class="lineCov">       7417 :         for(std::uint32_t pointer(0); pointer != charsetHandler-&gt;getSize(); ++pointer)</span>
+<span class="lineNum">    1586 </span>            :                 {
+<span class="lineNum">    1587 </span><span class="lineCov">       3712 :             charsets.push_back(charsetHandler-&gt;getString(pointer));</span>
+<span class="lineNum">    1588 </span>            :                 }
+<span class="lineNum">    1589 </span>            :         }
+<span class="lineNum">    1590 </span><span class="lineCov">         71 :     catch(const MissingDataElementError&amp;)</span>
+<span class="lineNum">    1591 </span>            :     {
+<span class="lineNum">    1592 </span>            :     }
+<span class="lineNum">    1593 </span>            : 
+<span class="lineNum">    1594 </span><span class="lineCov">      22451 :     for(tGroups::iterator scanGroups(m_groups.begin()), endGroups(m_groups.end()); scanGroups != endGroups; ++scanGroups)</span>
+<span class="lineNum">    1595 </span>            :     {
+<span class="lineNum">    1596 </span><span class="lineCov">      37350 :         for(tGroupsList::iterator scanGroupsList(scanGroups-&gt;second.begin()), endGroupsList(scanGroups-&gt;second.end()); scanGroupsList != endGroupsList; ++scanGroupsList)</span>
+<span class="lineNum">    1597 </span>            :         {
+<span class="lineNum">    1598 </span><span class="lineCov">      99713 :             for(tTags::iterator scanTags((*scanGroupsList).begin()), endTags((*scanGroupsList).end()); scanTags != endTags; ++scanTags)</span>
+<span class="lineNum">    1599 </span>            :             {
+<span class="lineNum">    1600 </span><span class="lineCov">      81038 :                 scanTags-&gt;second-&gt;setCharsetsList(charsets);</span>
+<span class="lineNum">    1601 </span>            :             }
+<span class="lineNum">    1602 </span>            :         }
+<span class="lineNum">    1603 </span>            :     }
+<span class="lineNum">    1604 </span>            : 
+<span class="lineNum">    1605 </span><span class="lineNoCov">          0 :     IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">    1606 </span><span class="lineCov">       3776 : }</span>
+<span class="lineNum">    1607 </span>            : 
+<span class="lineNum">    1608 </span>            : 
+<span class="lineNum">    1609 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">    1610 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">    1611 </span>            : //
+<span class="lineNum">    1612 </span>            : //
+<span class="lineNum">    1613 </span>            : // Set the item's position in the stream
+<span class="lineNum">    1614 </span>            : //
+<span class="lineNum">    1615 </span>            : //
+<a name="1616"><span class="lineNum">    1616 </span>            : ///////////////////////////////////////////////////////////</a>
+<span class="lineNum">    1617 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">    1618 </span><span class="lineCov">      16556 : void dataSet::setItemOffset(std::uint32_t offset)</span>
+<span class="lineNum">    1619 </span>            : {
+<span class="lineNum">    1620 </span><span class="lineCov">      33112 :     std::lock_guard&lt;std::recursive_mutex&gt; lock(m_mutex);</span>
+<span class="lineNum">    1621 </span>            : 
+<span class="lineNum">    1622 </span><span class="lineCov">      16556 :         m_itemOffset = offset;</span>
+<span class="lineNum">    1623 </span><span class="lineCov">      16556 : }</span>
+<span class="lineNum">    1624 </span>            : 
+<span class="lineNum">    1625 </span>            : 
+<span class="lineNum">    1626 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">    1627 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">    1628 </span>            : //
+<span class="lineNum">    1629 </span>            : //
+<span class="lineNum">    1630 </span>            : // Get the item's position in the stream
+<span class="lineNum">    1631 </span>            : //
+<span class="lineNum">    1632 </span>            : //
+<a name="1633"><span class="lineNum">    1633 </span>            : ///////////////////////////////////////////////////////////</a>
+<span class="lineNum">    1634 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">    1635 </span><span class="lineCov">         16 : std::uint32_t dataSet::getItemOffset() const</span>
+<span class="lineNum">    1636 </span>            : {
+<span class="lineNum">    1637 </span><span class="lineCov">         32 :     std::lock_guard&lt;std::recursive_mutex&gt; lock(m_mutex);</span>
+<span class="lineNum">    1638 </span>            : 
+<span class="lineNum">    1639 </span><span class="lineCov">         32 :         return m_itemOffset;</span>
+<a name="1640"><span class="lineNum">    1640 </span>            : }</a>
+<span class="lineNum">    1641 </span>            : 
+<span class="lineNum">    1642 </span><span class="lineCov">      18077 : void dataSet::getCharsetsList(charsetsList::tCharsetsList* pCharsetsList) const</span>
+<span class="lineNum">    1643 </span>            : {
+<span class="lineNum">    1644 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">    1645 </span>            : 
+<span class="lineNum">    1646 </span><span class="lineCov">      36154 :     std::lock_guard&lt;std::recursive_mutex&gt; lock(m_mutex);</span>
+<span class="lineNum">    1647 </span>            : 
+<span class="lineNum">    1648 </span><span class="lineCov">      57931 :     for(tGroups::const_iterator scanGroups(m_groups.begin()), endGroups(m_groups.end()); scanGroups != endGroups; ++scanGroups)</span>
+<span class="lineNum">    1649 </span>            :     {
+<span class="lineNum">    1650 </span><span class="lineCov">      79708 :         for(tGroupsList::const_iterator scanGroupsList(scanGroups-&gt;second.begin()), endGroupsList(scanGroups-&gt;second.end()); scanGroupsList != endGroupsList; ++scanGroupsList)</span>
+<span class="lineNum">    1651 </span>            :         {
+<span class="lineNum">    1652 </span><span class="lineCov">      97962 :             for(tTags::const_iterator scanTags((*scanGroupsList).begin()), endTags((*scanGroupsList).end()); scanTags != endTags; ++scanTags)</span>
+<span class="lineNum">    1653 </span>            :             {
+<span class="lineNum">    1654 </span><span class="lineCov">     116216 :                 charsetsList::tCharsetsList charsets;</span>
+<span class="lineNum">    1655 </span><span class="lineCov">      58108 :                 scanTags-&gt;second-&gt;getCharsetsList(&amp;charsets);</span>
+<span class="lineNum">    1656 </span><span class="lineCov">      58108 :                 charsetsList::updateCharsets(&amp;charsets, pCharsetsList);</span>
+<span class="lineNum">    1657 </span>            : 
+<span class="lineNum">    1658 </span>            :             }
+<span class="lineNum">    1659 </span>            :         }
+<span class="lineNum">    1660 </span>            :     }
+<span class="lineNum">    1661 </span>            : 
+<span class="lineNum">    1662 </span><span class="lineNoCov">          0 :     IMEBRA_FUNCTION_END();</span>
+<a name="1663"><span class="lineNum">    1663 </span><span class="lineCov">      18077 : }</span></a>
+<span class="lineNum">    1664 </span>            : 
+<span class="lineNum">    1665 </span><span class="lineCov">     104421 : dataSet::tGroupsIds dataSet::getGroups() const</span>
+<span class="lineNum">    1666 </span>            : {
+<span class="lineNum">    1667 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">    1668 </span>            : 
+<span class="lineNum">    1669 </span><span class="lineCov">     208911 :     std::lock_guard&lt;std::recursive_mutex&gt; lock(m_mutex);</span>
+<span class="lineNum">    1670 </span>            : 
+<span class="lineNum">    1671 </span><span class="lineCov">     208975 :     dataSet::tGroupsIds groups;</span>
+<span class="lineNum">    1672 </span>            : 
+<span class="lineNum">    1673 </span><span class="lineCov">     271162 :     for(tGroups::const_iterator scanGroups(m_groups.begin()), endGroups(m_groups.end()); scanGroups != endGroups; ++scanGroups)</span>
+<span class="lineNum">    1674 </span>            :     {
+<span class="lineNum">    1675 </span><span class="lineCov">     166653 :         groups.insert(scanGroups-&gt;first);</span>
+<span class="lineNum">    1676 </span>            :     }
+<span class="lineNum">    1677 </span>            : 
+<span class="lineNum">    1678 </span><span class="lineCov">     208990 :     return groups;</span>
+<span class="lineNum">    1679 </span>            : 
+<span class="lineNum">    1680 </span><span class="lineNoCov">          0 :     IMEBRA_FUNCTION_END();</span>
+<a name="1681"><span class="lineNum">    1681 </span>            : }</a>
+<span class="lineNum">    1682 </span>            : 
+<span class="lineNum">    1683 </span><span class="lineCov">     155693 : std::uint32_t dataSet::getGroupsNumber(uint16_t groupId) const</span>
+<span class="lineNum">    1684 </span>            : {
+<span class="lineNum">    1685 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">    1686 </span>            : 
+<span class="lineNum">    1687 </span><span class="lineCov">     311374 :     std::lock_guard&lt;std::recursive_mutex&gt; lock(m_mutex);</span>
+<span class="lineNum">    1688 </span>            : 
+<span class="lineNum">    1689 </span><span class="lineCov">     155724 :     dataSet::tGroups::const_iterator findGroup(m_groups.find(groupId));</span>
+<span class="lineNum">    1690 </span>            : 
+<span class="lineNum">    1691 </span><span class="lineCov">     155696 :     if(findGroup == m_groups.end())</span>
+<span class="lineNum">    1692 </span>            :     {
+<span class="lineNum">    1693 </span><span class="lineNoCov">          0 :         return 0;</span>
+<span class="lineNum">    1694 </span>            :     }
+<span class="lineNum">    1695 </span>            : 
+<span class="lineNum">    1696 </span><span class="lineCov">     155687 :     return (std::uint32_t)(findGroup-&gt;second.size());</span>
+<span class="lineNum">    1697 </span>            : 
+<span class="lineNum">    1698 </span><span class="lineNoCov">          0 :     IMEBRA_FUNCTION_END();</span>
+<a name="1699"><span class="lineNum">    1699 </span>            : }</a>
+<span class="lineNum">    1700 </span>            : 
+<span class="lineNum">    1701 </span><span class="lineCov">     155702 : const dataSet::tTags&amp; dataSet::getGroupTags(std::uint16_t groupId, size_t groupOrder) const</span>
+<span class="lineNum">    1702 </span>            : {
+<span class="lineNum">    1703 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">    1704 </span>            : 
+<span class="lineNum">    1705 </span><span class="lineCov">     155702 :     static const dataSet::tTags emptyTags;</span>
+<span class="lineNum">    1706 </span>            : 
+<span class="lineNum">    1707 </span><span class="lineCov">     311392 :     std::lock_guard&lt;std::recursive_mutex&gt; lock(m_mutex);</span>
+<span class="lineNum">    1708 </span>            : 
+<span class="lineNum">    1709 </span><span class="lineCov">     155715 :     tGroups::const_iterator findGroup(m_groups.find(groupId));</span>
+<span class="lineNum">    1710 </span><span class="lineCov">     155691 :     if(findGroup == m_groups.end() || findGroup-&gt;second.size() &lt;= groupOrder)</span>
+<span class="lineNum">    1711 </span>            :     {
+<span class="lineNum">    1712 </span><span class="lineNoCov">          0 :         return emptyTags;</span>
+<span class="lineNum">    1713 </span>            :     }
+<span class="lineNum">    1714 </span>            : 
+<span class="lineNum">    1715 </span><span class="lineCov">     155694 :     return findGroup-&gt;second.at(groupOrder);</span>
+<span class="lineNum">    1716 </span>            : 
+<span class="lineNum">    1717 </span><span class="lineNoCov">          0 :     IMEBRA_FUNCTION_END();</span>
+<a name="1718"><span class="lineNum">    1718 </span>            : }</a>
+<span class="lineNum">    1719 </span>            : 
+<span class="lineNum">    1720 </span><span class="lineCov">      32918 : void dataSet::setCharsetsList(const charsetsList::tCharsetsList&amp; charsetsList)</span>
+<span class="lineNum">    1721 </span>            : {
+<span class="lineNum">    1722 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">    1723 </span>            : 
+<span class="lineNum">    1724 </span><span class="lineCov">      65841 :     std::lock_guard&lt;std::recursive_mutex&gt; lock(m_mutex);</span>
+<span class="lineNum">    1725 </span><span class="lineCov">      32929 :     m_charsetsList = charsetsList;</span>
+<span class="lineNum">    1726 </span>            : 
+<span class="lineNum">    1727 </span><span class="lineNoCov">          0 :     IMEBRA_FUNCTION_END();</span>
+<a name="1728"><span class="lineNum">    1728 </span><span class="lineCov">      32929 : }</span></a>
+<span class="lineNum">    1729 </span>            : 
+<span class="lineNum">    1730 </span><span class="lineCov">       7357 : void dataSet::setChildrenCharsetsList(const charsetsList::tCharsetsList&amp; charsetsList)</span>
+<span class="lineNum">    1731 </span>            : {
+<span class="lineNum">    1732 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">    1733 </span>            : 
+<span class="lineNum">    1734 </span><span class="lineCov">      14714 :     std::lock_guard&lt;std::recursive_mutex&gt; lock(m_mutex);</span>
+<span class="lineNum">    1735 </span><span class="lineCov">       7357 :     m_charsetsList = charsetsList;</span>
+<span class="lineNum">    1736 </span>            : 
+<span class="lineNum">    1737 </span><span class="lineCov">      18389 :     for(tGroups::iterator scanGroups(m_groups.begin()), endGroups(m_groups.end()); scanGroups != endGroups; ++scanGroups)</span>
+<span class="lineNum">    1738 </span>            :     {
+<span class="lineNum">    1739 </span><span class="lineCov">      22064 :         for(tGroupsList::iterator scanGroupsList(scanGroups-&gt;second.begin()), endGroupsList(scanGroups-&gt;second.end()); scanGroupsList != endGroupsList; ++scanGroupsList)</span>
+<span class="lineNum">    1740 </span>            :         {
+<span class="lineNum">    1741 </span><span class="lineCov">      33103 :             for(tTags::iterator scanTags((*scanGroupsList).begin()), endTags((*scanGroupsList).end()); scanTags != endTags; ++scanTags)</span>
+<span class="lineNum">    1742 </span>            :             {
+<span class="lineNum">    1743 </span><span class="lineCov">      22071 :                 scanTags-&gt;second-&gt;setCharsetsList(charsetsList);</span>
+<span class="lineNum">    1744 </span>            :             }
+<span class="lineNum">    1745 </span>            :         }
+<span class="lineNum">    1746 </span>            :     }
+<span class="lineNum">    1747 </span>            : 
+<span class="lineNum">    1748 </span><span class="lineNoCov">          0 :     IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">    1749 </span><span class="lineCov">       7357 : }</span>
+<span class="lineNum">    1750 </span>            : 
+<a name="1751"><span class="lineNum">    1751 </span>            : } // namespace implementation</a>
+<span class="lineNum">    1752 </span>            : 
+<span class="lineNum">    1753 </span><span class="lineCov">          3 : } // namespace imebra</span>
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.13</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

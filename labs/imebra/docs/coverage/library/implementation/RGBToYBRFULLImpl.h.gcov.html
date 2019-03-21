@@ -1,0 +1,211 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - extracted.info - library/implementation/RGBToYBRFULLImpl.h</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">library/implementation</a> - RGBToYBRFULLImpl.h<span style="font-size: 80%;"> (source / <a href="RGBToYBRFULLImpl.h.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">extracted.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">24</td>
+            <td class="headerCovTableEntry">25</td>
+            <td class="headerCovTableEntryHi">96.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2019-03-13 14:48:54</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">7</td>
+            <td class="headerCovTableEntry">43</td>
+            <td class="headerCovTableEntryLo">16.3 %</td>
+          </tr>
+          <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : /*</a>
+<span class="lineNum">       2 </span>            : Copyright 2005 - 2017 by Paolo Brandoli/Binarno s.p.
+<span class="lineNum">       3 </span>            : 
+<span class="lineNum">       4 </span>            : Imebra is available for free under the GNU General Public License.
+<span class="lineNum">       5 </span>            : 
+<span class="lineNum">       6 </span>            : The full text of the license is available in the file license.rst
+<span class="lineNum">       7 </span>            :  in the project root folder.
+<span class="lineNum">       8 </span>            : 
+<span class="lineNum">       9 </span>            : If you do not want to be bound by the GPL terms (such as the requirement 
+<span class="lineNum">      10 </span>            :  that your application must also be GPL), you may purchase a commercial 
+<span class="lineNum">      11 </span>            :  license for Imebra from the Imebra’s website (http://imebra.com).
+<span class="lineNum">      12 </span>            : */
+<span class="lineNum">      13 </span>            : 
+<span class="lineNum">      14 </span>            : /*! \file RGBToYBRFULL.h
+<span class="lineNum">      15 </span>            :     \brief Declaration of the class RGBToYBRFULL.
+<span class="lineNum">      16 </span>            : 
+<span class="lineNum">      17 </span>            : */
+<span class="lineNum">      18 </span>            : 
+<span class="lineNum">      19 </span>            : #if !defined(imebraRGBToYBRFULL_E27C63E7_A907_4899_9BD3_8026AD7D110C__INCLUDED_)
+<span class="lineNum">      20 </span>            : #define imebraRGBToYBRFULL_E27C63E7_A907_4899_9BD3_8026AD7D110C__INCLUDED_
+<span class="lineNum">      21 </span>            : 
+<span class="lineNum">      22 </span>            : #include &quot;colorTransformImpl.h&quot;
+<span class="lineNum">      23 </span>            : 
+<span class="lineNum">      24 </span>            : 
+<span class="lineNum">      25 </span>            : namespace imebra
+<span class="lineNum">      26 </span>            : {
+<span class="lineNum">      27 </span>            : 
+<span class="lineNum">      28 </span>            : namespace implementation
+<span class="lineNum">      29 </span>            : {
+<span class="lineNum">      30 </span>            : 
+<span class="lineNum">      31 </span>            : namespace transforms
+<span class="lineNum">      32 </span>            : {
+<span class="lineNum">      33 </span>            : 
+<span class="lineNum">      34 </span>            : namespace colorTransforms
+<span class="lineNum">      35 </span>            : {
+<span class="lineNum">      36 </span>            : 
+<span class="lineNum">      37 </span>            : /// \addtogroup group_transforms
+<span class="lineNum">      38 </span>            : ///
+<span class="lineNum">      39 </span>            : /// @{
+<span class="lineNum">      40 </span>            : 
+<span class="lineNum">      41 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">      42 </span>            : /// \brief Transforms an image from the colorspace 
+<span class="lineNum">      43 </span>            : ///         RGB into the color space YBR_FULL.
+<span class="lineNum">      44 </span>            : ///
+<span class="lineNum">      45 </span>            : /// The input image has to have the colorspace RGB,
+<span class="lineNum">      46 </span>            : ///  while the output image is created by the transform
+<span class="lineNum">      47 </span>            : ///  and will have the colorspace YBR_FULL.
+<a name="48"><span class="lineNum">      48 </span>            : ///</a>
+<span class="lineNum">      49 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">      50 </span><span class="lineCov">          4 : class RGBToYBRFULL: public colorTransform</span>
+<span class="lineNum">      51 </span>            : {
+<span class="lineNum">      52 </span>            : public:
+<span class="lineNum">      53 </span>            :     virtual std::string getInitialColorSpace() const override;
+<a name="54"><span class="lineNum">      54 </span>            :     virtual std::string getFinalColorSpace() const override;</a>
+<span class="lineNum">      55 </span>            : 
+<span class="lineNum">      56 </span><span class="lineCov">         20 :     DEFINE_RUN_TEMPLATE_TRANSFORM;</span>
+<a name="57"><span class="lineNum">      57 </span>            : </a>
+<span class="lineNum">      58 </span>            :     template &lt;class inputType, class outputType&gt;
+<span class="lineNum">      59 </span><span class="lineCov">         20 :     void templateTransform(</span>
+<span class="lineNum">      60 </span>            :             const inputType* inputHandlerData,
+<span class="lineNum">      61 </span>            :             outputType* outputHandlerData,
+<span class="lineNum">      62 </span>            :             bitDepth_t /* inputDepth */, std::uint32_t inputHandlerWidth, const std::string&amp; inputHandlerColorSpace,
+<span class="lineNum">      63 </span>            :             std::shared_ptr&lt;palette&gt; /* inputPalette */,
+<span class="lineNum">      64 </span>            :             std::uint32_t inputHighBit,
+<span class="lineNum">      65 </span>            :             std::uint32_t inputTopLeftX, std::uint32_t inputTopLeftY, std::uint32_t inputWidth, std::uint32_t inputHeight,
+<span class="lineNum">      66 </span>            :             bitDepth_t /* outputDepth */, std::uint32_t outputHandlerWidth, const std::string&amp; outputHandlerColorSpace,
+<span class="lineNum">      67 </span>            :             std::shared_ptr&lt;palette&gt; /* outputPalette */,
+<span class="lineNum">      68 </span>            :             std::uint32_t outputHighBit,
+<span class="lineNum">      69 </span>            :             std::uint32_t outputTopLeftX, std::uint32_t outputTopLeftY) const
+<span class="lineNum">      70 </span>            : 
+<span class="lineNum">      71 </span>            :     {
+<span class="lineNum">      72 </span>            :         IMEBRA_FUNCTION_START();
+<span class="lineNum">      73 </span>            : 
+<span class="lineNum">      74 </span><span class="lineCov">         20 :         checkColorSpaces(inputHandlerColorSpace, outputHandlerColorSpace);</span>
+<span class="lineNum">      75 </span><span class="lineCov">         20 :         checkHighBit(inputHighBit, outputHighBit);</span>
+<span class="lineNum">      76 </span>            : 
+<span class="lineNum">      77 </span><span class="lineCov">         20 :         const inputType* pInputMemory(inputHandlerData);</span>
+<span class="lineNum">      78 </span><span class="lineCov">         20 :         outputType* pOutputMemory(outputHandlerData);</span>
+<span class="lineNum">      79 </span>            : 
+<span class="lineNum">      80 </span><span class="lineCov">         20 :         pInputMemory += (inputTopLeftY * inputHandlerWidth + inputTopLeftX) * 3;</span>
+<span class="lineNum">      81 </span><span class="lineCov">         20 :         pOutputMemory += (outputTopLeftY * outputHandlerWidth + outputTopLeftX) * 3;</span>
+<span class="lineNum">      82 </span>            : 
+<span class="lineNum">      83 </span><span class="lineCov">         20 :         std::int64_t inputHandlerMinValue = getMinValue&lt;inputType&gt;(inputHighBit);</span>
+<span class="lineNum">      84 </span><span class="lineCov">         20 :         std::int64_t outputHandlerMinValue = getMinValue&lt;outputType&gt;(outputHighBit);</span>
+<span class="lineNum">      85 </span><span class="lineCov">         20 :         std::int64_t outputMiddleValue(outputHandlerMinValue + ((std::int64_t)1 &lt;&lt; outputHighBit));</span>
+<span class="lineNum">      86 </span>            : 
+<span class="lineNum">      87 </span>            :         std::int64_t sourceR, sourceG, sourceB;
+<span class="lineNum">      88 </span><span class="lineCov">       8024 :         for(; inputHeight != 0; --inputHeight)</span>
+<span class="lineNum">      89 </span>            :         {
+<span class="lineNum">      90 </span><span class="lineCov">    1444004 :             for(std::uint32_t scanPixels(inputWidth); scanPixels != 0; --scanPixels)</span>
+<span class="lineNum">      91 </span>            :             {
+<span class="lineNum">      92 </span><span class="lineCov">    1440002 :                 sourceR = (std::int64_t)*pInputMemory++ - inputHandlerMinValue;</span>
+<span class="lineNum">      93 </span><span class="lineCov">    1440002 :                 sourceG = (std::int64_t)*pInputMemory++ - inputHandlerMinValue;</span>
+<span class="lineNum">      94 </span><span class="lineCov">    1440002 :                 sourceB = (std::int64_t)*pInputMemory++ - inputHandlerMinValue;</span>
+<span class="lineNum">      95 </span><span class="lineCov">    1440002 :                 *(pOutputMemory++) = (outputType) ( ((4899 * sourceR + 9617 * sourceG + 1868 * sourceB) / 16384) + outputHandlerMinValue );</span>
+<span class="lineNum">      96 </span><span class="lineCov">    1440002 :                 *(pOutputMemory++) = (outputType) ( outputMiddleValue + ((8192 * sourceB - 2765 * sourceR - 5427 * sourceG) / 16384));</span>
+<span class="lineNum">      97 </span><span class="lineCov">    1440002 :                 *(pOutputMemory++) = (outputType) ( outputMiddleValue + ((8192 * sourceR - 6860 * sourceG - 1332 * sourceB) / 16384));</span>
+<span class="lineNum">      98 </span>            :             }
+<span class="lineNum">      99 </span><span class="lineCov">       4002 :             pInputMemory += (inputHandlerWidth - inputWidth) * 3;</span>
+<span class="lineNum">     100 </span><span class="lineCov">       4002 :             pOutputMemory += (outputHandlerWidth - inputWidth) * 3;</span>
+<span class="lineNum">     101 </span>            :         }
+<span class="lineNum">     102 </span>            : 
+<span class="lineNum">     103 </span><span class="lineNoCov">          0 :         IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">     104 </span><span class="lineCov">         20 :     }</span>
+<span class="lineNum">     105 </span>            : };
+<span class="lineNum">     106 </span>            : 
+<span class="lineNum">     107 </span>            : 
+<span class="lineNum">     108 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     109 </span>            : /// \brief Transforms an image from the colorspace
+<span class="lineNum">     110 </span>            : ///         RGB into the color space YBR_ICT.
+<span class="lineNum">     111 </span>            : ///
+<span class="lineNum">     112 </span>            : /// The input image has to have the colorspace RGB,
+<span class="lineNum">     113 </span>            : ///  while the output image is created by the transform
+<span class="lineNum">     114 </span>            : ///  and will have the colorspace YBR_ICT.
+<a name="115"><span class="lineNum">     115 </span>            : ///</a>
+<span class="lineNum">     116 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     117 </span><span class="lineCov">          2 : class RGBToYBRICT: public RGBToYBRFULL</span>
+<span class="lineNum">     118 </span>            : {
+<span class="lineNum">     119 </span>            : public:
+<span class="lineNum">     120 </span>            : 
+<span class="lineNum">     121 </span>            :     virtual std::string getFinalColorSpace() const override;
+<span class="lineNum">     122 </span>            : 
+<span class="lineNum">     123 </span>            : };
+<span class="lineNum">     124 </span>            : 
+<span class="lineNum">     125 </span>            : /// @}
+<span class="lineNum">     126 </span>            : 
+<span class="lineNum">     127 </span>            : } // namespace colorTransforms
+<span class="lineNum">     128 </span>            : 
+<span class="lineNum">     129 </span>            : } // namespace transforms
+<span class="lineNum">     130 </span>            : 
+<span class="lineNum">     131 </span>            : } // namespace implementation
+<span class="lineNum">     132 </span>            : 
+<span class="lineNum">     133 </span>            : } // namespace imebra
+<span class="lineNum">     134 </span>            : 
+<span class="lineNum">     135 </span>            : #endif // !defined(imebraRGBToYBRFULL_E27C63E7_A907_4899_9BD3_8026AD7D110C__INCLUDED_)
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.13</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

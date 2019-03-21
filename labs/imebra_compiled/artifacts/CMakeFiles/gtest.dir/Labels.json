@@ -1,0 +1,43 @@
+{
+	"sources" : 
+	[
+		{
+			"file" : "/home/sim/Documents/sim/imebra_compiled/artifacts/CMakeFiles/gtest"
+		},
+		{
+			"file" : "/home/sim/Documents/sim/imebra_compiled/artifacts/CMakeFiles/gtest.rule"
+		},
+		{
+			"file" : "/home/sim/Documents/sim/imebra_compiled/artifacts/CMakeFiles/gtest-complete.rule"
+		},
+		{
+			"file" : "/home/sim/Documents/sim/imebra_compiled/artifacts/gtest/src/gtest-stamp/gtest-install.rule"
+		},
+		{
+			"file" : "/home/sim/Documents/sim/imebra_compiled/artifacts/gtest/src/gtest-stamp/gtest-mkdir.rule"
+		},
+		{
+			"file" : "/home/sim/Documents/sim/imebra_compiled/artifacts/gtest/src/gtest-stamp/gtest-download.rule"
+		},
+		{
+			"file" : "/home/sim/Documents/sim/imebra_compiled/artifacts/gtest/src/gtest-stamp/gtest-update.rule"
+		},
+		{
+			"file" : "/home/sim/Documents/sim/imebra_compiled/artifacts/gtest/src/gtest-stamp/gtest-patch.rule"
+		},
+		{
+			"file" : "/home/sim/Documents/sim/imebra_compiled/artifacts/gtest/src/gtest-stamp/gtest-configure.rule"
+		},
+		{
+			"file" : "/home/sim/Documents/sim/imebra_compiled/artifacts/gtest/src/gtest-stamp/gtest-build.rule"
+		}
+	],
+	"target" : 
+	{
+		"labels" : 
+		[
+			"gtest"
+		],
+		"name" : "gtest"
+	}
+}

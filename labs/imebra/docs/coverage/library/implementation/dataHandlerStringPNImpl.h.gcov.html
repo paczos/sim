@@ -1,0 +1,169 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - extracted.info - library/implementation/dataHandlerStringPNImpl.h</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">library/implementation</a> - dataHandlerStringPNImpl.h<span style="font-size: 80%;"> (source / <a href="dataHandlerStringPNImpl.h.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">extracted.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">2</td>
+            <td class="headerCovTableEntry">2</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2019-03-13 14:48:54</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">2</td>
+            <td class="headerCovTableEntry">4</td>
+            <td class="headerCovTableEntryLo">50.0 %</td>
+          </tr>
+          <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : /*</a>
+<span class="lineNum">       2 </span>            : Copyright 2005 - 2017 by Paolo Brandoli/Binarno s.p.
+<span class="lineNum">       3 </span>            : 
+<span class="lineNum">       4 </span>            : Imebra is available for free under the GNU General Public License.
+<span class="lineNum">       5 </span>            : 
+<span class="lineNum">       6 </span>            : The full text of the license is available in the file license.rst
+<span class="lineNum">       7 </span>            :  in the project root folder.
+<span class="lineNum">       8 </span>            : 
+<span class="lineNum">       9 </span>            : If you do not want to be bound by the GPL terms (such as the requirement 
+<span class="lineNum">      10 </span>            :  that your application must also be GPL), you may purchase a commercial 
+<span class="lineNum">      11 </span>            :  license for Imebra from the Imebra’s website (http://imebra.com).
+<span class="lineNum">      12 </span>            : */
+<span class="lineNum">      13 </span>            : 
+<span class="lineNum">      14 </span>            : /*! \file dataHandlerStringPN.h
+<span class="lineNum">      15 </span>            :     \brief Declaration of the class dataHandlerStringPN.
+<span class="lineNum">      16 </span>            : 
+<span class="lineNum">      17 </span>            : */
+<span class="lineNum">      18 </span>            : 
+<span class="lineNum">      19 </span>            : #if !defined(imebraDataHandlerStringPN_367AAE47_6FD7_4107_AB5B_25A355C5CB6E__INCLUDED_)
+<span class="lineNum">      20 </span>            : #define imebraDataHandlerStringPN_367AAE47_6FD7_4107_AB5B_25A355C5CB6E__INCLUDED_
+<span class="lineNum">      21 </span>            : 
+<span class="lineNum">      22 </span>            : #include &quot;dataHandlerStringUnicodeImpl.h&quot;
+<span class="lineNum">      23 </span>            : 
+<span class="lineNum">      24 </span>            : 
+<span class="lineNum">      25 </span>            : namespace imebra
+<span class="lineNum">      26 </span>            : {
+<span class="lineNum">      27 </span>            : 
+<span class="lineNum">      28 </span>            : namespace implementation
+<span class="lineNum">      29 </span>            : {
+<span class="lineNum">      30 </span>            : 
+<span class="lineNum">      31 </span>            : namespace handlers
+<span class="lineNum">      32 </span>            : {
+<span class="lineNum">      33 </span>            : 
+<span class="lineNum">      34 </span>            : /*!
+<span class="lineNum">      35 </span>            : \brief Handles the Dicom type &quot;PN&quot; (person name).
+<span class="lineNum">      36 </span>            : 
+<span class="lineNum">      37 </span>            : This class separates the component groups of the name.
+<span class="lineNum">      38 </span>            : 
+<span class="lineNum">      39 </span>            : The person name can be formed by three groups:
+<span class="lineNum">      40 </span>            :  one or more groups can be absent.
+<span class="lineNum">      41 </span>            : - the first components group contains a character
+<span class="lineNum">      42 </span>            :   representation of the person name
+<span class="lineNum">      43 </span>            : - the second components group contains an ideographic
+<span class="lineNum">      44 </span>            :   representation of the person name
+<span class="lineNum">      45 </span>            : - the third components group contains a phonetic
+<span class="lineNum">      46 </span>            :   representation of the patient name
+<span class="lineNum">      47 </span>            : 
+<span class="lineNum">      48 </span>            : Inside a components group, the name components
+<span class="lineNum">      49 </span>            :  (first name, middle name, surname, etc) must be
+<span class="lineNum">      50 </span>            :  separated by a ^.
+<span class="lineNum">      51 </span>            : 
+<span class="lineNum">      52 </span>            : This class doesn't insert or parse the ^ separator
+<span class="lineNum">      53 </span>            :  which must be inserted and handled by the calling
+<span class="lineNum">      54 </span>            :  application, but handles the = separator which
+<span class="lineNum">      55 </span>            :  separates the components groups.\n
+<span class="lineNum">      56 </span>            : This means that to read or set all the patient name
+<span class="lineNum">      57 </span>            :  you have to move the pointer to the internal element
+<span class="lineNum">      58 </span>            :  by using setPointer(), incPointer() or skip().
+<span class="lineNum">      59 </span>            : 
+<span class="lineNum">      60 </span>            : For instance, to set the name &quot;Left^Arrow&quot; both
+<span class="lineNum">      61 </span>            :  with a character and an ideographic representation you
+<span class="lineNum">      62 </span>            :  have to use the following code:
+<span class="lineNum">      63 </span>            : 
+<span class="lineNum">      64 </span>            : \code
+<span class="lineNum">      65 </span>            : myDataSet-&gt;getDataHandler(group, 0, tag, 0, true, &quot;PN&quot;);
+<span class="lineNum">      66 </span>            : myDataSet-&gt;setSize(2);
+<span class="lineNum">      67 </span>            : myDataSet-&gt;setUnicodeString(L&quot;Left^Arrow&quot;);
+<span class="lineNum">      68 </span>            : myDataSet-&gt;incPointer();
+<span class="lineNum">      69 </span>            : myDataSet-&gt;setUnicodeString(L&quot;&lt;-&quot;); // :-)
+<span class="lineNum">      70 </span>            : \endcode
+<a name="71"><span class="lineNum">      71 </span>            : </a>
+<span class="lineNum">      72 </span>            : */
+<span class="lineNum">      73 </span><span class="lineCov">      18439 : class readingDataHandlerStringPN : public readingDataHandlerStringUnicode</span>
+<span class="lineNum">      74 </span>            : {
+<span class="lineNum">      75 </span>            : public:
+<span class="lineNum">      76 </span>            :     readingDataHandlerStringPN(const memory&amp; parseMemory, const charsetsList::tCharsetsList&amp; charsets);
+<a name="77"><span class="lineNum">      77 </span>            : };</a>
+<span class="lineNum">      78 </span>            : 
+<span class="lineNum">      79 </span><span class="lineCov">       5558 : class writingDataHandlerStringPN: public writingDataHandlerStringUnicode</span>
+<span class="lineNum">      80 </span>            : {
+<span class="lineNum">      81 </span>            : public:
+<span class="lineNum">      82 </span>            :     writingDataHandlerStringPN(const std::shared_ptr&lt;buffer&gt;&amp; pBuffer, const charsetsList::tCharsetsList&amp; charsets);
+<span class="lineNum">      83 </span>            : 
+<span class="lineNum">      84 </span>            :     virtual void validate() const;
+<span class="lineNum">      85 </span>            : };
+<span class="lineNum">      86 </span>            : 
+<span class="lineNum">      87 </span>            : } // namespace handlers
+<span class="lineNum">      88 </span>            : 
+<span class="lineNum">      89 </span>            : } // namespace implementation
+<span class="lineNum">      90 </span>            : 
+<span class="lineNum">      91 </span>            : } // namespace imebra
+<span class="lineNum">      92 </span>            : 
+<span class="lineNum">      93 </span>            : #endif // !defined(imebraDataHandlerStringPN_367AAE47_6FD7_4107_AB5B_25A355C5CB6E__INCLUDED_)
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.13</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

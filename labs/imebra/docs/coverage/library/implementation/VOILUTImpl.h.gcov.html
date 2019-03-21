@@ -1,0 +1,355 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - extracted.info - library/implementation/VOILUTImpl.h</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">library/implementation</a> - VOILUTImpl.h<span style="font-size: 80%;"> (source / <a href="VOILUTImpl.h.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">extracted.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">51</td>
+            <td class="headerCovTableEntry">56</td>
+            <td class="headerCovTableEntryHi">91.1 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2019-03-13 14:48:54</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">7</td>
+            <td class="headerCovTableEntry">46</td>
+            <td class="headerCovTableEntryLo">15.2 %</td>
+          </tr>
+          <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : /*</a>
+<span class="lineNum">       2 </span>            : Copyright 2005 - 2017 by Paolo Brandoli/Binarno s.p.
+<span class="lineNum">       3 </span>            : 
+<span class="lineNum">       4 </span>            : Imebra is available for free under the GNU General Public License.
+<span class="lineNum">       5 </span>            : 
+<span class="lineNum">       6 </span>            : The full text of the license is available in the file license.rst
+<span class="lineNum">       7 </span>            :  in the project root folder.
+<span class="lineNum">       8 </span>            : 
+<span class="lineNum">       9 </span>            : If you do not want to be bound by the GPL terms (such as the requirement 
+<span class="lineNum">      10 </span>            :  that your application must also be GPL), you may purchase a commercial 
+<span class="lineNum">      11 </span>            :  license for Imebra from the Imebra’s website (http://imebra.com).
+<span class="lineNum">      12 </span>            : */
+<span class="lineNum">      13 </span>            : 
+<span class="lineNum">      14 </span>            : /*! \file VOILUT.h
+<span class="lineNum">      15 </span>            :     \brief Declaration of the class VOILUT.
+<span class="lineNum">      16 </span>            : 
+<span class="lineNum">      17 </span>            : */
+<span class="lineNum">      18 </span>            : 
+<span class="lineNum">      19 </span>            : #if !defined(imebraVOILUT_8347C70F_1FC8_4df8_A887_8DE9E968B2CF__INCLUDED_)
+<span class="lineNum">      20 </span>            : #define imebraVOILUT_8347C70F_1FC8_4df8_A887_8DE9E968B2CF__INCLUDED_
+<span class="lineNum">      21 </span>            : 
+<span class="lineNum">      22 </span>            : #include &quot;imageImpl.h&quot;
+<span class="lineNum">      23 </span>            : #include &quot;LUTImpl.h&quot;
+<span class="lineNum">      24 </span>            : #include &quot;transformImpl.h&quot;
+<span class="lineNum">      25 </span>            : 
+<span class="lineNum">      26 </span>            : 
+<span class="lineNum">      27 </span>            : namespace imebra
+<span class="lineNum">      28 </span>            : {
+<span class="lineNum">      29 </span>            : 
+<span class="lineNum">      30 </span>            : namespace implementation
+<span class="lineNum">      31 </span>            : {
+<span class="lineNum">      32 </span>            : 
+<span class="lineNum">      33 </span>            : class lut;
+<span class="lineNum">      34 </span>            : 
+<span class="lineNum">      35 </span>            : namespace transforms
+<span class="lineNum">      36 </span>            : {
+<span class="lineNum">      37 </span>            : 
+<span class="lineNum">      38 </span>            : /// \addtogroup group_transforms
+<span class="lineNum">      39 </span>            : ///
+<span class="lineNum">      40 </span>            : /// @{
+<span class="lineNum">      41 </span>            : 
+<span class="lineNum">      42 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">      43 </span>            : /// \brief Transforms the value of the input image's pixels
+<span class="lineNum">      44 </span>            : ///         by using the presentation VOI/LUT defined in
+<span class="lineNum">      45 </span>            : ///         the dataSet.
+<span class="lineNum">      46 </span>            : ///
+<span class="lineNum">      47 </span>            : /// The dataSet could define more than one VOI/LUT: by
+<span class="lineNum">      48 </span>            : ///  default the transform uses the first VOI or LUT
+<span class="lineNum">      49 </span>            : ///  defined in the dataset.
+<span class="lineNum">      50 </span>            : ///
+<span class="lineNum">      51 </span>            : /// To control which VOI/LUT is used for the
+<span class="lineNum">      52 </span>            : ///  transformation the application must use the functions
+<span class="lineNum">      53 </span>            : ///  getVOILUTId(), getVOILUTDescription(), setVOILUT() or
+<span class="lineNum">      54 </span>            : ///  set the VOI or the LUT directly by calling
+<span class="lineNum">      55 </span>            : ///  setCenterWidth() or setLUT().
+<a name="56"><span class="lineNum">      56 </span>            : ///</a>
+<span class="lineNum">      57 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">      58 </span><span class="lineCov">          3 : class VOILUT: public transforms::transform</span>
+<span class="lineNum">      59 </span>            : {
+<span class="lineNum">      60 </span>            : public:
+<span class="lineNum">      61 </span>            :     /// \brief Constructor.
+<span class="lineNum">      62 </span>            :     ///
+<span class="lineNum">      63 </span>            :     /// @param pDataSet the dataset from which the input image
+<span class="lineNum">      64 </span>            :     ///        comes from
+<a name="65"><span class="lineNum">      65 </span>            :     ///</a>
+<span class="lineNum">      66 </span>            :     ///////////////////////////////////////////////////////////
+<span class="lineNum">      67 </span><span class="lineCov">          3 :     VOILUT(): m_windowCenter(0), m_windowWidth(0){}</span>
+<span class="lineNum">      68 </span>            : 
+<span class="lineNum">      69 </span>            :         /// \brief Define the LUT to use for the transformation.
+<span class="lineNum">      70 </span>            :         ///
+<span class="lineNum">      71 </span>            :         /// @param pLut the lut that will be used for the
+<span class="lineNum">      72 </span>            :         ///              transformation
+<span class="lineNum">      73 </span>            :         ///
+<span class="lineNum">      74 </span>            :         ///////////////////////////////////////////////////////////
+<span class="lineNum">      75 </span>            :     void setLUT(const std::shared_ptr&lt;lut&gt;&amp; pLut);
+<span class="lineNum">      76 </span>            : 
+<span class="lineNum">      77 </span>            :         /// \brief Define the VOI width/center to use for the
+<span class="lineNum">      78 </span>            :         ///         transformation.
+<span class="lineNum">      79 </span>            :         ///
+<span class="lineNum">      80 </span>            :         /// @param center   the center value of the VOI
+<span class="lineNum">      81 </span>            :         /// @param width    the width value of the VOI
+<span class="lineNum">      82 </span>            :         ///
+<span class="lineNum">      83 </span>            :         ///////////////////////////////////////////////////////////
+<span class="lineNum">      84 </span>            :     void setCenterWidth(double center, double width);
+<span class="lineNum">      85 </span>            : 
+<span class="lineNum">      86 </span>            :         /// \brief Returns the VOI width/center used for the
+<span class="lineNum">      87 </span>            :         ///         transformation.
+<span class="lineNum">      88 </span>            :         ///
+<span class="lineNum">      89 </span>            :         /// @param pCenter  pointer to the recipient for the VOI
+<span class="lineNum">      90 </span>            :         ///                  center
+<span class="lineNum">      91 </span>            :         /// @param pWidth    pointer to the recipient for the VOI
+<span class="lineNum">      92 </span>            :         ///                  width
+<span class="lineNum">      93 </span>            :         ///
+<span class="lineNum">      94 </span>            :         ///////////////////////////////////////////////////////////
+<span class="lineNum">      95 </span>            :     void getCenterWidth(double* pCenter, double* pWidth);
+<span class="lineNum">      96 </span>            : 
+<span class="lineNum">      97 </span>            :     /// \brief Finds and apply the optimal VOI values.
+<span class="lineNum">      98 </span>            :     ///
+<span class="lineNum">      99 </span>            :     /// @param inputImage    the image for which the optimal
+<span class="lineNum">     100 </span>            :     ///                      VOI must be found
+<span class="lineNum">     101 </span>            :     /// @param inputTopLeftX the horizontal coordinate of the
+<span class="lineNum">     102 </span>            :     ///                       top-left corner of the area for
+<span class="lineNum">     103 </span>            :     ///                       which the optimal VOI must be
+<span class="lineNum">     104 </span>            :     ///                       found
+<span class="lineNum">     105 </span>            :     /// @param inputTopLeftY the vertical coordinate of the
+<span class="lineNum">     106 </span>            :     ///                       top-left corner of the area for
+<span class="lineNum">     107 </span>            :     ///                       which the optimal VOI must be
+<span class="lineNum">     108 </span>            :     ///                       found
+<span class="lineNum">     109 </span>            :     /// @param inputWidth    the width of the area for which
+<span class="lineNum">     110 </span>            :     ///                       the optimal VOI must be found
+<span class="lineNum">     111 </span>            :     /// @param inputHeight   the height of the area for which
+<span class="lineNum">     112 </span>            :     ///                       the optimal VOI must be found
+<span class="lineNum">     113 </span>            :     ///
+<span class="lineNum">     114 </span>            :     ///////////////////////////////////////////////////////////
+<span class="lineNum">     115 </span>            :     void applyOptimalVOI(const std::shared_ptr&lt;imebra::implementation::image&gt;&amp; inputImage, std::uint32_t inputTopLeftX, std::uint32_t inputTopLeftY, std::uint32_t inputWidth, std::uint32_t inputHeight);
+<a name="116"><span class="lineNum">     116 </span>            : </a>
+<span class="lineNum">     117 </span>            : 
+<span class="lineNum">     118 </span><span class="lineCov">          5 :         DEFINE_RUN_TEMPLATE_TRANSFORM;</span>
+<span class="lineNum">     119 </span>            : 
+<span class="lineNum">     120 </span>            :     // The actual transformation is done here
+<span class="lineNum">     121 </span>            :     //
+<a name="122"><span class="lineNum">     122 </span>            :     ///////////////////////////////////////////////////////////</a>
+<span class="lineNum">     123 </span>            :         template &lt;class inputType, class outputType&gt;
+<span class="lineNum">     124 </span><span class="lineCov">          5 :                         void templateTransform(</span>
+<span class="lineNum">     125 </span>            :                     const inputType* inputHandlerData,
+<span class="lineNum">     126 </span>            :                     outputType* outputHandlerData,
+<span class="lineNum">     127 </span>            :                     bitDepth_t /* inputDepth */, std::uint32_t inputHandlerWidth, const std::string&amp; /* inputHandlerColorSpace */,
+<span class="lineNum">     128 </span>            :                                         std::shared_ptr&lt;palette&gt; /* inputPalette */,
+<span class="lineNum">     129 </span>            :                     std::uint32_t inputHighBit,
+<span class="lineNum">     130 </span>            :                     std::uint32_t inputTopLeftX, std::uint32_t inputTopLeftY, std::uint32_t inputWidth, std::uint32_t inputHeight,
+<span class="lineNum">     131 </span>            :                     bitDepth_t /* outputDepth */, std::uint32_t outputHandlerWidth, const std::string&amp; /* outputHandlerColorSpace */,
+<span class="lineNum">     132 </span>            :                                         std::shared_ptr&lt;palette&gt; /* outputPalette */,
+<span class="lineNum">     133 </span>            :                     std::uint32_t outputHighBit,
+<span class="lineNum">     134 </span>            :                     std::uint32_t outputTopLeftX, std::uint32_t outputTopLeftY) const
+<span class="lineNum">     135 </span>            : 
+<span class="lineNum">     136 </span>            :         {
+<span class="lineNum">     137 </span>            :         IMEBRA_FUNCTION_START();
+<span class="lineNum">     138 </span>            : 
+<span class="lineNum">     139 </span><span class="lineCov">          5 :         const inputType* pInputMemory(inputHandlerData);</span>
+<span class="lineNum">     140 </span><span class="lineCov">          5 :                 outputType* pOutputMemory(outputHandlerData);</span>
+<span class="lineNum">     141 </span>            : 
+<span class="lineNum">     142 </span><span class="lineCov">          5 :                 pInputMemory += inputTopLeftY * inputHandlerWidth + inputTopLeftX;</span>
+<span class="lineNum">     143 </span><span class="lineCov">          5 :                 pOutputMemory += outputTopLeftY * outputHandlerWidth + outputTopLeftX;</span>
+<span class="lineNum">     144 </span>            : 
+<span class="lineNum">     145 </span><span class="lineCov">          5 :         std::int64_t inputHandlerMinValue = getMinValue&lt;inputType&gt;(inputHighBit);</span>
+<span class="lineNum">     146 </span><span class="lineCov">          5 :         std::int64_t outputHandlerMinValue = getMinValue&lt;outputType&gt;(outputHighBit);</span>
+<span class="lineNum">     147 </span>            : 
+<span class="lineNum">     148 </span>            :                 //
+<span class="lineNum">     149 </span>            :                 // LUT found
+<span class="lineNum">     150 </span>            :                 //
+<span class="lineNum">     151 </span>            :                 ///////////////////////////////////////////////////////////
+<span class="lineNum">     152 </span><span class="lineCov">          5 :                 if(m_pLUT != 0 &amp;&amp; m_pLUT-&gt;getSize() != 0)</span>
+<span class="lineNum">     153 </span>            :                 {
+<span class="lineNum">     154 </span><span class="lineCov">          3 :             for(; inputHeight != 0; --inputHeight)</span>
+<span class="lineNum">     155 </span>            :             {
+<span class="lineNum">     156 </span><span class="lineCov">          7 :                 for(std::uint32_t scanPixels(inputWidth); scanPixels != 0; --scanPixels)</span>
+<span class="lineNum">     157 </span>            :                 {
+<span class="lineNum">     158 </span><span class="lineCov">          6 :                     *(pOutputMemory++) = (outputType)( outputHandlerMinValue + m_pLUT-&gt;getMappedValue((std::int32_t)*pInputMemory++ ));</span>
+<span class="lineNum">     159 </span>            :                 }
+<span class="lineNum">     160 </span><span class="lineCov">          1 :                 pInputMemory += (inputHandlerWidth - inputWidth);</span>
+<span class="lineNum">     161 </span><span class="lineCov">          1 :                 pOutputMemory += (outputHandlerWidth - inputWidth);</span>
+<span class="lineNum">     162 </span>            :             }
+<span class="lineNum">     163 </span><span class="lineCov">          1 :                         return;</span>
+<span class="lineNum">     164 </span>            :                 }
+<span class="lineNum">     165 </span>            : 
+<span class="lineNum">     166 </span>            :                 //
+<span class="lineNum">     167 </span>            :                 // LUT not found.
+<span class="lineNum">     168 </span>            :                 // Use the window's center/width
+<span class="lineNum">     169 </span>            :                 //
+<span class="lineNum">     170 </span>            :         ///////////////////////////////////////////////////////////
+<span class="lineNum">     171 </span><span class="lineCov">          4 :         std::int64_t inputHandlerNumValues = (std::int64_t)1 &lt;&lt; (inputHighBit + 1);</span>
+<span class="lineNum">     172 </span><span class="lineCov">          4 :         std::int64_t outputHandlerNumValues = (std::int64_t)1 &lt;&lt; (outputHighBit + 1);</span>
+<span class="lineNum">     173 </span><span class="lineCov">          4 :         std::int64_t minValue = (std::int64_t)(m_windowCenter - m_windowWidth/2);</span>
+<span class="lineNum">     174 </span><span class="lineCov">          4 :         std::int64_t maxValue = (std::int64_t)(m_windowCenter + m_windowWidth/2);</span>
+<span class="lineNum">     175 </span><span class="lineCov">          4 :                 if(m_windowWidth &lt;= 1)</span>
+<span class="lineNum">     176 </span>            :                 {
+<span class="lineNum">     177 </span><span class="lineNoCov">          0 :                         minValue = inputHandlerMinValue ;</span>
+<span class="lineNum">     178 </span><span class="lineNoCov">          0 :                         maxValue = inputHandlerMinValue + inputHandlerNumValues;</span>
+<span class="lineNum">     179 </span>            :                 }
+<span class="lineNum">     180 </span>            :                 else
+<span class="lineNum">     181 </span>            :                 {
+<span class="lineNum">     182 </span><span class="lineCov">          4 :                         inputHandlerNumValues = maxValue - minValue;</span>
+<span class="lineNum">     183 </span>            :                 }
+<span class="lineNum">     184 </span>            : 
+<span class="lineNum">     185 </span><span class="lineCov">          4 :         double ratio = (double)outputHandlerNumValues / (double)inputHandlerNumValues;</span>
+<span class="lineNum">     186 </span>            :         double outputValue;
+<span class="lineNum">     187 </span><span class="lineCov">          4 :         double outputMin((double)outputHandlerMinValue);</span>
+<span class="lineNum">     188 </span><span class="lineCov">          4 :         double outputMax((double)(outputHandlerMinValue + outputHandlerNumValues - 1));</span>
+<span class="lineNum">     189 </span><span class="lineCov">         12 :         for(; inputHeight != 0; --inputHeight)</span>
+<span class="lineNum">     190 </span>            :         {
+<span class="lineNum">     191 </span>            : 
+<span class="lineNum">     192 </span><span class="lineCov">         28 :             for(std::uint32_t scanPixels(inputWidth); scanPixels != 0; --scanPixels)</span>
+<span class="lineNum">     193 </span>            :             {
+<span class="lineNum">     194 </span><span class="lineCov">         24 :                 outputValue = 0.5f + (double)((std::int64_t)*(pInputMemory++) - minValue) * ratio + (double)outputHandlerMinValue ;</span>
+<span class="lineNum">     195 </span><span class="lineCov">         24 :                 if(outputValue &lt;= outputMin)</span>
+<span class="lineNum">     196 </span>            :                 {
+<span class="lineNum">     197 </span><span class="lineCov">          5 :                     *pOutputMemory++ = (outputType)outputHandlerMinValue;</span>
+<span class="lineNum">     198 </span>            :                 }
+<span class="lineNum">     199 </span><span class="lineCov">         19 :                 else if(outputValue &gt;= outputMax)</span>
+<span class="lineNum">     200 </span>            :                 {
+<span class="lineNum">     201 </span><span class="lineCov">          5 :                     *pOutputMemory++ = (outputType)( outputHandlerMinValue + outputHandlerNumValues - 1 );</span>
+<span class="lineNum">     202 </span>            :                 }
+<span class="lineNum">     203 </span>            :                 else
+<span class="lineNum">     204 </span>            :                 {
+<span class="lineNum">     205 </span><span class="lineCov">         14 :                     *pOutputMemory++ = (outputType)outputValue;</span>
+<span class="lineNum">     206 </span>            :                 }
+<span class="lineNum">     207 </span>            :             }
+<span class="lineNum">     208 </span>            : 
+<span class="lineNum">     209 </span><span class="lineCov">          4 :             pInputMemory += (inputHandlerWidth - inputWidth);</span>
+<span class="lineNum">     210 </span><span class="lineCov">          4 :             pOutputMemory += (outputHandlerWidth - inputWidth);</span>
+<span class="lineNum">     211 </span>            :         }
+<span class="lineNum">     212 </span>            : 
+<span class="lineNum">     213 </span><span class="lineNoCov">          0 :         IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">     214 </span>            :     }
+<span class="lineNum">     215 </span>            : 
+<span class="lineNum">     216 </span>            : 
+<span class="lineNum">     217 </span>            :     virtual bool isEmpty() const override;
+<span class="lineNum">     218 </span>            : 
+<span class="lineNum">     219 </span>            :     virtual std::shared_ptr&lt;image&gt; allocateOutputImage(
+<span class="lineNum">     220 </span>            :             bitDepth_t inputDepth,
+<span class="lineNum">     221 </span>            :             const std::string&amp; inputColorSpace,
+<span class="lineNum">     222 </span>            :             std::uint32_t inputHighBit,
+<span class="lineNum">     223 </span>            :             std::shared_ptr&lt;palette&gt; inputPalette,
+<span class="lineNum">     224 </span>            :             std::uint32_t outputWidth, std::uint32_t outputHeight) const override;
+<span class="lineNum">     225 </span>            : 
+<span class="lineNum">     226 </span>            : protected:
+<span class="lineNum">     227 </span>            : 
+<span class="lineNum">     228 </span>            :     // Find the optimal VOI
+<span class="lineNum">     229 </span>            :     //
+<a name="230"><span class="lineNum">     230 </span>            :     ///////////////////////////////////////////////////////////</a>
+<span class="lineNum">     231 </span>            :     template &lt;class inputType&gt;
+<span class="lineNum">     232 </span><span class="lineCov">          1 :             void templateFindOptimalVOI(</span>
+<span class="lineNum">     233 </span>            :                     inputType* inputHandlerData, size_t /* inputHandlerSize */, std::uint32_t inputHandlerWidth,
+<span class="lineNum">     234 </span>            :                     std::uint32_t inputTopLeftX, std::uint32_t inputTopLeftY, std::uint32_t inputWidth, std::uint32_t inputHeight)
+<span class="lineNum">     235 </span>            :     {
+<span class="lineNum">     236 </span>            :         IMEBRA_FUNCTION_START();
+<span class="lineNum">     237 </span>            : 
+<span class="lineNum">     238 </span><span class="lineCov">          1 :         inputType* pInputMemory(inputHandlerData + inputHandlerWidth * inputTopLeftY + inputTopLeftX);</span>
+<span class="lineNum">     239 </span><span class="lineCov">          1 :         inputType minValue(*pInputMemory);</span>
+<span class="lineNum">     240 </span><span class="lineCov">          1 :         inputType maxValue(minValue);</span>
+<span class="lineNum">     241 </span>            :         inputType value;
+<span class="lineNum">     242 </span><span class="lineCov">          2 :         for(std::uint32_t scanY(inputHeight); scanY != 0; --scanY)</span>
+<span class="lineNum">     243 </span>            :         {
+<span class="lineNum">     244 </span><span class="lineCov">          7 :             for(std::uint32_t scanX(inputWidth); scanX != 0; --scanX)</span>
+<span class="lineNum">     245 </span>            :             {
+<span class="lineNum">     246 </span><span class="lineCov">          6 :                 value = *(pInputMemory++);</span>
+<span class="lineNum">     247 </span><span class="lineCov">          6 :                 if(value &lt; minValue)</span>
+<span class="lineNum">     248 </span>            :                 {
+<span class="lineNum">     249 </span><span class="lineNoCov">          0 :                     minValue = value;</span>
+<span class="lineNum">     250 </span>            :                 }
+<span class="lineNum">     251 </span><span class="lineCov">          6 :                 else if(value &gt; maxValue)</span>
+<span class="lineNum">     252 </span>            :                 {
+<span class="lineNum">     253 </span><span class="lineCov">          5 :                     maxValue = value;</span>
+<span class="lineNum">     254 </span>            :                 }
+<span class="lineNum">     255 </span>            :             }
+<span class="lineNum">     256 </span><span class="lineCov">          1 :             pInputMemory += inputHandlerWidth - inputWidth;</span>
+<span class="lineNum">     257 </span>            :         }
+<span class="lineNum">     258 </span><span class="lineCov">          1 :         double center = (double)(((std::int64_t)maxValue - (std::int64_t)minValue) / 2 + (std::int64_t)minValue);</span>
+<span class="lineNum">     259 </span><span class="lineCov">          1 :         double width = (double)((std::int64_t)maxValue - (std::int64_t)minValue);</span>
+<span class="lineNum">     260 </span><span class="lineCov">          1 :         setCenterWidth(center, width);</span>
+<span class="lineNum">     261 </span>            : 
+<span class="lineNum">     262 </span><span class="lineNoCov">          0 :         IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">     263 </span>            : 
+<span class="lineNum">     264 </span><span class="lineCov">          1 :     }</span>
+<span class="lineNum">     265 </span>            : 
+<span class="lineNum">     266 </span>            :     std::shared_ptr&lt;const lut&gt; m_pLUT;
+<span class="lineNum">     267 </span>            :     double m_windowCenter;
+<span class="lineNum">     268 </span>            :     double m_windowWidth;
+<span class="lineNum">     269 </span>            : };
+<span class="lineNum">     270 </span>            : 
+<span class="lineNum">     271 </span>            : /// @}
+<span class="lineNum">     272 </span>            : 
+<span class="lineNum">     273 </span>            : } // namespace transforms
+<span class="lineNum">     274 </span>            : 
+<span class="lineNum">     275 </span>            : } // namespace implementation
+<span class="lineNum">     276 </span>            : 
+<span class="lineNum">     277 </span>            : } // namespace imebra
+<span class="lineNum">     278 </span>            : 
+<span class="lineNum">     279 </span>            : #endif // !defined(imebraVOILUT_8347C70F_1FC8_4df8_A887_8DE9E968B2CF__INCLUDED_)
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.13</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

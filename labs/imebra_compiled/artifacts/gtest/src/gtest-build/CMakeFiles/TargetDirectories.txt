@@ -1,0 +1,4 @@
+/home/sim/Documents/sim/imebra_compiled/artifacts/gtest/src/gtest-build/CMakeFiles/rebuild_cache.dir
+/home/sim/Documents/sim/imebra_compiled/artifacts/gtest/src/gtest-build/CMakeFiles/gtest.dir
+/home/sim/Documents/sim/imebra_compiled/artifacts/gtest/src/gtest-build/CMakeFiles/edit_cache.dir
+/home/sim/Documents/sim/imebra_compiled/artifacts/gtest/src/gtest-build/CMakeFiles/gtest_main.dir

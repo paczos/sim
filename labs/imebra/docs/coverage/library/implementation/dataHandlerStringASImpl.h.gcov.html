@@ -1,0 +1,247 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - extracted.info - library/implementation/dataHandlerStringASImpl.h</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">library/implementation</a> - dataHandlerStringASImpl.h<span style="font-size: 80%;"> (source / <a href="dataHandlerStringASImpl.h.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">extracted.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">2</td>
+            <td class="headerCovTableEntry">2</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2019-03-13 14:48:54</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">2</td>
+            <td class="headerCovTableEntry">4</td>
+            <td class="headerCovTableEntryLo">50.0 %</td>
+          </tr>
+          <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : /*</a>
+<span class="lineNum">       2 </span>            : Copyright 2005 - 2017 by Paolo Brandoli/Binarno s.p.
+<span class="lineNum">       3 </span>            : 
+<span class="lineNum">       4 </span>            : Imebra is available for free under the GNU General Public License.
+<span class="lineNum">       5 </span>            : 
+<span class="lineNum">       6 </span>            : The full text of the license is available in the file license.rst
+<span class="lineNum">       7 </span>            :  in the project root folder.
+<span class="lineNum">       8 </span>            : 
+<span class="lineNum">       9 </span>            : If you do not want to be bound by the GPL terms (such as the requirement 
+<span class="lineNum">      10 </span>            :  that your application must also be GPL), you may purchase a commercial 
+<span class="lineNum">      11 </span>            :  license for Imebra from the Imebra’s website (http://imebra.com).
+<span class="lineNum">      12 </span>            : */
+<span class="lineNum">      13 </span>            : 
+<span class="lineNum">      14 </span>            : /*! \file dataHandlerStringAS.h
+<span class="lineNum">      15 </span>            :     \brief Declaration of the class dataHandlerStringAS.
+<span class="lineNum">      16 </span>            : 
+<span class="lineNum">      17 </span>            : */
+<span class="lineNum">      18 </span>            : 
+<span class="lineNum">      19 </span>            : #if !defined(imebraDataHandlerStringAS_367AAE47_6FD7_4107_AB5B_25A355C5CB6E__INCLUDED_)
+<span class="lineNum">      20 </span>            : #define imebraDataHandlerStringAS_367AAE47_6FD7_4107_AB5B_25A355C5CB6E__INCLUDED_
+<span class="lineNum">      21 </span>            : 
+<span class="lineNum">      22 </span>            : #include &quot;dataHandlerStringImpl.h&quot;
+<span class="lineNum">      23 </span>            : #include &quot;../include/imebra/definitions.h&quot;
+<span class="lineNum">      24 </span>            : 
+<span class="lineNum">      25 </span>            : 
+<span class="lineNum">      26 </span>            : namespace imebra
+<span class="lineNum">      27 </span>            : {
+<span class="lineNum">      28 </span>            : 
+<span class="lineNum">      29 </span>            : namespace implementation
+<span class="lineNum">      30 </span>            : {
+<span class="lineNum">      31 </span>            : 
+<span class="lineNum">      32 </span>            : namespace handlers
+<span class="lineNum">      33 </span>            : {
+<span class="lineNum">      34 </span>            : 
+<span class="lineNum">      35 </span>            : 
+<span class="lineNum">      36 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">      37 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">      38 </span>            : /// \brief Handles the Dicom data type &quot;AS&quot; (age string)
+<span class="lineNum">      39 </span>            : ///
+<span class="lineNum">      40 </span>            : /// The handler supplies two additional functions designed
+<span class="lineNum">      41 </span>            : ///  to set/get the age (setAge() and getAge()) and 
+<span class="lineNum">      42 </span>            : ///  overwrite the functions getSignedLong(), 
+<span class="lineNum">      43 </span>            : ///  getUnsignedLong(), getDouble(), setSignedLong(),
+<span class="lineNum">      44 </span>            : ///  setUnsignedLong(), setDouble() to make them work with
+<span class="lineNum">      45 </span>            : ///  the years.
+<span class="lineNum">      46 </span>            : ///
+<span class="lineNum">      47 </span>            : /// setDouble() and getDouble() work also with fraction
+<span class="lineNum">      48 </span>            : ///  of a year, setting the age unit correctly (days, 
+<span class="lineNum">      49 </span>            : ///  weeks, months or years).
+<span class="lineNum">      50 </span>            : ///
+<a name="51"><span class="lineNum">      51 </span>            : ///////////////////////////////////////////////////////////</a>
+<span class="lineNum">      52 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">      53 </span><span class="lineCov">         23 : class readingDataHandlerStringAS : public readingDataHandlerString</span>
+<span class="lineNum">      54 </span>            : {
+<span class="lineNum">      55 </span>            : public:
+<span class="lineNum">      56 </span>            :     readingDataHandlerStringAS(const memory&amp; parseMemory);
+<span class="lineNum">      57 </span>            : 
+<span class="lineNum">      58 </span>            :         /// \brief Retrieve the age value and its unit from the
+<span class="lineNum">      59 </span>            :         ///         buffer handled by this handler.
+<span class="lineNum">      60 </span>            :         ///
+<span class="lineNum">      61 </span>            :         /// @param index the zero based index of the age value to
+<span class="lineNum">      62 </span>            :         ///               modify
+<span class="lineNum">      63 </span>            :     /// @param pUnit a pointer to a ageUnit_t that will be
+<span class="lineNum">      64 </span>            :         ///               filled with the unit information related
+<span class="lineNum">      65 </span>            :         ///               to the returned value
+<span class="lineNum">      66 </span>            :         /// @return the age, expressed in the unit written in the
+<span class="lineNum">      67 </span>            :         ///               location referenced by the parameter 
+<span class="lineNum">      68 </span>            :         ///               pUnit
+<span class="lineNum">      69 </span>            :         ///
+<span class="lineNum">      70 </span>            :         ///////////////////////////////////////////////////////////
+<span class="lineNum">      71 </span>            :     virtual std::uint32_t getAge(const size_t index, ageUnit_t* pUnit) const override;
+<span class="lineNum">      72 </span>            : 
+<span class="lineNum">      73 </span>            :         /// \brief Retrieve the age from the handled buffer.
+<span class="lineNum">      74 </span>            :         ///
+<span class="lineNum">      75 </span>            :         /// The returned value is always expressed in years.
+<span class="lineNum">      76 </span>            :         ///
+<span class="lineNum">      77 </span>            :         /// @param index the zero based index of the age value to
+<span class="lineNum">      78 </span>            :         ///               read
+<span class="lineNum">      79 </span>            :         /// @return the age contained in the buffer converted into
+<span class="lineNum">      80 </span>            :         ///          years
+<span class="lineNum">      81 </span>            :         ///
+<span class="lineNum">      82 </span>            :         ///////////////////////////////////////////////////////////
+<span class="lineNum">      83 </span>            :     virtual std::int32_t getSignedLong(const size_t index) const override;
+<span class="lineNum">      84 </span>            : 
+<span class="lineNum">      85 </span>            :         /// \brief Retrieve the age from the handled buffer.
+<span class="lineNum">      86 </span>            :         ///
+<span class="lineNum">      87 </span>            :         /// The returned value is always expressed in years.
+<span class="lineNum">      88 </span>            :         ///
+<span class="lineNum">      89 </span>            :         /// @param index the zero based index of the age value to
+<span class="lineNum">      90 </span>            :         ///               read
+<span class="lineNum">      91 </span>            :         /// @return the age contained in the buffer converted into
+<span class="lineNum">      92 </span>            :         ///          years
+<span class="lineNum">      93 </span>            :         ///
+<span class="lineNum">      94 </span>            :         ///////////////////////////////////////////////////////////
+<span class="lineNum">      95 </span>            :     virtual std::uint32_t getUnsignedLong(const size_t index) const override;
+<span class="lineNum">      96 </span>            : 
+<span class="lineNum">      97 </span>            :         /// \brief Retrieve the age from the handled buffer.
+<span class="lineNum">      98 </span>            :         ///
+<span class="lineNum">      99 </span>            :         /// The returned value is always expressed in years.
+<span class="lineNum">     100 </span>            :         /// The function can return fraction of a year if the
+<span class="lineNum">     101 </span>            :         ///  age contained in the buffer is expressed in days,
+<span class="lineNum">     102 </span>            :         ///  weeks or months.
+<span class="lineNum">     103 </span>            :         ///
+<span class="lineNum">     104 </span>            :         /// @param index the zero based index of the age value to
+<span class="lineNum">     105 </span>            :         ///               read
+<span class="lineNum">     106 </span>            :         /// @return the age contained in the buffer converted into
+<span class="lineNum">     107 </span>            :         ///          years
+<span class="lineNum">     108 </span>            :         ///
+<span class="lineNum">     109 </span>            :         ///////////////////////////////////////////////////////////
+<span class="lineNum">     110 </span>            :     virtual double getDouble(const size_t index) const override;
+<span class="lineNum">     111 </span>            : };
+<a name="112"><span class="lineNum">     112 </span>            : </a>
+<span class="lineNum">     113 </span>            : 
+<span class="lineNum">     114 </span><span class="lineCov">         14 : class writingDataHandlerStringAS: public writingDataHandlerString</span>
+<span class="lineNum">     115 </span>            : {
+<span class="lineNum">     116 </span>            : public:
+<span class="lineNum">     117 </span>            :     writingDataHandlerStringAS(const std::shared_ptr&lt;buffer&gt;&amp; pBuffer);
+<span class="lineNum">     118 </span>            : 
+<span class="lineNum">     119 </span>            :     /// \brief Set the value of the age string and specify
+<span class="lineNum">     120 </span>            :     ///         its unit.
+<span class="lineNum">     121 </span>            :     ///
+<span class="lineNum">     122 </span>            :     /// @param index the zero based index of the age value to
+<span class="lineNum">     123 </span>            :     ///               read
+<span class="lineNum">     124 </span>            :     /// @param age   the age to be written in the buffer
+<span class="lineNum">     125 </span>            :     /// @param unit  the units used for the parameter age
+<span class="lineNum">     126 </span>            :     ///
+<span class="lineNum">     127 </span>            :     ///////////////////////////////////////////////////////////
+<span class="lineNum">     128 </span>            :     virtual void setAge(const size_t index, const std::uint32_t age, const ageUnit_t unit) override;
+<span class="lineNum">     129 </span>            : 
+<span class="lineNum">     130 </span>            :     /// \brief Write the specified age into the handled buffer.
+<span class="lineNum">     131 </span>            :     ///
+<span class="lineNum">     132 </span>            :     /// @param index the zero based index of the age value to
+<span class="lineNum">     133 </span>            :     ///               modify
+<span class="lineNum">     134 </span>            :     /// @param value the age to be written, in years
+<span class="lineNum">     135 </span>            :     ///
+<span class="lineNum">     136 </span>            :     ///////////////////////////////////////////////////////////
+<span class="lineNum">     137 </span>            :     virtual void setSignedLong(const size_t index, const std::int32_t value) override;
+<span class="lineNum">     138 </span>            : 
+<span class="lineNum">     139 </span>            :     /// \brief Write the specified age into the handled buffer.
+<span class="lineNum">     140 </span>            :     ///
+<span class="lineNum">     141 </span>            :     /// @param index the zero based index of the age value to
+<span class="lineNum">     142 </span>            :     ///               modify
+<span class="lineNum">     143 </span>            :     /// @param value the age to be written, in years
+<span class="lineNum">     144 </span>            :     ///
+<span class="lineNum">     145 </span>            :     ///////////////////////////////////////////////////////////
+<span class="lineNum">     146 </span>            :     virtual void setUnsignedLong(const size_t index, const std::uint32_t value) override;
+<span class="lineNum">     147 </span>            : 
+<span class="lineNum">     148 </span>            :     /// \brief Write the specified age into the handled buffer.
+<span class="lineNum">     149 </span>            :     ///
+<span class="lineNum">     150 </span>            :     /// If a fraction of a year is specified, then the function
+<span class="lineNum">     151 </span>            :     ///  set the age in days, weeks or months according to
+<span class="lineNum">     152 </span>            :     ///  the value of the fraction.
+<span class="lineNum">     153 </span>            :     ///
+<span class="lineNum">     154 </span>            :     /// @param index the zero based index of the age value to
+<span class="lineNum">     155 </span>            :     ///               modify
+<span class="lineNum">     156 </span>            :     /// @param value the age to be written, in years
+<span class="lineNum">     157 </span>            :     ///
+<span class="lineNum">     158 </span>            :     ///////////////////////////////////////////////////////////
+<span class="lineNum">     159 </span>            :     virtual void setDouble(const size_t index, const double value) override;
+<span class="lineNum">     160 </span>            : 
+<span class="lineNum">     161 </span>            :     virtual void validate() const override;
+<span class="lineNum">     162 </span>            : 
+<span class="lineNum">     163 </span>            : };
+<span class="lineNum">     164 </span>            : 
+<span class="lineNum">     165 </span>            : } // namespace handlers
+<span class="lineNum">     166 </span>            : 
+<span class="lineNum">     167 </span>            : } // namespace implementation
+<span class="lineNum">     168 </span>            : 
+<span class="lineNum">     169 </span>            : } // namespace imebra
+<span class="lineNum">     170 </span>            : 
+<span class="lineNum">     171 </span>            : #endif // !defined(imebraDataHandlerStringAS_367AAE47_6FD7_4107_AB5B_25A355C5CB6E__INCLUDED_)
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.13</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

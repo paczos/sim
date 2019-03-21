@@ -1,0 +1,434 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - extracted.info - library/implementation/dicomDictImpl.cpp</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">library/implementation</a> - dicomDictImpl.cpp<span style="font-size: 80%;"> (source / <a href="dicomDictImpl.cpp.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">extracted.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">96</td>
+            <td class="headerCovTableEntry">112</td>
+            <td class="headerCovTableEntryMed">85.7 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2019-03-13 14:48:54</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">11</td>
+            <td class="headerCovTableEntry">12</td>
+            <td class="headerCovTableEntryHi">91.7 %</td>
+          </tr>
+          <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : /*</a>
+<span class="lineNum">       2 </span>            : Copyright 2005 - 2017 by Paolo Brandoli/Binarno s.p.
+<span class="lineNum">       3 </span>            : 
+<span class="lineNum">       4 </span>            : Imebra is available for free under the GNU General Public License.
+<span class="lineNum">       5 </span>            : 
+<span class="lineNum">       6 </span>            : The full text of the license is available in the file license.rst
+<span class="lineNum">       7 </span>            :  in the project root folder.
+<span class="lineNum">       8 </span>            : 
+<span class="lineNum">       9 </span>            : If you do not want to be bound by the GPL terms (such as the requirement 
+<span class="lineNum">      10 </span>            :  that your application must also be GPL), you may purchase a commercial 
+<span class="lineNum">      11 </span>            :  license for Imebra from the Imebra’s website (http://imebra.com).
+<span class="lineNum">      12 </span>            : */
+<span class="lineNum">      13 </span>            : 
+<span class="lineNum">      14 </span>            : /*! \file dicomDict.cpp
+<span class="lineNum">      15 </span>            :     \brief Implementation of the class dicomDict.
+<span class="lineNum">      16 </span>            : 
+<span class="lineNum">      17 </span>            : */
+<span class="lineNum">      18 </span>            : 
+<span class="lineNum">      19 </span>            : 
+<span class="lineNum">      20 </span>            : #include &quot;exceptionImpl.h&quot;
+<span class="lineNum">      21 </span>            : #include &quot;dicomDictImpl.h&quot;
+<span class="lineNum">      22 </span>            : #include &quot;tagsDescription.h&quot;
+<span class="lineNum">      23 </span>            : #include &quot;../include/imebra/exceptions.h&quot;
+<span class="lineNum">      24 </span>            : 
+<span class="lineNum">      25 </span>            : namespace imebra
+<span class="lineNum">      26 </span>            : {
+<span class="lineNum">      27 </span>            : 
+<span class="lineNum">      28 </span>            : namespace implementation
+<span class="lineNum">      29 </span>            : {
+<span class="lineNum">      30 </span>            : 
+<span class="lineNum">      31 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">      32 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">      33 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">      34 </span>            : //
+<span class="lineNum">      35 </span>            : //
+<span class="lineNum">      36 </span>            : //
+<span class="lineNum">      37 </span>            : // dicomDictionary
+<span class="lineNum">      38 </span>            : //
+<span class="lineNum">      39 </span>            : //
+<span class="lineNum">      40 </span>            : //
+<span class="lineNum">      41 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">      42 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">      43 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">      44 </span>            : 
+<span class="lineNum">      45 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">      46 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">      47 </span>            : //
+<span class="lineNum">      48 </span>            : //
+<span class="lineNum">      49 </span>            : // Constructor. Register all the known tags and VRs
+<span class="lineNum">      50 </span>            : //
+<span class="lineNum">      51 </span>            : //
+<a name="52"><span class="lineNum">      52 </span>            : ///////////////////////////////////////////////////////////</a>
+<span class="lineNum">      53 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">      54 </span><span class="lineCov">          1 : dicomDictionary::dicomDictionary()</span>
+<span class="lineNum">      55 </span>            : {
+<span class="lineNum">      56 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">      57 </span>            : 
+<span class="lineNum">      58 </span><span class="lineCov">          1 :     registerVR(tagVR_t::AE, false, 0, 16);</span>
+<span class="lineNum">      59 </span><span class="lineCov">          1 :     registerVR(tagVR_t::AS, false, 0, 0);</span>
+<span class="lineNum">      60 </span><span class="lineCov">          1 :     registerVR(tagVR_t::AT, false, 4, 0);</span>
+<span class="lineNum">      61 </span><span class="lineCov">          1 :     registerVR(tagVR_t::CS, false, 0, 16);</span>
+<span class="lineNum">      62 </span><span class="lineCov">          1 :     registerVR(tagVR_t::DA, false, 0, 0);</span>
+<span class="lineNum">      63 </span><span class="lineCov">          1 :     registerVR(tagVR_t::DS, false, 0, 16);</span>
+<span class="lineNum">      64 </span><span class="lineCov">          1 :     registerVR(tagVR_t::DT, false, 0, 26);</span>
+<span class="lineNum">      65 </span><span class="lineCov">          1 :     registerVR(tagVR_t::FL, false, 4, 0);</span>
+<span class="lineNum">      66 </span><span class="lineCov">          1 :     registerVR(tagVR_t::FD, false, 8, 0);</span>
+<span class="lineNum">      67 </span><span class="lineCov">          1 :     registerVR(tagVR_t::IS, false, 0, 12);</span>
+<span class="lineNum">      68 </span><span class="lineCov">          1 :     registerVR(tagVR_t::LO, false, 0, 64);</span>
+<span class="lineNum">      69 </span><span class="lineCov">          1 :     registerVR(tagVR_t::LT, false, 0, 10240);</span>
+<span class="lineNum">      70 </span><span class="lineCov">          1 :     registerVR(tagVR_t::OB, true,  0, 0);</span>
+<span class="lineNum">      71 </span><span class="lineCov">          1 :     registerVR(tagVR_t::SB, true,  0, 0); // Non standard. Used internally for signed bytes</span>
+<span class="lineNum">      72 </span><span class="lineCov">          1 :     registerVR(tagVR_t::OD, true,  8, 0);</span>
+<span class="lineNum">      73 </span><span class="lineCov">          1 :     registerVR(tagVR_t::OF, true,  4, 0);</span>
+<span class="lineNum">      74 </span><span class="lineCov">          1 :     registerVR(tagVR_t::OL, true,  4, 0);</span>
+<span class="lineNum">      75 </span><span class="lineCov">          1 :     registerVR(tagVR_t::OW, true,  2, 0);</span>
+<span class="lineNum">      76 </span><span class="lineCov">          1 :     registerVR(tagVR_t::PN, false, 0, 64);</span>
+<span class="lineNum">      77 </span><span class="lineCov">          1 :     registerVR(tagVR_t::SH, false, 0, 16);</span>
+<span class="lineNum">      78 </span><span class="lineCov">          1 :     registerVR(tagVR_t::SL, false, 4, 0);</span>
+<span class="lineNum">      79 </span><span class="lineCov">          1 :     registerVR(tagVR_t::SQ, true,  0, 0);</span>
+<span class="lineNum">      80 </span><span class="lineCov">          1 :     registerVR(tagVR_t::SS, false, 2, 0);</span>
+<span class="lineNum">      81 </span><span class="lineCov">          1 :     registerVR(tagVR_t::ST, false, 0, 1024);</span>
+<span class="lineNum">      82 </span><span class="lineCov">          1 :     registerVR(tagVR_t::TM, false, 0, 16);</span>
+<span class="lineNum">      83 </span><span class="lineCov">          1 :     registerVR(tagVR_t::UC, true, 0, 0);</span>
+<span class="lineNum">      84 </span><span class="lineCov">          1 :     registerVR(tagVR_t::UI, false, 0, 64);</span>
+<span class="lineNum">      85 </span><span class="lineCov">          1 :     registerVR(tagVR_t::UL, false, 4, 0);</span>
+<span class="lineNum">      86 </span><span class="lineCov">          1 :     registerVR(tagVR_t::UN, true,  0, 0);</span>
+<span class="lineNum">      87 </span><span class="lineCov">          1 :     registerVR(tagVR_t::UR, true, 0, 0);</span>
+<span class="lineNum">      88 </span><span class="lineCov">          1 :     registerVR(tagVR_t::US, false, 2, 0);</span>
+<span class="lineNum">      89 </span><span class="lineCov">          1 :     registerVR(tagVR_t::UT, true, 0, 0);</span>
+<span class="lineNum">      90 </span>            :         
+<span class="lineNum">      91 </span><span class="lineCov">       4329 :     for(size_t scanDescriptions(0); m_tagsDescription[scanDescriptions].m_tagId != (std::uint32_t)0xffffffff; ++scanDescriptions)</span>
+<span class="lineNum">      92 </span>            :     {
+<span class="lineNum">      93 </span><span class="lineCov">       4328 :         registerTag(m_tagsDescription[scanDescriptions].m_tagId,</span>
+<span class="lineNum">      94 </span><span class="lineCov">       4328 :                     m_tagsDescription[scanDescriptions].m_tagMask,</span>
+<span class="lineNum">      95 </span><span class="lineCov">       4328 :                     m_tagsDescription[scanDescriptions].m_tagDescription,</span>
+<span class="lineNum">      96 </span><span class="lineCov">       4328 :                     m_tagsDescription[scanDescriptions].m_vr0, m_tagsDescription[scanDescriptions].m_vr1);</span>
+<span class="lineNum">      97 </span>            : 
+<span class="lineNum">      98 </span>            :     }
+<span class="lineNum">      99 </span>            : 
+<span class="lineNum">     100 </span><span class="lineNoCov">          0 :         IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">     101 </span><span class="lineCov">          1 : }</span>
+<span class="lineNum">     102 </span>            : 
+<span class="lineNum">     103 </span>            : 
+<span class="lineNum">     104 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     105 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     106 </span>            : //
+<span class="lineNum">     107 </span>            : //
+<span class="lineNum">     108 </span>            : // Register a tag
+<span class="lineNum">     109 </span>            : //
+<span class="lineNum">     110 </span>            : //
+<a name="111"><span class="lineNum">     111 </span>            : ///////////////////////////////////////////////////////////</a>
+<span class="lineNum">     112 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     113 </span><span class="lineCov">       4328 : void dicomDictionary::registerTag(std::uint32_t tagId, std::uint32_t tagMask, const wchar_t* tagName, tagVR_t vr0, tagVR_t vr1)</span>
+<span class="lineNum">     114 </span>            : {
+<span class="lineNum">     115 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">     116 </span>            : 
+<span class="lineNum">     117 </span><span class="lineCov">       4328 :     std::uint32_t increaseValue = 1u;</span>
+<span class="lineNum">     118 </span><span class="lineCov">       6720 :     while(tagMask != 0xffffffff &amp;&amp; (increaseValue &amp; tagMask) != 0)</span>
+<span class="lineNum">     119 </span>            :     {
+<span class="lineNum">     120 </span><span class="lineCov">       1196 :         increaseValue &lt;&lt;= 1;</span>
+<span class="lineNum">     121 </span>            :     }
+<span class="lineNum">     122 </span>            : 
+<span class="lineNum">     123 </span><span class="lineCov">     117256 :     for(std::uint32_t registerTagId(tagId); (registerTagId &amp; tagMask) == tagId; registerTagId += increaseValue)</span>
+<span class="lineNum">     124 </span>            :     {
+<span class="lineNum">     125 </span><span class="lineCov">     225856 :         imageDataDictionaryElement newElement;</span>
+<span class="lineNum">     126 </span><span class="lineCov">     112928 :         newElement.m_tagName = tagName;</span>
+<span class="lineNum">     127 </span><span class="lineCov">     112928 :         newElement.m_vr0 = vr0;</span>
+<span class="lineNum">     128 </span><span class="lineCov">     112928 :         newElement.m_vr1 = vr1;</span>
+<span class="lineNum">     129 </span><span class="lineCov">     112928 :         m_dicomDict[registerTagId] = newElement;</span>
+<span class="lineNum">     130 </span>            :     }
+<span class="lineNum">     131 </span>            : 
+<span class="lineNum">     132 </span><span class="lineNoCov">          0 :         IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">     133 </span><span class="lineCov">       4328 : }</span>
+<span class="lineNum">     134 </span>            : 
+<span class="lineNum">     135 </span>            : 
+<span class="lineNum">     136 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     137 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     138 </span>            : //
+<span class="lineNum">     139 </span>            : //
+<span class="lineNum">     140 </span>            : // Register a VR
+<span class="lineNum">     141 </span>            : //
+<span class="lineNum">     142 </span>            : //
+<a name="143"><span class="lineNum">     143 </span>            : ///////////////////////////////////////////////////////////</a>
+<span class="lineNum">     144 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     145 </span><span class="lineCov">         32 : void dicomDictionary::registerVR(tagVR_t vr, bool bLongLength, std::uint32_t wordSize, std::uint32_t maxLength)</span>
+<span class="lineNum">     146 </span>            : {
+<span class="lineNum">     147 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">     148 </span>            : 
+<span class="lineNum">     149 </span><span class="lineCov">         32 :         if(m_vrDict.find(vr) != m_vrDict.end())</span>
+<span class="lineNum">     150 </span>            :         {
+<span class="lineNum">     151 </span><span class="lineNoCov">          0 :         IMEBRA_THROW(std::logic_error, &quot;VR registered twice&quot;);</span>
+<span class="lineNum">     152 </span>            :         }
+<span class="lineNum">     153 </span>            :         validDataTypesStruct newElement;
+<span class="lineNum">     154 </span><span class="lineCov">         32 :         newElement.m_longLength = bLongLength;</span>
+<span class="lineNum">     155 </span><span class="lineCov">         32 :         newElement.m_wordLength = wordSize;</span>
+<span class="lineNum">     156 </span><span class="lineCov">         32 :         newElement.m_maxLength = maxLength;</span>
+<span class="lineNum">     157 </span>            : 
+<span class="lineNum">     158 </span><span class="lineCov">         32 :         m_vrDict[vr] = newElement;</span>
+<span class="lineNum">     159 </span>            : 
+<span class="lineNum">     160 </span><span class="lineNoCov">          0 :         IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">     161 </span><span class="lineCov">         32 : }</span>
+<span class="lineNum">     162 </span>            : 
+<span class="lineNum">     163 </span>            : 
+<span class="lineNum">     164 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     165 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     166 </span>            : //
+<span class="lineNum">     167 </span>            : //
+<span class="lineNum">     168 </span>            : // Return an human readable name for the tag
+<span class="lineNum">     169 </span>            : //
+<span class="lineNum">     170 </span>            : //
+<a name="171"><span class="lineNum">     171 </span>            : ///////////////////////////////////////////////////////////</a>
+<span class="lineNum">     172 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     173 </span><span class="lineCov">        259 : std::wstring dicomDictionary::getTagName(std::uint16_t groupId, std::uint16_t tagId) const</span>
+<span class="lineNum">     174 </span>            : {
+<span class="lineNum">     175 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">     176 </span>            : 
+<span class="lineNum">     177 </span><span class="lineCov">        259 :         std::uint32_t tagDWordId=(((std::uint32_t)groupId)&lt;&lt;16) | (std::uint32_t)tagId;</span>
+<span class="lineNum">     178 </span>            : 
+<span class="lineNum">     179 </span><span class="lineCov">        259 :         tDicomDictionary::const_iterator findIterator = m_dicomDict.find(tagDWordId);</span>
+<span class="lineNum">     180 </span><span class="lineCov">        259 :         if(findIterator == m_dicomDict.end())</span>
+<span class="lineNum">     181 </span>            :         {
+<span class="lineNum">     182 </span><span class="lineCov">          1 :         IMEBRA_THROW(DictionaryUnknownTagError, &quot;Unknown tag &quot; &lt;&lt; std::hex &lt;&lt; groupId &lt;&lt; &quot;, &quot; &lt;&lt; std::hex &lt;&lt; tagId);</span>
+<span class="lineNum">     183 </span>            :         }
+<span class="lineNum">     184 </span>            :         
+<span class="lineNum">     185 </span><span class="lineCov">        258 :         return findIterator-&gt;second.m_tagName;</span>
+<span class="lineNum">     186 </span>            : 
+<span class="lineNum">     187 </span><span class="lineCov">          1 :         IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">     188 </span>            : }
+<span class="lineNum">     189 </span>            : 
+<span class="lineNum">     190 </span>            : 
+<span class="lineNum">     191 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     192 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     193 </span>            : //
+<span class="lineNum">     194 </span>            : //
+<span class="lineNum">     195 </span>            : // Return the default type for the specified tag
+<span class="lineNum">     196 </span>            : //
+<span class="lineNum">     197 </span>            : //
+<a name="198"><span class="lineNum">     198 </span>            : ///////////////////////////////////////////////////////////</a>
+<span class="lineNum">     199 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     200 </span><span class="lineCov">     246435 : tagVR_t dicomDictionary::getTagType(std::uint16_t groupId, std::uint16_t tagId) const</span>
+<span class="lineNum">     201 </span>            : {
+<span class="lineNum">     202 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">     203 </span>            : 
+<span class="lineNum">     204 </span><span class="lineCov">     246435 :         std::uint32_t tagDWordId=(((std::uint32_t)groupId)&lt;&lt;16) | (std::uint32_t)tagId;</span>
+<span class="lineNum">     205 </span>            : 
+<span class="lineNum">     206 </span><span class="lineCov">     246435 :         tDicomDictionary::const_iterator findIterator = m_dicomDict.find(tagDWordId);</span>
+<span class="lineNum">     207 </span><span class="lineCov">     246732 :     if(findIterator == m_dicomDict.end())</span>
+<span class="lineNum">     208 </span>            :         {
+<span class="lineNum">     209 </span><span class="lineCov">          1 :         IMEBRA_THROW(DictionaryUnknownTagError, &quot;Unknown tag &quot; &lt;&lt; std::hex &lt;&lt; groupId &lt;&lt; &quot;, &quot; &lt;&lt; std::hex &lt;&lt; tagId);</span>
+<span class="lineNum">     210 </span>            :     }
+<span class="lineNum">     211 </span>            : 
+<span class="lineNum">     212 </span><span class="lineCov">     246608 :     return findIterator-&gt;second.m_vr0;</span>
+<span class="lineNum">     213 </span>            : 
+<span class="lineNum">     214 </span><span class="lineCov">          1 :         IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">     215 </span>            : }
+<a name="216"><span class="lineNum">     216 </span>            : </a>
+<span class="lineNum">     217 </span>            : 
+<span class="lineNum">     218 </span><span class="lineNoCov">          0 : bool dicomDictionary::isDataTypeValid(const std::string&amp; dataType) const</span>
+<span class="lineNum">     219 </span>            : {
+<span class="lineNum">     220 </span>            :     try
+<span class="lineNum">     221 </span>            :     {
+<span class="lineNum">     222 </span><span class="lineNoCov">          0 :         stringDataTypeToEnum(dataType);</span>
+<span class="lineNum">     223 </span><span class="lineNoCov">          0 :         return true;</span>
+<span class="lineNum">     224 </span>            :     }
+<span class="lineNum">     225 </span><span class="lineNoCov">          0 :     catch(const DictionaryUnknownDataTypeError&amp;)</span>
+<span class="lineNum">     226 </span>            :     {
+<span class="lineNum">     227 </span><span class="lineNoCov">          0 :         return false;</span>
+<span class="lineNum">     228 </span>            :     }
+<span class="lineNum">     229 </span>            : }
+<a name="230"><span class="lineNum">     230 </span>            : </a>
+<span class="lineNum">     231 </span>            : 
+<span class="lineNum">     232 </span><span class="lineCov">     122786 : tagVR_t dicomDictionary::stringDataTypeToEnum(const std::string&amp; dataType) const</span>
+<span class="lineNum">     233 </span>            : {
+<span class="lineNum">     234 </span><span class="lineCov">     122786 :     std::uint16_t enumVR = MAKE_VR_ENUM(dataType);</span>
+<span class="lineNum">     235 </span>            : 
+<span class="lineNum">     236 </span><span class="lineCov">     122839 :     if(m_vrDict.find((tagVR_t)enumVR) == m_vrDict.end())</span>
+<span class="lineNum">     237 </span>            :     {
+<span class="lineNum">     238 </span><span class="lineNoCov">          0 :         IMEBRA_THROW(DictionaryUnknownDataTypeError, &quot;Unknown data type &quot; &lt;&lt; dataType);</span>
+<span class="lineNum">     239 </span>            :     }
+<span class="lineNum">     240 </span>            : 
+<span class="lineNum">     241 </span><span class="lineCov">     122834 :     return (tagVR_t)enumVR;</span>
+<span class="lineNum">     242 </span>            : }
+<a name="243"><span class="lineNum">     243 </span>            : </a>
+<span class="lineNum">     244 </span>            : 
+<span class="lineNum">     245 </span><span class="lineCov">     116323 : std::string dicomDictionary::enumDataTypeToString(tagVR_t dataType) const</span>
+<span class="lineNum">     246 </span>            : {
+<span class="lineNum">     247 </span><span class="lineCov">     116323 :     std::string returnType((size_t)2, ' ');</span>
+<span class="lineNum">     248 </span><span class="lineCov">     116346 :     returnType[0] = (char)(((std::uint16_t)dataType &gt;&gt; 8) &amp; 0xff);</span>
+<span class="lineNum">     249 </span><span class="lineCov">     116342 :     returnType[1] = (char)((std::uint16_t)dataType &amp; 0xff);</span>
+<span class="lineNum">     250 </span>            : 
+<span class="lineNum">     251 </span><span class="lineCov">     116338 :     return returnType;</span>
+<span class="lineNum">     252 </span>            : }
+<span class="lineNum">     253 </span>            : 
+<span class="lineNum">     254 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     255 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     256 </span>            : //
+<span class="lineNum">     257 </span>            : //
+<span class="lineNum">     258 </span>            : // Return true if the specified data type must use a 
+<span class="lineNum">     259 </span>            : //  long length descriptor
+<span class="lineNum">     260 </span>            : //
+<span class="lineNum">     261 </span>            : //
+<a name="262"><span class="lineNum">     262 </span>            : ///////////////////////////////////////////////////////////</a>
+<span class="lineNum">     263 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     264 </span><span class="lineCov">     707601 : bool dicomDictionary::getLongLength(tagVR_t dataType) const</span>
+<span class="lineNum">     265 </span>            : {
+<span class="lineNum">     266 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">     267 </span>            : 
+<span class="lineNum">     268 </span><span class="lineCov">     707601 :         tVRDictionary::const_iterator findIterator = m_vrDict.find(dataType);</span>
+<span class="lineNum">     269 </span>            : 
+<span class="lineNum">     270 </span><span class="lineCov">     707661 :         if(findIterator == m_vrDict.end())</span>
+<span class="lineNum">     271 </span>            :         {
+<span class="lineNum">     272 </span><span class="lineCov">         28 :                 return false;</span>
+<span class="lineNum">     273 </span>            :         }
+<span class="lineNum">     274 </span>            : 
+<span class="lineNum">     275 </span><span class="lineCov">     707651 :         return findIterator-&gt;second.m_longLength;</span>
+<span class="lineNum">     276 </span>            : 
+<span class="lineNum">     277 </span><span class="lineNoCov">          0 :         IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">     278 </span>            :         
+<span class="lineNum">     279 </span>            : }
+<span class="lineNum">     280 </span>            : 
+<span class="lineNum">     281 </span>            : 
+<span class="lineNum">     282 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     283 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     284 </span>            : //
+<span class="lineNum">     285 </span>            : //
+<span class="lineNum">     286 </span>            : // Return the word size for the specified data type
+<span class="lineNum">     287 </span>            : //
+<span class="lineNum">     288 </span>            : //
+<a name="289"><span class="lineNum">     289 </span>            : ///////////////////////////////////////////////////////////</a>
+<span class="lineNum">     290 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     291 </span><span class="lineCov">     465341 : std::uint32_t dicomDictionary::getWordSize(tagVR_t dataType) const</span>
+<span class="lineNum">     292 </span>            : {
+<span class="lineNum">     293 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">     294 </span>            : 
+<span class="lineNum">     295 </span><span class="lineCov">     465341 :         tVRDictionary::const_iterator findIterator = m_vrDict.find(dataType);</span>
+<span class="lineNum">     296 </span>            : 
+<span class="lineNum">     297 </span><span class="lineCov">     465666 :         if(findIterator == m_vrDict.end())</span>
+<span class="lineNum">     298 </span>            :         {
+<span class="lineNum">     299 </span><span class="lineNoCov">          0 :         IMEBRA_THROW(DictionaryUnknownDataTypeError, &quot;Unregistered data type&quot; &lt;&lt; (std::uint16_t)dataType);</span>
+<span class="lineNum">     300 </span>            :     }
+<span class="lineNum">     301 </span>            : 
+<span class="lineNum">     302 </span><span class="lineCov">     465581 :         return findIterator-&gt;second.m_wordLength;</span>
+<span class="lineNum">     303 </span>            : 
+<span class="lineNum">     304 </span><span class="lineNoCov">          0 :         IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">     305 </span>            : }
+<span class="lineNum">     306 </span>            : 
+<span class="lineNum">     307 </span>            : 
+<span class="lineNum">     308 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     309 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     310 </span>            : //
+<span class="lineNum">     311 </span>            : //
+<span class="lineNum">     312 </span>            : // Return the max size in bytes for the specified data
+<span class="lineNum">     313 </span>            : //  type
+<span class="lineNum">     314 </span>            : //
+<span class="lineNum">     315 </span>            : //
+<a name="316"><span class="lineNum">     316 </span>            : ///////////////////////////////////////////////////////////</a>
+<span class="lineNum">     317 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     318 </span><span class="lineCov">          1 : std::uint32_t dicomDictionary::getMaxSize(tagVR_t dataType) const</span>
+<span class="lineNum">     319 </span>            : {
+<span class="lineNum">     320 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">     321 </span>            : 
+<span class="lineNum">     322 </span><span class="lineCov">          1 :         tVRDictionary::const_iterator findIterator = m_vrDict.find(dataType);</span>
+<span class="lineNum">     323 </span>            : 
+<span class="lineNum">     324 </span><span class="lineCov">          1 :         if(findIterator == m_vrDict.end())</span>
+<span class="lineNum">     325 </span>            :         {
+<span class="lineNum">     326 </span><span class="lineNoCov">          0 :         IMEBRA_THROW(DictionaryUnknownDataTypeError, &quot;Unregistered data type &quot; &lt;&lt; (std::uint16_t)dataType);</span>
+<span class="lineNum">     327 </span>            :     }
+<span class="lineNum">     328 </span>            : 
+<span class="lineNum">     329 </span><span class="lineCov">          1 :         return findIterator-&gt;second.m_maxLength;</span>
+<span class="lineNum">     330 </span>            : 
+<span class="lineNum">     331 </span><span class="lineNoCov">          0 :         IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">     332 </span>            : }
+<span class="lineNum">     333 </span>            : 
+<span class="lineNum">     334 </span>            : 
+<span class="lineNum">     335 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     336 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     337 </span>            : //
+<span class="lineNum">     338 </span>            : //
+<span class="lineNum">     339 </span>            : // Return a pointer to the unique instance of
+<span class="lineNum">     340 </span>            : //  dicomDictionary
+<span class="lineNum">     341 </span>            : //
+<span class="lineNum">     342 </span>            : //
+<a name="343"><span class="lineNum">     343 </span>            : ///////////////////////////////////////////////////////////</a>
+<span class="lineNum">     344 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     345 </span><span class="lineCov">    1657279 : dicomDictionary* dicomDictionary::getDicomDictionary()</span>
+<span class="lineNum">     346 </span>            : {
+<span class="lineNum">     347 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">     348 </span>            : 
+<span class="lineNum">     349 </span><span class="lineCov">    1657279 :     static dicomDictionary m_imbxDicomDictionary;</span>
+<span class="lineNum">     350 </span><span class="lineCov">    1657684 :         return &amp;m_imbxDicomDictionary;</span>
+<span class="lineNum">     351 </span>            : 
+<span class="lineNum">     352 </span><span class="lineNoCov">          0 :     IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">     353 </span>            : }
+<span class="lineNum">     354 </span>            : 
+<span class="lineNum">     355 </span>            : 
+<span class="lineNum">     356 </span>            : } // namespace implementation
+<span class="lineNum">     357 </span>            : 
+<span class="lineNum">     358 </span>            : } // namespace imebra
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.13</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

@@ -1,0 +1,1085 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - extracted.info - library/implementation/dataHandlerNumericImpl.h</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">library/implementation</a> - dataHandlerNumericImpl.h<span style="font-size: 80%;"> (source / <a href="dataHandlerNumericImpl.h.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">extracted.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">217</td>
+            <td class="headerCovTableEntry">254</td>
+            <td class="headerCovTableEntryMed">85.4 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2019-03-13 14:48:54</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">434</td>
+            <td class="headerCovTableEntry">482</td>
+            <td class="headerCovTableEntryHi">90.0 %</td>
+          </tr>
+          <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : /*</a>
+<span class="lineNum">       2 </span>            : Copyright 2005 - 2017 by Paolo Brandoli/Binarno s.p.
+<span class="lineNum">       3 </span>            : 
+<span class="lineNum">       4 </span>            : Imebra is available for free under the GNU General Public License.
+<span class="lineNum">       5 </span>            : 
+<span class="lineNum">       6 </span>            : The full text of the license is available in the file license.rst
+<span class="lineNum">       7 </span>            :  in the project root folder.
+<span class="lineNum">       8 </span>            : 
+<span class="lineNum">       9 </span>            : If you do not want to be bound by the GPL terms (such as the requirement 
+<span class="lineNum">      10 </span>            :  that your application must also be GPL), you may purchase a commercial 
+<span class="lineNum">      11 </span>            :  license for Imebra from the Imebra’s website (http://imebra.com).
+<span class="lineNum">      12 </span>            : */
+<span class="lineNum">      13 </span>            : 
+<span class="lineNum">      14 </span>            : /*! \file dataHandlerNumeric.h
+<span class="lineNum">      15 </span>            :     \brief Declaration of the handler for the numeric tags.
+<span class="lineNum">      16 </span>            : 
+<span class="lineNum">      17 </span>            : */
+<span class="lineNum">      18 </span>            : 
+<span class="lineNum">      19 </span>            : #if !defined(imebraDataHandlerNumeric_BD270581_5746_48d1_816E_64B700955A12__INCLUDED_)
+<span class="lineNum">      20 </span>            : #define imebraDataHandlerNumeric_BD270581_5746_48d1_816E_64B700955A12__INCLUDED_
+<span class="lineNum">      21 </span>            : 
+<span class="lineNum">      22 </span>            : #include &lt;sstream&gt;
+<span class="lineNum">      23 </span>            : #include &lt;iomanip&gt;
+<span class="lineNum">      24 </span>            : #include &lt;type_traits&gt;
+<span class="lineNum">      25 </span>            : #include &lt;numeric&gt;
+<span class="lineNum">      26 </span>            : #include &quot;../include/imebra/exceptions.h&quot;
+<span class="lineNum">      27 </span>            : #include &quot;exceptionImpl.h&quot;
+<span class="lineNum">      28 </span>            : #include &quot;dataHandlerImpl.h&quot;
+<span class="lineNum">      29 </span>            : #include &quot;memoryImpl.h&quot;
+<span class="lineNum">      30 </span>            : #include &quot;charsetConversionImpl.h&quot;
+<span class="lineNum">      31 </span>            : 
+<span class="lineNum">      32 </span>            : 
+<span class="lineNum">      33 </span>            : namespace imebra
+<span class="lineNum">      34 </span>            : {
+<span class="lineNum">      35 </span>            : 
+<span class="lineNum">      36 </span>            : namespace implementation
+<span class="lineNum">      37 </span>            : {
+<span class="lineNum">      38 </span>            : 
+<span class="lineNum">      39 </span>            : namespace handlers
+<span class="lineNum">      40 </span>            : {
+<span class="lineNum">      41 </span>            : 
+<span class="lineNum">      42 </span>            : class writingDataHandlerNumericBase;
+<span class="lineNum">      43 </span>            : 
+<span class="lineNum">      44 </span>            : /// \brief This is the base class for the %data handlers
+<span class="lineNum">      45 </span>            : ///         that manage numeric values.
+<a name="46"><span class="lineNum">      46 </span>            : ///</a>
+<span class="lineNum">      47 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">      48 </span><span class="lineCov">     800839 : class readingDataHandlerNumericBase: public readingDataHandler</span>
+<span class="lineNum">      49 </span>            : {
+<span class="lineNum">      50 </span>            : public:
+<span class="lineNum">      51 </span>            :     readingDataHandlerNumericBase(const std::shared_ptr&lt;const memory&gt;&amp; pMemory, tagVR_t dataType);
+<span class="lineNum">      52 </span>            : 
+<span class="lineNum">      53 </span>            :     const std::uint8_t* getMemoryBuffer() const;
+<span class="lineNum">      54 </span>            : 
+<span class="lineNum">      55 </span>            :     size_t getMemorySize() const;
+<span class="lineNum">      56 </span>            : 
+<span class="lineNum">      57 </span>            :     std::shared_ptr&lt;const memory&gt; getMemory() const;
+<span class="lineNum">      58 </span>            : 
+<span class="lineNum">      59 </span>            :     virtual void copyTo(std::shared_ptr&lt;writingDataHandlerNumericBase&gt; pDestination);
+<span class="lineNum">      60 </span>            :     virtual void copyTo(std::uint8_t* pMemory, size_t memorySize) const = 0;
+<span class="lineNum">      61 </span>            :     virtual void copyTo(std::int8_t* pMemory, size_t memorySize) const = 0;
+<span class="lineNum">      62 </span>            :     virtual void copyTo(std::uint16_t* pMemory, size_t memorySize) const = 0;
+<span class="lineNum">      63 </span>            :     virtual void copyTo(std::int16_t* pMemory, size_t memorySize) const = 0;
+<span class="lineNum">      64 </span>            :     virtual void copyTo(std::uint32_t* pMemory, size_t memorySize) const = 0;
+<span class="lineNum">      65 </span>            :     virtual void copyTo(std::int32_t* pMemory, size_t memorySize) const = 0;
+<span class="lineNum">      66 </span>            :     virtual void copyTo(float* pMemory, size_t memorySize) const = 0;
+<span class="lineNum">      67 </span>            :     virtual void copyTo(double* pMemory, size_t memorySize) const = 0;
+<span class="lineNum">      68 </span>            : 
+<span class="lineNum">      69 </span>            :         virtual void copyToInt32Interleaved(std::int32_t* pDest,
+<span class="lineNum">      70 </span>            :                                                                                 std::uint32_t destSubSampleX,
+<span class="lineNum">      71 </span>            :                                                                                 std::uint32_t destSubSampleY,
+<span class="lineNum">      72 </span>            :                                                                                 std::uint32_t sourceStartCol,
+<span class="lineNum">      73 </span>            :                                                                                 std::uint32_t sourceStartRow,
+<span class="lineNum">      74 </span>            :                                                                                 std::uint32_t sourceEndCol,
+<span class="lineNum">      75 </span>            :                                                                                 std::uint32_t sourceEndRow,
+<span class="lineNum">      76 </span>            :                                                                                 std::uint32_t sourceStartChannel,
+<span class="lineNum">      77 </span>            :                                                                                 std::uint32_t sourceWidth,
+<span class="lineNum">      78 </span>            :                                                                                 std::uint32_t sourceHeight,
+<span class="lineNum">      79 </span>            :                                                                                 std::uint32_t sourceNumChannels) const = 0;
+<span class="lineNum">      80 </span>            : 
+<span class="lineNum">      81 </span>            :         /// \brief Returns truen if the buffer's elements are
+<span class="lineNum">      82 </span>            :         ///         signed, false otherwise.
+<span class="lineNum">      83 </span>            :         ///
+<span class="lineNum">      84 </span>            :         /// @return true if the buffer's elements are signed,
+<span class="lineNum">      85 </span>            :         ///          or false otherwise
+<span class="lineNum">      86 </span>            :         ///
+<span class="lineNum">      87 </span>            :         ///////////////////////////////////////////////////////////
+<span class="lineNum">      88 </span>            :         virtual bool isSigned() const = 0;
+<span class="lineNum">      89 </span>            : 
+<span class="lineNum">      90 </span>            :     virtual bool isFloat() const = 0;
+<span class="lineNum">      91 </span>            : 
+<span class="lineNum">      92 </span>            :     virtual size_t getUnitSize() const = 0;
+<span class="lineNum">      93 </span>            : 
+<span class="lineNum">      94 </span>            : protected:
+<span class="lineNum">      95 </span>            :         // Memory buffer
+<span class="lineNum">      96 </span>            :         ///////////////////////////////////////////////////////////
+<span class="lineNum">      97 </span>            :     std::shared_ptr&lt;const memory&gt; m_pMemory;
+<span class="lineNum">      98 </span>            : };
+<span class="lineNum">      99 </span>            : 
+<span class="lineNum">     100 </span>            : class writingDataHandlerNumericBase: public writingDataHandler
+<span class="lineNum">     101 </span>            : {
+<span class="lineNum">     102 </span>            : public:
+<span class="lineNum">     103 </span>            :     writingDataHandlerNumericBase(const std::shared_ptr&lt;buffer&gt;&amp; pBuffer, const size_t initialSize, tagVR_t dataType, size_t unitSize);
+<span class="lineNum">     104 </span>            :     ~writingDataHandlerNumericBase();
+<span class="lineNum">     105 </span>            : 
+<span class="lineNum">     106 </span>            :     std::uint8_t* getMemoryBuffer() const;
+<span class="lineNum">     107 </span>            : 
+<span class="lineNum">     108 </span>            :     size_t getMemorySize() const;
+<span class="lineNum">     109 </span>            : 
+<span class="lineNum">     110 </span>            :     virtual size_t getSize() const override;
+<span class="lineNum">     111 </span>            : 
+<span class="lineNum">     112 </span>            :     std::shared_ptr&lt;memory&gt; getMemory() const;
+<span class="lineNum">     113 </span>            : 
+<span class="lineNum">     114 </span>            :     // Set the buffer's size, in data elements
+<span class="lineNum">     115 </span>            :     ///////////////////////////////////////////////////////////
+<span class="lineNum">     116 </span>            :     virtual void setSize(const size_t elementsNumber) override;
+<span class="lineNum">     117 </span>            : 
+<span class="lineNum">     118 </span>            :     virtual void copyFromInt32Interleaved(const std::int32_t* pSource,
+<span class="lineNum">     119 </span>            :                                           std::uint32_t sourceReplicateX,
+<span class="lineNum">     120 </span>            :                                           std::uint32_t sourceReplicateY,
+<span class="lineNum">     121 </span>            :                                           std::uint32_t destStartCol,
+<span class="lineNum">     122 </span>            :                                           std::uint32_t destStartRow,
+<span class="lineNum">     123 </span>            :                                           std::uint32_t destEndCol,
+<span class="lineNum">     124 </span>            :                                           std::uint32_t destEndRow,
+<span class="lineNum">     125 </span>            :                                           std::uint32_t destStartChannel,
+<span class="lineNum">     126 </span>            :                                           std::uint32_t destWidth,
+<span class="lineNum">     127 </span>            :                                           std::uint32_t destHeight,
+<span class="lineNum">     128 </span>            :                                           std::uint32_t destNumChannels) = 0;
+<span class="lineNum">     129 </span>            : 
+<span class="lineNum">     130 </span>            :     void copyFrom(std::shared_ptr&lt;readingDataHandlerNumericBase&gt; pSource);
+<span class="lineNum">     131 </span>            : 
+<span class="lineNum">     132 </span>            :     virtual void copyFrom(std::uint8_t* pMemory, size_t memorySize) = 0;
+<span class="lineNum">     133 </span>            :     virtual void copyFrom(std::int8_t* pMemory, size_t memorySize) = 0;
+<span class="lineNum">     134 </span>            :     virtual void copyFrom(std::uint16_t* pMemory, size_t memorySize) = 0;
+<span class="lineNum">     135 </span>            :     virtual void copyFrom(std::int16_t* pMemory, size_t memorySize) = 0;
+<span class="lineNum">     136 </span>            :     virtual void copyFrom(std::uint32_t* pMemory, size_t memorySize) = 0;
+<span class="lineNum">     137 </span>            :     virtual void copyFrom(std::int32_t* pMemory, size_t memorySize) = 0;
+<span class="lineNum">     138 </span>            :     virtual void copyFrom(float* pMemory, size_t memorySize) = 0;
+<span class="lineNum">     139 </span>            :     virtual void copyFrom(double* pMemory, size_t memorySize) = 0;
+<span class="lineNum">     140 </span>            : 
+<span class="lineNum">     141 </span>            :     virtual bool isSigned() const = 0;
+<span class="lineNum">     142 </span>            : 
+<span class="lineNum">     143 </span>            :     virtual bool isFloat() const = 0;
+<span class="lineNum">     144 </span>            : 
+<span class="lineNum">     145 </span>            :     virtual size_t getUnitSize() const = 0;
+<span class="lineNum">     146 </span>            : 
+<span class="lineNum">     147 </span>            : protected:
+<span class="lineNum">     148 </span>            :     // Memory buffer
+<span class="lineNum">     149 </span>            :     ///////////////////////////////////////////////////////////
+<span class="lineNum">     150 </span>            :     std::shared_ptr&lt;memory&gt; m_pMemory;
+<span class="lineNum">     151 </span>            : };
+<span class="lineNum">     152 </span>            : 
+<span class="lineNum">     153 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     154 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     155 </span>            : /// \brief This data handler accesses to the numeric data
+<span class="lineNum">     156 </span>            : ///         stored in a imebra::implementation::buffer class.
+<span class="lineNum">     157 </span>            : ///
+<span class="lineNum">     158 </span>            : /// A special definition of this class
+<span class="lineNum">     159 </span>            : ///  (imebra::implementation::handlers::imageHandler) is used
+<span class="lineNum">     160 </span>            : ///  to access to the images' raw pixels.
+<span class="lineNum">     161 </span>            : ///
+<span class="lineNum">     162 </span>            : ///////////////////////////////////////////////////////////
+<a name="163"><span class="lineNum">     163 </span>            : ///////////////////////////////////////////////////////////</a>
+<span class="lineNum">     164 </span>            : template&lt;class dataHandlerType&gt;
+<span class="lineNum">     165 </span><span class="lineCov">     801516 : class readingDataHandlerNumeric : public readingDataHandlerNumericBase</span>
+<span class="lineNum">     166 </span>            : {
+<span class="lineNum">     167 </span>            : public:
+<a name="168"><span class="lineNum">     168 </span>            :     typedef dataHandlerType value_type;</a>
+<span class="lineNum">     169 </span>            : 
+<span class="lineNum">     170 </span><span class="lineCov">     800798 :     readingDataHandlerNumeric(const std::shared_ptr&lt;const memory&gt;&amp; pMemory, tagVR_t dataType): readingDataHandlerNumericBase(pMemory, dataType)</span>
+<span class="lineNum">     171 </span>            :     {
+<span class="lineNum">     172 </span>            : 
+<a name="173"><span class="lineNum">     173 </span><span class="lineCov">     803249 :     }</span></a>
+<span class="lineNum">     174 </span>            : 
+<span class="lineNum">     175 </span><span class="lineNoCov">          0 :         virtual bool isSigned() const</span>
+<span class="lineNum">     176 </span>            :         {
+<span class="lineNum">     177 </span>            :         IMEBRA_FUNCTION_START();
+<span class="lineNum">     178 </span>            : 
+<span class="lineNum">     179 </span><span class="lineNoCov">          0 :                 dataHandlerType firstValue((dataHandlerType) -1);</span>
+<span class="lineNum">     180 </span><span class="lineNoCov">          0 :                 dataHandlerType secondValue((dataHandlerType) 0);</span>
+<span class="lineNum">     181 </span><span class="lineNoCov">          0 :                 return firstValue &lt; secondValue;</span>
+<span class="lineNum">     182 </span>            : 
+<span class="lineNum">     183 </span>            :         IMEBRA_FUNCTION_END();
+<a name="184"><span class="lineNum">     184 </span>            :     }</a>
+<span class="lineNum">     185 </span>            : 
+<span class="lineNum">     186 </span><span class="lineCov">         14 :     virtual bool isFloat() const</span>
+<span class="lineNum">     187 </span>            :     {
+<span class="lineNum">     188 </span>            :         IMEBRA_FUNCTION_START();
+<span class="lineNum">     189 </span>            : 
+<span class="lineNum">     190 </span><span class="lineCov">         14 :         return !std::numeric_limits&lt;dataHandlerType&gt;::is_integer;</span>
+<span class="lineNum">     191 </span>            : 
+<span class="lineNum">     192 </span>            :         IMEBRA_FUNCTION_END();
+<a name="193"><span class="lineNum">     193 </span>            :     }</a>
+<span class="lineNum">     194 </span>            : 
+<span class="lineNum">     195 </span><span class="lineCov">         12 :     virtual size_t getUnitSize() const</span>
+<span class="lineNum">     196 </span>            :     {
+<span class="lineNum">     197 </span>            :         IMEBRA_FUNCTION_START();
+<span class="lineNum">     198 </span>            : 
+<span class="lineNum">     199 </span><span class="lineCov">         12 :         return sizeof(dataHandlerType);</span>
+<span class="lineNum">     200 </span>            : 
+<span class="lineNum">     201 </span>            :         IMEBRA_FUNCTION_END();
+<span class="lineNum">     202 </span>            :     }
+<span class="lineNum">     203 </span>            : 
+<a name="204"><span class="lineNum">     204 </span>            :         // Retrieve the data element as a signed long</a>
+<span class="lineNum">     205 </span>            :         ///////////////////////////////////////////////////////////
+<span class="lineNum">     206 </span><span class="lineCov">    2946904 :     virtual std::int32_t getSignedLong(const size_t index) const</span>
+<span class="lineNum">     207 </span>            :         {
+<span class="lineNum">     208 </span>            :         IMEBRA_FUNCTION_START();
+<span class="lineNum">     209 </span>            : 
+<span class="lineNum">     210 </span><span class="lineCov">    2946904 :         if(index &gt;= getSize())</span>
+<span class="lineNum">     211 </span>            :         {
+<span class="lineNum">     212 </span><span class="lineCov">         14 :             IMEBRA_THROW(MissingItemError, &quot;Missing item &quot; &lt;&lt; index);</span>
+<span class="lineNum">     213 </span>            :         }
+<span class="lineNum">     214 </span><span class="lineCov">    2946890 :         return (std::int32_t) (((const dataHandlerType*)m_pMemory-&gt;data())[index]);</span>
+<span class="lineNum">     215 </span>            : 
+<span class="lineNum">     216 </span><span class="lineCov">         14 :         IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">     217 </span>            :     }
+<span class="lineNum">     218 </span>            : 
+<a name="219"><span class="lineNum">     219 </span>            :         // Retrieve the data element an unsigned long</a>
+<span class="lineNum">     220 </span>            :         ///////////////////////////////////////////////////////////
+<span class="lineNum">     221 </span><span class="lineCov">   53329525 :     virtual std::uint32_t getUnsignedLong(const size_t index) const</span>
+<span class="lineNum">     222 </span>            :         {
+<span class="lineNum">     223 </span>            :         IMEBRA_FUNCTION_START();
+<span class="lineNum">     224 </span>            : 
+<span class="lineNum">     225 </span><span class="lineCov">   53329525 :         if(index &gt;= getSize())</span>
+<span class="lineNum">     226 </span>            :         {
+<span class="lineNum">     227 </span><span class="lineCov">       3686 :             IMEBRA_THROW(MissingItemError, &quot;Missing item &quot; &lt;&lt; index);</span>
+<span class="lineNum">     228 </span>            :         }
+<span class="lineNum">     229 </span><span class="lineCov">   53323905 :         return (std::uint32_t) (((const dataHandlerType*)m_pMemory-&gt;data())[index]);</span>
+<span class="lineNum">     230 </span>            : 
+<span class="lineNum">     231 </span><span class="lineCov">       3686 :         IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">     232 </span>            :     }
+<span class="lineNum">     233 </span>            : 
+<a name="234"><span class="lineNum">     234 </span>            :         // Retrieve the data element as a double</a>
+<span class="lineNum">     235 </span>            :         ///////////////////////////////////////////////////////////
+<span class="lineNum">     236 </span><span class="lineCov">      11630 :     virtual double getDouble(const size_t index) const</span>
+<span class="lineNum">     237 </span>            :         {
+<span class="lineNum">     238 </span>            :         IMEBRA_FUNCTION_START();
+<span class="lineNum">     239 </span>            : 
+<span class="lineNum">     240 </span><span class="lineCov">      11630 :         if(index &gt;= getSize())</span>
+<span class="lineNum">     241 </span>            :         {
+<span class="lineNum">     242 </span><span class="lineCov">         14 :             IMEBRA_THROW(MissingItemError, &quot;Missing item &quot; &lt;&lt; index);</span>
+<span class="lineNum">     243 </span>            :         }
+<span class="lineNum">     244 </span><span class="lineCov">      11616 :         return (double) (((const dataHandlerType*)m_pMemory-&gt;data())[index]);</span>
+<span class="lineNum">     245 </span>            : 
+<span class="lineNum">     246 </span><span class="lineCov">         14 :         IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">     247 </span>            :     }
+<span class="lineNum">     248 </span>            : 
+<a name="249"><span class="lineNum">     249 </span>            :         // Retrieve the data element as a string</a>
+<span class="lineNum">     250 </span>            :         ///////////////////////////////////////////////////////////
+<span class="lineNum">     251 </span><span class="lineCov">        224 :     virtual std::string getString(const size_t index) const</span>
+<span class="lineNum">     252 </span>            :         {
+<span class="lineNum">     253 </span>            :         IMEBRA_FUNCTION_START();
+<span class="lineNum">     254 </span>            : 
+<span class="lineNum">     255 </span><span class="lineCov">        224 :         if(index &gt;= getSize())</span>
+<span class="lineNum">     256 </span>            :         {
+<span class="lineNum">     257 </span><span class="lineCov">         28 :             IMEBRA_THROW(MissingItemError, &quot;Missing item &quot; &lt;&lt; index);</span>
+<span class="lineNum">     258 </span>            :         }
+<span class="lineNum">     259 </span>            : 
+<span class="lineNum">     260 </span><span class="lineCov">        392 :         std::ostringstream convStream;</span>
+<span class="lineNum">     261 </span>            : 
+<span class="lineNum">     262 </span>            :         if(std::is_same&lt;dataHandlerType, std::uint8_t&gt;::value ||
+<span class="lineNum">     263 </span>            :                 std::is_same&lt;dataHandlerType, std::int8_t&gt;::value )
+<span class="lineNum">     264 </span>            :         {
+<span class="lineNum">     265 </span><span class="lineCov">         42 :             int tempValue = (int) (((const dataHandlerType*)m_pMemory-&gt;data())[index]);</span>
+<span class="lineNum">     266 </span><span class="lineCov">         42 :             convStream &lt;&lt; tempValue;</span>
+<span class="lineNum">     267 </span>            :         }
+<span class="lineNum">     268 </span>            :         else
+<span class="lineNum">     269 </span>            :         {
+<span class="lineNum">     270 </span><span class="lineCov">        154 :             convStream &lt;&lt; (((const dataHandlerType*)m_pMemory-&gt;data())[index]);</span>
+<span class="lineNum">     271 </span>            :         }
+<span class="lineNum">     272 </span><span class="lineCov">        392 :                 return convStream.str();</span>
+<span class="lineNum">     273 </span>            : 
+<span class="lineNum">     274 </span><span class="lineCov">         28 :                 IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">     275 </span>            :         }
+<span class="lineNum">     276 </span>            : 
+<a name="277"><span class="lineNum">     277 </span>            :         // Retrieve the data element as a unicode string</a>
+<span class="lineNum">     278 </span>            :         ///////////////////////////////////////////////////////////
+<span class="lineNum">     279 </span><span class="lineCov">         98 :     virtual std::wstring getUnicodeString(const size_t index) const</span>
+<span class="lineNum">     280 </span>            :         {
+<span class="lineNum">     281 </span>            :         IMEBRA_FUNCTION_START();
+<span class="lineNum">     282 </span>            : 
+<span class="lineNum">     283 </span><span class="lineCov">        196 :         std::string ansiString = getString(index);</span>
+<span class="lineNum">     284 </span>            : 
+<span class="lineNum">     285 </span><span class="lineCov">        196 :         charsetsList::tCharsetsList charsets;</span>
+<span class="lineNum">     286 </span><span class="lineCov">         98 :         charsets.push_back(&quot;ISO_IR 6&quot;);</span>
+<span class="lineNum">     287 </span>            : 
+<span class="lineNum">     288 </span><span class="lineCov">        196 :         return dicomConversion::convertToUnicode(ansiString, charsets);</span>
+<span class="lineNum">     289 </span>            : 
+<span class="lineNum">     290 </span><span class="lineNoCov">          0 :                 IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">     291 </span>            :         }
+<span class="lineNum">     292 </span>            : 
+<a name="293"><span class="lineNum">     293 </span>            :         // Retrieve the buffer's size in elements</a>
+<span class="lineNum">     294 </span>            :         ///////////////////////////////////////////////////////////
+<span class="lineNum">     295 </span><span class="lineCov">   56653897 :     virtual size_t getSize() const</span>
+<span class="lineNum">     296 </span>            :         {
+<span class="lineNum">     297 </span>            :         IMEBRA_FUNCTION_START();
+<span class="lineNum">     298 </span>            : 
+<span class="lineNum">     299 </span><span class="lineCov">   56653897 :         if(m_pMemory.get() == 0)</span>
+<span class="lineNum">     300 </span>            :         {
+<span class="lineNum">     301 </span><span class="lineNoCov">          0 :             return 0;</span>
+<span class="lineNum">     302 </span>            :         }
+<span class="lineNum">     303 </span><span class="lineCov">   56654026 :         return m_pMemory-&gt;size() / sizeof(dataHandlerType);</span>
+<span class="lineNum">     304 </span>            : 
+<span class="lineNum">     305 </span><span class="lineNoCov">          0 :                 IMEBRA_FUNCTION_END();</span>
+<a name="306"><span class="lineNum">     306 </span>            :         }</a>
+<span class="lineNum">     307 </span>            : 
+<span class="lineNum">     308 </span><span class="lineCov">       1409 :     virtual void copyTo(std::uint8_t* pMemory, size_t memorySize) const</span>
+<span class="lineNum">     309 </span>            :         {
+<span class="lineNum">     310 </span>            :         IMEBRA_FUNCTION_START();
+<span class="lineNum">     311 </span>            : 
+<span class="lineNum">     312 </span><span class="lineCov">       1409 :                 copyToMemory(pMemory, memorySize);</span>
+<span class="lineNum">     313 </span>            : 
+<span class="lineNum">     314 </span><span class="lineNoCov">          0 :         IMEBRA_FUNCTION_END();</span>
+<a name="315"><span class="lineNum">     315 </span><span class="lineCov">       1409 :     }</span></a>
+<span class="lineNum">     316 </span>            : 
+<span class="lineNum">     317 </span><span class="lineCov">         14 :     virtual void copyTo(std::int8_t* pMemory, size_t memorySize) const</span>
+<span class="lineNum">     318 </span>            :         {
+<span class="lineNum">     319 </span>            :         IMEBRA_FUNCTION_START();
+<span class="lineNum">     320 </span>            : 
+<span class="lineNum">     321 </span><span class="lineCov">         14 :         copyToMemory(pMemory, memorySize);</span>
+<span class="lineNum">     322 </span>            : 
+<span class="lineNum">     323 </span><span class="lineNoCov">          0 :         IMEBRA_FUNCTION_END();</span>
+<a name="324"><span class="lineNum">     324 </span><span class="lineCov">         14 :     }</span></a>
+<span class="lineNum">     325 </span>            : 
+<span class="lineNum">     326 </span><span class="lineCov">         28 :     virtual void copyTo(std::uint16_t* pMemory, size_t memorySize) const</span>
+<span class="lineNum">     327 </span>            :         {
+<span class="lineNum">     328 </span>            :         IMEBRA_FUNCTION_START();
+<span class="lineNum">     329 </span>            : 
+<span class="lineNum">     330 </span><span class="lineCov">         28 :         copyToMemory(pMemory, memorySize);</span>
+<span class="lineNum">     331 </span>            : 
+<span class="lineNum">     332 </span><span class="lineNoCov">          0 :         IMEBRA_FUNCTION_END();</span>
+<a name="333"><span class="lineNum">     333 </span><span class="lineCov">         28 :     }</span></a>
+<span class="lineNum">     334 </span>            : 
+<span class="lineNum">     335 </span><span class="lineCov">         14 :     virtual void copyTo(std::int16_t* pMemory, size_t memorySize) const</span>
+<span class="lineNum">     336 </span>            :         {
+<span class="lineNum">     337 </span>            :         IMEBRA_FUNCTION_START();
+<span class="lineNum">     338 </span>            : 
+<span class="lineNum">     339 </span><span class="lineCov">         14 :         copyToMemory(pMemory, memorySize);</span>
+<span class="lineNum">     340 </span>            : 
+<span class="lineNum">     341 </span><span class="lineNoCov">          0 :         IMEBRA_FUNCTION_END();</span>
+<a name="342"><span class="lineNum">     342 </span><span class="lineCov">         14 :     }</span></a>
+<span class="lineNum">     343 </span>            : 
+<span class="lineNum">     344 </span><span class="lineCov">         28 :     virtual void copyTo(std::uint32_t* pMemory, size_t memorySize) const</span>
+<span class="lineNum">     345 </span>            :         {
+<span class="lineNum">     346 </span>            :         IMEBRA_FUNCTION_START();
+<span class="lineNum">     347 </span>            : 
+<span class="lineNum">     348 </span><span class="lineCov">         28 :                 copyToMemory(pMemory, memorySize);</span>
+<span class="lineNum">     349 </span>            : 
+<span class="lineNum">     350 </span><span class="lineNoCov">          0 :         IMEBRA_FUNCTION_END();</span>
+<a name="351"><span class="lineNum">     351 </span><span class="lineCov">         28 :     }</span></a>
+<span class="lineNum">     352 </span>            : 
+<span class="lineNum">     353 </span><span class="lineCov">        172 :     virtual void copyTo(std::int32_t* pMemory, size_t memorySize) const</span>
+<span class="lineNum">     354 </span>            :         {
+<span class="lineNum">     355 </span>            :         IMEBRA_FUNCTION_START();
+<span class="lineNum">     356 </span>            : 
+<span class="lineNum">     357 </span><span class="lineCov">        172 :         copyToMemory(pMemory, memorySize);</span>
+<span class="lineNum">     358 </span>            : 
+<span class="lineNum">     359 </span><span class="lineNoCov">          0 :         IMEBRA_FUNCTION_END();</span>
+<a name="360"><span class="lineNum">     360 </span><span class="lineCov">        172 :     }</span></a>
+<span class="lineNum">     361 </span>            : 
+<span class="lineNum">     362 </span><span class="lineCov">         28 :     virtual void copyTo(float* pMemory, size_t memorySize) const</span>
+<span class="lineNum">     363 </span>            :         {
+<span class="lineNum">     364 </span>            :         IMEBRA_FUNCTION_START();
+<span class="lineNum">     365 </span>            : 
+<span class="lineNum">     366 </span><span class="lineCov">         28 :         copyToMemory(pMemory, memorySize);</span>
+<span class="lineNum">     367 </span>            : 
+<span class="lineNum">     368 </span><span class="lineNoCov">          0 :         IMEBRA_FUNCTION_END();</span>
+<a name="369"><span class="lineNum">     369 </span><span class="lineCov">         28 :     }</span></a>
+<span class="lineNum">     370 </span>            : 
+<span class="lineNum">     371 </span><span class="lineCov">         28 :     virtual void copyTo(double* pMemory, size_t memorySize) const</span>
+<span class="lineNum">     372 </span>            :         {
+<span class="lineNum">     373 </span>            :         IMEBRA_FUNCTION_START();
+<span class="lineNum">     374 </span>            : 
+<span class="lineNum">     375 </span><span class="lineCov">         28 :         copyToMemory(pMemory, memorySize);</span>
+<span class="lineNum">     376 </span>            : 
+<span class="lineNum">     377 </span><span class="lineNoCov">          0 :         IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">     378 </span><span class="lineCov">         28 :     }</span>
+<span class="lineNum">     379 </span>            : 
+<span class="lineNum">     380 </span>            : 
+<span class="lineNum">     381 </span>            :         /// \brief Copy the buffer controlled by the handler into
+<span class="lineNum">     382 </span>            :         ///         an array of std::int32_t values, considering that
+<span class="lineNum">     383 </span>            :         ///         the destination buffer could be subsampled
+<span class="lineNum">     384 </span>            :         ///
+<span class="lineNum">     385 </span>            :         /// The destination buffer is supposed to have the
+<span class="lineNum">     386 </span>            :         ///  information related to a single channel.
+<span class="lineNum">     387 </span>            :         /// @param pDest        a pointer to the destination array
+<span class="lineNum">     388 </span>            :         ///                      of std::int32_t values
+<span class="lineNum">     389 </span>            :         /// @param destSubSampleX the horizontal subsamplig
+<span class="lineNum">     390 </span>            :         ///                      factor of the destination buffer
+<span class="lineNum">     391 </span>            :         ///                      (1=not subsampled, 2=subsampled)
+<span class="lineNum">     392 </span>            :         /// @param destSubSampleY the vertical subsamplig
+<span class="lineNum">     393 </span>            :         ///                      factor of the destination buffer
+<span class="lineNum">     394 </span>            :         ///                      (1=not subsampled, 2=subsampled)
+<span class="lineNum">     395 </span>            :         /// @param sourceStartCol the horizontal coordinate of the
+<span class="lineNum">     396 </span>            :         ///                      top left corner of the source
+<span class="lineNum">     397 </span>            :         ///                      rectangle
+<span class="lineNum">     398 </span>            :         /// @param sourceStartRow the vertical coordinate of the
+<span class="lineNum">     399 </span>            :         ///                      top left corner of the source
+<span class="lineNum">     400 </span>            :         ///                      rectangle
+<span class="lineNum">     401 </span>            :         /// @param sourceEndCol   the horizontal coordinate of the
+<span class="lineNum">     402 </span>            :         ///                      bottom right corner of the
+<span class="lineNum">     403 </span>            :         ///                      source rectangle
+<span class="lineNum">     404 </span>            :         /// @param sourceEndRow   the vertical coordinate of the
+<span class="lineNum">     405 </span>            :         ///                      bottom right corner of the
+<span class="lineNum">     406 </span>            :         ///                      source rectangle
+<span class="lineNum">     407 </span>            :         /// @param sourceStartChannel the source channel to be
+<span class="lineNum">     408 </span>            :         ///                      copied
+<span class="lineNum">     409 </span>            :         /// @param sourceWidth  the source buffer's width in
+<span class="lineNum">     410 </span>            :         ///                      pixels
+<span class="lineNum">     411 </span>            :         /// @param sourceHeight the source buffer's height in
+<span class="lineNum">     412 </span>            :         ///                      pixels
+<span class="lineNum">     413 </span>            :         /// @param sourceNumChannels the number of channels in the
+<span class="lineNum">     414 </span>            :         ///                      source buffer
+<a name="415"><span class="lineNum">     415 </span>            :         ///</a>
+<span class="lineNum">     416 </span>            :         ///////////////////////////////////////////////////////////
+<span class="lineNum">     417 </span><span class="lineCov">      69315 :         virtual void copyToInt32Interleaved(std::int32_t* pDest,</span>
+<span class="lineNum">     418 </span>            :                                                                                 std::uint32_t destSubSampleX,
+<span class="lineNum">     419 </span>            :                                                                                 std::uint32_t destSubSampleY,
+<span class="lineNum">     420 </span>            :                                                                                 std::uint32_t sourceStartCol,
+<span class="lineNum">     421 </span>            :                                                                                 std::uint32_t sourceStartRow,
+<span class="lineNum">     422 </span>            :                                                                                 std::uint32_t sourceEndCol,
+<span class="lineNum">     423 </span>            :                                                                                 std::uint32_t sourceEndRow,
+<span class="lineNum">     424 </span>            :                                                                                 std::uint32_t sourceStartChannel,
+<span class="lineNum">     425 </span>            :                                                                                 std::uint32_t sourceWidth,
+<span class="lineNum">     426 </span>            :                                                                                 std::uint32_t sourceHeight,
+<span class="lineNum">     427 </span>            :                                                                                 std::uint32_t sourceNumChannels) const
+<span class="lineNum">     428 </span>            :         {
+<span class="lineNum">     429 </span>            :         IMEBRA_FUNCTION_START();
+<span class="lineNum">     430 </span>            : 
+<span class="lineNum">     431 </span><span class="lineCov">      69315 :         if(sourceStartCol &gt;= sourceWidth || sourceStartRow &gt;= sourceHeight)</span>
+<span class="lineNum">     432 </span>            :                 {
+<span class="lineNum">     433 </span><span class="lineCov">        304 :                         return;</span>
+<span class="lineNum">     434 </span>            :                 }
+<span class="lineNum">     435 </span>            : 
+<span class="lineNum">     436 </span><span class="lineCov">      69011 :         if(destSubSampleX == 1 &amp;&amp; destSubSampleY == 1)</span>
+<span class="lineNum">     437 </span>            :         {
+<span class="lineNum">     438 </span><span class="lineCov">      57483 :             std::int32_t lastValue(0);</span>
+<span class="lineNum">     439 </span><span class="lineCov">    2526754 :             for(std::uint32_t scanRow(sourceStartRow); scanRow != sourceEndRow; ++scanRow)</span>
+<span class="lineNum">     440 </span>            :             {
+<span class="lineNum">     441 </span><span class="lineCov">    2469271 :                 const dataHandlerType *pSource = &amp;(((const dataHandlerType*)m_pMemory-&gt;data())[(scanRow * sourceWidth + sourceStartCol) * sourceNumChannels + sourceStartChannel]);</span>
+<span class="lineNum">     442 </span><span class="lineCov">  656074467 :                 for(std::uint32_t scanCol(sourceStartCol); scanCol != sourceEndCol; ++scanCol)</span>
+<span class="lineNum">     443 </span>            :                 {
+<span class="lineNum">     444 </span><span class="lineCov">  653605196 :                     if(scanCol &lt; sourceWidth &amp;&amp; scanRow &lt; sourceHeight)</span>
+<span class="lineNum">     445 </span>            :                     {
+<span class="lineNum">     446 </span><span class="lineCov">  653359196 :                         lastValue = (std::int32_t)*pSource;</span>
+<span class="lineNum">     447 </span><span class="lineCov">  653359196 :                         pSource += sourceNumChannels;</span>
+<span class="lineNum">     448 </span>            :                     }
+<span class="lineNum">     449 </span><span class="lineCov">  653605196 :                     *pDest++ = lastValue;</span>
+<span class="lineNum">     450 </span>            :                 }
+<span class="lineNum">     451 </span>            :             }
+<span class="lineNum">     452 </span><span class="lineCov">      57483 :             return;</span>
+<span class="lineNum">     453 </span>            :         }
+<span class="lineNum">     454 </span>            : 
+<span class="lineNum">     455 </span><span class="lineCov">     409476 :         for(std::uint32_t scanRow = sourceStartRow; scanRow != sourceEndRow; ++scanRow)</span>
+<span class="lineNum">     456 </span>            :                 {
+<span class="lineNum">     457 </span><span class="lineCov">     397948 :             const dataHandlerType *pSourceRowScan = &amp;(((const dataHandlerType*)m_pMemory-&gt;data())[(scanRow * sourceWidth + sourceStartCol) * sourceNumChannels + sourceStartChannel]);</span>
+<span class="lineNum">     458 </span><span class="lineCov">     397948 :             std::int32_t* pDestRowAddress = &amp;pDest[(sourceEndCol - sourceStartCol) * (scanRow - sourceStartRow) / (destSubSampleY * destSubSampleX)];</span>
+<span class="lineNum">     459 </span>            : 
+<span class="lineNum">     460 </span><span class="lineCov">   56981460 :             for(std::uint32_t scanCol(sourceStartCol); scanCol != sourceEndCol; ++scanCol)</span>
+<span class="lineNum">     461 </span>            :             {
+<span class="lineNum">     462 </span><span class="lineCov">   56583512 :                 if(scanCol &lt; sourceWidth &amp;&amp; scanRow &lt; sourceHeight)</span>
+<span class="lineNum">     463 </span>            :                 {
+<span class="lineNum">     464 </span><span class="lineCov">   56071800 :                     pDestRowAddress[(scanCol - sourceStartCol) / destSubSampleX] += (std::int32_t)((*pSourceRowScan) * 8 + 1);</span>
+<span class="lineNum">     465 </span><span class="lineCov">   56071800 :                     pSourceRowScan += sourceNumChannels;</span>
+<span class="lineNum">     466 </span>            :                 }
+<span class="lineNum">     467 </span>            :             }
+<span class="lineNum">     468 </span>            :         }
+<span class="lineNum">     469 </span>            : 
+<span class="lineNum">     470 </span><span class="lineCov">     293652 :         for(std::uint32_t scanRow = sourceStartRow; scanRow &lt; sourceEndRow; scanRow += destSubSampleY)</span>
+<span class="lineNum">     471 </span>            :         {
+<span class="lineNum">     472 </span><span class="lineCov">     282124 :             std::int32_t* pDestRowAddress = &amp;pDest[(sourceEndCol - sourceStartCol) * (scanRow - sourceStartRow) / (destSubSampleY * destSubSampleX)];</span>
+<span class="lineNum">     473 </span>            : 
+<span class="lineNum">     474 </span><span class="lineCov">   21539016 :             for(std::uint32_t scanCol(sourceStartCol); scanCol &lt; sourceEndCol; scanCol += destSubSampleX)</span>
+<span class="lineNum">     475 </span>            :             {
+<span class="lineNum">     476 </span><span class="lineCov">   21256892 :                 std::int32_t cellValue = pDestRowAddress[(scanCol - sourceStartCol) / destSubSampleX];</span>
+<span class="lineNum">     477 </span><span class="lineCov">   21256892 :                 std::int32_t divisor = 8 * (cellValue &amp; 0x7);</span>
+<span class="lineNum">     478 </span><span class="lineCov">   21256892 :                 if(divisor == 0)</span>
+<span class="lineNum">     479 </span>            :                 {
+<span class="lineNum">     480 </span><span class="lineCov">      16016 :                     divisor = 8;</span>
+<span class="lineNum">     481 </span>            :                 }
+<span class="lineNum">     482 </span><span class="lineCov">   21256892 :                 pDestRowAddress[(scanCol - sourceStartCol) / destSubSampleX] = cellValue / divisor;</span>
+<span class="lineNum">     483 </span>            :             }
+<span class="lineNum">     484 </span>            :         }
+<span class="lineNum">     485 </span>            : 
+<span class="lineNum">     486 </span><span class="lineNoCov">          0 :         IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">     487 </span>            :     }
+<span class="lineNum">     488 </span>            : 
+<a name="489"><span class="lineNum">     489 </span>            : protected:</a>
+<span class="lineNum">     490 </span>            :     template&lt;class destHandlerType&gt;
+<span class="lineNum">     491 </span><span class="lineCov">       1721 :     void copyToMemory(destHandlerType* pDestination, size_t destSize) const</span>
+<span class="lineNum">     492 </span>            :     {
+<span class="lineNum">     493 </span>            :         IMEBRA_FUNCTION_START();
+<span class="lineNum">     494 </span>            : 
+<span class="lineNum">     495 </span><span class="lineCov">       1721 :         if(getSize() &lt; destSize)</span>
+<span class="lineNum">     496 </span>            :         {
+<span class="lineNum">     497 </span><span class="lineCov">       1577 :             destSize = getSize();</span>
+<span class="lineNum">     498 </span>            :         }
+<span class="lineNum">     499 </span><span class="lineCov">       1721 :         if(destSize != 0)</span>
+<span class="lineNum">     500 </span>            :         {
+<span class="lineNum">     501 </span><span class="lineCov">       1298 :             const dataHandlerType* pSource((const dataHandlerType*)m_pMemory-&gt;data());</span>
+<span class="lineNum">     502 </span><span class="lineCov">  269970282 :             while(destSize-- != 0)</span>
+<span class="lineNum">     503 </span>            :             {
+<span class="lineNum">     504 </span><span class="lineCov">  134984492 :                 *(pDestination++) = (destHandlerType)*(pSource++);</span>
+<span class="lineNum">     505 </span>            :             }
+<span class="lineNum">     506 </span>            :         }
+<span class="lineNum">     507 </span>            : 
+<span class="lineNum">     508 </span><span class="lineNoCov">          0 :         IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">     509 </span><span class="lineCov">       1721 :     }</span>
+<span class="lineNum">     510 </span>            : 
+<span class="lineNum">     511 </span>            : };
+<a name="512"><span class="lineNum">     512 </span>            : </a>
+<span class="lineNum">     513 </span>            : template&lt;class dataHandlerType&gt;
+<span class="lineNum">     514 </span><span class="lineCov">     374211 : class writingDataHandlerNumeric : public writingDataHandlerNumericBase</span>
+<span class="lineNum">     515 </span>            : {
+<span class="lineNum">     516 </span>            : public:
+<a name="517"><span class="lineNum">     517 </span>            :     typedef dataHandlerType value_type;</a>
+<span class="lineNum">     518 </span>            : 
+<span class="lineNum">     519 </span><span class="lineCov">     373250 :     writingDataHandlerNumeric(const std::shared_ptr&lt;buffer&gt; &amp;pBuffer, const size_t initialSize, tagVR_t dataType):</span>
+<span class="lineNum">     520 </span>            :         writingDataHandlerNumericBase(
+<span class="lineNum">     521 </span>            :             pBuffer,
+<span class="lineNum">     522 </span>            :             initialSize,
+<span class="lineNum">     523 </span>            :             dataType,
+<span class="lineNum">     524 </span><span class="lineCov">     373250 :             sizeof(dataHandlerType))</span>
+<span class="lineNum">     525 </span>            :     {
+<a name="526"><span class="lineNum">     526 </span><span class="lineCov">     372725 :     }</span></a>
+<span class="lineNum">     527 </span>            : 
+<span class="lineNum">     528 </span><span class="lineCov">         14 :     virtual bool isSigned() const</span>
+<span class="lineNum">     529 </span>            :     {
+<span class="lineNum">     530 </span>            :         IMEBRA_FUNCTION_START();
+<span class="lineNum">     531 </span>            : 
+<span class="lineNum">     532 </span><span class="lineCov">         14 :         dataHandlerType firstValue((dataHandlerType) -1);</span>
+<span class="lineNum">     533 </span><span class="lineCov">         14 :         dataHandlerType secondValue((dataHandlerType) 0);</span>
+<span class="lineNum">     534 </span><span class="lineCov">         14 :         return firstValue &lt; secondValue;</span>
+<span class="lineNum">     535 </span>            : 
+<span class="lineNum">     536 </span>            :         IMEBRA_FUNCTION_END();
+<a name="537"><span class="lineNum">     537 </span>            :     }</a>
+<span class="lineNum">     538 </span>            : 
+<span class="lineNum">     539 </span><span class="lineCov">         14 :     virtual bool isFloat() const</span>
+<span class="lineNum">     540 </span>            :     {
+<span class="lineNum">     541 </span>            :         IMEBRA_FUNCTION_START();
+<span class="lineNum">     542 </span>            : 
+<span class="lineNum">     543 </span><span class="lineCov">         14 :         return !std::numeric_limits&lt;dataHandlerType&gt;::is_integer;</span>
+<span class="lineNum">     544 </span>            : 
+<span class="lineNum">     545 </span>            :         IMEBRA_FUNCTION_END();
+<a name="546"><span class="lineNum">     546 </span>            :     }</a>
+<span class="lineNum">     547 </span>            : 
+<span class="lineNum">     548 </span><span class="lineCov">  450009683 :     virtual size_t getUnitSize() const</span>
+<span class="lineNum">     549 </span>            :     {
+<span class="lineNum">     550 </span>            :         IMEBRA_FUNCTION_START();
+<span class="lineNum">     551 </span>            : 
+<span class="lineNum">     552 </span><span class="lineCov">  450009683 :         return sizeof(dataHandlerType);</span>
+<span class="lineNum">     553 </span>            : 
+<span class="lineNum">     554 </span>            :         IMEBRA_FUNCTION_END();
+<span class="lineNum">     555 </span>            :     }
+<span class="lineNum">     556 </span>            : 
+<a name="557"><span class="lineNum">     557 </span>            :     // Set the data element as a signed long</a>
+<span class="lineNum">     558 </span>            :     ///////////////////////////////////////////////////////////
+<span class="lineNum">     559 </span><span class="lineCov">  249470618 :     virtual void setSignedLong(const size_t index, const std::int32_t value)</span>
+<span class="lineNum">     560 </span>            :     {
+<span class="lineNum">     561 </span>            :         IMEBRA_FUNCTION_START();
+<span class="lineNum">     562 </span>            : 
+<span class="lineNum">     563 </span><span class="lineCov">  249470618 :         if(index &gt;= getSize())</span>
+<span class="lineNum">     564 </span>            :         {
+<span class="lineNum">     565 </span><span class="lineCov">       3940 :             setSize(index + 1);</span>
+<span class="lineNum">     566 </span>            :         }
+<span class="lineNum">     567 </span><span class="lineCov">  249470618 :         ((dataHandlerType*)m_pMemory-&gt;data())[index] = (dataHandlerType)value;</span>
+<span class="lineNum">     568 </span>            : 
+<span class="lineNum">     569 </span><span class="lineNoCov">          0 :         IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">     570 </span><span class="lineCov">  249470618 :     }</span>
+<span class="lineNum">     571 </span>            : 
+<a name="572"><span class="lineNum">     572 </span>            :     // Set the data element as an unsigned long</a>
+<span class="lineNum">     573 </span>            :     ///////////////////////////////////////////////////////////
+<span class="lineNum">     574 </span><span class="lineCov">  200098378 :     virtual void setUnsignedLong(const size_t index, const std::uint32_t value)</span>
+<span class="lineNum">     575 </span>            :     {
+<span class="lineNum">     576 </span>            :         IMEBRA_FUNCTION_START();
+<span class="lineNum">     577 </span>            : 
+<span class="lineNum">     578 </span><span class="lineCov">  200098378 :         if(index &gt;= getSize())</span>
+<span class="lineNum">     579 </span>            :         {
+<span class="lineNum">     580 </span><span class="lineCov">      96692 :             setSize(index + 1);</span>
+<span class="lineNum">     581 </span>            :         }
+<span class="lineNum">     582 </span><span class="lineCov">  200098332 :         ((dataHandlerType*)m_pMemory-&gt;data())[index] = (dataHandlerType)value;</span>
+<span class="lineNum">     583 </span>            : 
+<span class="lineNum">     584 </span><span class="lineNoCov">          0 :         IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">     585 </span><span class="lineCov">  200098269 :     }</span>
+<span class="lineNum">     586 </span>            : 
+<a name="587"><span class="lineNum">     587 </span>            :     // Set the data element as a double</a>
+<span class="lineNum">     588 </span>            :     ///////////////////////////////////////////////////////////
+<span class="lineNum">     589 </span><span class="lineCov">       1890 :     virtual void setDouble(const size_t index, const double value)</span>
+<span class="lineNum">     590 </span>            :     {
+<span class="lineNum">     591 </span>            :         IMEBRA_FUNCTION_START();
+<span class="lineNum">     592 </span>            : 
+<span class="lineNum">     593 </span><span class="lineCov">       1890 :         if(index &gt;= getSize())</span>
+<span class="lineNum">     594 </span>            :         {
+<span class="lineNum">     595 </span><span class="lineCov">         42 :             setSize(index + 1);</span>
+<span class="lineNum">     596 </span>            :         }
+<span class="lineNum">     597 </span><span class="lineCov">       1890 :         ((dataHandlerType*)m_pMemory-&gt;data())[index] = (dataHandlerType)value;</span>
+<span class="lineNum">     598 </span>            : 
+<span class="lineNum">     599 </span><span class="lineNoCov">          0 :         IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">     600 </span><span class="lineCov">       1890 :     }</span>
+<span class="lineNum">     601 </span>            : 
+<a name="602"><span class="lineNum">     602 </span>            :     // Set the data element as a string</a>
+<span class="lineNum">     603 </span>            :     ///////////////////////////////////////////////////////////
+<span class="lineNum">     604 </span><span class="lineCov">         42 :     virtual void setString(const size_t index, const std::string&amp; value)</span>
+<span class="lineNum">     605 </span>            :     {
+<span class="lineNum">     606 </span>            :         IMEBRA_FUNCTION_START();
+<span class="lineNum">     607 </span>            : 
+<span class="lineNum">     608 </span><span class="lineCov">         84 :         std::istringstream convStream(value);</span>
+<span class="lineNum">     609 </span>            :         dataHandlerType tempValue;
+<span class="lineNum">     610 </span>            :         if(std::is_same&lt;dataHandlerType, std::uint8_t&gt;::value ||
+<span class="lineNum">     611 </span>            :                 std::is_same&lt;dataHandlerType, std::int8_t&gt;::value)
+<span class="lineNum">     612 </span>            :         {
+<span class="lineNum">     613 </span>            :             int tempValue1;
+<span class="lineNum">     614 </span><span class="lineCov">          9 :             if(!(convStream &gt;&gt; tempValue1))</span>
+<span class="lineNum">     615 </span>            :             {
+<span class="lineNum">     616 </span><span class="lineCov">          3 :                 IMEBRA_THROW(DataHandlerConversionError, &quot;Cannot convert &quot; &lt;&lt; value &lt;&lt; &quot; to a number&quot;);</span>
+<span class="lineNum">     617 </span>            :             }
+<span class="lineNum">     618 </span><span class="lineCov">          6 :             tempValue = (dataHandlerType)tempValue1;</span>
+<span class="lineNum">     619 </span>            :         }
+<span class="lineNum">     620 </span>            :         else
+<span class="lineNum">     621 </span>            :         {
+<span class="lineNum">     622 </span><span class="lineCov">         33 :             if(!(convStream &gt;&gt; tempValue))</span>
+<span class="lineNum">     623 </span>            :             {
+<span class="lineNum">     624 </span><span class="lineCov">         11 :                 IMEBRA_THROW(DataHandlerConversionError, &quot;Cannot convert &quot; &lt;&lt; value &lt;&lt; &quot; to a number&quot;);</span>
+<span class="lineNum">     625 </span>            :             }
+<span class="lineNum">     626 </span>            :         }
+<span class="lineNum">     627 </span>            : 
+<span class="lineNum">     628 </span><span class="lineCov">         28 :         if(index &gt;= getSize())</span>
+<span class="lineNum">     629 </span>            :         {
+<span class="lineNum">     630 </span><span class="lineCov">         28 :             setSize(index + 1);</span>
+<span class="lineNum">     631 </span>            :         }
+<span class="lineNum">     632 </span><span class="lineCov">         28 :         ((dataHandlerType*)m_pMemory-&gt;data())[index] = tempValue;</span>
+<span class="lineNum">     633 </span>            : 
+<span class="lineNum">     634 </span><span class="lineCov">         14 :         IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">     635 </span><span class="lineCov">         28 :     }</span>
+<span class="lineNum">     636 </span>            : 
+<a name="637"><span class="lineNum">     637 </span>            :     // Set the data element as an unicode string</a>
+<span class="lineNum">     638 </span>            :     ///////////////////////////////////////////////////////////
+<span class="lineNum">     639 </span><span class="lineCov">         14 :     virtual void setUnicodeString(const size_t index, const std::wstring&amp; value)</span>
+<span class="lineNum">     640 </span>            :     {
+<span class="lineNum">     641 </span>            :         IMEBRA_FUNCTION_START();
+<span class="lineNum">     642 </span>            : 
+<span class="lineNum">     643 </span><span class="lineCov">         28 :         charsetsList::tCharsetsList charsets;</span>
+<span class="lineNum">     644 </span><span class="lineCov">         14 :         charsets.push_back(&quot;ISO_IR 6&quot;);</span>
+<span class="lineNum">     645 </span>            : 
+<span class="lineNum">     646 </span><span class="lineCov">         14 :         setString(index, dicomConversion::convertFromUnicode(value, &amp;charsets));</span>
+<span class="lineNum">     647 </span>            : 
+<span class="lineNum">     648 </span><span class="lineNoCov">          0 :         IMEBRA_FUNCTION_END();</span>
+<a name="649"><span class="lineNum">     649 </span><span class="lineCov">         14 :     }</span></a>
+<span class="lineNum">     650 </span>            : 
+<span class="lineNum">     651 </span><span class="lineCov">         28 :     virtual void copyFrom(std::uint8_t* pMemory, size_t memorySize)</span>
+<span class="lineNum">     652 </span>            :     {
+<span class="lineNum">     653 </span>            :         IMEBRA_FUNCTION_START();
+<span class="lineNum">     654 </span>            : 
+<span class="lineNum">     655 </span><span class="lineCov">         28 :         copyFromMemory(pMemory, memorySize);</span>
+<span class="lineNum">     656 </span>            : 
+<span class="lineNum">     657 </span><span class="lineNoCov">          0 :         IMEBRA_FUNCTION_END();</span>
+<a name="658"><span class="lineNum">     658 </span><span class="lineCov">         28 :     }</span></a>
+<span class="lineNum">     659 </span>            : 
+<span class="lineNum">     660 </span><span class="lineCov">         14 :     virtual void copyFrom(std::int8_t* pMemory, size_t memorySize)</span>
+<span class="lineNum">     661 </span>            :     {
+<span class="lineNum">     662 </span>            :         IMEBRA_FUNCTION_START();
+<span class="lineNum">     663 </span>            : 
+<span class="lineNum">     664 </span><span class="lineCov">         14 :         copyFromMemory(pMemory, memorySize);</span>
+<span class="lineNum">     665 </span>            : 
+<span class="lineNum">     666 </span><span class="lineNoCov">          0 :         IMEBRA_FUNCTION_END();</span>
+<a name="667"><span class="lineNum">     667 </span><span class="lineCov">         14 :     }</span></a>
+<span class="lineNum">     668 </span>            : 
+<span class="lineNum">     669 </span><span class="lineCov">         28 :     virtual void copyFrom(std::uint16_t* pMemory, size_t memorySize)</span>
+<span class="lineNum">     670 </span>            :     {
+<span class="lineNum">     671 </span>            :         IMEBRA_FUNCTION_START();
+<span class="lineNum">     672 </span>            : 
+<span class="lineNum">     673 </span><span class="lineCov">         28 :         copyFromMemory(pMemory, memorySize);</span>
+<span class="lineNum">     674 </span>            : 
+<span class="lineNum">     675 </span><span class="lineNoCov">          0 :         IMEBRA_FUNCTION_END();</span>
+<a name="676"><span class="lineNum">     676 </span><span class="lineCov">         28 :     }</span></a>
+<span class="lineNum">     677 </span>            : 
+<span class="lineNum">     678 </span><span class="lineCov">         14 :     virtual void copyFrom(std::int16_t* pMemory, size_t memorySize)</span>
+<span class="lineNum">     679 </span>            :     {
+<span class="lineNum">     680 </span>            :         IMEBRA_FUNCTION_START();
+<span class="lineNum">     681 </span>            : 
+<span class="lineNum">     682 </span><span class="lineCov">         14 :         copyFromMemory(pMemory, memorySize);</span>
+<span class="lineNum">     683 </span>            : 
+<span class="lineNum">     684 </span><span class="lineNoCov">          0 :         IMEBRA_FUNCTION_END();</span>
+<a name="685"><span class="lineNum">     685 </span><span class="lineCov">         14 :     }</span></a>
+<span class="lineNum">     686 </span>            : 
+<span class="lineNum">     687 </span><span class="lineCov">         28 :     virtual void copyFrom(std::uint32_t* pMemory, size_t memorySize)</span>
+<span class="lineNum">     688 </span>            :     {
+<span class="lineNum">     689 </span>            :         IMEBRA_FUNCTION_START();
+<span class="lineNum">     690 </span>            : 
+<span class="lineNum">     691 </span><span class="lineCov">         28 :         copyFromMemory(pMemory, memorySize);</span>
+<span class="lineNum">     692 </span>            : 
+<span class="lineNum">     693 </span><span class="lineNoCov">          0 :         IMEBRA_FUNCTION_END();</span>
+<a name="694"><span class="lineNum">     694 </span><span class="lineCov">         28 :     }</span></a>
+<span class="lineNum">     695 </span>            : 
+<span class="lineNum">     696 </span><span class="lineCov">        300 :     virtual void copyFrom(std::int32_t* pMemory, size_t memorySize)</span>
+<span class="lineNum">     697 </span>            :     {
+<span class="lineNum">     698 </span>            :         IMEBRA_FUNCTION_START();
+<span class="lineNum">     699 </span>            : 
+<span class="lineNum">     700 </span><span class="lineCov">        300 :         copyFromMemory(pMemory, memorySize);</span>
+<span class="lineNum">     701 </span>            : 
+<span class="lineNum">     702 </span><span class="lineNoCov">          0 :         IMEBRA_FUNCTION_END();</span>
+<a name="703"><span class="lineNum">     703 </span><span class="lineCov">        300 :     }</span></a>
+<span class="lineNum">     704 </span>            : 
+<span class="lineNum">     705 </span><span class="lineCov">         28 :     virtual void copyFrom(float* pMemory, size_t memorySize)</span>
+<span class="lineNum">     706 </span>            :     {
+<span class="lineNum">     707 </span>            :         IMEBRA_FUNCTION_START();
+<span class="lineNum">     708 </span>            : 
+<span class="lineNum">     709 </span><span class="lineCov">         28 :         copyFromMemory(pMemory, memorySize);</span>
+<span class="lineNum">     710 </span>            : 
+<span class="lineNum">     711 </span><span class="lineNoCov">          0 :         IMEBRA_FUNCTION_END();</span>
+<a name="712"><span class="lineNum">     712 </span><span class="lineCov">         28 :     }</span></a>
+<span class="lineNum">     713 </span>            : 
+<span class="lineNum">     714 </span><span class="lineCov">         28 :     virtual void copyFrom(double* pMemory, size_t memorySize)</span>
+<span class="lineNum">     715 </span>            :     {
+<span class="lineNum">     716 </span>            :         IMEBRA_FUNCTION_START();
+<span class="lineNum">     717 </span>            : 
+<span class="lineNum">     718 </span><span class="lineCov">         28 :         copyFromMemory(pMemory, memorySize);</span>
+<span class="lineNum">     719 </span>            : 
+<span class="lineNum">     720 </span><span class="lineNoCov">          0 :         IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">     721 </span><span class="lineCov">         28 :     }</span>
+<a name="722"><span class="lineNum">     722 </span>            : </a>
+<span class="lineNum">     723 </span>            :     template&lt;int subsampleX&gt;
+<span class="lineNum">     724 </span><span class="lineCov">      89699 :     inline void copyFromInt32Interleaved(</span>
+<span class="lineNum">     725 </span>            :         const std::int32_t* pSource,
+<span class="lineNum">     726 </span>            :         std::uint32_t sourceReplicateY,
+<span class="lineNum">     727 </span>            :         std::uint32_t destStartCol,
+<span class="lineNum">     728 </span>            :         std::uint32_t destStartRow,
+<span class="lineNum">     729 </span>            :         std::uint32_t destEndCol,
+<span class="lineNum">     730 </span>            :         std::uint32_t destEndRow,
+<span class="lineNum">     731 </span>            :         std::uint32_t destStartChannel,
+<span class="lineNum">     732 </span>            :         std::uint32_t destWidth,
+<span class="lineNum">     733 </span>            :         std::uint32_t destHeight,
+<span class="lineNum">     734 </span>            :         std::uint32_t destNumChannels)
+<span class="lineNum">     735 </span>            :     {
+<span class="lineNum">     736 </span>            :         IMEBRA_FUNCTION_START();
+<span class="lineNum">     737 </span>            : 
+<span class="lineNum">     738 </span><span class="lineCov">      89699 :         dataHandlerType *pDestRowScan = &amp;(((dataHandlerType*)m_pMemory-&gt;data())[(destStartRow*destWidth+destStartCol)*destNumChannels+destStartChannel]);</span>
+<span class="lineNum">     739 </span><span class="lineCov">      89699 :         const std::int32_t* pSourceRowScan = pSource;</span>
+<span class="lineNum">     740 </span>            : 
+<span class="lineNum">     741 </span><span class="lineCov">      89699 :         std::uint32_t replicateYCount = sourceReplicateY;</span>
+<span class="lineNum">     742 </span><span class="lineCov">      89699 :         std::uint32_t replicateYIncrease = (destEndCol - destStartCol) / subsampleX;</span>
+<span class="lineNum">     743 </span>            : 
+<span class="lineNum">     744 </span>            :         dataHandlerType *pDestColScan;
+<span class="lineNum">     745 </span>            :         const std::int32_t* pSourceColScan;
+<span class="lineNum">     746 </span>            :         const std::int32_t* pSourceEndColScan;
+<span class="lineNum">     747 </span>            : 
+<span class="lineNum">     748 </span><span class="lineCov">      89699 :         if(destHeight &lt; destEndRow)</span>
+<span class="lineNum">     749 </span>            :         {
+<span class="lineNum">     750 </span><span class="lineCov">       4056 :             destEndRow = destHeight;</span>
+<span class="lineNum">     751 </span>            :         }
+<span class="lineNum">     752 </span><span class="lineCov">      89699 :         if(destWidth &lt; destEndCol)</span>
+<span class="lineNum">     753 </span>            :         {
+<span class="lineNum">     754 </span><span class="lineCov">       8208 :             destEndCol = destWidth;</span>
+<span class="lineNum">     755 </span>            :         }
+<span class="lineNum">     756 </span>            : 
+<span class="lineNum">     757 </span><span class="lineCov">      89699 :         std::uint32_t numColumns(destEndCol - destStartCol);</span>
+<span class="lineNum">     758 </span>            : 
+<span class="lineNum">     759 </span><span class="lineCov">      89699 :         std::uint32_t horizontalCopyOperations = numColumns / subsampleX;</span>
+<span class="lineNum">     760 </span><span class="lineCov">      89699 :         std::uint32_t horizontalFinalCopyDest = numColumns - horizontalCopyOperations * subsampleX;</span>
+<span class="lineNum">     761 </span>            : 
+<span class="lineNum">     762 </span>            :         dataHandlerType copyValue;
+<span class="lineNum">     763 </span>            :         std::int32_t scanDest;
+<span class="lineNum">     764 </span>            : 
+<span class="lineNum">     765 </span>            :         std::uint32_t scanHorizontalFinalCopyDest;
+<span class="lineNum">     766 </span>            : 
+<span class="lineNum">     767 </span><span class="lineCov">      89699 :         std::uint32_t destRowScanIncrease(destWidth * destNumChannels);</span>
+<span class="lineNum">     768 </span>            : 
+<span class="lineNum">     769 </span>            : 
+<span class="lineNum">     770 </span><span class="lineCov">    6274228 :         for(std::uint32_t numYCopies(destEndRow - destStartRow); numYCopies != 0; --numYCopies)</span>
+<span class="lineNum">     771 </span>            :         {
+<span class="lineNum">     772 </span><span class="lineCov">    6184529 :             pDestColScan = pDestRowScan;</span>
+<span class="lineNum">     773 </span><span class="lineCov">    6184529 :             pSourceColScan = pSourceRowScan;</span>
+<span class="lineNum">     774 </span><span class="lineCov">    6184529 :             pSourceEndColScan = pSourceColScan + horizontalCopyOperations;</span>
+<span class="lineNum">     775 </span>            : 
+<span class="lineNum">     776 </span>            :             if(subsampleX == 1)
+<span class="lineNum">     777 </span>            :             {
+<span class="lineNum">     778 </span><span class="lineCov"> 2883814385 :                 while(pSourceColScan != pSourceEndColScan)</span>
+<span class="lineNum">     779 </span>            :                 {
+<span class="lineNum">     780 </span><span class="lineCov"> 1439207728 :                     *pDestColScan = (dataHandlerType)(*(pSourceColScan++));</span>
+<span class="lineNum">     781 </span><span class="lineCov"> 1439207728 :                     pDestColScan += destNumChannels;</span>
+<span class="lineNum">     782 </span>            :                 }
+<span class="lineNum">     783 </span>            :             }
+<span class="lineNum">     784 </span>            :             else
+<span class="lineNum">     785 </span>            :             {
+<span class="lineNum">     786 </span><span class="lineCov">  146705600 :                 while(pSourceColScan != pSourceEndColScan)</span>
+<span class="lineNum">     787 </span>            :                 {
+<span class="lineNum">     788 </span><span class="lineCov">   72960000 :                     copyValue = (dataHandlerType)(*(pSourceColScan++));</span>
+<span class="lineNum">     789 </span><span class="lineCov">  218880000 :                     for(scanDest = subsampleX; scanDest != 0; --scanDest)</span>
+<span class="lineNum">     790 </span>            :                     {
+<span class="lineNum">     791 </span><span class="lineCov">  145920000 :                         *pDestColScan = copyValue;</span>
+<span class="lineNum">     792 </span><span class="lineCov">  145920000 :                         pDestColScan += destNumChannels;</span>
+<span class="lineNum">     793 </span>            :                     }
+<span class="lineNum">     794 </span>            :                 }
+<span class="lineNum">     795 </span>            : 
+<span class="lineNum">     796 </span><span class="lineCov">    1510400 :                 for(scanHorizontalFinalCopyDest = horizontalFinalCopyDest; scanHorizontalFinalCopyDest != 0; --scanHorizontalFinalCopyDest)</span>
+<span class="lineNum">     797 </span>            :                 {
+<span class="lineNum">     798 </span><span class="lineCov">     724800 :                     *pDestColScan = (dataHandlerType) *pSourceColScan;</span>
+<span class="lineNum">     799 </span><span class="lineCov">     724800 :                     pDestColScan += destNumChannels;</span>
+<span class="lineNum">     800 </span>            :                 }
+<span class="lineNum">     801 </span>            : 
+<span class="lineNum">     802 </span>            :             }
+<span class="lineNum">     803 </span>            : 
+<span class="lineNum">     804 </span><span class="lineCov">    6184529 :             pDestRowScan += destRowScanIncrease;</span>
+<span class="lineNum">     805 </span><span class="lineCov">    6184529 :             if(--replicateYCount == 0)</span>
+<span class="lineNum">     806 </span>            :             {
+<span class="lineNum">     807 </span><span class="lineCov">    5956529 :                 replicateYCount = sourceReplicateY;</span>
+<span class="lineNum">     808 </span><span class="lineCov">    5956529 :                 pSourceRowScan += replicateYIncrease;</span>
+<span class="lineNum">     809 </span>            :             }
+<span class="lineNum">     810 </span>            :         }
+<span class="lineNum">     811 </span>            : 
+<span class="lineNum">     812 </span><span class="lineNoCov">          0 :         IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">     813 </span><span class="lineCov">      89699 :     }</span>
+<span class="lineNum">     814 </span>            : 
+<span class="lineNum">     815 </span>            : 
+<span class="lineNum">     816 </span>            :     /// \brief Copy the content of an array of std::int32_t values
+<span class="lineNum">     817 </span>            :     ///         into the buffer controlled by the handler,
+<span class="lineNum">     818 </span>            :     ///         considering that the source buffer could
+<span class="lineNum">     819 </span>            :     ///         have subsampled data.
+<span class="lineNum">     820 </span>            :     ///
+<span class="lineNum">     821 </span>            :     /// The source buffer is supposed to have the information
+<span class="lineNum">     822 </span>            :     ///  related to a single channel.
+<span class="lineNum">     823 </span>            :     /// @param pSource      a pointer to the source array of
+<span class="lineNum">     824 </span>            :     ///                      std::int32_t values
+<span class="lineNum">     825 </span>            :     /// @param sourceReplicateX the horizontal subsamplig
+<span class="lineNum">     826 </span>            :     ///                      factor of the source buffer
+<span class="lineNum">     827 </span>            :     ///                      (1=not subsampled, 2=subsampled)
+<span class="lineNum">     828 </span>            :     /// @param sourceReplicateY the vertical subsamplig
+<span class="lineNum">     829 </span>            :     ///                      factor of the source buffer
+<span class="lineNum">     830 </span>            :     ///                      (1=not subsampled, 2=subsampled)
+<span class="lineNum">     831 </span>            :     /// @param destStartCol the horizontal coordinate of the
+<span class="lineNum">     832 </span>            :     ///                      top left corner of the destination
+<span class="lineNum">     833 </span>            :     ///                      rectangle
+<span class="lineNum">     834 </span>            :     /// @param destStartRow the vertical coordinate of the
+<span class="lineNum">     835 </span>            :     ///                      top left corner of the destination
+<span class="lineNum">     836 </span>            :     ///                      rectangle
+<span class="lineNum">     837 </span>            :     /// @param destEndCol   the horizontal coordinate of the
+<span class="lineNum">     838 </span>            :     ///                      bottom right corner of the
+<span class="lineNum">     839 </span>            :     ///                      destination rectangle
+<span class="lineNum">     840 </span>            :     /// @param destEndRow   the vertical coordinate of the
+<span class="lineNum">     841 </span>            :     ///                      bottom right corner of the
+<span class="lineNum">     842 </span>            :     ///                      destination rectangle
+<span class="lineNum">     843 </span>            :     /// @param destStartChannel the destination channel
+<span class="lineNum">     844 </span>            :     /// @param destWidth    the destination buffer's width in
+<span class="lineNum">     845 </span>            :     ///                      pixels
+<span class="lineNum">     846 </span>            :     /// @param destHeight   the destination buffer's height in
+<span class="lineNum">     847 </span>            :     ///                      pixels
+<span class="lineNum">     848 </span>            :     /// @param destNumChannels the number of channels in the
+<span class="lineNum">     849 </span>            :     ///                      destination buffer
+<a name="850"><span class="lineNum">     850 </span>            :     ///</a>
+<span class="lineNum">     851 </span>            :     ///////////////////////////////////////////////////////////
+<span class="lineNum">     852 </span><span class="lineCov">      90003 :     virtual void copyFromInt32Interleaved(const std::int32_t* pSource,</span>
+<span class="lineNum">     853 </span>            :                                           std::uint32_t sourceReplicateX,
+<span class="lineNum">     854 </span>            :                                           std::uint32_t sourceReplicateY,
+<span class="lineNum">     855 </span>            :                                           std::uint32_t destStartCol,
+<span class="lineNum">     856 </span>            :                                           std::uint32_t destStartRow,
+<span class="lineNum">     857 </span>            :                                           std::uint32_t destEndCol,
+<span class="lineNum">     858 </span>            :                                           std::uint32_t destEndRow,
+<span class="lineNum">     859 </span>            :                                           std::uint32_t destStartChannel,
+<span class="lineNum">     860 </span>            :                                           std::uint32_t destWidth,
+<span class="lineNum">     861 </span>            :                                           std::uint32_t destHeight,
+<span class="lineNum">     862 </span>            :                                           std::uint32_t destNumChannels)
+<span class="lineNum">     863 </span>            :     {
+<span class="lineNum">     864 </span>            :         IMEBRA_FUNCTION_START();
+<span class="lineNum">     865 </span>            : 
+<span class="lineNum">     866 </span><span class="lineCov">      90003 :         if(destStartCol &gt;= destWidth || destStartRow &gt;= destHeight)</span>
+<span class="lineNum">     867 </span>            :         {
+<span class="lineNum">     868 </span><span class="lineCov">        304 :             return;</span>
+<span class="lineNum">     869 </span>            :         }
+<span class="lineNum">     870 </span>            : 
+<span class="lineNum">     871 </span><span class="lineCov">      89699 :         switch(sourceReplicateX)</span>
+<span class="lineNum">     872 </span>            :         {
+<span class="lineNum">     873 </span><span class="lineCov">      79123 :         case 1:</span>
+<span class="lineNum">     874 </span><span class="lineCov">      79123 :             copyFromInt32Interleaved&lt; 1 &gt; (</span>
+<span class="lineNum">     875 </span>            :                         pSource,
+<span class="lineNum">     876 </span>            :                         sourceReplicateY,
+<span class="lineNum">     877 </span>            :                         destStartCol,
+<span class="lineNum">     878 </span>            :                         destStartRow,
+<span class="lineNum">     879 </span>            :                         destEndCol,
+<span class="lineNum">     880 </span>            :                         destEndRow,
+<span class="lineNum">     881 </span>            :                         destStartChannel,
+<span class="lineNum">     882 </span>            :                         destWidth,
+<span class="lineNum">     883 </span>            :                         destHeight,
+<span class="lineNum">     884 </span>            :                         destNumChannels);
+<span class="lineNum">     885 </span><span class="lineCov">      79123 :             break;</span>
+<span class="lineNum">     886 </span><span class="lineCov">      10576 :         case 2:</span>
+<span class="lineNum">     887 </span><span class="lineCov">      10576 :             copyFromInt32Interleaved&lt; 2 &gt; (</span>
+<span class="lineNum">     888 </span>            :                         pSource,
+<span class="lineNum">     889 </span>            :                         sourceReplicateY,
+<span class="lineNum">     890 </span>            :                         destStartCol,
+<span class="lineNum">     891 </span>            :                         destStartRow,
+<span class="lineNum">     892 </span>            :                         destEndCol,
+<span class="lineNum">     893 </span>            :                         destEndRow,
+<span class="lineNum">     894 </span>            :                         destStartChannel,
+<span class="lineNum">     895 </span>            :                         destWidth,
+<span class="lineNum">     896 </span>            :                         destHeight,
+<span class="lineNum">     897 </span>            :                         destNumChannels);
+<span class="lineNum">     898 </span><span class="lineCov">      10576 :             break;</span>
+<span class="lineNum">     899 </span><span class="lineNoCov">          0 :         case 4:</span>
+<span class="lineNum">     900 </span><span class="lineNoCov">          0 :             copyFromInt32Interleaved&lt; 4 &gt; (</span>
+<span class="lineNum">     901 </span>            :                         pSource,
+<span class="lineNum">     902 </span>            :                         sourceReplicateY,
+<span class="lineNum">     903 </span>            :                         destStartCol,
+<span class="lineNum">     904 </span>            :                         destStartRow,
+<span class="lineNum">     905 </span>            :                         destEndCol,
+<span class="lineNum">     906 </span>            :                         destEndRow,
+<span class="lineNum">     907 </span>            :                         destStartChannel,
+<span class="lineNum">     908 </span>            :                         destWidth,
+<span class="lineNum">     909 </span>            :                         destHeight,
+<span class="lineNum">     910 </span>            :                         destNumChannels);
+<span class="lineNum">     911 </span><span class="lineNoCov">          0 :             break;</span>
+<span class="lineNum">     912 </span><span class="lineNoCov">          0 :         default:</span>
+<span class="lineNum">     913 </span><span class="lineNoCov">          0 :             IMEBRA_THROW(std::logic_error, &quot;Invalid subsampling factor&quot;);</span>
+<span class="lineNum">     914 </span>            :         }
+<span class="lineNum">     915 </span>            : 
+<span class="lineNum">     916 </span><span class="lineNoCov">          0 :         IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">     917 </span>            :     }
+<span class="lineNum">     918 </span>            : 
+<span class="lineNum">     919 </span>            : protected:
+<span class="lineNum">     920 </span>            :     /// \brief Copy the values from a memory location to
+<span class="lineNum">     921 </span>            :     ///         the buffer managed by the handler
+<span class="lineNum">     922 </span>            :     ///
+<span class="lineNum">     923 </span>            :     /// @param pSource a pointer to the first byte of the
+<span class="lineNum">     924 </span>            :     ///         memory area to copy
+<span class="lineNum">     925 </span>            :     /// @param sourceSize the number of values to copy
+<span class="lineNum">     926 </span>            :     ///
+<a name="927"><span class="lineNum">     927 </span>            :     ///////////////////////////////////////////////////////////</a>
+<span class="lineNum">     928 </span>            :     template&lt;class sourceHandlerType&gt;
+<span class="lineNum">     929 </span><span class="lineCov">        468 :     void copyFromMemory(sourceHandlerType* pSource, size_t sourceSize)</span>
+<span class="lineNum">     930 </span>            :     {
+<span class="lineNum">     931 </span>            :         IMEBRA_FUNCTION_START();
+<span class="lineNum">     932 </span>            : 
+<span class="lineNum">     933 </span><span class="lineCov">        468 :         setSize(sourceSize);</span>
+<span class="lineNum">     934 </span><span class="lineCov">        468 :         dataHandlerType* pDest((dataHandlerType*)m_pMemory-&gt;data());</span>
+<span class="lineNum">     935 </span><span class="lineCov">  538347300 :         while(sourceSize-- != 0)</span>
+<span class="lineNum">     936 </span>            :         {
+<span class="lineNum">     937 </span><span class="lineCov">  269173416 :             *(pDest++) = (dataHandlerType)*(pSource++);</span>
+<span class="lineNum">     938 </span>            :         }
+<span class="lineNum">     939 </span>            : 
+<span class="lineNum">     940 </span><span class="lineNoCov">          0 :         IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">     941 </span><span class="lineCov">        468 :     }</span>
+<span class="lineNum">     942 </span>            : 
+<span class="lineNum">     943 </span>            : 
+<span class="lineNum">     944 </span>            : };
+<span class="lineNum">     945 </span>            : 
+<span class="lineNum">     946 </span>            : 
+<span class="lineNum">     947 </span>            : typedef readingDataHandlerNumeric&lt;std::uint8_t&gt; readingDataHandlerRaw;
+<span class="lineNum">     948 </span>            : typedef readingDataHandlerNumeric&lt;std::uint8_t&gt; readingDataHandlerUint8;
+<span class="lineNum">     949 </span>            : typedef readingDataHandlerNumeric&lt;std::int8_t&gt; readingDataHandlerInt8;
+<span class="lineNum">     950 </span>            : typedef readingDataHandlerNumeric&lt;std::uint16_t&gt; readingDataHandlerUint16;
+<span class="lineNum">     951 </span>            : typedef readingDataHandlerNumeric&lt;std::int16_t&gt; readingDataHandlerInt16;
+<span class="lineNum">     952 </span>            : typedef readingDataHandlerNumeric&lt;std::uint32_t&gt; readingDataHandlerUint32;
+<span class="lineNum">     953 </span>            : typedef readingDataHandlerNumeric&lt;std::int32_t&gt; readingDataHandlerInt32;
+<span class="lineNum">     954 </span>            : typedef readingDataHandlerNumeric&lt;float&gt; readingDataHandlerFloat;
+<span class="lineNum">     955 </span>            : typedef readingDataHandlerNumeric&lt;double&gt; readingDataHandlerDouble;
+<span class="lineNum">     956 </span>            : 
+<span class="lineNum">     957 </span>            : typedef writingDataHandlerNumeric&lt;std::uint8_t&gt; writingDataHandlerRaw;
+<span class="lineNum">     958 </span>            : typedef writingDataHandlerNumeric&lt;std::uint8_t&gt; writingDataHandlerUint8;
+<span class="lineNum">     959 </span>            : typedef writingDataHandlerNumeric&lt;std::int8_t&gt; writingDataHandlerInt8;
+<span class="lineNum">     960 </span>            : typedef writingDataHandlerNumeric&lt;std::uint16_t&gt; writingDataHandlerUint16;
+<span class="lineNum">     961 </span>            : typedef writingDataHandlerNumeric&lt;std::int16_t&gt; writingDataHandlerInt16;
+<span class="lineNum">     962 </span>            : typedef writingDataHandlerNumeric&lt;std::uint32_t&gt; writingDataHandlerUint32;
+<span class="lineNum">     963 </span>            : typedef writingDataHandlerNumeric&lt;std::int32_t&gt; writingDataHandlerInt32;
+<span class="lineNum">     964 </span>            : typedef writingDataHandlerNumeric&lt;float&gt; writingDataHandlerFloat;
+<span class="lineNum">     965 </span>            : typedef writingDataHandlerNumeric&lt;double&gt; writingDataHandlerDouble;
+<span class="lineNum">     966 </span>            : 
+<span class="lineNum">     967 </span>            : } // namespace handlers
+<span class="lineNum">     968 </span>            : 
+<span class="lineNum">     969 </span>            : } // namespace implementation
+<span class="lineNum">     970 </span>            : 
+<span class="lineNum">     971 </span>            : } // namespace imebra
+<span class="lineNum">     972 </span>            : 
+<span class="lineNum">     973 </span>            : #define HANDLER_CALL_TEMPLATE_FUNCTION_WITH_PARAMS(functionName, handlerPointer, ...)\
+<span class="lineNum">     974 </span>            : {\
+<span class="lineNum">     975 </span>            :     IMEBRA_FUNCTION_START();\
+<span class="lineNum">     976 </span>            :     imebra::implementation::handlers::readingDataHandlerNumericBase* pHandler(handlerPointer.get()); \
+<span class="lineNum">     977 </span>            :     if(typeid(*pHandler) == typeid(imebra::implementation::handlers::readingDataHandlerNumeric&lt;std::uint8_t&gt;)) \
+<span class="lineNum">     978 </span>            :     {\
+<span class="lineNum">     979 </span>            :         functionName&lt;std::uint8_t&gt; ((std::uint8_t*)handlerPointer-&gt;getMemoryBuffer(), handlerPointer-&gt;getSize(), __VA_ARGS__);\
+<span class="lineNum">     980 </span>            :     }\
+<span class="lineNum">     981 </span>            :     else if(typeid(*pHandler) == typeid(imebra::implementation::handlers::readingDataHandlerNumeric&lt;std::int8_t&gt;))\
+<span class="lineNum">     982 </span>            :     {\
+<span class="lineNum">     983 </span>            :         functionName&lt;std::int8_t&gt; ((std::int8_t*)handlerPointer-&gt;getMemoryBuffer(), handlerPointer-&gt;getSize(), __VA_ARGS__);\
+<span class="lineNum">     984 </span>            :     }\
+<span class="lineNum">     985 </span>            :     else if(typeid(*pHandler) == typeid(imebra::implementation::handlers::readingDataHandlerNumeric&lt;std::uint16_t&gt;))\
+<span class="lineNum">     986 </span>            :     {\
+<span class="lineNum">     987 </span>            :         functionName&lt;std::uint16_t&gt; ((std::uint16_t*)handlerPointer-&gt;getMemoryBuffer(), handlerPointer-&gt;getSize(), __VA_ARGS__);\
+<span class="lineNum">     988 </span>            :     }\
+<span class="lineNum">     989 </span>            :     else if(typeid(*pHandler) == typeid(imebra::implementation::handlers::readingDataHandlerNumeric&lt;std::int16_t&gt;))\
+<span class="lineNum">     990 </span>            :     {\
+<span class="lineNum">     991 </span>            :         functionName&lt;std::int16_t&gt; ((std::int16_t*)handlerPointer-&gt;getMemoryBuffer(), handlerPointer-&gt;getSize(), __VA_ARGS__);\
+<span class="lineNum">     992 </span>            :     }\
+<span class="lineNum">     993 </span>            :     else if(typeid(*pHandler) == typeid(imebra::implementation::handlers::readingDataHandlerNumeric&lt;std::uint32_t&gt;))\
+<span class="lineNum">     994 </span>            :     {\
+<span class="lineNum">     995 </span>            :         functionName&lt;std::uint32_t&gt; ((std::uint32_t*)handlerPointer-&gt;getMemoryBuffer(), handlerPointer-&gt;getSize(), __VA_ARGS__);\
+<span class="lineNum">     996 </span>            :     }\
+<span class="lineNum">     997 </span>            :     else if(typeid(*pHandler) == typeid(imebra::implementation::handlers::readingDataHandlerNumeric&lt;std::int32_t&gt;))\
+<span class="lineNum">     998 </span>            :     {\
+<span class="lineNum">     999 </span>            :         functionName&lt;std::int32_t&gt; ((std::int32_t*)handlerPointer-&gt;getMemoryBuffer(), handlerPointer-&gt;getSize(), __VA_ARGS__);\
+<span class="lineNum">    1000 </span>            :     }\
+<span class="lineNum">    1001 </span>            :     else\
+<span class="lineNum">    1002 </span>            :     {\
+<span class="lineNum">    1003 </span>            :         IMEBRA_THROW(std::runtime_error, &quot;Data type not valid&quot;);\
+<span class="lineNum">    1004 </span>            :     }\
+<span class="lineNum">    1005 </span>            :     IMEBRA_FUNCTION_END();\
+<span class="lineNum">    1006 </span>            : }
+<span class="lineNum">    1007 </span>            : 
+<span class="lineNum">    1008 </span>            : 
+<span class="lineNum">    1009 </span>            : #endif // !defined(imebraDataHandlerNumeric_BD270581_5746_48d1_816E_64B700955A12__INCLUDED_)
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.13</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

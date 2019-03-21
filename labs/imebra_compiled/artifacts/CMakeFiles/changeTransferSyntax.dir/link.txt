@@ -1,0 +1,1 @@
+/usr/bin/c++   -std=c++11 -Wall -Wextra -Wpedantic -Wconversion -Wfloat-equal -fvisibility=hidden -fvisibility-inlines-hidden  -rdynamic CMakeFiles/changeTransferSyntax.dir/examples/c++/changeTransferSyntax/changeTransferSyntax.cpp.o  -o changeTransferSyntax -Wl,-rpath,/home/sim/Documents/sim/imebra_compiled/artifacts libimebra.so.1.0.0 -lpthread 

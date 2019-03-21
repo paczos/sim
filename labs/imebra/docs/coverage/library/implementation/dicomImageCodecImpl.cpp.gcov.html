@@ -1,0 +1,1423 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - extracted.info - library/implementation/dicomImageCodecImpl.cpp</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">library/implementation</a> - dicomImageCodecImpl.cpp<span style="font-size: 80%;"> (source / <a href="dicomImageCodecImpl.cpp.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">extracted.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">419</td>
+            <td class="headerCovTableEntry">447</td>
+            <td class="headerCovTableEntryHi">93.7 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2019-03-13 14:48:54</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">16</td>
+            <td class="headerCovTableEntry">16</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : /*</a>
+<span class="lineNum">       2 </span>            : Copyright 2005 - 2017 by Paolo Brandoli/Binarno s.p.
+<span class="lineNum">       3 </span>            : 
+<span class="lineNum">       4 </span>            : Imebra is available for free under the GNU General Public License.
+<span class="lineNum">       5 </span>            : 
+<span class="lineNum">       6 </span>            : The full text of the license is available in the file license.rst
+<span class="lineNum">       7 </span>            :  in the project root folder.
+<span class="lineNum">       8 </span>            : 
+<span class="lineNum">       9 </span>            : If you do not want to be bound by the GPL terms (such as the requirement 
+<span class="lineNum">      10 </span>            :  that your application must also be GPL), you may purchase a commercial 
+<span class="lineNum">      11 </span>            :  license for Imebra from the Imebra’s website (http://imebra.com).
+<span class="lineNum">      12 </span>            : */
+<span class="lineNum">      13 </span>            : 
+<span class="lineNum">      14 </span>            : /*! \file dicomCodec.cpp
+<span class="lineNum">      15 </span>            :     \brief Implementation of the class dicomImageCodec.
+<span class="lineNum">      16 </span>            : 
+<span class="lineNum">      17 </span>            : */
+<span class="lineNum">      18 </span>            : 
+<span class="lineNum">      19 </span>            : #include &lt;list&gt;
+<span class="lineNum">      20 </span>            : #include &lt;vector&gt;
+<span class="lineNum">      21 </span>            : #include &lt;string.h&gt;
+<span class="lineNum">      22 </span>            : #include &quot;exceptionImpl.h&quot;
+<span class="lineNum">      23 </span>            : #include &quot;streamReaderImpl.h&quot;
+<span class="lineNum">      24 </span>            : #include &quot;streamWriterImpl.h&quot;
+<span class="lineNum">      25 </span>            : #include &quot;memoryImpl.h&quot;
+<span class="lineNum">      26 </span>            : #include &quot;dicomImageCodecImpl.h&quot;
+<span class="lineNum">      27 </span>            : #include &quot;dataSetImpl.h&quot;
+<span class="lineNum">      28 </span>            : #include &quot;dicomDictImpl.h&quot;
+<span class="lineNum">      29 </span>            : #include &quot;imageImpl.h&quot;
+<span class="lineNum">      30 </span>            : #include &quot;colorTransformsFactoryImpl.h&quot;
+<span class="lineNum">      31 </span>            : #include &quot;codecFactoryImpl.h&quot;
+<span class="lineNum">      32 </span>            : #include &quot;bufferImpl.h&quot;
+<span class="lineNum">      33 </span>            : #include &quot;../include/imebra/exceptions.h&quot;
+<span class="lineNum">      34 </span>            : 
+<span class="lineNum">      35 </span>            : namespace imebra
+<span class="lineNum">      36 </span>            : {
+<span class="lineNum">      37 </span>            : 
+<span class="lineNum">      38 </span>            : namespace implementation
+<span class="lineNum">      39 </span>            : {
+<span class="lineNum">      40 </span>            : 
+<span class="lineNum">      41 </span>            : namespace codecs
+<span class="lineNum">      42 </span>            : {
+<span class="lineNum">      43 </span>            : 
+<span class="lineNum">      44 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">      45 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">      46 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">      47 </span>            : //
+<span class="lineNum">      48 </span>            : //
+<span class="lineNum">      49 </span>            : //
+<span class="lineNum">      50 </span>            : // dicomCodec
+<span class="lineNum">      51 </span>            : //
+<span class="lineNum">      52 </span>            : //
+<span class="lineNum">      53 </span>            : //
+<span class="lineNum">      54 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">      55 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">      56 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">      57 </span>            : 
+<span class="lineNum">      58 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">      59 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">      60 </span>            : //
+<span class="lineNum">      61 </span>            : //
+<span class="lineNum">      62 </span>            : // Get a DICOM raw or RLE image from a dicom structure
+<span class="lineNum">      63 </span>            : //
+<span class="lineNum">      64 </span>            : //
+<a name="65"><span class="lineNum">      65 </span>            : /////////////////////////////////////////////////////////////////</a>
+<span class="lineNum">      66 </span>            : /////////////////////////////////////////////////////////////////
+<span class="lineNum">      67 </span><span class="lineCov">      14451 : std::shared_ptr&lt;image&gt; dicomImageCodec::getImage(const dataSet&amp; dataset, std::shared_ptr&lt;streamReader&gt; pStream, tagVR_t dataType) const</span>
+<span class="lineNum">      68 </span>            : {
+<span class="lineNum">      69 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">      70 </span>            : 
+<span class="lineNum">      71 </span><span class="lineCov">      14451 :     streamReader* pSourceStream = pStream.get();</span>
+<span class="lineNum">      72 </span>            : 
+<span class="lineNum">      73 </span>            :     // Check for RLE compression
+<span class="lineNum">      74 </span>            :     ///////////////////////////////////////////////////////////
+<span class="lineNum">      75 </span><span class="lineCov">      28902 :     std::string transferSyntax = dataset.getString(0x0002, 0x0, 0x0010, 0, 0, &quot;1.2.840.10008.1.2&quot;);</span>
+<span class="lineNum">      76 </span><span class="lineCov">      14451 :     bool bRleCompressed = (transferSyntax == &quot;1.2.840.10008.1.2.5&quot;);</span>
+<span class="lineNum">      77 </span>            : 
+<span class="lineNum">      78 </span>            :     // Check for color space and subsampled channels
+<span class="lineNum">      79 </span>            :     ///////////////////////////////////////////////////////////
+<span class="lineNum">      80 </span><span class="lineCov">      28902 :     std::string colorSpace = dataset.getString(0x0028, 0x0, 0x0004, 0, 0);</span>
+<span class="lineNum">      81 </span>            : 
+<span class="lineNum">      82 </span>            :     // Retrieve the number of planes
+<span class="lineNum">      83 </span>            :     ///////////////////////////////////////////////////////////
+<span class="lineNum">      84 </span><span class="lineCov">      14451 :     std::uint8_t channelsNumber=(std::uint8_t)dataset.getUnsignedLong(0x0028, 0x0, 0x0002, 0, 0);</span>
+<span class="lineNum">      85 </span>            : 
+<span class="lineNum">      86 </span>            :     // Adjust the colorspace and the channels number for old
+<span class="lineNum">      87 </span>            :     //  NEMA files that don't specify those data
+<span class="lineNum">      88 </span>            :     ///////////////////////////////////////////////////////////
+<span class="lineNum">      89 </span><span class="lineCov">      14451 :     if(colorSpace.empty() &amp;&amp; (channelsNumber == 0 || channelsNumber == 1))</span>
+<span class="lineNum">      90 </span>            :     {
+<span class="lineNum">      91 </span><span class="lineNoCov">          0 :         colorSpace = &quot;MONOCHROME2&quot;;</span>
+<span class="lineNum">      92 </span><span class="lineNoCov">          0 :         channelsNumber = 1;</span>
+<span class="lineNum">      93 </span>            :     }
+<span class="lineNum">      94 </span>            : 
+<span class="lineNum">      95 </span><span class="lineCov">      14451 :     if(colorSpace.empty() &amp;&amp; channelsNumber == 3)</span>
+<span class="lineNum">      96 </span>            :     {
+<span class="lineNum">      97 </span><span class="lineNoCov">          0 :         colorSpace = &quot;RGB&quot;;</span>
+<span class="lineNum">      98 </span>            :     }
+<span class="lineNum">      99 </span>            : 
+<span class="lineNum">     100 </span>            :     // Retrieve the image's size
+<span class="lineNum">     101 </span>            :     ///////////////////////////////////////////////////////////
+<span class="lineNum">     102 </span><span class="lineCov">      14451 :     std::uint32_t imageWidth = dataset.getUnsignedLong(0x0028, 0x0, 0x0011, 0, 0);</span>
+<span class="lineNum">     103 </span><span class="lineCov">      14451 :     std::uint32_t imageHeight = dataset.getUnsignedLong(0x0028, 0x0, 0x0010, 0, 0);</span>
+<span class="lineNum">     104 </span>            : 
+<span class="lineNum">     105 </span><span class="lineCov">      14451 :     if(</span>
+<span class="lineNum">     106 </span><span class="lineCov">      57804 :             imageWidth &gt; codecFactory::getCodecFactory()-&gt;getMaximumImageWidth() ||</span>
+<span class="lineNum">     107 </span><span class="lineCov">      43353 :             imageHeight &gt; codecFactory::getCodecFactory()-&gt;getMaximumImageHeight())</span>
+<span class="lineNum">     108 </span>            :     {
+<span class="lineNum">     109 </span><span class="lineNoCov">          0 :         IMEBRA_THROW(CodecImageTooBigError, &quot;The factory settings prevented the loading of this image. Consider using codecFactory::setMaximumImageSize() to modify the settings&quot;);</span>
+<span class="lineNum">     110 </span>            :     }
+<span class="lineNum">     111 </span>            : 
+<span class="lineNum">     112 </span><span class="lineCov">      14451 :     if((imageWidth == 0) || (imageHeight == 0))</span>
+<span class="lineNum">     113 </span>            :     {
+<span class="lineNum">     114 </span><span class="lineNoCov">          0 :         IMEBRA_THROW(CodecCorruptedFileError, &quot;The size tags are not available&quot;);</span>
+<span class="lineNum">     115 </span>            :     }
+<span class="lineNum">     116 </span>            : 
+<span class="lineNum">     117 </span>            :     // Check for interleaved planes.
+<span class="lineNum">     118 </span>            :     ///////////////////////////////////////////////////////////
+<span class="lineNum">     119 </span><span class="lineCov">      14451 :     bool bInterleaved(dataset.getUnsignedLong(0x0028, 0x0, 0x0006, 0, 0, 0) == 0x0);</span>
+<span class="lineNum">     120 </span>            : 
+<span class="lineNum">     121 </span>            :     // Check for 2's complement
+<span class="lineNum">     122 </span>            :     ///////////////////////////////////////////////////////////
+<span class="lineNum">     123 </span><span class="lineCov">      14451 :     bool b2Complement = dataset.getUnsignedLong(0x0028, 0x0, 0x0103, 0, 0, 0) != 0x0;</span>
+<span class="lineNum">     124 </span>            : 
+<span class="lineNum">     125 </span>            :     // Retrieve the allocated/stored/high bits
+<span class="lineNum">     126 </span>            :     ///////////////////////////////////////////////////////////
+<span class="lineNum">     127 </span><span class="lineCov">      14451 :     std::uint8_t allocatedBits=(std::uint8_t)dataset.getUnsignedLong(0x0028, 0x0, 0x0100, 0, 0);</span>
+<span class="lineNum">     128 </span><span class="lineCov">      14451 :     std::uint8_t storedBits=(std::uint8_t)dataset.getUnsignedLong(0x0028, 0x0, 0x0101, 0, 0);</span>
+<span class="lineNum">     129 </span><span class="lineCov">      14451 :     std::uint8_t highBit=(std::uint8_t)dataset.getUnsignedLong(0x0028, 0x0, 0x0102, 0, 0);</span>
+<span class="lineNum">     130 </span><span class="lineCov">      14451 :     if(highBit &lt; storedBits - 1)</span>
+<span class="lineNum">     131 </span><span class="lineNoCov">          0 :         throw;</span>
+<span class="lineNum">     132 </span>            : 
+<span class="lineNum">     133 </span>            : 
+<span class="lineNum">     134 </span>            :     // If the chrominance channels are subsampled, then find
+<span class="lineNum">     135 </span>            :     //  the right image's size
+<span class="lineNum">     136 </span>            :     ///////////////////////////////////////////////////////////
+<span class="lineNum">     137 </span><span class="lineCov">      14451 :     bool bSubSampledY = channelsNumber &gt; 0x1 &amp;&amp; transforms::colorTransforms::colorTransformsFactory::isSubsampledY(colorSpace);</span>
+<span class="lineNum">     138 </span><span class="lineCov">      14451 :     bool bSubSampledX = channelsNumber &gt; 0x1 &amp;&amp; transforms::colorTransforms::colorTransformsFactory::isSubsampledX(colorSpace);</span>
+<span class="lineNum">     139 </span>            : 
+<span class="lineNum">     140 </span>            :     // Create an image
+<span class="lineNum">     141 </span>            :     ///////////////////////////////////////////////////////////
+<span class="lineNum">     142 </span>            :     bitDepth_t depth;
+<span class="lineNum">     143 </span><span class="lineCov">      14451 :     if(b2Complement)</span>
+<span class="lineNum">     144 </span>            :     {
+<span class="lineNum">     145 </span><span class="lineCov">       6961 :         if(highBit &gt;= 16)</span>
+<span class="lineNum">     146 </span>            :         {
+<span class="lineNum">     147 </span><span class="lineCov">       3312 :             depth = bitDepth_t::depthS32;</span>
+<span class="lineNum">     148 </span>            :         }
+<span class="lineNum">     149 </span><span class="lineCov">       3649 :         else if(highBit &gt;= 8)</span>
+<span class="lineNum">     150 </span>            :         {
+<span class="lineNum">     151 </span><span class="lineCov">       1824 :             depth = bitDepth_t::depthS16;</span>
+<span class="lineNum">     152 </span>            :         }
+<span class="lineNum">     153 </span>            :         else
+<span class="lineNum">     154 </span>            :         {
+<span class="lineNum">     155 </span><span class="lineCov">       1825 :             depth = bitDepth_t::depthS8;</span>
+<span class="lineNum">     156 </span>            :         }
+<span class="lineNum">     157 </span>            :     }
+<span class="lineNum">     158 </span>            :     else
+<span class="lineNum">     159 </span>            :     {
+<span class="lineNum">     160 </span><span class="lineCov">       7490 :         if(highBit &gt;= 16)</span>
+<span class="lineNum">     161 </span>            :         {
+<span class="lineNum">     162 </span><span class="lineCov">       3316 :             depth = bitDepth_t::depthU32;</span>
+<span class="lineNum">     163 </span>            :         }
+<span class="lineNum">     164 </span><span class="lineCov">       4174 :         else if(highBit &gt;= 8)</span>
+<span class="lineNum">     165 </span>            :         {
+<span class="lineNum">     166 </span><span class="lineCov">       1826 :             depth = bitDepth_t::depthU16;</span>
+<span class="lineNum">     167 </span>            :         }
+<span class="lineNum">     168 </span>            :         else
+<span class="lineNum">     169 </span>            :         {
+<span class="lineNum">     170 </span><span class="lineCov">       2348 :             depth = bitDepth_t::depthU8;</span>
+<span class="lineNum">     171 </span>            :         }
+<span class="lineNum">     172 </span>            :     }
+<span class="lineNum">     173 </span>            : 
+<span class="lineNum">     174 </span><span class="lineCov">      28902 :     std::shared_ptr&lt;image&gt; pImage(std::make_shared&lt;image&gt;(imageWidth, imageHeight, depth, colorSpace, highBit));</span>
+<span class="lineNum">     175 </span><span class="lineCov">      28902 :     std::shared_ptr&lt;handlers::writingDataHandlerNumericBase&gt; handler = pImage-&gt;getWritingDataHandler();</span>
+<span class="lineNum">     176 </span><span class="lineCov">      14451 :     std::uint32_t tempChannelsNumber = pImage-&gt;getChannelsNumber();</span>
+<span class="lineNum">     177 </span>            : 
+<span class="lineNum">     178 </span><span class="lineCov">      14451 :     if(handler == 0 || tempChannelsNumber != channelsNumber)</span>
+<span class="lineNum">     179 </span>            :     {
+<span class="lineNum">     180 </span><span class="lineNoCov">          0 :         IMEBRA_THROW(CodecCorruptedFileError, &quot;Cannot allocate the image's buffer&quot;);</span>
+<span class="lineNum">     181 </span>            :     }
+<span class="lineNum">     182 </span>            : 
+<span class="lineNum">     183 </span>            :     // Allocate the dicom channels
+<span class="lineNum">     184 </span>            :     ///////////////////////////////////////////////////////////
+<span class="lineNum">     185 </span><span class="lineCov">      28902 :     dicomInformation information;</span>
+<span class="lineNum">     186 </span><span class="lineCov">      14451 :     allocChannels(information, channelsNumber, imageWidth, imageHeight, bSubSampledX, bSubSampledY);</span>
+<span class="lineNum">     187 </span>            : 
+<span class="lineNum">     188 </span><span class="lineCov">      14451 :     std::uint32_t mask = (std::uint32_t)( ((std::uint64_t)1 &lt;&lt; (highBit + 1)) - 1);</span>
+<span class="lineNum">     189 </span><span class="lineCov">      14451 :     mask -= (std::uint32_t)(((std::uint64_t)1 &lt;&lt; (highBit + 1 - storedBits)) - 1);</span>
+<span class="lineNum">     190 </span>            : 
+<span class="lineNum">     191 </span>            :     //
+<span class="lineNum">     192 </span>            :     // The image is not compressed
+<span class="lineNum">     193 </span>            :     //
+<span class="lineNum">     194 </span>            :     ///////////////////////////////////////////////////////////
+<span class="lineNum">     195 </span><span class="lineCov">      14451 :     if(!bRleCompressed)</span>
+<span class="lineNum">     196 </span>            :     {
+<span class="lineNum">     197 </span><span class="lineCov">      12018 :         std::uint32_t wordSizeBytes = (dataType == tagVR_t::OW) ? 2 : 1;</span>
+<span class="lineNum">     198 </span>            : 
+<span class="lineNum">     199 </span>            :         // The planes are interleaved
+<span class="lineNum">     200 </span>            :         ///////////////////////////////////////////////////////////
+<span class="lineNum">     201 </span><span class="lineCov">      12018 :         if(bInterleaved &amp;&amp; channelsNumber != 1)</span>
+<span class="lineNum">     202 </span>            :         {
+<span class="lineNum">     203 </span><span class="lineCov">       5472 :             readUncompressedInterleaved(</span>
+<span class="lineNum">     204 </span>            :                         information,
+<span class="lineNum">     205 </span>            :                         channelsNumber,
+<span class="lineNum">     206 </span>            :                         bSubSampledX,
+<span class="lineNum">     207 </span>            :                         bSubSampledY,
+<span class="lineNum">     208 </span>            :                         pSourceStream,
+<span class="lineNum">     209 </span>            :                         wordSizeBytes,
+<span class="lineNum">     210 </span>            :                         allocatedBits,
+<span class="lineNum">     211 </span>            :                         mask);
+<span class="lineNum">     212 </span>            :         }
+<span class="lineNum">     213 </span>            :         else
+<span class="lineNum">     214 </span>            :         {
+<span class="lineNum">     215 </span><span class="lineCov">       6546 :             readUncompressedNotInterleaved(</span>
+<span class="lineNum">     216 </span>            :                         information,
+<span class="lineNum">     217 </span>            :                         channelsNumber,
+<span class="lineNum">     218 </span>            :                         pSourceStream,
+<span class="lineNum">     219 </span>            :                         wordSizeBytes,
+<span class="lineNum">     220 </span>            :                         allocatedBits,
+<span class="lineNum">     221 </span>            :                         mask);
+<span class="lineNum">     222 </span>            :         }
+<span class="lineNum">     223 </span>            :     }
+<span class="lineNum">     224 </span>            : 
+<span class="lineNum">     225 </span>            :     //
+<span class="lineNum">     226 </span>            :     // The image is RLE compressed
+<span class="lineNum">     227 </span>            :     //
+<span class="lineNum">     228 </span>            :     ///////////////////////////////////////////////////////////
+<span class="lineNum">     229 </span>            :     else
+<span class="lineNum">     230 </span>            :     {
+<span class="lineNum">     231 </span><span class="lineCov">       2433 :         if(bSubSampledX || bSubSampledY)</span>
+<span class="lineNum">     232 </span>            :         {
+<span class="lineNum">     233 </span><span class="lineNoCov">          0 :             IMEBRA_THROW(CodecCorruptedFileError, &quot;Cannot read subsampled RLE images&quot;);</span>
+<span class="lineNum">     234 </span>            :         }
+<span class="lineNum">     235 </span>            : 
+<span class="lineNum">     236 </span><span class="lineCov">       2433 :         readRLECompressed(information, imageWidth, imageHeight, channelsNumber, pSourceStream, allocatedBits, mask);</span>
+<span class="lineNum">     237 </span>            : 
+<span class="lineNum">     238 </span>            :     } // ...End of RLE decoding
+<span class="lineNum">     239 </span>            : 
+<span class="lineNum">     240 </span>            :     // Adjust b2complement buffers
+<span class="lineNum">     241 </span>            :     ///////////////////////////////////////////////////////////
+<span class="lineNum">     242 </span><span class="lineCov">      14451 :     if(b2Complement)</span>
+<span class="lineNum">     243 </span>            :     {
+<span class="lineNum">     244 </span><span class="lineCov">       6961 :         std::int32_t checkSign = (std::int32_t)1 &lt;&lt; highBit;</span>
+<span class="lineNum">     245 </span><span class="lineCov">       6961 :         std::int32_t orMask = (std::int32_t)((std::int32_t)-1 * ((std::int32_t)1 &lt;&lt; highBit));</span>
+<span class="lineNum">     246 </span>            : 
+<span class="lineNum">     247 </span><span class="lineCov">      24002 :         for(size_t adjChannels = 0; adjChannels &lt; information.m_channels.size(); ++adjChannels)</span>
+<span class="lineNum">     248 </span>            :         {
+<span class="lineNum">     249 </span><span class="lineCov">      17041 :             std::int32_t* pAdjBuffer = information.m_channels[adjChannels]-&gt;m_pBuffer;</span>
+<span class="lineNum">     250 </span><span class="lineCov">      17041 :             std::uint32_t adjSize = information.m_channels[adjChannels]-&gt;m_bufferSize;</span>
+<span class="lineNum">     251 </span><span class="lineCov">  944323933 :             while(adjSize != 0)</span>
+<span class="lineNum">     252 </span>            :             {
+<span class="lineNum">     253 </span><span class="lineCov">  472153446 :                 if(*pAdjBuffer &amp; checkSign)</span>
+<span class="lineNum">     254 </span>            :                 {
+<span class="lineNum">     255 </span><span class="lineCov">  204141059 :                     *pAdjBuffer |= orMask;</span>
+<span class="lineNum">     256 </span>            :                 }
+<span class="lineNum">     257 </span><span class="lineCov">  472153446 :                 ++pAdjBuffer;</span>
+<span class="lineNum">     258 </span><span class="lineCov">  472153446 :                 --adjSize;</span>
+<span class="lineNum">     259 </span>            :             }
+<span class="lineNum">     260 </span>            :         }
+<span class="lineNum">     261 </span>            :     }
+<span class="lineNum">     262 </span>            : 
+<span class="lineNum">     263 </span>            : 
+<span class="lineNum">     264 </span>            :     // Copy the dicom channels into the image
+<span class="lineNum">     265 </span>            :     ///////////////////////////////////////////////////////////
+<span class="lineNum">     266 </span><span class="lineCov">      14451 :     std::uint32_t maxSamplingFactorX = bSubSampledX ? 2 : 1;</span>
+<span class="lineNum">     267 </span><span class="lineCov">      14451 :     std::uint32_t maxSamplingFactorY = bSubSampledY ? 2 : 1;</span>
+<span class="lineNum">     268 </span><span class="lineCov">      49062 :     for(std::uint32_t copyChannels = 0; copyChannels &lt; channelsNumber; ++copyChannels)</span>
+<span class="lineNum">     269 </span>            :     {
+<span class="lineNum">     270 </span><span class="lineCov">      69222 :         dicomInformation::ptrChannel dicomChannel = information.m_channels[copyChannels];</span>
+<span class="lineNum">     271 </span><span class="lineCov">     242277 :         handler-&gt;copyFromInt32Interleaved(</span>
+<span class="lineNum">     272 </span><span class="lineCov">      34611 :                     dicomChannel-&gt;m_pBuffer,</span>
+<span class="lineNum">     273 </span><span class="lineCov">      34611 :                     maxSamplingFactorX /dicomChannel-&gt;m_samplingFactorX,</span>
+<span class="lineNum">     274 </span><span class="lineCov">      34611 :                     maxSamplingFactorY /dicomChannel-&gt;m_samplingFactorY,</span>
+<span class="lineNum">     275 </span>            :                     0, 0,
+<span class="lineNum">     276 </span><span class="lineCov">      34611 :                     dicomChannel-&gt;m_width * maxSamplingFactorX / dicomChannel-&gt;m_samplingFactorX,</span>
+<span class="lineNum">     277 </span><span class="lineCov">      34611 :                     dicomChannel-&gt;m_height * maxSamplingFactorY / dicomChannel-&gt;m_samplingFactorY,</span>
+<span class="lineNum">     278 </span>            :                     copyChannels,
+<span class="lineNum">     279 </span>            :                     imageWidth,
+<span class="lineNum">     280 </span>            :                     imageHeight,
+<span class="lineNum">     281 </span><span class="lineCov">      34611 :                     channelsNumber);</span>
+<span class="lineNum">     282 </span>            :     }
+<span class="lineNum">     283 </span>            : 
+<span class="lineNum">     284 </span>            :     // Return OK
+<span class="lineNum">     285 </span>            :     ///////////////////////////////////////////////////////////
+<span class="lineNum">     286 </span><span class="lineCov">      28902 :     return pImage;</span>
+<span class="lineNum">     287 </span>            : 
+<span class="lineNum">     288 </span><span class="lineNoCov">          0 :     IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">     289 </span>            : 
+<span class="lineNum">     290 </span>            : }
+<span class="lineNum">     291 </span>            : 
+<span class="lineNum">     292 </span>            : 
+<span class="lineNum">     293 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     294 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     295 </span>            : //
+<span class="lineNum">     296 </span>            : //
+<span class="lineNum">     297 </span>            : // Allocate the channels used to read/write an image
+<span class="lineNum">     298 </span>            : //
+<span class="lineNum">     299 </span>            : //
+<a name="300"><span class="lineNum">     300 </span>            : ///////////////////////////////////////////////////////////</a>
+<span class="lineNum">     301 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     302 </span><span class="lineCov">      20332 : void dicomImageCodec::allocChannels(dicomInformation&amp; information, std::uint32_t channelsNumber, std::uint32_t width, std::uint32_t height, bool bSubSampledX, bool bSubSampledY)</span>
+<span class="lineNum">     303 </span>            : {
+<span class="lineNum">     304 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">     305 </span>            : 
+<span class="lineNum">     306 </span><span class="lineCov">      20332 :     if(bSubSampledX &amp;&amp; (width &amp; 0x1) != 0)</span>
+<span class="lineNum">     307 </span>            :     {
+<span class="lineNum">     308 </span><span class="lineCov">       3300 :         ++width;</span>
+<span class="lineNum">     309 </span>            :     }
+<span class="lineNum">     310 </span>            : 
+<span class="lineNum">     311 </span><span class="lineCov">      20332 :     if(bSubSampledY &amp;&amp; (height &amp; 0x1) != 0)</span>
+<span class="lineNum">     312 </span>            :     {
+<span class="lineNum">     313 </span><span class="lineCov">       1650 :         ++height;</span>
+<span class="lineNum">     314 </span>            :     }
+<span class="lineNum">     315 </span>            : 
+<span class="lineNum">     316 </span><span class="lineCov">      20332 :     information.m_channels.resize(channelsNumber);</span>
+<span class="lineNum">     317 </span><span class="lineCov">      68872 :     for(std::uint32_t channelNum = 0; channelNum &lt; channelsNumber; ++channelNum)</span>
+<span class="lineNum">     318 </span>            :     {
+<span class="lineNum">     319 </span><span class="lineCov">      48540 :         std::uint32_t channelWidth = width;</span>
+<span class="lineNum">     320 </span><span class="lineCov">      48540 :         std::uint32_t channelHeight = height;</span>
+<span class="lineNum">     321 </span><span class="lineCov">      48540 :         std::uint32_t samplingFactorX = 1;</span>
+<span class="lineNum">     322 </span><span class="lineCov">      48540 :         std::uint32_t samplingFactorY = 1;</span>
+<span class="lineNum">     323 </span><span class="lineCov">      48540 :         if(channelNum != 0)</span>
+<span class="lineNum">     324 </span>            :         {
+<span class="lineNum">     325 </span><span class="lineCov">      28208 :             if(bSubSampledX)</span>
+<span class="lineNum">     326 </span>            :             {
+<span class="lineNum">     327 </span><span class="lineCov">       6600 :                 channelWidth &gt;&gt;= 1;</span>
+<span class="lineNum">     328 </span>            :             }
+<span class="lineNum">     329 </span><span class="lineCov">      28208 :             if(bSubSampledY)</span>
+<span class="lineNum">     330 </span>            :             {
+<span class="lineNum">     331 </span><span class="lineCov">       3300 :                 channelHeight &gt;&gt;= 1;</span>
+<span class="lineNum">     332 </span>            :             }
+<span class="lineNum">     333 </span>            :         }
+<span class="lineNum">     334 </span>            :         else
+<span class="lineNum">     335 </span>            :         {
+<span class="lineNum">     336 </span><span class="lineCov">      20332 :             if(bSubSampledX)</span>
+<span class="lineNum">     337 </span>            :             {
+<span class="lineNum">     338 </span><span class="lineCov">       3300 :                 ++samplingFactorX;</span>
+<span class="lineNum">     339 </span>            :             }
+<span class="lineNum">     340 </span><span class="lineCov">      20332 :             if(bSubSampledY)</span>
+<span class="lineNum">     341 </span>            :             {
+<span class="lineNum">     342 </span><span class="lineCov">       1650 :                 ++samplingFactorY;</span>
+<span class="lineNum">     343 </span>            :             }
+<span class="lineNum">     344 </span>            :         }
+<span class="lineNum">     345 </span>            : 
+<span class="lineNum">     346 </span><span class="lineCov">      97080 :         dicomInformation::ptrChannel newChannel(std::make_shared&lt;channel&gt;());</span>
+<span class="lineNum">     347 </span><span class="lineCov">      48540 :         newChannel-&gt;allocate(channelWidth, channelHeight);</span>
+<span class="lineNum">     348 </span><span class="lineCov">      48540 :         newChannel-&gt;m_samplingFactorX = samplingFactorX;</span>
+<span class="lineNum">     349 </span><span class="lineCov">      48540 :         newChannel-&gt;m_samplingFactorY = samplingFactorY;</span>
+<span class="lineNum">     350 </span>            : 
+<span class="lineNum">     351 </span><span class="lineCov">      48540 :         information.m_channels[channelNum] = newChannel;</span>
+<span class="lineNum">     352 </span>            :     }
+<span class="lineNum">     353 </span>            : 
+<span class="lineNum">     354 </span><span class="lineNoCov">          0 :     IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">     355 </span><span class="lineCov">      20332 : }</span>
+<span class="lineNum">     356 </span>            : 
+<span class="lineNum">     357 </span>            : 
+<span class="lineNum">     358 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     359 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     360 </span>            : //
+<span class="lineNum">     361 </span>            : //
+<span class="lineNum">     362 </span>            : // Read an uncompressed interleaved image
+<span class="lineNum">     363 </span>            : //
+<span class="lineNum">     364 </span>            : //
+<a name="365"><span class="lineNum">     365 </span>            : ///////////////////////////////////////////////////////////</a>
+<span class="lineNum">     366 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     367 </span><span class="lineCov">       5472 : void dicomImageCodec::readUncompressedInterleaved(</span>
+<span class="lineNum">     368 </span>            :         dicomInformation&amp; information,
+<span class="lineNum">     369 </span>            :         std::uint32_t channelsNumber,
+<span class="lineNum">     370 </span>            :         bool bSubSampledX,
+<span class="lineNum">     371 </span>            :         bool bSubSampledY,
+<span class="lineNum">     372 </span>            :         streamReader* pSourceStream,
+<span class="lineNum">     373 </span>            :         std::uint32_t wordSizeBytes,
+<span class="lineNum">     374 </span>            :         std::uint8_t allocatedBits,
+<span class="lineNum">     375 </span>            :         std::uint32_t mask
+<span class="lineNum">     376 </span>            :         )
+<span class="lineNum">     377 </span>            : {
+<span class="lineNum">     378 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">     379 </span>            : 
+<span class="lineNum">     380 </span><span class="lineCov">       5472 :     std::uint8_t  bitPointer=0x0;</span>
+<span class="lineNum">     381 </span>            : 
+<span class="lineNum">     382 </span><span class="lineCov">       7872 :     std::vector&lt;std::int32_t*&gt; channelsMemory(information.m_channels.size());</span>
+<span class="lineNum">     383 </span><span class="lineCov">      21888 :     for(size_t copyChannelsPntr = 0; copyChannelsPntr &lt; information.m_channels.size(); ++copyChannelsPntr)</span>
+<span class="lineNum">     384 </span>            :     {
+<span class="lineNum">     385 </span><span class="lineCov">      16416 :         channelsMemory[copyChannelsPntr] = information.m_channels[copyChannelsPntr]-&gt;m_pBuffer;</span>
+<span class="lineNum">     386 </span>            :     }
+<span class="lineNum">     387 </span>            : 
+<span class="lineNum">     388 </span>            :     // No subsampling here
+<span class="lineNum">     389 </span>            :     ///////////////////////////////////////////////////////////
+<span class="lineNum">     390 </span><span class="lineCov">       5472 :     if(!bSubSampledX &amp;&amp; !bSubSampledY)</span>
+<span class="lineNum">     391 </span>            :     {
+<span class="lineNum">     392 </span>            :         std::uint8_t readBuffer[4];
+<span class="lineNum">     393 </span><span class="lineCov">   93241344 :         for(std::uint32_t totalSize = information.m_channels[0]-&gt;m_bufferSize; totalSize != 0; --totalSize)</span>
+<span class="lineNum">     394 </span>            :         {
+<span class="lineNum">     395 </span><span class="lineCov">  372953088 :             for(std::uint32_t scanChannels = 0; scanChannels != channelsNumber; ++scanChannels)</span>
+<span class="lineNum">     396 </span>            :             {
+<span class="lineNum">     397 </span><span class="lineCov">  279714816 :                 readPixel(information, pSourceStream, channelsMemory[scanChannels]++, 1, &amp;bitPointer, readBuffer, wordSizeBytes, allocatedBits, mask);</span>
+<span class="lineNum">     398 </span>            :             }
+<span class="lineNum">     399 </span>            :         }
+<span class="lineNum">     400 </span><span class="lineCov">       3072 :         return;</span>
+<span class="lineNum">     401 </span>            :     }
+<span class="lineNum">     402 </span>            : 
+<span class="lineNum">     403 </span><span class="lineCov">       2400 :     std::uint32_t numValuesPerBlock(channelsNumber);</span>
+<span class="lineNum">     404 </span><span class="lineCov">       2400 :     if(bSubSampledX)</span>
+<span class="lineNum">     405 </span>            :     {
+<span class="lineNum">     406 </span><span class="lineCov">       2400 :         ++numValuesPerBlock;</span>
+<span class="lineNum">     407 </span>            :     }
+<span class="lineNum">     408 </span><span class="lineCov">       2400 :     if(bSubSampledY)</span>
+<span class="lineNum">     409 </span>            :     {
+<span class="lineNum">     410 </span><span class="lineCov">       1200 :         numValuesPerBlock += 2;</span>
+<span class="lineNum">     411 </span>            :     }
+<span class="lineNum">     412 </span><span class="lineCov">       4800 :     std::vector&lt;std::int32_t&gt; readBlockValues((size_t)numValuesPerBlock);</span>
+<span class="lineNum">     413 </span>            : 
+<span class="lineNum">     414 </span>            :     // Read the subsampled channels.
+<span class="lineNum">     415 </span>            :     // Find the number of blocks to read
+<span class="lineNum">     416 </span>            :     ///////////////////////////////////////////////////////////
+<span class="lineNum">     417 </span><span class="lineCov">       2400 :     std::uint32_t adjWidth = information.m_channels[0]-&gt;m_width;</span>
+<span class="lineNum">     418 </span><span class="lineCov">       2400 :     std::uint32_t adjHeight = information.m_channels[0]-&gt;m_height;</span>
+<span class="lineNum">     419 </span>            : 
+<span class="lineNum">     420 </span><span class="lineCov">       2400 :     std::uint32_t maxSamplingFactorX = bSubSampledX ? 2 : 1;</span>
+<span class="lineNum">     421 </span><span class="lineCov">       2400 :     std::uint32_t maxSamplingFactorY = bSubSampledY ? 2 : 1;</span>
+<span class="lineNum">     422 </span>            : 
+<span class="lineNum">     423 </span><span class="lineCov">       4800 :     std::shared_ptr&lt;memory&gt; readBuffer(std::make_shared&lt;memory&gt;(numValuesPerBlock * ((7 + allocatedBits) &gt;&gt; 3)));</span>
+<span class="lineNum">     424 </span>            : 
+<span class="lineNum">     425 </span>            :     // Read all the blocks
+<span class="lineNum">     426 </span>            :     ///////////////////////////////////////////////////////////
+<span class="lineNum">     427 </span><span class="lineCov">       2400 :     std::uint32_t numBlocksY = adjHeight / maxSamplingFactorY;</span>
+<span class="lineNum">     428 </span><span class="lineCov">       2400 :     std::uint32_t numBlocksX = adjWidth / maxSamplingFactorX;</span>
+<span class="lineNum">     429 </span><span class="lineCov">     274800 :     for(std::uint32_t blockY(0); blockY != numBlocksY; ++blockY)</span>
+<span class="lineNum">     430 </span>            :     {
+<span class="lineNum">     431 </span><span class="lineCov">   27784800 :         for(std::uint32_t blockX(0); blockX != numBlocksX; ++blockX)</span>
+<span class="lineNum">     432 </span>            :         {
+<span class="lineNum">     433 </span><span class="lineCov">   27512400 :             std::int32_t* readBlockValuesPtr(&amp;(readBlockValues[0]));</span>
+<span class="lineNum">     434 </span><span class="lineCov">   27512400 :             readPixel(information, pSourceStream, readBlockValuesPtr, numValuesPerBlock, &amp;bitPointer, readBuffer-&gt;data(), wordSizeBytes, allocatedBits, mask);</span>
+<span class="lineNum">     435 </span>            : 
+<span class="lineNum">     436 </span>            :             // Read channel 0 (not subsampled)
+<span class="lineNum">     437 </span>            :             ///////////////////////////////////////////////////////////
+<span class="lineNum">     438 </span><span class="lineCov">   27512400 :             *(channelsMemory[0]++) = *readBlockValuesPtr++;</span>
+<span class="lineNum">     439 </span><span class="lineCov">   27512400 :             if(bSubSampledX)</span>
+<span class="lineNum">     440 </span>            :             {
+<span class="lineNum">     441 </span><span class="lineCov">   27512400 :                 *(channelsMemory[0]++) = *readBlockValuesPtr++;</span>
+<span class="lineNum">     442 </span>            :             }
+<span class="lineNum">     443 </span><span class="lineCov">   27512400 :             if(bSubSampledY)</span>
+<span class="lineNum">     444 </span>            :             {
+<span class="lineNum">     445 </span><span class="lineCov">    9211200 :                 *(channelsMemory[0]+adjWidth-2) = *readBlockValuesPtr++;</span>
+<span class="lineNum">     446 </span><span class="lineCov">    9211200 :                 *(channelsMemory[0]+adjWidth-1) = *readBlockValuesPtr++;</span>
+<span class="lineNum">     447 </span>            :             }
+<span class="lineNum">     448 </span>            :             // Read channels 1... (subsampled)
+<span class="lineNum">     449 </span>            :             ///////////////////////////////////////////////////////////
+<span class="lineNum">     450 </span><span class="lineCov">   82537200 :             for(std::uint32_t scanSubSampled = 1; scanSubSampled &lt; channelsNumber; ++scanSubSampled)</span>
+<span class="lineNum">     451 </span>            :             {
+<span class="lineNum">     452 </span><span class="lineCov">   55024800 :                 *(channelsMemory[scanSubSampled]++) = *readBlockValuesPtr++;</span>
+<span class="lineNum">     453 </span>            :             }
+<span class="lineNum">     454 </span>            :         }
+<span class="lineNum">     455 </span><span class="lineCov">     272400 :         if(bSubSampledY)</span>
+<span class="lineNum">     456 </span>            :         {
+<span class="lineNum">     457 </span><span class="lineCov">      91200 :             channelsMemory[0] += adjWidth;</span>
+<span class="lineNum">     458 </span>            :         }
+<span class="lineNum">     459 </span>            :     }
+<span class="lineNum">     460 </span>            : 
+<span class="lineNum">     461 </span><span class="lineNoCov">          0 :     IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">     462 </span>            : }
+<span class="lineNum">     463 </span>            : 
+<span class="lineNum">     464 </span>            : 
+<span class="lineNum">     465 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     466 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     467 </span>            : //
+<span class="lineNum">     468 </span>            : //
+<span class="lineNum">     469 </span>            : // Write an uncompressed interleaved image
+<span class="lineNum">     470 </span>            : //
+<span class="lineNum">     471 </span>            : //
+<a name="472"><span class="lineNum">     472 </span>            : ///////////////////////////////////////////////////////////</a>
+<span class="lineNum">     473 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     474 </span><span class="lineCov">       3512 : void dicomImageCodec::writeUncompressedInterleaved(</span>
+<span class="lineNum">     475 </span>            :         dicomInformation&amp; information,
+<span class="lineNum">     476 </span>            :         std::uint32_t channelsNumber,
+<span class="lineNum">     477 </span>            :         bool bSubSampledX,
+<span class="lineNum">     478 </span>            :         bool bSubSampledY,
+<span class="lineNum">     479 </span>            :         streamWriter* pDestStream,
+<span class="lineNum">     480 </span>            :         std::uint32_t wordSizeBytes,
+<span class="lineNum">     481 </span>            :         std::uint8_t allocatedBits,
+<span class="lineNum">     482 </span>            :         std::uint32_t mask
+<span class="lineNum">     483 </span>            :         )
+<span class="lineNum">     484 </span>            : {
+<span class="lineNum">     485 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">     486 </span>            : 
+<span class="lineNum">     487 </span><span class="lineCov">       3512 :     std::uint8_t  bitPointer=0x0;</span>
+<span class="lineNum">     488 </span>            : 
+<span class="lineNum">     489 </span><span class="lineCov">       4412 :     std::vector&lt;std::int32_t*&gt; channelsMemory(information.m_channels.size());</span>
+<span class="lineNum">     490 </span><span class="lineCov">      11232 :     for(size_t copyChannelsPntr = 0; copyChannelsPntr &lt; information.m_channels.size(); ++copyChannelsPntr)</span>
+<span class="lineNum">     491 </span>            :     {
+<span class="lineNum">     492 </span><span class="lineCov">       7720 :         channelsMemory[copyChannelsPntr] = information.m_channels[copyChannelsPntr]-&gt;m_pBuffer;</span>
+<span class="lineNum">     493 </span>            :     }
+<span class="lineNum">     494 </span>            : 
+<span class="lineNum">     495 </span>            :     // No subsampling here
+<span class="lineNum">     496 </span>            :     ///////////////////////////////////////////////////////////
+<span class="lineNum">     497 </span><span class="lineCov">       3512 :     if(!bSubSampledX &amp;&amp; !bSubSampledY)</span>
+<span class="lineNum">     498 </span>            :     {
+<span class="lineNum">     499 </span><span class="lineCov">  284170889 :         for(std::uint32_t totalSize = information.m_channels[0]-&gt;m_bufferSize; totalSize != 0; --totalSize)</span>
+<span class="lineNum">     500 </span>            :         {
+<span class="lineNum">     501 </span><span class="lineCov">  650818162 :             for(std::uint32_t scanChannels = 0; scanChannels &lt; channelsNumber; ++scanChannels)</span>
+<span class="lineNum">     502 </span>            :             {
+<span class="lineNum">     503 </span><span class="lineCov">  366649885 :                 writePixel(information, pDestStream, *(channelsMemory[scanChannels]++), &amp;bitPointer, wordSizeBytes, allocatedBits, mask);</span>
+<span class="lineNum">     504 </span>            :             }
+<span class="lineNum">     505 </span>            :         }
+<span class="lineNum">     506 </span><span class="lineCov">       2612 :         flushUnwrittenPixels(information, pDestStream, &amp;bitPointer, wordSizeBytes);</span>
+<span class="lineNum">     507 </span><span class="lineCov">       2612 :         return;</span>
+<span class="lineNum">     508 </span>            :     }
+<span class="lineNum">     509 </span>            : 
+<span class="lineNum">     510 </span>            :     // Write the subsampled channels.
+<span class="lineNum">     511 </span>            :     // Find the number of blocks to write
+<span class="lineNum">     512 </span>            :     ///////////////////////////////////////////////////////////
+<span class="lineNum">     513 </span><span class="lineCov">        900 :     std::uint32_t adjWidth = information.m_channels[0]-&gt;m_width;</span>
+<span class="lineNum">     514 </span><span class="lineCov">        900 :     std::uint32_t adjHeight = information.m_channels[0]-&gt;m_height;</span>
+<span class="lineNum">     515 </span>            : 
+<span class="lineNum">     516 </span><span class="lineCov">        900 :     std::uint32_t maxSamplingFactorX = bSubSampledX ? 2 : 1;</span>
+<span class="lineNum">     517 </span><span class="lineCov">        900 :     std::uint32_t maxSamplingFactorY = bSubSampledY ? 2 : 1;</span>
+<span class="lineNum">     518 </span>            : 
+<span class="lineNum">     519 </span>            :     // Write all the blocks
+<span class="lineNum">     520 </span>            :     ///////////////////////////////////////////////////////////
+<span class="lineNum">     521 </span><span class="lineCov">        900 :     std::uint32_t numBlocksY = adjHeight / maxSamplingFactorY;</span>
+<span class="lineNum">     522 </span><span class="lineCov">        900 :     std::uint32_t numBlocksX = adjWidth / maxSamplingFactorX;</span>
+<span class="lineNum">     523 </span><span class="lineCov">     103050 :     for(std::uint32_t blockY(0); blockY != numBlocksY; ++blockY)</span>
+<span class="lineNum">     524 </span>            :     {
+<span class="lineNum">     525 </span><span class="lineCov">   10419300 :         for(std::uint32_t blockX(0); blockX != numBlocksX; ++blockX)</span>
+<span class="lineNum">     526 </span>            :         {
+<span class="lineNum">     527 </span>            :             // Write channel 0 (not subsampled)
+<span class="lineNum">     528 </span>            :             ///////////////////////////////////////////////////////////
+<span class="lineNum">     529 </span><span class="lineCov">   10317150 :             writePixel(information, pDestStream, *(channelsMemory[0]++), &amp;bitPointer, wordSizeBytes, allocatedBits, mask);</span>
+<span class="lineNum">     530 </span><span class="lineCov">   10317150 :             if(bSubSampledX)</span>
+<span class="lineNum">     531 </span>            :             {
+<span class="lineNum">     532 </span><span class="lineCov">   10317150 :                 writePixel(information, pDestStream, *(channelsMemory[0]++), &amp;bitPointer, wordSizeBytes, allocatedBits, mask);</span>
+<span class="lineNum">     533 </span>            :             }
+<span class="lineNum">     534 </span><span class="lineCov">   10317150 :             if(bSubSampledY)</span>
+<span class="lineNum">     535 </span>            :             {
+<span class="lineNum">     536 </span><span class="lineCov">    3454200 :                 writePixel(information, pDestStream, *(channelsMemory[0]+adjWidth-2), &amp;bitPointer, wordSizeBytes, allocatedBits, mask);</span>
+<span class="lineNum">     537 </span><span class="lineCov">    3454200 :                 writePixel(information, pDestStream, *(channelsMemory[0]+adjWidth-1), &amp;bitPointer, wordSizeBytes, allocatedBits, mask);</span>
+<span class="lineNum">     538 </span>            :             }
+<span class="lineNum">     539 </span>            :             // Write channels 1... (subsampled)
+<span class="lineNum">     540 </span>            :             ///////////////////////////////////////////////////////////
+<span class="lineNum">     541 </span><span class="lineCov">   30951450 :             for(std::uint32_t scanSubSampled = 1; scanSubSampled &lt; channelsNumber; ++scanSubSampled)</span>
+<span class="lineNum">     542 </span>            :             {
+<span class="lineNum">     543 </span><span class="lineCov">   20634300 :                 writePixel(information, pDestStream, *(channelsMemory[scanSubSampled]++), &amp;bitPointer, wordSizeBytes, allocatedBits, mask);</span>
+<span class="lineNum">     544 </span>            :             }
+<span class="lineNum">     545 </span>            :         }
+<span class="lineNum">     546 </span><span class="lineCov">     102150 :         if(bSubSampledY)</span>
+<span class="lineNum">     547 </span>            :         {
+<span class="lineNum">     548 </span><span class="lineCov">      34200 :             channelsMemory[0] += adjWidth;</span>
+<span class="lineNum">     549 </span>            :         }
+<span class="lineNum">     550 </span>            :     }
+<span class="lineNum">     551 </span>            : 
+<span class="lineNum">     552 </span><span class="lineCov">        900 :     flushUnwrittenPixels(information, pDestStream, &amp;bitPointer, wordSizeBytes);</span>
+<span class="lineNum">     553 </span>            : 
+<span class="lineNum">     554 </span><span class="lineNoCov">          0 :     IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">     555 </span>            : }
+<span class="lineNum">     556 </span>            : 
+<span class="lineNum">     557 </span>            : 
+<span class="lineNum">     558 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     559 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     560 </span>            : //
+<span class="lineNum">     561 </span>            : //
+<span class="lineNum">     562 </span>            : // Read an uncompressed not interleaved image
+<span class="lineNum">     563 </span>            : //
+<span class="lineNum">     564 </span>            : //
+<a name="565"><span class="lineNum">     565 </span>            : ///////////////////////////////////////////////////////////</a>
+<span class="lineNum">     566 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     567 </span><span class="lineCov">       6546 : void dicomImageCodec::readUncompressedNotInterleaved(</span>
+<span class="lineNum">     568 </span>            :         dicomInformation&amp; information,
+<span class="lineNum">     569 </span>            :         std::uint32_t channelsNumber,
+<span class="lineNum">     570 </span>            :         streamReader* pSourceStream,
+<span class="lineNum">     571 </span>            :         std::uint32_t wordSizeBytes,
+<span class="lineNum">     572 </span>            :         std::uint8_t allocatedBits,
+<span class="lineNum">     573 </span>            :         std::uint32_t mask
+<span class="lineNum">     574 </span>            :         )
+<span class="lineNum">     575 </span>            : {
+<span class="lineNum">     576 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">     577 </span>            : 
+<span class="lineNum">     578 </span><span class="lineCov">       6546 :     std::uint8_t  bitPointer=0x0;</span>
+<span class="lineNum">     579 </span>            : 
+<span class="lineNum">     580 </span><span class="lineCov">      13092 :     std::shared_ptr&lt;memory&gt; readBuffer;</span>
+<span class="lineNum">     581 </span><span class="lineCov">       6546 :     std::uint32_t lastBufferSize(0);</span>
+<span class="lineNum">     582 </span>            : 
+<span class="lineNum">     583 </span>            :     // Read all the pixels
+<span class="lineNum">     584 </span>            :     ///////////////////////////////////////////////////////////
+<span class="lineNum">     585 </span><span class="lineCov">      19236 :     for(std::uint32_t channel = 0; channel &lt; channelsNumber; ++channel)</span>
+<span class="lineNum">     586 </span>            :     {
+<span class="lineNum">     587 </span><span class="lineCov">      12690 :         if(information.m_channels[channel]-&gt;m_bufferSize != lastBufferSize)</span>
+<span class="lineNum">     588 </span>            :         {
+<span class="lineNum">     589 </span><span class="lineCov">       6546 :             lastBufferSize = information.m_channels[channel]-&gt;m_bufferSize;</span>
+<span class="lineNum">     590 </span><span class="lineCov">       6546 :             readBuffer = std::make_shared&lt;memory&gt;(lastBufferSize * ((7+allocatedBits) &gt;&gt; 3));</span>
+<span class="lineNum">     591 </span>            :         }
+<span class="lineNum">     592 </span><span class="lineCov">      12690 :         std::int32_t* pMemoryDest = information.m_channels[channel]-&gt;m_pBuffer;</span>
+<span class="lineNum">     593 </span><span class="lineCov">      12690 :         readPixel(information, pSourceStream, pMemoryDest, information.m_channels[channel]-&gt;m_bufferSize, &amp;bitPointer, readBuffer-&gt;data(), wordSizeBytes, allocatedBits, mask);</span>
+<span class="lineNum">     594 </span>            :     }
+<span class="lineNum">     595 </span>            : 
+<span class="lineNum">     596 </span><span class="lineNoCov">          0 :     IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">     597 </span><span class="lineCov">       6546 : }</span>
+<span class="lineNum">     598 </span>            : 
+<span class="lineNum">     599 </span>            : 
+<span class="lineNum">     600 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     601 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     602 </span>            : //
+<span class="lineNum">     603 </span>            : //
+<span class="lineNum">     604 </span>            : // Write an uncompressed not interleaved image
+<span class="lineNum">     605 </span>            : //
+<span class="lineNum">     606 </span>            : //
+<a name="607"><span class="lineNum">     607 </span>            : ///////////////////////////////////////////////////////////</a>
+<span class="lineNum">     608 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     609 </span><span class="lineCov">       1152 : void dicomImageCodec::writeUncompressedNotInterleaved(</span>
+<span class="lineNum">     610 </span>            :         dicomInformation&amp; information,
+<span class="lineNum">     611 </span>            :         std::uint32_t channelsNumber,
+<span class="lineNum">     612 </span>            :         streamWriter* pDestStream,
+<span class="lineNum">     613 </span>            :         std::uint32_t wordSizeBytes,
+<span class="lineNum">     614 </span>            :         std::uint8_t allocatedBits,
+<span class="lineNum">     615 </span>            :         std::uint32_t mask
+<span class="lineNum">     616 </span>            :         )
+<span class="lineNum">     617 </span>            : {
+<span class="lineNum">     618 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">     619 </span>            : 
+<span class="lineNum">     620 </span><span class="lineCov">       1152 :     std::uint8_t  bitPointer=0x0;</span>
+<span class="lineNum">     621 </span>            : 
+<span class="lineNum">     622 </span>            :     // Write all the pixels
+<span class="lineNum">     623 </span>            :     ///////////////////////////////////////////////////////////
+<span class="lineNum">     624 </span><span class="lineCov">       4608 :     for(std::uint32_t channel = 0; channel &lt; channelsNumber; ++channel)</span>
+<span class="lineNum">     625 </span>            :     {
+<span class="lineNum">     626 </span><span class="lineCov">       3456 :         std::int32_t* pMemoryDest = information.m_channels[channel]-&gt;m_pBuffer;</span>
+<span class="lineNum">     627 </span><span class="lineCov">  104896512 :         for(std::uint32_t scanPixels = information.m_channels[channel]-&gt;m_bufferSize; scanPixels != 0; --scanPixels)</span>
+<span class="lineNum">     628 </span>            :         {
+<span class="lineNum">     629 </span><span class="lineCov">  104893056 :             writePixel(information, pDestStream, *pMemoryDest++, &amp;bitPointer, wordSizeBytes, allocatedBits, mask);</span>
+<span class="lineNum">     630 </span>            :         }
+<span class="lineNum">     631 </span>            :     }
+<span class="lineNum">     632 </span><span class="lineCov">       1152 :     flushUnwrittenPixels(information, pDestStream, &amp;bitPointer, wordSizeBytes);</span>
+<span class="lineNum">     633 </span>            : 
+<span class="lineNum">     634 </span><span class="lineNoCov">          0 :     IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">     635 </span><span class="lineCov">       1152 : }</span>
+<span class="lineNum">     636 </span>            : 
+<span class="lineNum">     637 </span>            : 
+<span class="lineNum">     638 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     639 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     640 </span>            : //
+<span class="lineNum">     641 </span>            : //
+<span class="lineNum">     642 </span>            : // Write a RLE compressed image
+<span class="lineNum">     643 </span>            : //
+<span class="lineNum">     644 </span>            : //
+<a name="645"><span class="lineNum">     645 </span>            : ///////////////////////////////////////////////////////////</a>
+<span class="lineNum">     646 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     647 </span><span class="lineCov">       1217 : void dicomImageCodec::writeRLECompressed(</span>
+<span class="lineNum">     648 </span>            :         dicomInformation&amp; information,
+<span class="lineNum">     649 </span>            :         std::uint32_t imageWidth,
+<span class="lineNum">     650 </span>            :         std::uint32_t imageHeight,
+<span class="lineNum">     651 </span>            :         std::uint32_t channelsNumber,
+<span class="lineNum">     652 </span>            :         streamWriter* pDestStream,
+<span class="lineNum">     653 </span>            :         std::uint8_t allocatedBits,
+<span class="lineNum">     654 </span>            :         std::uint32_t mask
+<span class="lineNum">     655 </span>            :         )
+<span class="lineNum">     656 </span>            : {
+<span class="lineNum">     657 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">     658 </span>            : 
+<span class="lineNum">     659 </span>            :     std::uint32_t segmentsOffset[16];
+<span class="lineNum">     660 </span><span class="lineCov">       1217 :     ::memset(segmentsOffset, 0, sizeof(segmentsOffset));</span>
+<span class="lineNum">     661 </span>            : 
+<span class="lineNum">     662 </span>            :     // The first phase fills the segmentsOffset pointers, the
+<span class="lineNum">     663 </span>            :     //  second phase writes to the stream.
+<span class="lineNum">     664 </span>            :     ///////////////////////////////////////////////////////////
+<span class="lineNum">     665 </span><span class="lineCov">       3651 :     for(int phase = 0; phase &lt; 2; ++phase)</span>
+<span class="lineNum">     666 </span>            :     {
+<span class="lineNum">     667 </span><span class="lineCov">       2434 :         if(phase == 1)</span>
+<span class="lineNum">     668 </span>            :         {
+<span class="lineNum">     669 </span><span class="lineCov">       1217 :             pDestStream-&gt;adjustEndian((std::uint8_t*)segmentsOffset, 4, streamController::lowByteEndian, sizeof(segmentsOffset) / sizeof(segmentsOffset[0]));</span>
+<span class="lineNum">     670 </span><span class="lineCov">       1217 :             pDestStream-&gt;write((std::uint8_t*)segmentsOffset, sizeof(segmentsOffset));</span>
+<span class="lineNum">     671 </span>            :         }
+<span class="lineNum">     672 </span>            : 
+<span class="lineNum">     673 </span><span class="lineCov">       2434 :         std::uint32_t segmentNumber = 0;</span>
+<span class="lineNum">     674 </span><span class="lineCov">       2434 :         std::uint32_t offset = 64;</span>
+<span class="lineNum">     675 </span>            : 
+<span class="lineNum">     676 </span><span class="lineCov">       7940 :         for(std::uint32_t scanChannels = 0; scanChannels &lt; channelsNumber; ++scanChannels)</span>
+<span class="lineNum">     677 </span>            :         {
+<span class="lineNum">     678 </span><span class="lineCov">      11012 :             std::vector&lt;std::uint8_t&gt; rowBytes(imageWidth);</span>
+<span class="lineNum">     679 </span>            : 
+<span class="lineNum">     680 </span><span class="lineCov">      11012 :             std::vector&lt;std::uint8_t&gt; differentBytes;</span>
+<span class="lineNum">     681 </span><span class="lineCov">       5506 :             differentBytes.reserve(imageWidth);</span>
+<span class="lineNum">     682 </span>            : 
+<span class="lineNum">     683 </span><span class="lineCov">      19082 :             for(std::int32_t rightShift = (std::int32_t)(((allocatedBits + 7) &amp; 0xfffffff8) - 8); rightShift &gt;= 0; rightShift -= 8)</span>
+<span class="lineNum">     684 </span>            :             {
+<span class="lineNum">     685 </span><span class="lineCov">      13576 :                 std::int32_t* pPixel = information.m_channels[scanChannels]-&gt;m_pBuffer;</span>
+<span class="lineNum">     686 </span>            : 
+<span class="lineNum">     687 </span><span class="lineCov">      13576 :                 if(phase == 0)</span>
+<span class="lineNum">     688 </span>            :                 {
+<span class="lineNum">     689 </span><span class="lineCov">       6788 :                     segmentsOffset[++segmentNumber] = offset;</span>
+<span class="lineNum">     690 </span><span class="lineCov">       6788 :                     segmentsOffset[0] = segmentNumber;</span>
+<span class="lineNum">     691 </span>            :                 }
+<span class="lineNum">     692 </span>            :                 else
+<span class="lineNum">     693 </span>            :                 {
+<span class="lineNum">     694 </span><span class="lineCov">       6788 :                     offset = segmentsOffset[++segmentNumber];</span>
+<span class="lineNum">     695 </span>            :                 }
+<span class="lineNum">     696 </span>            : 
+<span class="lineNum">     697 </span><span class="lineCov">    2174096 :                 for(std::uint32_t scanY = imageHeight; scanY != 0; --scanY)</span>
+<span class="lineNum">     698 </span>            :                 {
+<span class="lineNum">     699 </span><span class="lineCov">    2160520 :                     std::uint8_t* rowBytesPointer = &amp;(rowBytes[0]);</span>
+<span class="lineNum">     700 </span>            : 
+<span class="lineNum">     701 </span><span class="lineCov">  544295712 :                     for(std::uint32_t scanX = imageWidth; scanX != 0; --scanX)</span>
+<span class="lineNum">     702 </span>            :                     {
+<span class="lineNum">     703 </span><span class="lineCov">  542135192 :                         *(rowBytesPointer++) = (std::uint8_t)( ((std::uint32_t)*pPixel &amp; mask) &gt;&gt; rightShift);</span>
+<span class="lineNum">     704 </span><span class="lineCov">  542135192 :                         ++pPixel;</span>
+<span class="lineNum">     705 </span>            :                     }
+<span class="lineNum">     706 </span>            : 
+<span class="lineNum">     707 </span><span class="lineCov">  487577568 :                     for(size_t scanBytes = 0; scanBytes &lt; imageWidth; /* left empty */)</span>
+<span class="lineNum">     708 </span>            :                     {
+<span class="lineNum">     709 </span><span class="lineCov">  485417048 :                         std::uint8_t currentByte = rowBytes[scanBytes];</span>
+<span class="lineNum">     710 </span>            : 
+<span class="lineNum">     711 </span>            :                         // Calculate the run-length
+<span class="lineNum">     712 </span>            :                         ///////////////////////////
+<span class="lineNum">     713 </span><span class="lineCov">  485417048 :                         size_t runLength(1);</span>
+<span class="lineNum">     714 </span><span class="lineCov">  556304094 :                         for(; ((scanBytes + runLength) != imageWidth) &amp;&amp; rowBytes[scanBytes + runLength] == currentByte; ++runLength)</span>
+<span class="lineNum">     715 </span>            :                         {
+<span class="lineNum">     716 </span>            :                         }
+<span class="lineNum">     717 </span>            : 
+<span class="lineNum">     718 </span>            :                         // Write the runlength
+<span class="lineNum">     719 </span>            :                         //////////////////////
+<span class="lineNum">     720 </span><span class="lineCov">  485417048 :                         if(runLength &gt; 3)</span>
+<span class="lineNum">     721 </span>            :                         {
+<span class="lineNum">     722 </span><span class="lineCov">    5252576 :                             if(!differentBytes.empty())</span>
+<span class="lineNum">     723 </span>            :                             {
+<span class="lineNum">     724 </span><span class="lineCov">     272832 :                                 offset += (std::uint32_t)writeRLEDifferentBytes(&amp;differentBytes, pDestStream, phase == 1);</span>
+<span class="lineNum">     725 </span>            :                             }
+<span class="lineNum">     726 </span><span class="lineCov">    5252576 :                             if(runLength &gt; 128)</span>
+<span class="lineNum">     727 </span>            :                             {
+<span class="lineNum">     728 </span><span class="lineNoCov">          0 :                                 runLength = 128;</span>
+<span class="lineNum">     729 </span>            :                             }
+<span class="lineNum">     730 </span><span class="lineCov">    5252576 :                             offset += 2;</span>
+<span class="lineNum">     731 </span><span class="lineCov">    5252576 :                             scanBytes += runLength;</span>
+<span class="lineNum">     732 </span><span class="lineCov">    5252576 :                             if(phase == 1)</span>
+<span class="lineNum">     733 </span>            :                             {
+<span class="lineNum">     734 </span><span class="lineCov">    2626288 :                                 std::uint8_t lengthByte = (std::uint8_t)(1 - runLength);</span>
+<span class="lineNum">     735 </span><span class="lineCov">    2626288 :                                 pDestStream-&gt;write(&amp;lengthByte, 1);</span>
+<span class="lineNum">     736 </span><span class="lineCov">    2626288 :                                 pDestStream-&gt;write(&amp;currentByte, 1);</span>
+<span class="lineNum">     737 </span>            :                             }
+<span class="lineNum">     738 </span><span class="lineCov">   10505152 :                             continue;</span>
+<span class="lineNum">     739 </span>            :                         }
+<span class="lineNum">     740 </span>            : 
+<span class="lineNum">     741 </span>            :                         // Remmember sequence of different bytes
+<span class="lineNum">     742 </span>            :                         ////////////////////////////////////////
+<span class="lineNum">     743 </span><span class="lineCov">  480164472 :                         differentBytes.push_back(currentByte);</span>
+<span class="lineNum">     744 </span><span class="lineCov">  480164472 :                         ++scanBytes;</span>
+<span class="lineNum">     745 </span>            :                     } // for(std::uint32_t scanBytes = 0; scanBytes &lt; imageWidth; )
+<span class="lineNum">     746 </span>            : 
+<span class="lineNum">     747 </span><span class="lineCov">    2160520 :                     offset += (std::uint32_t)writeRLEDifferentBytes(&amp;differentBytes, pDestStream, phase == 1);</span>
+<span class="lineNum">     748 </span>            : 
+<span class="lineNum">     749 </span>            :                 } // for(std::uint32_t scanY = imageHeight; scanY != 0; --scanY)
+<span class="lineNum">     750 </span>            : 
+<span class="lineNum">     751 </span><span class="lineCov">      13576 :                 if((offset &amp; 1) != 0)</span>
+<span class="lineNum">     752 </span>            :                 {
+<span class="lineNum">     753 </span><span class="lineCov">      11424 :                     ++offset;</span>
+<span class="lineNum">     754 </span><span class="lineCov">      11424 :                     if(phase == 1)</span>
+<span class="lineNum">     755 </span>            :                     {
+<span class="lineNum">     756 </span><span class="lineCov">       5712 :                         const std::uint8_t command = 0x80;</span>
+<span class="lineNum">     757 </span><span class="lineCov">       5712 :                         pDestStream-&gt;write(&amp;command, 1);</span>
+<span class="lineNum">     758 </span>            :                     }
+<span class="lineNum">     759 </span>            :                 }
+<span class="lineNum">     760 </span>            : 
+<span class="lineNum">     761 </span>            :             } // for(std::int32_t rightShift = ((allocatedBits + 7) &amp; 0xfffffff8) -8; rightShift &gt;= 0; rightShift -= 8)
+<span class="lineNum">     762 </span>            : 
+<span class="lineNum">     763 </span>            :         } // for(int scanChannels = 0; scanChannels &lt; channelsNumber; ++scanChannels)
+<span class="lineNum">     764 </span>            : 
+<span class="lineNum">     765 </span>            :     } // for(int phase = 0; phase &lt; 2; ++phase)
+<span class="lineNum">     766 </span>            : 
+<span class="lineNum">     767 </span><span class="lineNoCov">          0 :     IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">     768 </span><span class="lineCov">       1217 : }</span>
+<span class="lineNum">     769 </span>            : 
+<span class="lineNum">     770 </span>            : 
+<span class="lineNum">     771 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     772 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     773 </span>            : //
+<span class="lineNum">     774 </span>            : //
+<span class="lineNum">     775 </span>            : // Write RLE sequence of different bytes
+<span class="lineNum">     776 </span>            : //
+<span class="lineNum">     777 </span>            : //
+<a name="778"><span class="lineNum">     778 </span>            : ///////////////////////////////////////////////////////////</a>
+<span class="lineNum">     779 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     780 </span><span class="lineCov">    2433352 : size_t dicomImageCodec::writeRLEDifferentBytes(std::vector&lt;std::uint8_t&gt;* pDifferentBytes, streamWriter* pDestStream, bool bWrite)</span>
+<span class="lineNum">     781 </span>            : {
+<span class="lineNum">     782 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">     783 </span>            : 
+<span class="lineNum">     784 </span><span class="lineCov">    2433352 :     size_t writtenLength = 0;</span>
+<span class="lineNum">     785 </span><span class="lineCov">    7242448 :     for(size_t offset(0); offset != pDifferentBytes-&gt;size();)</span>
+<span class="lineNum">     786 </span>            :     {
+<span class="lineNum">     787 </span><span class="lineCov">    4809096 :         size_t writeSize = pDifferentBytes-&gt;size() - offset;</span>
+<span class="lineNum">     788 </span><span class="lineCov">    4809096 :         if(writeSize &gt; 128)</span>
+<span class="lineNum">     789 </span>            :         {
+<span class="lineNum">     790 </span><span class="lineCov">    2608704 :             writeSize = 128;</span>
+<span class="lineNum">     791 </span>            :         }
+<span class="lineNum">     792 </span><span class="lineCov">    4809096 :         writtenLength += writeSize + 1;</span>
+<span class="lineNum">     793 </span><span class="lineCov">    4809096 :         if(bWrite)</span>
+<span class="lineNum">     794 </span>            :         {
+<span class="lineNum">     795 </span><span class="lineCov">    2404548 :             const std::uint8_t writeLength((std::uint8_t)(writeSize - 1));</span>
+<span class="lineNum">     796 </span><span class="lineCov">    2404548 :             pDestStream-&gt;write(&amp;writeLength, 1);</span>
+<span class="lineNum">     797 </span><span class="lineCov">    2404548 :             pDestStream-&gt;write(&amp;(pDifferentBytes-&gt;at(offset)), writeSize);</span>
+<span class="lineNum">     798 </span>            :         }
+<span class="lineNum">     799 </span><span class="lineCov">    4809096 :         offset += writeSize;</span>
+<span class="lineNum">     800 </span>            :     }
+<span class="lineNum">     801 </span><span class="lineCov">    2433352 :     pDifferentBytes-&gt;clear();</span>
+<span class="lineNum">     802 </span>            : 
+<span class="lineNum">     803 </span>            :     // return number of written bytes
+<span class="lineNum">     804 </span>            :     /////////////////////////////////
+<span class="lineNum">     805 </span><span class="lineCov">    2433352 :     return writtenLength;</span>
+<span class="lineNum">     806 </span>            : 
+<span class="lineNum">     807 </span><span class="lineNoCov">          0 :     IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">     808 </span>            : }
+<span class="lineNum">     809 </span>            : 
+<span class="lineNum">     810 </span>            : 
+<span class="lineNum">     811 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     812 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     813 </span>            : //
+<span class="lineNum">     814 </span>            : //
+<span class="lineNum">     815 </span>            : // Read a RLE compressed image
+<span class="lineNum">     816 </span>            : //
+<span class="lineNum">     817 </span>            : //
+<a name="818"><span class="lineNum">     818 </span>            : ///////////////////////////////////////////////////////////</a>
+<span class="lineNum">     819 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     820 </span><span class="lineCov">       2433 : void dicomImageCodec::readRLECompressed(</span>
+<span class="lineNum">     821 </span>            :         dicomInformation&amp; information,
+<span class="lineNum">     822 </span>            :         std::uint32_t imageWidth,
+<span class="lineNum">     823 </span>            :         std::uint32_t imageHeight,
+<span class="lineNum">     824 </span>            :         std::uint32_t channelsNumber,
+<span class="lineNum">     825 </span>            :         streamReader* pSourceStream,
+<span class="lineNum">     826 </span>            :         std::uint8_t allocatedBits,
+<span class="lineNum">     827 </span>            :         std::uint32_t mask)
+<span class="lineNum">     828 </span>            : {
+<span class="lineNum">     829 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">     830 </span>            : 
+<span class="lineNum">     831 </span>            :     // Copy the RLE header into the segmentsOffset array
+<span class="lineNum">     832 </span>            :     //  and adjust the byte endian to the machine architecture
+<span class="lineNum">     833 </span>            :     ///////////////////////////////////////////////////////////
+<span class="lineNum">     834 </span>            :     std::uint32_t segmentsOffset[16];
+<span class="lineNum">     835 </span><span class="lineCov">       2433 :     ::memset(segmentsOffset, 0, sizeof(segmentsOffset));</span>
+<span class="lineNum">     836 </span><span class="lineCov">       2433 :     pSourceStream-&gt;read((std::uint8_t*)segmentsOffset, 64);</span>
+<span class="lineNum">     837 </span><span class="lineCov">       2433 :     pSourceStream-&gt;adjustEndian((std::uint8_t*)segmentsOffset, 4, streamController::lowByteEndian, sizeof(segmentsOffset) / sizeof(segmentsOffset[0]));</span>
+<span class="lineNum">     838 </span>            : 
+<span class="lineNum">     839 </span>            :     //
+<span class="lineNum">     840 </span>            :     // Scan all the RLE segments
+<span class="lineNum">     841 </span>            :     //
+<span class="lineNum">     842 </span>            :     ///////////////////////////////////////////////////////////
+<span class="lineNum">     843 </span><span class="lineCov">       2433 :     std::uint32_t loopsNumber = channelsNumber;</span>
+<span class="lineNum">     844 </span><span class="lineCov">       2433 :     std::uint32_t loopSize = imageWidth * imageHeight;</span>
+<span class="lineNum">     845 </span>            : 
+<span class="lineNum">     846 </span><span class="lineCov">       2433 :     std::uint32_t currentSegmentOffset = sizeof(segmentsOffset);</span>
+<span class="lineNum">     847 </span><span class="lineCov">       2433 :     std::uint8_t segmentNumber = 0;</span>
+<span class="lineNum">     848 </span><span class="lineCov">       7938 :     for(std::uint32_t channel = 0; channel&lt;loopsNumber; ++channel)</span>
+<span class="lineNum">     849 </span>            :     {
+<span class="lineNum">     850 </span><span class="lineCov">      19077 :         for(std::int32_t leftShift = (std::int32_t)(((allocatedBits + 7) &amp; 0xfffffff8) - 8); leftShift &gt;= 0; leftShift -= 8)</span>
+<span class="lineNum">     851 </span>            :         {
+<span class="lineNum">     852 </span>            :             // Prepare to scan all the RLE segment
+<span class="lineNum">     853 </span>            :             ///////////////////////////////////////////////////////////
+<span class="lineNum">     854 </span><span class="lineCov">      13572 :             std::uint32_t segmentOffset = segmentsOffset[++segmentNumber]; // Get the offset</span>
+<span class="lineNum">     855 </span><span class="lineCov">      13572 :             pSourceStream-&gt;seekForward(segmentOffset - currentSegmentOffset);</span>
+<span class="lineNum">     856 </span><span class="lineCov">      13572 :             currentSegmentOffset = segmentOffset;</span>
+<span class="lineNum">     857 </span>            : 
+<span class="lineNum">     858 </span><span class="lineCov">      13572 :             std::uint8_t  rleByte = 0;         // RLE code</span>
+<span class="lineNum">     859 </span><span class="lineCov">      13572 :             std::uint8_t  copyBytes = 0;       // Number of bytes to copy</span>
+<span class="lineNum">     860 </span><span class="lineCov">      13572 :             std::uint8_t  runByte = 0;         // Byte to use in run-lengths</span>
+<span class="lineNum">     861 </span><span class="lineCov">      13572 :             std::uint8_t  runLength = 0;       // Number of bytes with the same information (runByte)</span>
+<span class="lineNum">     862 </span>            :             std::uint8_t  copyBytesBuffer[0x81];
+<span class="lineNum">     863 </span>            : 
+<span class="lineNum">     864 </span><span class="lineCov">      13572 :             std::int32_t* pChannelMemory = information.m_channels[channel]-&gt;m_pBuffer;</span>
+<span class="lineNum">     865 </span><span class="lineCov">      13572 :             std::uint32_t channelSize = loopSize;</span>
+<span class="lineNum">     866 </span>            :             std::uint8_t* pScanCopyBytes;
+<span class="lineNum">     867 </span>            : 
+<span class="lineNum">     868 </span>            :             // Read the RLE segment
+<span class="lineNum">     869 </span>            :             ///////////////////////////////////////////////////////////
+<span class="lineNum">     870 </span><span class="lineCov">      13572 :             pSourceStream-&gt;read(&amp;rleByte, 1);</span>
+<span class="lineNum">     871 </span><span class="lineCov">      13572 :             ++currentSegmentOffset;</span>
+<span class="lineNum">     872 </span><span class="lineCov">   20136908 :             while(channelSize != 0)</span>
+<span class="lineNum">     873 </span>            :             {
+<span class="lineNum">     874 </span><span class="lineCov">   10061668 :                 if(rleByte==0x80)</span>
+<span class="lineNum">     875 </span>            :                 {
+<span class="lineNum">     876 </span><span class="lineNoCov">          0 :                     pSourceStream-&gt;read(&amp;rleByte, 1);</span>
+<span class="lineNum">     877 </span><span class="lineNoCov">          0 :                     ++currentSegmentOffset;</span>
+<span class="lineNum">     878 </span><span class="lineNoCov">          0 :                     continue;</span>
+<span class="lineNum">     879 </span>            :                 }
+<span class="lineNum">     880 </span>            : 
+<span class="lineNum">     881 </span>            :                 // Copy the specified number of bytes
+<span class="lineNum">     882 </span>            :                 ///////////////////////////////////////////////////////////
+<span class="lineNum">     883 </span><span class="lineCov">   14870760 :                 if(rleByte&lt;0x80)</span>
+<span class="lineNum">     884 </span>            :                 {
+<span class="lineNum">     885 </span><span class="lineCov">    4809092 :                     copyBytes = ++rleByte;</span>
+<span class="lineNum">     886 </span><span class="lineCov">    4809092 :                     if(copyBytes &lt; channelSize)</span>
+<span class="lineNum">     887 </span>            :                     {
+<span class="lineNum">     888 </span><span class="lineCov">    4796640 :                         pSourceStream-&gt;read(copyBytesBuffer, copyBytes + 1);</span>
+<span class="lineNum">     889 </span><span class="lineCov">    4796640 :                         currentSegmentOffset += copyBytes + 1;</span>
+<span class="lineNum">     890 </span><span class="lineCov">    4796640 :                         rleByte = copyBytesBuffer[copyBytes];</span>
+<span class="lineNum">     891 </span>            :                     }
+<span class="lineNum">     892 </span>            :                     else
+<span class="lineNum">     893 </span>            :                     {
+<span class="lineNum">     894 </span><span class="lineCov">      12452 :                         pSourceStream-&gt;read(copyBytesBuffer, copyBytes);</span>
+<span class="lineNum">     895 </span><span class="lineCov">      12452 :                         currentSegmentOffset += copyBytes;</span>
+<span class="lineNum">     896 </span>            :                     }
+<span class="lineNum">     897 </span><span class="lineCov">    4809092 :                     pScanCopyBytes = copyBytesBuffer;</span>
+<span class="lineNum">     898 </span><span class="lineCov">  965138012 :                     while(copyBytes-- &amp;&amp; channelSize != 0)</span>
+<span class="lineNum">     899 </span>            :                     {
+<span class="lineNum">     900 </span><span class="lineCov">  480164460 :                         *pChannelMemory |= (std::int32_t) ((((std::uint32_t)(*pScanCopyBytes++)) &lt;&lt; leftShift) &amp; mask);</span>
+<span class="lineNum">     901 </span><span class="lineCov">  480164460 :                         ++pChannelMemory;</span>
+<span class="lineNum">     902 </span><span class="lineCov">  480164460 :                         --channelSize;</span>
+<span class="lineNum">     903 </span>            :                     }
+<span class="lineNum">     904 </span><span class="lineCov">    4809092 :                     continue;</span>
+<span class="lineNum">     905 </span>            :                 }
+<span class="lineNum">     906 </span>            : 
+<span class="lineNum">     907 </span>            :                 // Copy the same byte several times
+<span class="lineNum">     908 </span>            :                 ///////////////////////////////////////////////////////////
+<span class="lineNum">     909 </span><span class="lineCov">    5252576 :                 runLength = (std::uint8_t)(1-rleByte);</span>
+<span class="lineNum">     910 </span><span class="lineCov">    5252576 :                 if(runLength &lt; channelSize)</span>
+<span class="lineNum">     911 </span>            :                 {
+<span class="lineNum">     912 </span><span class="lineCov">    5251456 :                     pSourceStream-&gt;read(copyBytesBuffer, 2);</span>
+<span class="lineNum">     913 </span><span class="lineCov">    5251456 :                     currentSegmentOffset += 2;</span>
+<span class="lineNum">     914 </span><span class="lineCov">    5251456 :                     runByte = copyBytesBuffer[0];</span>
+<span class="lineNum">     915 </span><span class="lineCov">    5251456 :                     rleByte = copyBytesBuffer[1];</span>
+<span class="lineNum">     916 </span>            :                 }
+<span class="lineNum">     917 </span>            :                 else
+<span class="lineNum">     918 </span>            :                 {
+<span class="lineNum">     919 </span><span class="lineCov">       1120 :                     pSourceStream-&gt;read(&amp;runByte, 1);</span>
+<span class="lineNum">     920 </span><span class="lineCov">       1120 :                     ++currentSegmentOffset;</span>
+<span class="lineNum">     921 </span>            :                 }
+<span class="lineNum">     922 </span><span class="lineCov">  129194016 :                 while(runLength-- &amp;&amp; channelSize != 0)</span>
+<span class="lineNum">     923 </span>            :                 {
+<span class="lineNum">     924 </span><span class="lineCov">   61970720 :                     *pChannelMemory |= (std::int32_t) (((std::uint32_t)runByte &lt;&lt; leftShift) &amp; mask);</span>
+<span class="lineNum">     925 </span><span class="lineCov">   61970720 :                     ++pChannelMemory;</span>
+<span class="lineNum">     926 </span><span class="lineCov">   61970720 :                     --channelSize;</span>
+<span class="lineNum">     927 </span>            :                 }
+<span class="lineNum">     928 </span>            : 
+<span class="lineNum">     929 </span>            :             } // ...End of the segment scanning loop
+<span class="lineNum">     930 </span>            : 
+<span class="lineNum">     931 </span>            :         } // ...End of the leftshift calculation
+<span class="lineNum">     932 </span>            : 
+<span class="lineNum">     933 </span>            :     } // ...Channels scanning loop
+<span class="lineNum">     934 </span>            : 
+<span class="lineNum">     935 </span><span class="lineNoCov">          0 :     IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">     936 </span><span class="lineCov">       2433 : }</span>
+<span class="lineNum">     937 </span>            : 
+<span class="lineNum">     938 </span>            : 
+<span class="lineNum">     939 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     940 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     941 </span>            : //
+<span class="lineNum">     942 </span>            : //
+<span class="lineNum">     943 </span>            : // Read a single component from a DICOM raw image
+<span class="lineNum">     944 </span>            : //
+<span class="lineNum">     945 </span>            : //
+<a name="946"><span class="lineNum">     946 </span>            : ///////////////////////////////////////////////////////////</a>
+<span class="lineNum">     947 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">     948 </span><span class="lineCov">  307239906 : void dicomImageCodec::readPixel(</span>
+<span class="lineNum">     949 </span>            :         dicomInformation&amp; information,
+<span class="lineNum">     950 </span>            :         streamReader* pSourceStream,
+<span class="lineNum">     951 </span>            :         std::int32_t* pDest,
+<span class="lineNum">     952 </span>            :         std::uint32_t numPixels,
+<span class="lineNum">     953 </span>            :         std::uint8_t* pBitPointer,
+<span class="lineNum">     954 </span>            :         std::uint8_t* pReadBuffer,
+<span class="lineNum">     955 </span>            :         std::uint32_t wordSizeBytes,
+<span class="lineNum">     956 </span>            :         std::uint8_t allocatedBits,
+<span class="lineNum">     957 </span>            :         std::uint32_t mask)
+<span class="lineNum">     958 </span>            : {
+<span class="lineNum">     959 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">     960 </span>            : 
+<span class="lineNum">     961 </span><span class="lineCov">  307239906 :     if(allocatedBits == 8 || allocatedBits == 16 || allocatedBits == 32)</span>
+<span class="lineNum">     962 </span>            :     {
+<span class="lineNum">     963 </span><span class="lineCov">   38267778 :         pSourceStream-&gt;read(pReadBuffer, numPixels * (allocatedBits &gt;&gt; 3));</span>
+<span class="lineNum">     964 </span><span class="lineCov">   38267778 :         if(allocatedBits == 8)</span>
+<span class="lineNum">     965 </span>            :         {
+<span class="lineNum">     966 </span><span class="lineCov">   19684333 :             std::uint8_t* pSource(pReadBuffer);</span>
+<span class="lineNum">     967 </span><span class="lineCov">  940432657 :             while(numPixels-- != 0)</span>
+<span class="lineNum">     968 </span>            :             {
+<span class="lineNum">     969 </span><span class="lineCov">  460374162 :                 *pDest++ = (std::int32_t)((std::uint32_t)(*pSource++) &amp; mask);</span>
+<span class="lineNum">     970 </span>            :             }
+<span class="lineNum">     971 </span><span class="lineCov">   19684333 :             return;</span>
+<span class="lineNum">     972 </span>            :         }
+<span class="lineNum">     973 </span><span class="lineCov">   18583445 :         pSourceStream-&gt;adjustEndian(pReadBuffer, allocatedBits &gt;&gt; 3, streamController::lowByteEndian, numPixels);</span>
+<span class="lineNum">     974 </span><span class="lineCov">   18583445 :         if(allocatedBits == 16)</span>
+<span class="lineNum">     975 </span>            :         {
+<span class="lineNum">     976 </span><span class="lineCov">    9841970 :             std::uint16_t* pSource((std::uint16_t*)(pReadBuffer));</span>
+<span class="lineNum">     977 </span><span class="lineCov">   60911574 :             while(numPixels-- != 0)</span>
+<span class="lineNum">     978 </span>            :             {
+<span class="lineNum">     979 </span><span class="lineCov">   25534802 :                 *pDest++ = (std::int32_t)((std::uint32_t)(*pSource++) &amp; mask);</span>
+<span class="lineNum">     980 </span>            :             }
+<span class="lineNum">     981 </span><span class="lineCov">    9841970 :             return;</span>
+<span class="lineNum">     982 </span>            :         }
+<span class="lineNum">     983 </span><span class="lineCov">    8741475 :         std::uint32_t* pSource((std::uint32_t*)(pReadBuffer));</span>
+<span class="lineNum">     984 </span><span class="lineCov">   49533237 :         while(numPixels-- != 0)</span>
+<span class="lineNum">     985 </span>            :         {
+<span class="lineNum">     986 </span><span class="lineCov">   20395881 :             *pDest++ = (std::int32_t)((*pSource++) &amp; mask);</span>
+<span class="lineNum">     987 </span>            :         }
+<span class="lineNum">     988 </span><span class="lineCov">    8741475 :         return;</span>
+<span class="lineNum">     989 </span>            : 
+<span class="lineNum">     990 </span>            :     }
+<span class="lineNum">     991 </span>            : 
+<span class="lineNum">     992 </span><span class="lineCov"> 1637251680 :     while(numPixels-- != 0)</span>
+<span class="lineNum">     993 </span>            :     {
+<span class="lineNum">     994 </span><span class="lineCov">  684139776 :         *pDest = 0;</span>
+<span class="lineNum">     995 </span><span class="lineCov"> 2201990656 :         for(std::uint8_t bitsToRead = allocatedBits; bitsToRead != 0;)</span>
+<span class="lineNum">     996 </span>            :         {
+<span class="lineNum">     997 </span><span class="lineCov"> 1517850880 :             if(*pBitPointer == 0)</span>
+<span class="lineNum">     998 </span>            :             {
+<span class="lineNum">     999 </span><span class="lineCov">  957741248 :                 if(wordSizeBytes == 2)</span>
+<span class="lineNum">    1000 </span>            :                 {
+<span class="lineNum">    1001 </span><span class="lineCov">  435780992 :                     pSourceStream-&gt;read((std::uint8_t*)&amp;information.m_ioWord, sizeof(information.m_ioWord));</span>
+<span class="lineNum">    1002 </span><span class="lineCov">  435780992 :                     *pBitPointer = 16;</span>
+<span class="lineNum">    1003 </span>            :                 }
+<span class="lineNum">    1004 </span>            :                 else
+<span class="lineNum">    1005 </span>            :                 {
+<span class="lineNum">    1006 </span><span class="lineCov">  521960256 :                     pSourceStream-&gt;read(&amp;information.m_ioByte, 1);</span>
+<span class="lineNum">    1007 </span><span class="lineCov">  521960256 :                     information.m_ioWord = (std::uint16_t)information.m_ioByte;</span>
+<span class="lineNum">    1008 </span><span class="lineCov">  521960256 :                     *pBitPointer = 8;</span>
+<span class="lineNum">    1009 </span>            :                 }
+<span class="lineNum">    1010 </span>            :             }
+<span class="lineNum">    1011 </span>            : 
+<span class="lineNum">    1012 </span><span class="lineCov"> 2475583168 :             if(*pBitPointer &lt;= bitsToRead)</span>
+<span class="lineNum">    1013 </span>            :             {
+<span class="lineNum">    1014 </span><span class="lineCov">  957732288 :                 *pDest |= information.m_ioWord &lt;&lt; (allocatedBits - bitsToRead);</span>
+<span class="lineNum">    1015 </span><span class="lineCov">  957732288 :                 bitsToRead = (std::uint8_t)(bitsToRead - *pBitPointer);</span>
+<span class="lineNum">    1016 </span><span class="lineCov">  957732288 :                 *pBitPointer = 0;</span>
+<span class="lineNum">    1017 </span><span class="lineCov">  957732288 :                 continue;</span>
+<span class="lineNum">    1018 </span>            :             }
+<span class="lineNum">    1019 </span>            : 
+<span class="lineNum">    1020 </span><span class="lineCov">  560118592 :             *pDest |= (information.m_ioWord &amp; (std::uint16_t)(((std::uint32_t) 1 &lt;&lt; bitsToRead) - 1)) &lt;&lt; (allocatedBits - bitsToRead);</span>
+<span class="lineNum">    1021 </span><span class="lineCov">  560118592 :             information.m_ioWord = (std::uint16_t)(information.m_ioWord &gt;&gt; bitsToRead);</span>
+<span class="lineNum">    1022 </span><span class="lineCov">  560118592 :             *pBitPointer = (std::uint8_t)(*pBitPointer - bitsToRead);</span>
+<span class="lineNum">    1023 </span><span class="lineCov">  560118592 :             bitsToRead = 0;</span>
+<span class="lineNum">    1024 </span>            :         }
+<span class="lineNum">    1025 </span><span class="lineCov">  684139776 :         *pDest++ &amp;= mask;</span>
+<span class="lineNum">    1026 </span>            :     }
+<span class="lineNum">    1027 </span>            : 
+<span class="lineNum">    1028 </span><span class="lineNoCov">          0 :     IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">    1029 </span>            : }
+<span class="lineNum">    1030 </span>            : 
+<span class="lineNum">    1031 </span>            : 
+<span class="lineNum">    1032 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">    1033 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">    1034 </span>            : //
+<span class="lineNum">    1035 </span>            : //
+<span class="lineNum">    1036 </span>            : // Read a single component from a DICOM raw image
+<span class="lineNum">    1037 </span>            : //
+<span class="lineNum">    1038 </span>            : //
+<a name="1039"><span class="lineNum">    1039 </span>            : ///////////////////////////////////////////////////////////</a>
+<span class="lineNum">    1040 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">    1041 </span><span class="lineCov">  519719941 : void dicomImageCodec::writePixel(</span>
+<span class="lineNum">    1042 </span>            :         dicomInformation&amp; information,
+<span class="lineNum">    1043 </span>            :         streamWriter* pDestStream,
+<span class="lineNum">    1044 </span>            :         std::int32_t pixelValue,
+<span class="lineNum">    1045 </span>            :         std::uint8_t*  pBitPointer,
+<span class="lineNum">    1046 </span>            :         std::uint32_t wordSizeBytes,
+<span class="lineNum">    1047 </span>            :         std::uint8_t allocatedBits,
+<span class="lineNum">    1048 </span>            :         std::uint32_t mask)
+<span class="lineNum">    1049 </span>            : {
+<span class="lineNum">    1050 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">    1051 </span>            : 
+<span class="lineNum">    1052 </span><span class="lineCov">  519719941 :     pixelValue &amp;= mask;</span>
+<span class="lineNum">    1053 </span>            : 
+<span class="lineNum">    1054 </span><span class="lineCov">  519719941 :     if(allocatedBits == 8)</span>
+<span class="lineNum">    1055 </span>            :     {
+<span class="lineNum">    1056 </span><span class="lineCov">  222768890 :         information.m_ioByte = (std::uint8_t)pixelValue;</span>
+<span class="lineNum">    1057 </span><span class="lineCov">  222768890 :         pDestStream-&gt;write(&amp;information.m_ioByte, 1);</span>
+<span class="lineNum">    1058 </span><span class="lineCov">  222768890 :         return;</span>
+<span class="lineNum">    1059 </span>            :     }
+<span class="lineNum">    1060 </span>            : 
+<span class="lineNum">    1061 </span><span class="lineCov">  296951051 :     if(allocatedBits == 16)</span>
+<span class="lineNum">    1062 </span>            :     {
+<span class="lineNum">    1063 </span><span class="lineCov">   11506798 :         if(wordSizeBytes == 1)</span>
+<span class="lineNum">    1064 </span>            :         {
+<span class="lineNum">    1065 </span><span class="lineCov">    5123110 :             information.m_ioWord = pDestStream-&gt;adjustEndian((std::uint16_t)pixelValue, streamController::lowByteEndian);</span>
+<span class="lineNum">    1066 </span>            :         }
+<span class="lineNum">    1067 </span>            :         else
+<span class="lineNum">    1068 </span>            :         {
+<span class="lineNum">    1069 </span><span class="lineCov">    6383688 :             information.m_ioWord = (std::uint16_t)pixelValue;</span>
+<span class="lineNum">    1070 </span>            :         }
+<span class="lineNum">    1071 </span><span class="lineCov">   11506798 :         pDestStream-&gt;write((std::uint8_t*)&amp;information.m_ioWord, 2);</span>
+<span class="lineNum">    1072 </span><span class="lineCov">   11506798 :         return;</span>
+<span class="lineNum">    1073 </span>            :     }
+<span class="lineNum">    1074 </span>            : 
+<span class="lineNum">    1075 </span><span class="lineCov">  285444253 :     if(allocatedBits == 32)</span>
+<span class="lineNum">    1076 </span>            :     {
+<span class="lineNum">    1077 </span><span class="lineCov">    7648461 :         if(wordSizeBytes == 1)</span>
+<span class="lineNum">    1078 </span>            :         {
+<span class="lineNum">    1079 </span><span class="lineCov">    2549487 :             information.m_ioDWord = pDestStream-&gt;adjustEndian((std::uint32_t)pixelValue, streamController::lowByteEndian);</span>
+<span class="lineNum">    1080 </span>            :         }
+<span class="lineNum">    1081 </span>            :         else
+<span class="lineNum">    1082 </span>            :         {
+<span class="lineNum">    1083 </span><span class="lineCov">    5098974 :             information.m_ioDWord = (std::uint32_t)pixelValue;</span>
+<span class="lineNum">    1084 </span>            :         }
+<span class="lineNum">    1085 </span><span class="lineCov">    7648461 :         pDestStream-&gt;write((std::uint8_t*)&amp;information.m_ioDWord, 4);</span>
+<span class="lineNum">    1086 </span><span class="lineCov">    7648461 :         return;</span>
+<span class="lineNum">    1087 </span>            :     }
+<span class="lineNum">    1088 </span>            : 
+<span class="lineNum">    1089 </span><span class="lineCov">  277795792 :     std::uint8_t maxBits = (std::uint8_t)(wordSizeBytes * 8);</span>
+<span class="lineNum">    1090 </span>            : 
+<span class="lineNum">    1091 </span><span class="lineCov">  888993836 :     for(std::uint32_t writeBits = allocatedBits; writeBits != 0;)</span>
+<span class="lineNum">    1092 </span>            :     {
+<span class="lineNum">    1093 </span><span class="lineCov">  611198044 :         std::uint32_t freeBits = (maxBits - *pBitPointer);</span>
+<span class="lineNum">    1094 </span><span class="lineCov">  611198044 :         if(freeBits == maxBits)</span>
+<span class="lineNum">    1095 </span>            :         {
+<span class="lineNum">    1096 </span><span class="lineCov">  384741628 :             information.m_ioWord = 0;</span>
+<span class="lineNum">    1097 </span>            :         }
+<span class="lineNum">    1098 </span><span class="lineCov">  611198044 :         if( freeBits &lt;= writeBits )</span>
+<span class="lineNum">    1099 </span>            :         {
+<span class="lineNum">    1100 </span><span class="lineCov">  384738180 :             information.m_ioWord = (std::uint16_t)(information.m_ioWord | ((pixelValue &amp; (((std::int32_t)1 &lt;&lt; freeBits) -1 )) &lt;&lt; *pBitPointer));</span>
+<span class="lineNum">    1101 </span><span class="lineCov">  384738180 :             *pBitPointer = maxBits;</span>
+<span class="lineNum">    1102 </span><span class="lineCov">  384738180 :             writeBits = writeBits - freeBits;</span>
+<span class="lineNum">    1103 </span><span class="lineCov">  384738180 :             pixelValue &gt;&gt;= freeBits;</span>
+<span class="lineNum">    1104 </span>            :         }
+<span class="lineNum">    1105 </span>            :         else
+<span class="lineNum">    1106 </span>            :         {
+<span class="lineNum">    1107 </span><span class="lineCov">  226459864 :             information.m_ioWord = (std::uint16_t)(information.m_ioWord | ((pixelValue &amp; (((std::int32_t)1 &lt;&lt; writeBits) -1 ))&lt;&lt; *pBitPointer));</span>
+<span class="lineNum">    1108 </span><span class="lineCov">  226459864 :             *pBitPointer = (std::uint8_t)(*pBitPointer + writeBits);</span>
+<span class="lineNum">    1109 </span><span class="lineCov">  226459864 :             writeBits = 0;</span>
+<span class="lineNum">    1110 </span>            :         }
+<span class="lineNum">    1111 </span>            : 
+<span class="lineNum">    1112 </span><span class="lineCov">  611198044 :         if(*pBitPointer == maxBits)</span>
+<span class="lineNum">    1113 </span>            :         {
+<span class="lineNum">    1114 </span><span class="lineCov">  384738180 :             if(wordSizeBytes == 2)</span>
+<span class="lineNum">    1115 </span>            :             {
+<span class="lineNum">    1116 </span><span class="lineCov">  163416024 :                 pDestStream-&gt;write((std::uint8_t*)&amp;information.m_ioWord, 2);</span>
+<span class="lineNum">    1117 </span>            :             }
+<span class="lineNum">    1118 </span>            :             else
+<span class="lineNum">    1119 </span>            :             {
+<span class="lineNum">    1120 </span><span class="lineCov">  221322156 :                 information.m_ioByte = (std::uint8_t)information.m_ioWord;</span>
+<span class="lineNum">    1121 </span><span class="lineCov">  221322156 :                 pDestStream-&gt;write(&amp;information.m_ioByte, 1);</span>
+<span class="lineNum">    1122 </span>            :             }
+<span class="lineNum">    1123 </span><span class="lineCov">  384738180 :             *pBitPointer = 0;</span>
+<span class="lineNum">    1124 </span>            :         }
+<span class="lineNum">    1125 </span>            :     }
+<span class="lineNum">    1126 </span>            : 
+<span class="lineNum">    1127 </span><span class="lineNoCov">          0 :     IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">    1128 </span>            : }
+<span class="lineNum">    1129 </span>            : 
+<span class="lineNum">    1130 </span>            : 
+<span class="lineNum">    1131 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">    1132 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">    1133 </span>            : //
+<span class="lineNum">    1134 </span>            : //
+<span class="lineNum">    1135 </span>            : // Used by the writing routines to commit the unwritten
+<span class="lineNum">    1136 </span>            : //  bits
+<span class="lineNum">    1137 </span>            : //
+<span class="lineNum">    1138 </span>            : //
+<a name="1139"><span class="lineNum">    1139 </span>            : ///////////////////////////////////////////////////////////</a>
+<span class="lineNum">    1140 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">    1141 </span><span class="lineCov">       4664 : void dicomImageCodec::flushUnwrittenPixels(dicomInformation&amp; information, streamWriter* pDestStream, std::uint8_t* pBitPointer, std::uint32_t wordSizeBytes)</span>
+<span class="lineNum">    1142 </span>            : {
+<span class="lineNum">    1143 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">    1144 </span>            : 
+<span class="lineNum">    1145 </span><span class="lineCov">       4664 :     if(*pBitPointer == 0)</span>
+<span class="lineNum">    1146 </span>            :     {
+<span class="lineNum">    1147 </span><span class="lineCov">       1216 :         return;</span>
+<span class="lineNum">    1148 </span>            :     }
+<span class="lineNum">    1149 </span><span class="lineCov">       3448 :     if(wordSizeBytes == 2)</span>
+<span class="lineNum">    1150 </span>            :     {
+<span class="lineNum">    1151 </span><span class="lineCov">       1848 :         pDestStream-&gt;write((std::uint8_t*)&amp;information.m_ioWord, 2);</span>
+<span class="lineNum">    1152 </span>            :     }
+<span class="lineNum">    1153 </span><span class="lineCov">       1600 :     else if(wordSizeBytes == 4)</span>
+<span class="lineNum">    1154 </span>            :     {
+<span class="lineNum">    1155 </span><span class="lineNoCov">          0 :         pDestStream-&gt;write((std::uint8_t*)&amp;information.m_ioDWord, 4);</span>
+<span class="lineNum">    1156 </span>            :     }
+<span class="lineNum">    1157 </span>            :     else
+<span class="lineNum">    1158 </span>            :     {
+<span class="lineNum">    1159 </span><span class="lineCov">       1600 :         information.m_ioByte = (std::uint8_t)information.m_ioWord;</span>
+<span class="lineNum">    1160 </span><span class="lineCov">       1600 :         pDestStream-&gt;write(&amp;information.m_ioByte, 1);</span>
+<span class="lineNum">    1161 </span>            :     }
+<span class="lineNum">    1162 </span><span class="lineCov">       3448 :     *pBitPointer = 0;</span>
+<span class="lineNum">    1163 </span>            : 
+<span class="lineNum">    1164 </span><span class="lineNoCov">          0 :     IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">    1165 </span>            : }
+<span class="lineNum">    1166 </span>            : 
+<span class="lineNum">    1167 </span>            : 
+<span class="lineNum">    1168 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">    1169 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">    1170 </span>            : //
+<span class="lineNum">    1171 </span>            : //
+<span class="lineNum">    1172 </span>            : // Insert an image into a Dicom structure
+<span class="lineNum">    1173 </span>            : //
+<span class="lineNum">    1174 </span>            : //
+<a name="1175"><span class="lineNum">    1175 </span>            : ///////////////////////////////////////////////////////////</a>
+<span class="lineNum">    1176 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">    1177 </span><span class="lineCov">       5881 : void dicomImageCodec::setImage(</span>
+<span class="lineNum">    1178 </span>            :         std::shared_ptr&lt;streamWriter&gt; pDestStream,
+<span class="lineNum">    1179 </span>            :         std::shared_ptr&lt;image&gt; pImage,
+<span class="lineNum">    1180 </span>            :         const std::string&amp; transferSyntax,
+<span class="lineNum">    1181 </span>            :         imageQuality_t /*imageQuality*/,
+<span class="lineNum">    1182 </span>            :         tagVR_t dataType,
+<span class="lineNum">    1183 </span>            :         std::uint32_t allocatedBits,
+<span class="lineNum">    1184 </span>            :         bool bSubSampledX,
+<span class="lineNum">    1185 </span>            :         bool bSubSampledY,
+<span class="lineNum">    1186 </span>            :         bool bInterleaved,
+<span class="lineNum">    1187 </span>            :         bool /*b2Complement*/) const
+<span class="lineNum">    1188 </span>            : {
+<span class="lineNum">    1189 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">    1190 </span>            : 
+<span class="lineNum">    1191 </span>            :     // First calculate the attributes we want to use.
+<span class="lineNum">    1192 </span>            :     // Return an exception if they are different from the
+<span class="lineNum">    1193 </span>            :     //  old ones and bDontChangeAttributes is true
+<span class="lineNum">    1194 </span>            :     ///////////////////////////////////////////////////////////
+<span class="lineNum">    1195 </span>            :     std::uint32_t imageWidth, imageHeight;
+<span class="lineNum">    1196 </span><span class="lineCov">       5881 :     pImage-&gt;getSize(&amp;imageWidth, &amp;imageHeight);</span>
+<span class="lineNum">    1197 </span>            : 
+<span class="lineNum">    1198 </span><span class="lineCov">       7033 :     std::string colorSpace = pImage-&gt;getColorSpace();</span>
+<span class="lineNum">    1199 </span><span class="lineCov">       5881 :     std::uint32_t highBit = pImage-&gt;getHighBit();</span>
+<span class="lineNum">    1200 </span><span class="lineCov">       5881 :     bool bRleCompressed = (transferSyntax == &quot;1.2.840.10008.1.2.5&quot;);</span>
+<span class="lineNum">    1201 </span>            : 
+<span class="lineNum">    1202 </span><span class="lineCov">       7033 :     std::shared_ptr&lt;handlers::readingDataHandlerNumericBase&gt; imageHandler = pImage-&gt;getReadingDataHandler();</span>
+<span class="lineNum">    1203 </span><span class="lineCov">       5881 :     std::uint32_t channelsNumber = pImage-&gt;getChannelsNumber();</span>
+<span class="lineNum">    1204 </span>            : 
+<span class="lineNum">    1205 </span>            :     // Copy the image into the dicom channels
+<span class="lineNum">    1206 </span>            :     ///////////////////////////////////////////////////////////
+<span class="lineNum">    1207 </span><span class="lineCov">       7033 :     dicomInformation information;</span>
+<span class="lineNum">    1208 </span><span class="lineCov">       5881 :     allocChannels(information, channelsNumber, imageWidth, imageHeight, bSubSampledX, bSubSampledY);</span>
+<span class="lineNum">    1209 </span><span class="lineCov">       5881 :     std::uint32_t maxSamplingFactorX = bSubSampledX ? 2 : 1;</span>
+<span class="lineNum">    1210 </span><span class="lineCov">       5881 :     std::uint32_t maxSamplingFactorY = bSubSampledY ? 2 : 1;</span>
+<span class="lineNum">    1211 </span><span class="lineCov">      19810 :     for(std::uint32_t copyChannels = 0; copyChannels &lt; channelsNumber; ++copyChannels)</span>
+<span class="lineNum">    1212 </span>            :     {
+<span class="lineNum">    1213 </span><span class="lineCov">      27858 :         dicomInformation::ptrChannel dicomChannel = information.m_channels[copyChannels];</span>
+<span class="lineNum">    1214 </span><span class="lineCov">      97503 :         imageHandler-&gt;copyToInt32Interleaved(</span>
+<span class="lineNum">    1215 </span><span class="lineCov">      13929 :                     dicomChannel-&gt;m_pBuffer,</span>
+<span class="lineNum">    1216 </span><span class="lineCov">      13929 :                     maxSamplingFactorX /dicomChannel-&gt;m_samplingFactorX,</span>
+<span class="lineNum">    1217 </span><span class="lineCov">      13929 :                     maxSamplingFactorY /dicomChannel-&gt;m_samplingFactorY,</span>
+<span class="lineNum">    1218 </span>            :                     0, 0,
+<span class="lineNum">    1219 </span><span class="lineCov">      13929 :                     dicomChannel-&gt;m_width * maxSamplingFactorX / dicomChannel-&gt;m_samplingFactorX,</span>
+<span class="lineNum">    1220 </span><span class="lineCov">      13929 :                     dicomChannel-&gt;m_height * maxSamplingFactorY / dicomChannel-&gt;m_samplingFactorY,</span>
+<span class="lineNum">    1221 </span>            :                     copyChannels,
+<span class="lineNum">    1222 </span>            :                     imageWidth,
+<span class="lineNum">    1223 </span>            :                     imageHeight,
+<span class="lineNum">    1224 </span><span class="lineCov">      13929 :                     channelsNumber);</span>
+<span class="lineNum">    1225 </span>            :     }
+<span class="lineNum">    1226 </span>            : 
+<span class="lineNum">    1227 </span><span class="lineCov">       5881 :     std::uint32_t mask = (std::uint32_t)(((std::uint64_t)1 &lt;&lt; (highBit + 1)) - 1);</span>
+<span class="lineNum">    1228 </span>            : 
+<span class="lineNum">    1229 </span><span class="lineCov">       5881 :     if(bRleCompressed)</span>
+<span class="lineNum">    1230 </span>            :     {
+<span class="lineNum">    1231 </span><span class="lineCov">       1217 :         writeRLECompressed(</span>
+<span class="lineNum">    1232 </span>            :                     information,
+<span class="lineNum">    1233 </span>            :                     imageWidth,
+<span class="lineNum">    1234 </span>            :                     imageHeight,
+<span class="lineNum">    1235 </span>            :                     channelsNumber,
+<span class="lineNum">    1236 </span>            :                     pDestStream.get(),
+<span class="lineNum">    1237 </span>            :                     (std::uint8_t)allocatedBits,
+<span class="lineNum">    1238 </span>            :                     mask);
+<span class="lineNum">    1239 </span><span class="lineCov">       1217 :         return;</span>
+<span class="lineNum">    1240 </span>            :     }
+<span class="lineNum">    1241 </span>            : 
+<span class="lineNum">    1242 </span><span class="lineCov">       4664 :     std::uint8_t wordSizeBytes = ((dataType == tagVR_t::OW) || (dataType == tagVR_t::SS) || (dataType == tagVR_t::US)) ? 2 : 1;</span>
+<span class="lineNum">    1243 </span>            : 
+<span class="lineNum">    1244 </span><span class="lineCov">       4664 :     if(bInterleaved || channelsNumber == 1)</span>
+<span class="lineNum">    1245 </span>            :     {
+<span class="lineNum">    1246 </span><span class="lineCov">       3512 :         writeUncompressedInterleaved(</span>
+<span class="lineNum">    1247 </span>            :                     information,
+<span class="lineNum">    1248 </span>            :                     channelsNumber,
+<span class="lineNum">    1249 </span>            :                     bSubSampledX, bSubSampledY,
+<span class="lineNum">    1250 </span>            :                     pDestStream.get(),
+<span class="lineNum">    1251 </span>            :                     wordSizeBytes,
+<span class="lineNum">    1252 </span>            :                     (std::uint8_t)allocatedBits,
+<span class="lineNum">    1253 </span>            :                     mask);
+<span class="lineNum">    1254 </span><span class="lineCov">       3512 :         return;</span>
+<span class="lineNum">    1255 </span>            :     }
+<span class="lineNum">    1256 </span>            : 
+<span class="lineNum">    1257 </span><span class="lineCov">       1152 :     writeUncompressedNotInterleaved(</span>
+<span class="lineNum">    1258 </span>            :                 information,
+<span class="lineNum">    1259 </span>            :                 channelsNumber,
+<span class="lineNum">    1260 </span>            :                 pDestStream.get(),
+<span class="lineNum">    1261 </span>            :                 wordSizeBytes,
+<span class="lineNum">    1262 </span>            :                 (std::uint8_t)allocatedBits,
+<span class="lineNum">    1263 </span>            :                 mask);
+<span class="lineNum">    1264 </span>            : 
+<span class="lineNum">    1265 </span><span class="lineNoCov">          0 :     IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">    1266 </span>            : }
+<span class="lineNum">    1267 </span>            : 
+<span class="lineNum">    1268 </span>            : 
+<span class="lineNum">    1269 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">    1270 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">    1271 </span>            : //
+<span class="lineNum">    1272 </span>            : //
+<span class="lineNum">    1273 </span>            : // Returns true if the codec can handle the transfer
+<span class="lineNum">    1274 </span>            : //  syntax
+<span class="lineNum">    1275 </span>            : //
+<span class="lineNum">    1276 </span>            : //
+<a name="1277"><span class="lineNum">    1277 </span>            : ///////////////////////////////////////////////////////////</a>
+<span class="lineNum">    1278 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">    1279 </span><span class="lineCov">      23303 : bool dicomImageCodec::canHandleTransferSyntax(const std::string&amp; transferSyntax) const</span>
+<span class="lineNum">    1280 </span>            : {
+<span class="lineNum">    1281 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">    1282 </span>            : 
+<span class="lineNum">    1283 </span>            :     return(
+<span class="lineNum">    1284 </span><span class="lineCov">      40325 :                 transferSyntax == &quot;1.2.840.10008.1.2&quot; ||      // Implicit VR little endian</span>
+<span class="lineNum">    1285 </span><span class="lineCov">      27956 :                 transferSyntax == &quot;1.2.840.10008.1.2.1&quot; ||    // Explicit VR little endian</span>
+<span class="lineNum">    1286 </span>            :                 // transferSyntax==&quot;1.2.840.10008.1.2.1.99&quot; || // Deflated explicit VR little endian
+<span class="lineNum">    1287 </span><span class="lineCov">      39104 :                 transferSyntax == &quot;1.2.840.10008.1.2.2&quot; ||    // Explicit VR big endian</span>
+<span class="lineNum">    1288 </span><span class="lineCov">      28170 :                 transferSyntax == &quot;1.2.840.10008.1.2.5&quot;);     // RLE compression</span>
+<span class="lineNum">    1289 </span>            : 
+<span class="lineNum">    1290 </span>            :     IMEBRA_FUNCTION_END();
+<span class="lineNum">    1291 </span>            : }
+<span class="lineNum">    1292 </span>            : 
+<span class="lineNum">    1293 </span>            : 
+<span class="lineNum">    1294 </span>            : ////////////////////////////////////////////////////////////////
+<span class="lineNum">    1295 </span>            : ////////////////////////////////////////////////////////////////
+<span class="lineNum">    1296 </span>            : //
+<span class="lineNum">    1297 </span>            : //
+<span class="lineNum">    1298 </span>            : // Returns true if the transfer syntax has to be
+<span class="lineNum">    1299 </span>            : //  encapsulated
+<span class="lineNum">    1300 </span>            : //
+<span class="lineNum">    1301 </span>            : //
+<a name="1302"><span class="lineNum">    1302 </span>            : ////////////////////////////////////////////////////////////////</a>
+<span class="lineNum">    1303 </span>            : ////////////////////////////////////////////////////////////////
+<span class="lineNum">    1304 </span><span class="lineCov">       5881 : bool dicomImageCodec::encapsulated(const std::string&amp; transferSyntax) const</span>
+<span class="lineNum">    1305 </span>            : {
+<span class="lineNum">    1306 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">    1307 </span>            : 
+<span class="lineNum">    1308 </span><span class="lineCov">       5881 :     if(!canHandleTransferSyntax(transferSyntax))</span>
+<span class="lineNum">    1309 </span>            :     {
+<span class="lineNum">    1310 </span><span class="lineNoCov">          0 :         IMEBRA_THROW(CodecWrongTransferSyntaxError, &quot;Cannot handle the transfer syntax&quot;);</span>
+<span class="lineNum">    1311 </span>            :     }
+<span class="lineNum">    1312 </span><span class="lineCov">       5881 :     return (transferSyntax == &quot;1.2.840.10008.1.2.5&quot;);</span>
+<span class="lineNum">    1313 </span>            : 
+<span class="lineNum">    1314 </span><span class="lineNoCov">          0 :     IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">    1315 </span>            : }
+<span class="lineNum">    1316 </span>            : 
+<span class="lineNum">    1317 </span>            : 
+<span class="lineNum">    1318 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">    1319 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">    1320 </span>            : //
+<span class="lineNum">    1321 </span>            : //
+<span class="lineNum">    1322 </span>            : // Suggest the number of allocated bits
+<span class="lineNum">    1323 </span>            : //
+<span class="lineNum">    1324 </span>            : //
+<a name="1325"><span class="lineNum">    1325 </span>            : ///////////////////////////////////////////////////////////</a>
+<span class="lineNum">    1326 </span>            : ///////////////////////////////////////////////////////////
+<span class="lineNum">    1327 </span><span class="lineCov">       5881 : std::uint32_t dicomImageCodec::suggestAllocatedBits(const std::string&amp; transferSyntax, std::uint32_t highBit) const</span>
+<span class="lineNum">    1328 </span>            : {
+<span class="lineNum">    1329 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">    1330 </span>            : 
+<span class="lineNum">    1331 </span><span class="lineCov">       5881 :     if(transferSyntax == &quot;1.2.840.10008.1.2.5&quot;)</span>
+<span class="lineNum">    1332 </span>            :     {
+<span class="lineNum">    1333 </span><span class="lineCov">       1217 :         return (highBit + 8) &amp; 0xfffffff8;</span>
+<span class="lineNum">    1334 </span>            :     }
+<span class="lineNum">    1335 </span>            : 
+<span class="lineNum">    1336 </span><span class="lineCov">       4664 :     return highBit + 1;</span>
+<span class="lineNum">    1337 </span>            : 
+<span class="lineNum">    1338 </span>            :     IMEBRA_FUNCTION_END();
+<span class="lineNum">    1339 </span>            : 
+<span class="lineNum">    1340 </span>            : }
+<span class="lineNum">    1341 </span>            : 
+<span class="lineNum">    1342 </span>            : } // namespace codecs
+<span class="lineNum">    1343 </span>            : 
+<span class="lineNum">    1344 </span>            : } // namespace implementation
+<span class="lineNum">    1345 </span>            : 
+<span class="lineNum">    1346 </span>            : } // namespace imebra
+<span class="lineNum">    1347 </span>            : 
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.13</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

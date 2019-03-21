@@ -1,0 +1,1 @@
+/usr/bin/c++   -std=c++11 -Wall -Wextra -Wpedantic -Wconversion -Wfloat-equal -fvisibility=hidden -fvisibility-inlines-hidden  -rdynamic CMakeFiles/dicomDirItems.dir/examples/c++/dicomdirItems/dicomdirItems.cpp.o  -o dicomDirItems -Wl,-rpath,/home/sim/Documents/sim/imebra_compiled/artifacts libimebra.so.1.0.0 -lpthread 

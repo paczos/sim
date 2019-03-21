@@ -1,0 +1,480 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>DICOM dictionary &mdash; Imebra 4.5.2.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="copyright" title="Copyright" href="copyright.html" />
+    <link rel="next" title="Definitions" href="definition_classes.html" />
+    <link rel="prev" title="DICOMDIR classes" href="dicomdir_classes.html" /> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Imebra
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                4.5.2
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Download Imebra</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="download.html">Downloading Imebra</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Legal</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="copyright.html">Copyright</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gplv2.html">GNU General Public License</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Introduction</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changes_log.html">Changes log</a></li>
+</ul>
+<p class="caption"><span class="caption-text">User documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="compiling_imebra.html">Compiling Imebra</a></li>
+<li class="toctree-l1"><a class="reference internal" href="add_to_project.html">Adding Imebra to your project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quick_tour.html">Getting started</a></li>
+</ul>
+<p class="caption"><span class="caption-text">API</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="objects_lifecycle.html">Objects lifecycle and Object ownership</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dicom_data_classes.html">DICOM dataSet &amp; tags classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stream_classes.html">Stream classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="imaging_classes.html">Imaging classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="transforms_classes.html">Transforms classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="memory_management_classes.html">Memory management classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="acse_classes.html">ACSE classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dimse_classes.html">DIMSE classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dicomdir_classes.html">DICOMDIR classes</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">DICOM dictionary</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dicom-dictionary-class">Dicom Dictionary class</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#dicomdictionary">DicomDictionary</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#c">C++</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#objective-c-swift">Objective-C/Swift</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="definition_classes.html">Definitions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="exception_classes.html">Exceptions</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Build distributions</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="build_distribution.html">Creating the source distribution from the code in the VCS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="build_distribution.html#versioning">Versioning</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Requirements &amp; Risks</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="risks_requirements.html">Requirements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="risks_requirements.html#risks">Risks</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Standard operating procedures</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="sop.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sop.html#sops">SOPs</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Imebra</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>DICOM dictionary</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/dicom_dictionary_classes.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="dicom-dictionary">
+<h1>DICOM dictionary<a class="headerlink" href="#dicom-dictionary" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>This chapter describes Dicom Dictionary class which return description and default type of the known DICOM tags.</p>
+<p>The following class is described in this chapter:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="38%" />
+<col width="37%" />
+<col width="25%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">C++ class</th>
+<th class="head">Objective-C/Swift class</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><a class="reference internal" href="#_CPPv3N6imebra15DicomDictionaryE" title="imebra::DicomDictionary"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">imebra::DicomDictionary</span></code></a></td>
+<td><a class="reference internal" href="#_CPPv321ImebraDicomDictionary" title="ImebraDicomDictionary"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">ImebraDicomDictionary</span></code></a></td>
+<td>Returns description and VRs of
+well known tags</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="dicom-dictionary-class">
+<h2>Dicom Dictionary class<a class="headerlink" href="#dicom-dictionary-class" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="dicomdictionary">
+<h3>DicomDictionary<a class="headerlink" href="#dicomdictionary" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="c">
+<h4>C++<a class="headerlink" href="#c" title="Permalink to this headline">¶</a></h4>
+<dl class="class">
+<dt id="_CPPv3N6imebra15DicomDictionaryE">
+<span id="_CPPv2N6imebra15DicomDictionaryE"></span><span id="imebra::DicomDictionary"></span><span class="target" id="classimebra_1_1_dicom_dictionary"></span><em class="property">class </em><code class="descname">DicomDictionary</code><a class="headerlink" href="#_CPPv3N6imebra15DicomDictionaryE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Provides information about the tag’s description and their default data type (VR). </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric">Public Static Functions</p>
+<dl class="function">
+<dt id="_CPPv3N6imebra15DicomDictionary17getUnicodeTagNameERK5TagId">
+<span id="_CPPv2N6imebra15DicomDictionary17getUnicodeTagNameERK5TagId"></span><span id="imebra::DicomDictionary::getUnicodeTagName__TagIdCR"></span><span class="target" id="classimebra_1_1_dicom_dictionary_1a48c2b7650db1431f238737c711db3e11"></span><em class="property">static</em> std::wstring <code class="descname">getUnicodeTagName</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="dicom_data_classes.html#_CPPv3N6imebra5TagIdE" title="imebra::TagId">TagId</a> &amp;<em>id</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N6imebra15DicomDictionary17getUnicodeTagNameERK5TagId" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Retrieve a tag’s description. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>The tag’s description </dd>
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">id</span></code>: the tag’s id </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N6imebra15DicomDictionary10getTagNameERK5TagId">
+<span id="_CPPv2N6imebra15DicomDictionary10getTagNameERK5TagId"></span><span id="imebra::DicomDictionary::getTagName__TagIdCR"></span><span class="target" id="classimebra_1_1_dicom_dictionary_1a542c6c76c809938cdbffc7f33c61921c"></span><em class="property">static</em> std::string <code class="descname">getTagName</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="dicom_data_classes.html#_CPPv3N6imebra5TagIdE" title="imebra::TagId">TagId</a> &amp;<em>id</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N6imebra15DicomDictionary10getTagNameERK5TagId" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Retrieve a tag’s description. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>The tag’s description </dd>
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">id</span></code>: the tag’s id </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N6imebra15DicomDictionary10getTagTypeERK5TagId">
+<span id="_CPPv2N6imebra15DicomDictionary10getTagTypeERK5TagId"></span><span id="imebra::DicomDictionary::getTagType__TagIdCR"></span><span class="target" id="classimebra_1_1_dicom_dictionary_1a275bb3925af04811611b2a83cbd98155"></span><em class="property">static</em> <a class="reference internal" href="definition_classes.html#_CPPv3N6imebra7tagVR_tE" title="imebra::tagVR_t">tagVR_t</a> <code class="descname">getTagType</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="dicom_data_classes.html#_CPPv3N6imebra5TagIdE" title="imebra::TagId">TagId</a> &amp;<em>id</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N6imebra15DicomDictionary10getTagTypeERK5TagId" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Retrieve a tag’s default data type. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>The tag’s data type </dd>
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">id</span></code>: the tag’s id </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N6imebra15DicomDictionary11getWordSizeE7tagVR_t">
+<span id="_CPPv2N6imebra15DicomDictionary11getWordSizeE7tagVR_t"></span><span id="imebra::DicomDictionary::getWordSize__tagVR_t"></span><span class="target" id="classimebra_1_1_dicom_dictionary_1a641f71057d2488335cdf8ed06adab7be"></span><em class="property">static</em> std::uint32_t <code class="descname">getWordSize</code><span class="sig-paren">(</span><a class="reference internal" href="definition_classes.html#_CPPv3N6imebra7tagVR_tE" title="imebra::tagVR_t">tagVR_t</a> <em>dataType</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N6imebra15DicomDictionary11getWordSizeE7tagVR_t" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Return the size of the data type’s elements. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>the size of a single element </dd>
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">dataType</span></code>: the data type for which the information is required </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N6imebra15DicomDictionary10getMaxSizeE7tagVR_t">
+<span id="_CPPv2N6imebra15DicomDictionary10getMaxSizeE7tagVR_t"></span><span id="imebra::DicomDictionary::getMaxSize__tagVR_t"></span><span class="target" id="classimebra_1_1_dicom_dictionary_1af672168f715d62735b47c0a64484e973"></span><em class="property">static</em> std::uint32_t <code class="descname">getMaxSize</code><span class="sig-paren">(</span><a class="reference internal" href="definition_classes.html#_CPPv3N6imebra7tagVR_tE" title="imebra::tagVR_t">tagVR_t</a> <em>dataType</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N6imebra15DicomDictionary10getMaxSizeE7tagVR_t" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Return the maximum size of the tags with the specified data type. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>the maximum tag’s size in bytes </dd>
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">dataType</span></code>: the data type for which the information is required </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="objective-c-swift">
+<h4>Objective-C/Swift<a class="headerlink" href="#objective-c-swift" title="Permalink to this headline">¶</a></h4>
+<dl class="class">
+<dt id="_CPPv321ImebraDicomDictionary">
+<span id="_CPPv221ImebraDicomDictionary"></span><span id="ImebraDicomDictionary"></span><span class="target" id="interface_imebra_dicom_dictionary"></span><em class="property">class </em><code class="descname">ImebraDicomDictionary</code> : <em class="property">public</em> NSObject<a class="headerlink" href="#_CPPv321ImebraDicomDictionary" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Provides information about the tag’s description and their default data type (VR). </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric">Public Static Functions</p>
+<dl class="function">
+<dt>
+<span class="target" id="interface_imebra_dicom_dictionary_1a4b79e8586ce90e1956035160c3ebf55e"></span><code class="descname">NSString* ImebraDicomDictionary::getTagName:error:(ImebraTagId  * tagId, NSError ** pError)</code></dt>
+<dd><p>Retrieve a tag’s description. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>the tag’s description </dd>
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">tagId</span></code>: the tag’s id </li>
+<li><code class="docutils literal notranslate"><span class="pre">pError</span></code>: set to NSError derived class in case of error </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<span class="target" id="interface_imebra_dicom_dictionary_1a1e74f13cff4c2e35f55ee0d3e8ac9226"></span><code class="descname">ImebraTagVR_t ImebraDicomDictionary::getTagType:error:(ImebraTagId  * tagId, (swift_error(nonnull_error)) __attribute__)</code></dt>
+<dd><p>Retrieve a tag’s default data type. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>The tag’s data type </dd>
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">tagId</span></code>: the tag’s id </li>
+<li><code class="docutils literal notranslate"><span class="pre">pError</span></code>: set to NSError derived class in case of error </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<span class="target" id="interface_imebra_dicom_dictionary_1ae6e88318e4968f9de0424e8db831d8a7"></span><code class="descname">unsigned int ImebraDicomDictionary::getWordSize:(ImebraTagVR_t dataType)</code></dt>
+<dd><p>Return the size (in bytes) of the data type’s elements. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>the size of a single element, in bytes. 0 means that there isn’t a fixed size for the element </dd>
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">dataType</span></code>: the data type for which the information is required </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<span class="target" id="interface_imebra_dicom_dictionary_1a2ecddda6102de5a2f91d46353ff401da"></span><code class="descname">unsigned int ImebraDicomDictionary::getMaxSize:(ImebraTagVR_t dataType)</code></dt>
+<dd><p>Return the maximum size of the tags with the specified data type. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>the maximum tag’s size in bytes </dd>
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">dataType</span></code>: the data type for which the information is required </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="definition_classes.html" class="btn btn-neutral float-right" title="Definitions" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="dicomdir_classes.html" class="btn btn-neutral" title="DICOMDIR classes" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; <a href="copyright.html">Copyright</a> 2016, Paolo Brandoli.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'4.5.2.1',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  <script type="text/javascript" src="_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

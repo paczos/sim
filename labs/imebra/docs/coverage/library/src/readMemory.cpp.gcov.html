@@ -1,0 +1,157 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - extracted.info - library/src/readMemory.cpp</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">library/src</a> - readMemory.cpp<span style="font-size: 80%;"> (source / <a href="readMemory.cpp.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">extracted.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">23</td>
+            <td class="headerCovTableEntry">28</td>
+            <td class="headerCovTableEntryMed">82.1 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2019-03-13 14:48:54</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">9</td>
+            <td class="headerCovTableEntry">10</td>
+            <td class="headerCovTableEntryHi">90.0 %</td>
+          </tr>
+          <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : /*</a>
+<span class="lineNum">       2 </span>            : Copyright 2005 - 2017 by Paolo Brandoli/Binarno s.p.
+<span class="lineNum">       3 </span>            : 
+<span class="lineNum">       4 </span>            : Imebra is available for free under the GNU General Public License.
+<span class="lineNum">       5 </span>            : 
+<span class="lineNum">       6 </span>            : The full text of the license is available in the file license.rst
+<span class="lineNum">       7 </span>            :  in the project root folder.
+<span class="lineNum">       8 </span>            : 
+<span class="lineNum">       9 </span>            : If you do not want to be bound by the GPL terms (such as the requirement
+<span class="lineNum">      10 </span>            :  that your application must also be GPL), you may purchase a commercial
+<span class="lineNum">      11 </span>            :  license for Imebra from the Imebra’s website (http://imebra.com).
+<span class="lineNum">      12 </span>            : */
+<span class="lineNum">      13 </span>            : 
+<span class="lineNum">      14 </span>            : #include &quot;../include/imebra/readMemory.h&quot;
+<span class="lineNum">      15 </span>            : #include &quot;../implementation/memoryImpl.h&quot;
+<span class="lineNum">      16 </span>            : #include &quot;../implementation/exceptionImpl.h&quot;
+<span class="lineNum">      17 </span>            : #include &quot;../include/imebra/exceptions.h&quot;
+<span class="lineNum">      18 </span>            : #include &lt;memory.h&gt;
+<span class="lineNum">      19 </span>            : 
+<span class="lineNum">      20 </span>            : namespace imebra
+<a name="21"><span class="lineNum">      21 </span>            : {</a>
+<span class="lineNum">      22 </span>            : 
+<span class="lineNum">      23 </span><span class="lineCov">       2052 : ReadMemory::ReadMemory(): m_pMemory(std::make_shared&lt;const implementation::memory&gt;())</span>
+<span class="lineNum">      24 </span>            : {
+<a name="25"><span class="lineNum">      25 </span><span class="lineCov">       2046 : }</span></a>
+<span class="lineNum">      26 </span>            : 
+<span class="lineNum">      27 </span><span class="lineCov">       3011 : ReadMemory::ReadMemory(const char* buffer, size_t bufferSize):</span>
+<span class="lineNum">      28 </span><span class="lineCov">       3011 :     m_pMemory(std::make_shared&lt;const implementation::memory&gt;(new implementation::stringUint8((const std::uint8_t*)buffer, bufferSize)))</span>
+<span class="lineNum">      29 </span>            : {
+<a name="30"><span class="lineNum">      30 </span><span class="lineCov">       3011 : }</span></a>
+<span class="lineNum">      31 </span>            : 
+<span class="lineNum">      32 </span><span class="lineCov">      23575 : ReadMemory::ReadMemory(std::shared_ptr&lt;const implementation::memory&gt; pMemory): m_pMemory(pMemory)</span>
+<span class="lineNum">      33 </span>            : {
+<a name="34"><span class="lineNum">      34 </span><span class="lineCov">      23575 : }</span></a>
+<span class="lineNum">      35 </span>            : 
+<span class="lineNum">      36 </span><span class="lineCov">      52207 : ReadMemory::~ReadMemory()</span>
+<span class="lineNum">      37 </span>            : {
+<a name="38"><span class="lineNum">      38 </span><span class="lineCov">      52210 : }</span></a>
+<span class="lineNum">      39 </span>            : 
+<span class="lineNum">      40 </span><span class="lineCov">          7 : size_t ReadMemory::size() const</span>
+<span class="lineNum">      41 </span>            : {
+<span class="lineNum">      42 </span><span class="lineCov">          7 :     return m_pMemory-&gt;size();</span>
+<a name="43"><span class="lineNum">      43 </span>            : }</a>
+<span class="lineNum">      44 </span>            : 
+<span class="lineNum">      45 </span><span class="lineCov">      26585 : const char* ReadMemory::data(size_t* pDataSize) const</span>
+<span class="lineNum">      46 </span>            : {
+<span class="lineNum">      47 </span><span class="lineCov">      26585 :     *pDataSize = m_pMemory-&gt;size();</span>
+<span class="lineNum">      48 </span><span class="lineCov">      26585 :     return (char*)m_pMemory-&gt;data();</span>
+<a name="49"><span class="lineNum">      49 </span>            : }</a>
+<span class="lineNum">      50 </span>            : 
+<span class="lineNum">      51 </span><span class="lineNoCov">          0 : size_t ReadMemory::data(char* destination, size_t destinationSize) const</span>
+<span class="lineNum">      52 </span>            : {
+<span class="lineNum">      53 </span><span class="lineNoCov">          0 :     size_t memorySize = m_pMemory-&gt;size();</span>
+<span class="lineNum">      54 </span><span class="lineNoCov">          0 :     if(destination != 0 &amp;&amp; destinationSize &gt;= memorySize &amp;&amp; memorySize != 0)</span>
+<span class="lineNum">      55 </span>            :     {
+<span class="lineNum">      56 </span><span class="lineNoCov">          0 :         ::memcpy(destination, m_pMemory-&gt;data(), memorySize);</span>
+<span class="lineNum">      57 </span>            :     }
+<span class="lineNum">      58 </span><span class="lineNoCov">          0 :     return memorySize;</span>
+<a name="59"><span class="lineNum">      59 </span>            : }</a>
+<span class="lineNum">      60 </span>            : 
+<span class="lineNum">      61 </span><span class="lineCov">          2 : void ReadMemory::regionData(char* destination, size_t destinationSize, size_t sourceOffset) const</span>
+<span class="lineNum">      62 </span>            : {
+<span class="lineNum">      63 </span>            :     IMEBRA_FUNCTION_START();
+<span class="lineNum">      64 </span>            : 
+<span class="lineNum">      65 </span><span class="lineCov">          2 :     size_t memorySize = m_pMemory-&gt;size();</span>
+<span class="lineNum">      66 </span><span class="lineCov">          2 :     if(m_pMemory-&gt;size() &lt; sourceOffset + destinationSize)</span>
+<span class="lineNum">      67 </span>            :     {
+<span class="lineNum">      68 </span><span class="lineCov">          1 :         IMEBRA_THROW(MemorySizeError, &quot;The source memory region exceedes the memory size&quot;);</span>
+<span class="lineNum">      69 </span>            :     }
+<span class="lineNum">      70 </span><span class="lineCov">          1 :     ::memcpy(destination, m_pMemory-&gt;data() + sourceOffset, memorySize);</span>
+<span class="lineNum">      71 </span>            : 
+<span class="lineNum">      72 </span><span class="lineCov">          1 :     IMEBRA_FUNCTION_END();</span>
+<span class="lineNum">      73 </span><span class="lineCov">          1 : }</span>
+<a name="74"><span class="lineNum">      74 </span>            : </a>
+<span class="lineNum">      75 </span>            : 
+<span class="lineNum">      76 </span><span class="lineCov">          4 : bool ReadMemory::empty() const</span>
+<span class="lineNum">      77 </span>            : {
+<span class="lineNum">      78 </span><span class="lineCov">          4 :     return m_pMemory-&gt;empty();</span>
+<span class="lineNum">      79 </span>            : }
+<span class="lineNum">      80 </span>            : 
+<span class="lineNum">      81 </span>            : }
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.13</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

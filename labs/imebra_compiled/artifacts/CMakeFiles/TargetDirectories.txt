@@ -1,0 +1,15 @@
+/home/sim/Documents/sim/imebra_compiled/artifacts/CMakeFiles/install/strip.dir
+/home/sim/Documents/sim/imebra_compiled/artifacts/CMakeFiles/list_install_components.dir
+/home/sim/Documents/sim/imebra_compiled/artifacts/CMakeFiles/edit_cache.dir
+/home/sim/Documents/sim/imebra_compiled/artifacts/CMakeFiles/package_source.dir
+/home/sim/Documents/sim/imebra_compiled/artifacts/CMakeFiles/package.dir
+/home/sim/Documents/sim/imebra_compiled/artifacts/CMakeFiles/rebuild_cache.dir
+/home/sim/Documents/sim/imebra_compiled/artifacts/CMakeFiles/gtest.dir
+/home/sim/Documents/sim/imebra_compiled/artifacts/CMakeFiles/install/local.dir
+/home/sim/Documents/sim/imebra_compiled/artifacts/CMakeFiles/test.dir
+/home/sim/Documents/sim/imebra_compiled/artifacts/CMakeFiles/imebra.dir
+/home/sim/Documents/sim/imebra_compiled/artifacts/CMakeFiles/ImebraTests.dir
+/home/sim/Documents/sim/imebra_compiled/artifacts/CMakeFiles/install.dir
+/home/sim/Documents/sim/imebra_compiled/artifacts/CMakeFiles/dicom2jpeg.dir
+/home/sim/Documents/sim/imebra_compiled/artifacts/CMakeFiles/changeTransferSyntax.dir
+/home/sim/Documents/sim/imebra_compiled/artifacts/CMakeFiles/dicomDirItems.dir
