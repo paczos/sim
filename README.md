@@ -11,3 +11,9 @@ jak wybrac obrazek?
 pierwszy
 
 Pan Wanta 59
+
+
+### Install DCMTK
+sudo apt-get update
+sudo apt-get install dcmtk
+
