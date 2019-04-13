@@ -23,7 +23,14 @@ dcmj2pnm --write-16-bit-png photo.dcm photo.png
 
 
 ### create HL7
+```
+sudo apt install librapidxml-dev
+```
 xml -> rapid xml
 
 ### transform HL7 to html
 xslt -> http://xml.apache.org/xalan-c/
+
+```
+sudo apt install xalan
+```
