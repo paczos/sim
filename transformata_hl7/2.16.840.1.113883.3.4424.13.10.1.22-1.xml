@@ -1,0 +1,580 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet href="CDA_PL_IG_1.3.1.xsl" type="text/xsl"?>
+<ClinicalDocument xmlns="urn:hl7-org:v3" xmlns:extPL="http://www.csioz.gov.pl/xsd/extPL/r2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="extPL:ClinicalDocument">
+	<!-- Karta wywiadu pielęgniarskiego - przykład 1 -->
+	<typeId extension="POCD_HD000040" root="2.16.840.1.113883.1.3"/>
+	<templateId root="2.16.840.1.113883.3.4424.13.10.1.22" extension="1.3.1"/>
+	<id extension="2345678" root="2.16.840.1.113883.3.4424.2.7.0.7.1" displayable="false"/>
+	<code code="46208-5" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Nursing notes">
+		<translation code="05.70" codeSystem="2.16.840.1.113883.3.4424.11.1.32" codeSystemName="KLAS_DOK_P1" displayName="Pozostałe dokumenty pielęgniarskie" />
+	</code>
+	<title>Karta wywiadu pielęgniarskiego</title>
+	<effectiveTime value="20150907"/>
+	<confidentialityCode code="N" codeSystem="2.16.840.1.113883.5.25"/>
+	<languageCode code="pl-PL"/>
+	<setId extension="432231" root="2.16.840.1.113883.3.4424.2.7.0.7.2"/>
+	<versionNumber value="1"/>
+	<recordTarget>
+		<templateId root="2.16.840.1.113883.3.4424.13.10.2.3"/>
+		<patientRole>
+			<id extension="12345" root="2.16.840.1.113883.3.4424.2.7.0.17.1" displayable="false"/>
+			<id extension="64012608919" root="2.16.840.1.113883.3.4424.1.1.616" displayable="true"/>
+			<addr>
+				<city>Warszawa</city>
+				<postalCode>01-134</postalCode>
+				<streetName>Odkryta</streetName>
+				<houseNumber>41</houseNumber>
+				<unitID>12</unitID>
+			</addr>
+			<patient>
+				<name>
+					<given>Jan</given>
+					<given>Franciszek</given>
+					<family>Kowalski</family>
+				</name>
+				<administrativeGenderCode code="M" codeSystem="2.16.840.1.113883.5.1"/>
+				<birthTime value="19640126"/>
+			</patient>
+			<providerOrganization classCode="ORG">
+				<templateId root="2.16.840.1.113883.3.4424.13.10.2.2"/>
+				<id extension="1007" root="2.16.840.1.113883.3.4424.2.3.1" displayable="false"/>
+			</providerOrganization>
+		</patientRole>
+	</recordTarget>
+	<author>
+		<templateId root="2.16.840.1.113883.3.4424.13.10.2.4"/>
+		<functionCode code="PIEL" codeSystem="2.16.840.1.113883.3.4424.11.3.18" displayName="Pielęgniarka"/>
+		<time value="20150907"/>
+		<assignedAuthor>
+			<id extension="7724514" root="2.16.840.1.113883.3.4424.1.6.3" displayable="false"/>
+			<assignedPerson>
+				<templateId root="2.16.840.1.113883.3.4424.13.10.2.1"/>
+				<name>
+					<given>Anna</given>
+					<family>Nowak</family>
+				</name>
+			</assignedPerson>
+			<representedOrganization>
+				<templateId root="2.16.840.1.113883.3.4424.13.10.2.18"/>
+				<id extension="2004-09" root="2.16.840.1.113883.3.4424.2.3.3" displayable="true"/>
+				<name>Oddział neurologii</name>
+				<telecom use="PUB" value="tel:22-1111123"/>
+				<addr>
+					<postalCode>00-950</postalCode>
+					<city>Warszawa</city>
+					<streetName>Solec</streetName>
+					<houseNumber>12</houseNumber>
+				</addr>
+				<standardIndustryClassCode code="4220" codeSystem="2.16.840.1.113883.3.4424.11.2.4" displayName="Oddział neurologiczny"/>
+				<asOrganizationPartOf>
+					<wholeOrganization>
+						<id extension="11223344901234" root="2.16.840.1.113883.3.4424.2.2.2" displayable="true"/>
+						<name>Wojewódzki szpital specjalistyczny</name>
+						<asOrganizationPartOf>
+							<wholeOrganization>
+								<id extension="2004" root="2.16.840.1.113883.3.4424.2.3.1" displayable="true"/>
+								<id extension="121212445" root="2.16.840.1.113883.3.4424.2.2.1" displayable="true"/>
+								<name>Wojewódzki szpital specjalistyczny</name>
+							</wholeOrganization>
+						</asOrganizationPartOf>
+					</wholeOrganization>
+				</asOrganizationPartOf>
+			</representedOrganization>
+		</assignedAuthor>
+	</author>
+	<custodian>
+		<templateId root="2.16.840.1.113883.3.4424.13.10.2.5"/>
+		<assignedCustodian>
+			<representedCustodianOrganization>
+				<id extension="1007" root="2.16.840.1.113883.3.4424.2.3.1" displayable="false"/>
+			</representedCustodianOrganization>
+		</assignedCustodian>
+	</custodian>
+	<legalAuthenticator>
+		<templateId root="2.16.840.1.113883.3.4424.13.10.2.6"/>
+		<time value="20150907"/>
+		<signatureCode code="S"/>
+		<assignedEntity>
+			<id extension="7724514" root="2.16.840.1.113883.3.4424.1.6.3" displayable="true"/>
+		</assignedEntity>
+	</legalAuthenticator>
+	<componentOf typeCode="COMP">
+		<templateId root="2.16.840.1.113883.3.4424.13.10.2.52"/>
+		<encompassingEncounter classCode="ENC" moodCode="EVN">
+			<id extension="323432" root="2.16.840.1.113883.3.4424.2.7.0.98" displayable="false"/>
+			<code code="4220" codeSystem="2.16.840.1.113883.3.4424.11.2.4" displayName="Oddział neurologiczny"/>
+			<effectiveTime>
+				<low value="20150907"/>
+			</effectiveTime>
+			<location typeCode="LOC"> 
+				<healthCareFacility classCode="SDLOC">
+					<location>
+						<templateId root="2.16.840.1.113883.3.4424.13.10.2.75"/>
+						<name>Szpital Specjalistyczny im. Świętej Rodziny SP ZOZ, II Oddział Neurologii, sala 2</name>
+					</location>
+				</healthCareFacility>
+			</location>
+		</encompassingEncounter>
+	</componentOf>
+	<component typeCode="COMP" contextConductionInd="true">
+		<templateId root="2.16.840.1.113883.3.4424.13.10.2.71"/>
+		<structuredBody classCode="DOCBODY" moodCode="EVN">
+			<component>
+				<section>
+					<templateId root="2.16.840.1.113883.3.4424.13.10.3.46"/>
+					<code code="10164-2" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="History of present illness Narrative"/>
+					<text>
+						<paragraph>
+							<caption>Stan cywilny:</caption> Żonaty
+						</paragraph>
+						<paragraph>
+							<caption>Wykształcenie:</caption> Wyższe
+						</paragraph>
+						<paragraph>
+							<caption>Zawód wykonywany:</caption> Informatyk
+						</paragraph>
+						<paragraph>
+							<caption>Tryb przyjęcia do szpitala:</caption> nagły
+						</paragraph>
+						<paragraph>
+							<caption>Który pobyt w szpitalu:</caption> 2
+						</paragraph>
+						<paragraph>
+							<caption>Diagnoza lekarska:</caption> Udar niedokrwienny
+						</paragraph>
+						<paragraph>
+							<caption>Przyczyna przyjęcia do szpitala:</caption> Pacjent przyjęty do szpitala z powodu nagłego wystąpienia osłabienia siły mięśniowej lewych kończyn.
+						</paragraph>
+						<paragraph>
+							<caption>Kontakt z pacjentem:</caption> efektywny
+						</paragraph>
+						<paragraph>
+							<caption>Objawy choroby, ich umiejscowienie i charakter:</caption> Niedoczulica lewej połowy twarzy, średniego stopnia niedowład lewej kończyny górnej, wzmożone napięcie mięśniowe kk. górnych typu pozapiramidowego, drżenie w obrębie prawej kończyny górnej, średniego stopnia niedowład lewej kończyny dolnej, wzmożone napięcie mięśniowe kk. dolnych typu pozapiramidowego, dodatni objaw Babińskiego po stronie lewej.
+						</paragraph>
+						<paragraph>
+							<caption>Objawy towarzyszące:</caption> brak
+						</paragraph>
+						<paragraph>
+							<caption>Choroby przebyte i współistniejące:</caption> nadciśnienie tętnicze
+						</paragraph>
+						<paragraph>
+							<caption>Przebyte choroby zakaźne:</caption> brak
+						</paragraph>
+						<paragraph>
+							<caption>Przebyte zabiegi operacyjne:</caption> Proste wycięcie uchyłka dwunastnicy (12-05-2010)
+						</paragraph>
+						<paragraph>
+							<caption>Wzrost:</caption> 1,82 m
+						</paragraph>
+						<paragraph>
+							<caption>Waga:</caption> 86 kg
+						</paragraph>
+						<paragraph>
+							<caption>BMI:</caption> 25,96
+						</paragraph>
+						<paragraph>
+							<caption>Oznaki życia:</caption> temp. 36,7 *C, CTK: 133/85 mmHg 
+						</paragraph>
+						<paragraph>
+							<caption>Tętno:</caption> 70 ud/min. mierzone na tetnicy: promieniowej, słabo napięte
+						</paragraph>
+						<paragraph>
+							<caption>Oddech:</caption> 16/min.
+						</paragraph>
+						<paragraph ID="OBS_1">
+							<caption>Ocena bólu:</caption> ból wystąpił, ale nie w ostatnich 24h (ICNP: ból - 10023130), intensywność: umiarkowany ból (2)
+						</paragraph>
+						<paragraph>
+							<caption>Umiejscowienie bólu:</caption> ramię lewe
+						</paragraph>
+						<paragraph>
+							<caption>Grupa krwi:</caption> 0 Rh+ (źródło informacji: dokumentacja medyczna)
+						</paragraph>
+						<paragraph>
+							<caption>Alergie:</caption> brak
+						</paragraph>
+						<paragraph>
+							<caption>Transfuzje krwi:</caption> nie
+						</paragraph>
+						<paragraph>
+							<caption>Reakcja na transfuzję:</caption> nie dotyczy
+						</paragraph>
+						<paragraph>
+							<caption>Styl życia:</caption> siedzący tryb życia, tytoń: nie, inne nałogi: nie
+						</paragraph>
+						<paragraph>
+							<caption>Aktualnie przyjmowane leki:</caption> ??
+						</paragraph>
+						<paragraph>
+							Leki przyjęte w dniu dzisiejszym: tak
+						</paragraph>
+						<paragraph>
+							<caption>Zapewnienie opieki duszpasterskiej:</caption> nie
+						</paragraph>
+						<table ID="OBS_2">
+							<caption>Ocena stopnia aktywności pacjenta w zakresie podstawowych czynności życiowych:</caption>
+							<thead>
+								<tr>
+									<th/>
+									<th/>
+									<th>Diagnoza wg ICNP</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr >
+									<td>Kąpiel</td>
+									<td>potrzebujący nadzoru</td>
+									<td>zaburzona zdolność do kąpieli - 10000956</td>
+								</tr>
+								<tr>
+									<td>Higiena osobista</td>
+									<td>niezależny</td>
+									<td>zdolność do wykonywania czynności higienicznych - 10028708</td>
+								</tr>
+								<tr>
+									<td>Poruszanie się, chodzenie</td>
+									<td>zwiększony zakres opieki/pomocy osób</td>
+									<td>zaburzone chodzenie - 10001046</td>
+								</tr>
+								<tr>
+									<td>Wyjście do toalety</td>
+									<td>zwiększony zakres opieki/pomocy osób</td>
+									<td>zaburzona zdolność przemieszczania się - 10001005</td>
+								</tr>
+								<tr>
+									<td>Korzystanie z toalety</td>
+									<td>wymagający okresowej pomocy</td>
+									<td>zaburzone samodzielne korzystanie z toalety - 10000994</td>
+								</tr>
+								<tr>
+									<td>Aktywność w łóżku </td>
+									<td>niezależny</td>
+									<td>pozytywna mobilność w łóżku - 10029240</td>
+								</tr>
+								<tr>
+									<td>Jedzenie</td>
+									<td>niezależny</td>
+									<td>efektywna zdolność do samodzielnego jedzenia - 10028253</td>
+								</tr>
+								<tr>
+									<td styleCode="Bold">Ogółem liczna punktów</td>
+									<td styleCode="Bold">11</td>
+									<td></td>
+								</tr>
+							</tbody>
+						</table>
+						<paragraph ID="OBS_3">
+							<caption>Stopień zmęczenia:</caption> minimalne zmęczenie (zmniejszenie energii, pozwalające dokończyć dzień) (ICNP: zmęczenie - 10000695)
+						</paragraph>
+						<paragraph>
+							<caption>Stosowanie sprzętu kompensacyjnego:</caption> nie
+						</paragraph>
+						<paragraph>
+							<caption>Warunki socjalne:</caption> mieszka: z rodziną, pracuje
+						</paragraph>
+						<paragraph styleCode="Bold">Ocena funkcjonowania poszczególnych układów</paragraph>
+						<paragraph>
+							<caption>Skóra:</caption>Zadbany, bez zaburzeń, zabarwienie, wilgotność ciepłota i napięcie – prawidłowe
+						</paragraph>
+						<paragraph ID="OBS_4">
+							<caption>Odleżyny:</caption> brak odleżyn (ICNP: brak odleżyn - 10029065)
+						</paragraph>
+						<paragraph>
+							<caption>Układ nerwowy:</caption> 
+							<content styleCode="Underline">stan pozytywny</content><br />
+							pełna świadomość, nastrój wyrównany, równowaga zachowana, kontakt słowny logiczny, spontaniczny, rytm snu i czuwania efektywny<br />
+							<content styleCode="Underline">zaburzenia</content><br />
+							niedowłady - lokalizacja: lewa kończyna górna, lewa kończyna dolna
+						</paragraph>
+						<table>
+							<caption>Krótka Skala Oceny Stanu Psychicznego</caption>
+							<tbody>
+								<tr>
+									<td>1</td>
+									<td>Orientacja w czasie (1-5)</td>
+									<td>5</td>
+								</tr>
+								<tr>
+									<td></td>
+									<td>Orientacja w miejscu (1-5)</td>
+									<td>5</td>
+								</tr>
+								<tr>
+									<td>2</td>
+									<td>Zapamiętywanie (1-3)</td>
+									<td>2</td>
+								</tr>
+								<tr>
+									<td>3</td>
+									<td>Uwaga i liczenie (1-5)</td>
+									<td>4</td>
+								</tr>
+								<tr>
+									<td>4</td>
+									<td>Przypominanie (1-3)</td>
+									<td>3</td>
+								</tr>
+								<tr>
+									<td>5</td>
+									<td>Funkcje językowe (1-2)</td>
+									<td>2</td>
+								</tr>
+								<tr>
+									<td></td>
+									<td>Powtarzanie (1)</td>
+									<td>1</td>
+								</tr>
+								<tr>
+									<td></td>
+									<td>Wykonywanie poleceń (1-3)</td>
+									<td>3</td>
+								</tr>
+								<tr>
+									<td></td>
+									<td>Pisanie (1)</td>
+									<td>1</td>
+								</tr>
+								<tr>
+									<td>6</td>
+									<td>Praksja konstrukcyjna (1)</td>
+									<td>1</td>
+								</tr>
+								<tr>
+									<td></td>
+									<td styleCode="Bold">Ogółem pkt. [podsumowanie]</td>
+									<td>28</td>
+								</tr>
+							</tbody>
+						</table>
+						<paragraph>
+							<caption>Zachowanie i reakcje emocjonalne:</caption> <content styleCode="Underline">stan pozytywny</content><br />
+							zachowanie adekwatne do sytuacji, pełna świadomość co do miejsca, czasu i osoby
+						</paragraph>
+						<paragraph>
+							<caption>Układ sercowo-naczyniowy:</caption> bez zaburzeń
+						</paragraph>
+						<paragraph>
+							<caption>Układ oddechowy:</caption> brak dolegliwości, oddech prawidłowy
+						</paragraph>
+						<paragraph ID="OBS_5">
+							<caption>Ocena duszności:</caption> nieobecna przy odpoczynku, pojawiający się przy średniej aktywności (ICNP: duszność wysiłkowa - 10029414)
+						</paragraph>
+						<paragraph>
+							<caption>Układ pokarmowy:</caption> bez zaburzeń tj.:  łaknienie w normie, pragnienie w normie, perystaltyka jelit obecna, wydalanie stolca regularne, masa ciała prawidłowa
+						</paragraph>
+						<paragraph ID="OBS_6">
+							<caption>Ocena nudności:</caption> brak nudności (ICNP: bez nudności - 10028984)
+						</paragraph>
+						<paragraph>
+							<caption>Układ moczowo-płciowy:</caption> bez zaburzeń, diureza prawidłowa
+						</paragraph>
+						<paragraph ID="OBS_7">
+							<caption>Ocena trzymania moczu:</caption> trzymanie moczu (ICNP: trzymanie moczu - 10027836)
+						</paragraph>
+						<paragraph>
+							<caption>Układ kostno-stawowy:</caption> bez zaburzeń: poruszanie samodzielne, nie wymaga usprawniania, postawa, budowa i proporcje ciała prawidłowe, napięcie mięśniowe prawidłowe, ruchomość w stawach pełna
+						</paragraph>
+						<paragraph ID="OBS_8">
+							<caption>Upadki:</caption> bez upadku 30 dni (występowały od 31-90 dni temu) (ICNP: upadek - 10029405)
+						</paragraph>
+						<paragraph>
+							<caption>Diagnozy/wyniki pielęgniarskie:</caption> <content ID="OBS_11">zaburzony proces układu nerwowego - 10037322</content>
+						</paragraph>
+						<paragraph>
+							<caption>Uwagi dotyczące przyjęcia pacjenta na oddział:</caption> Pacjent(ka) zapoznany z oddziałem (dzwonek do dyżurki, godziny odwiedzin, telefon, toaleta, godziny posiłków, lekarz prowadzący, regulamin oddziału i Karta Praw Pacjenta). 
+							<br/>Pacjent(ka) poinformowany o nie opuszczaniu oddziału: TAK
+						</paragraph>
+					</text>
+					<entry typeCode="COMP">
+						<observation classCode="OBS" moodCode="EVN">
+							<templateId root="2.16.840.1.113883.3.4424.13.10.4.37"/>
+							<code code="SBOLSZ" codeSystem="2.16.840.1.113883.3.4424.13.5.2" codeSystemName="Słownik nazw skal ocen pielęgniarskich" displayName="Skala oceny bólu podczas pobytu w szpitalu/24h"/>
+							<text>
+								<reference value="#OBS_1" />
+							</text>
+							<statusCode code="completed"/>
+							<effectiveTime value="20150907"/>
+							<value xsi:type="CD" code="10023130" codeSystem="2.16.840.1.113883.6.97" codeSystemName="ICNP" displayName="Pain">
+								<qualifier>
+									<name code="BOLSZ" codeSystem="2.16.840.1.113883.3.4424.13.5.3.4" codeSystemName="Słownik wartości dla częstotliwości występowania bólu w szpitalu" displayName="Częstotliwość występowania bólu podczas hospitalizacji"/>
+									<value code="1" codeSystem="2.16.840.1.113883.3.4424.13.5.3.4" codeSystemName="Słownik wartości dla częstotliwości występowania bólu w szpitalu" displayName="ból wystąpił, ale nie w ostatnich 24h"/>
+								</qualifier>
+								<qualifier>
+									<name code="BOLINT" codeSystem="2.16.840.1.113883.3.4424.13.5.3.6" codeSystemName="Słownik wartości dla intensywności bólu" displayName="Intensywność bólu"/>
+									<value code="2" codeSystem="2.16.840.1.113883.3.4424.13.5.3.6" codeSystemName="Słownik wartości dla intensywności bólu" displayName="umiarkowany ból"/>
+								</qualifier>
+							</value>
+						</observation>
+					</entry>
+					<entry typeCode="COMP">
+						<observation classCode="OBS" moodCode="EVN">
+							<templateId root="2.16.840.1.113883.3.4424.13.10.4.35"/>
+							<code code="SADL" codeSystem="2.16.840.1.113883.3.4424.13.5.2" codeSystemName="Słownik nazw skal ocen pielęgniarskich" displayName="ADL - Samodzielność pacjenta w zakresie podstawowych czynności życiowych"/>
+							<text>
+								<reference value="#OBS_2" />
+							</text>
+							<statusCode code="completed"/>
+							<effectiveTime value="20150907"/>
+							<value xsi:type="CD" code="10000956" codeSystem="2.16.840.1.113883.6.97" codeSystemName="ICNP" displayName="Impaired ability to bath">
+								<qualifier>
+									<name code="SAM" codeSystem="2.16.840.1.113883.3.4424.13.5.3.1" codeSystemName="Słownik wartości dla skali ADL" displayName="Samodzielność pacjenta"/>
+									<value code="2" codeSystem="2.16.840.1.113883.3.4424.13.5.3.1" codeSystemName="Słownik wartości dla skali ADL" displayName="potrzebujący nadzoru"/>
+								</qualifier>
+							</value>
+							<value xsi:type="CD" code="10028708" codeSystem="2.16.840.1.113883.6.97" codeSystemName="ICNP" displayName="Able to perform hygiene">
+								<qualifier>
+									<name code="SAM" codeSystem="2.16.840.1.113883.3.4424.13.5.3.1" codeSystemName="Słownik wartości dla skali ADL" displayName="Samodzielność pacjenta"/>
+									<value code="0" codeSystem="2.16.840.1.113883.3.4424.13.5.3.1" codeSystemName="Słownik wartości dla skali ADL" displayName="niezależny"/>
+								</qualifier>
+							</value>
+							<value xsi:type="CD" code="10001046" codeSystem="2.16.840.1.113883.6.97" codeSystemName="ICNP" displayName="Impaired walking">
+								<qualifier>
+									<name code="SAM" codeSystem="2.16.840.1.113883.3.4424.13.5.3.1" codeSystemName="Słownik wartości dla skali ADL" displayName="Samodzielność pacjenta"/>
+									<value code="4" codeSystem="2.16.840.1.113883.3.4424.13.5.3.1" codeSystemName="Słownik wartości dla skali ADL" displayName="zwiększony zakres opieki/pomocy osób"/>
+								</qualifier>
+							</value>
+							<value xsi:type="CD" code="10001005" codeSystem="2.16.840.1.113883.6.97" codeSystemName="ICNP" displayName="Impaired ability to transfer">
+								<qualifier>
+									<name code="SAM" codeSystem="2.16.840.1.113883.3.4424.13.5.3.1" codeSystemName="Słownik wartości dla skali ADL" displayName="Samodzielność pacjenta"/>
+									<value code="4" codeSystem="2.16.840.1.113883.3.4424.13.5.3.1" codeSystemName="Słownik wartości dla skali ADL" displayName="zwiększony zakres opieki/pomocy osób"/>
+								</qualifier>
+							</value>
+							<value xsi:type="CD" code="10000994" codeSystem="2.16.840.1.113883.6.97" codeSystemName="ICNP" displayName="Impaired self toileting">
+								<qualifier>
+									<name code="SAM" codeSystem="2.16.840.1.113883.3.4424.13.5.3.1" codeSystemName="Słownik wartości dla skali ADL" displayName="Samodzielność pacjenta"/>
+									<value code="1" codeSystem="2.16.840.1.113883.3.4424.13.5.3.1" codeSystemName="Słownik wartości dla skali ADL" displayName="wymagający okresowej pomocy"/>
+								</qualifier>
+							</value>
+							<value xsi:type="CD" code="10029240" codeSystem="2.16.840.1.113883.6.97" codeSystemName="ICNP" displayName="Able to move in bed">
+								<qualifier>
+									<name code="SAM" codeSystem="2.16.840.1.113883.3.4424.13.5.3.1" codeSystemName="Słownik wartości dla skali ADL" displayName="Samodzielność pacjenta"/>
+									<value code="0" codeSystem="2.16.840.1.113883.3.4424.13.5.3.1" codeSystemName="Słownik wartości dla skali ADL" displayName="niezależny"/>
+								</qualifier>
+							</value>
+							<value xsi:type="CD" code="10028253" codeSystem="2.16.840.1.113883.6.97" codeSystemName="ICNP" displayName="Able to feed self">
+								<qualifier>
+									<name code="SAM" codeSystem="2.16.840.1.113883.3.4424.13.5.3.1" codeSystemName="Słownik wartości dla skali ADL" displayName="Samodzielność pacjenta"/>
+									<value code="0" codeSystem="2.16.840.1.113883.3.4424.13.5.3.1" codeSystemName="Słownik wartości dla skali ADL" displayName="niezależny"/>
+								</qualifier>
+							</value>
+						</observation>
+					</entry>
+					<entry typeCode="COMP">
+						<observation classCode="OBS" moodCode="EVN">
+							<templateId root="2.16.840.1.113883.3.4424.13.10.4.38"/>
+							<code code="SZMEC" codeSystem="2.16.840.1.113883.3.4424.13.5.2" codeSystemName="Słownik nazw skal ocen pielęgniarskich" displayName="Skala oceny zmęczenia"/>
+							<text>
+								<reference value="#OBS_3" />
+							</text>
+							<statusCode code="completed"/>
+							<effectiveTime value="20150907"/>
+							<value xsi:type="CD" code="10000695" codeSystem="2.16.840.1.113883.6.97" codeSystemName="ICNP" displayName="Fatigue">
+								<qualifier>
+									<name code="ZMEC" codeSystem="2.16.840.1.113883.3.4424.13.5.3.7" codeSystemName="Słownik wartości dla skali oceny zmęczenia" displayName="Stopień zmęczenia"/>
+									<value code="1" codeSystem="2.16.840.1.113883.3.4424.13.5.3.7" codeSystemName="Słownik wartości dla skali oceny zmęczenia" displayName="minimalne zmęczenie (zmniejszenie energii, pozwalające dokończyć dzień)"/>
+								</qualifier>
+							</value>
+						</observation>
+					</entry>
+					<entry typeCode="COMP">
+						<observation classCode="OBS" moodCode="EVN">
+							<templateId root="2.16.840.1.113883.3.4424.13.10.4.41"/>
+							<code code="SODL" codeSystem="2.16.840.1.113883.3.4424.13.5.2" codeSystemName="Słownik nazw skal ocen pielęgniarskich" displayName="Skala klasyfikacji odleżyn"/>
+							<text>
+								<reference value="#OBS_4" />
+							</text>
+							<statusCode code="completed"/>
+							<effectiveTime value="20150819"/>
+							<entryRelationship typeCode="COMP">
+								<observation classCode="OBS" moodCode="EVN">
+									<templateId root="2.16.840.1.113883.3.4424.13.10.4.46"/>
+									<code code="10029065" codeSystem="2.16.840.1.113883.6.97" codeSystemName="ICNP" displayName="No pressure ulcer"/>
+									<statusCode code="completed"/>
+								</observation>
+							</entryRelationship>
+						</observation>
+					</entry>
+					<entry typeCode="COMP">
+						<observation classCode="OBS" moodCode="EVN">
+							<templateId root="2.16.840.1.113883.3.4424.13.10.4.44"/>
+							<code code="SDUSZ" codeSystem="2.16.840.1.113883.3.4424.13.5.2" codeSystemName="Słownik nazw skal ocen pielęgniarskich" displayName="Skala oceny duszności"/>
+							<text>
+								<reference value="#OBS_5" />
+							</text>
+							<statusCode code="completed"/>
+							<effectiveTime value="20150907"/>
+							<value xsi:type="CD" code="10029414" codeSystem="2.16.840.1.113883.6.97" codeSystemName="ICNP" displayName="Resting dyspnoea">
+								<qualifier>
+									<name code="DUSZ" codeSystem="2.16.840.1.113883.3.4424.13.5.3.8" codeSystemName="Słownik wartości dla skali oceny duszności" displayName="Stopień duszności"/>
+									<value code="1" codeSystem="2.16.840.1.113883.3.4424.13.5.3.8" codeSystemName="Słownik wartości dla skali oceny duszności" displayName="nieobecna przy odpoczynku, pojawiający się przy średniej aktywności"/>
+								</qualifier>
+							</value>
+						</observation>
+					</entry>
+					<entry typeCode="COMP">
+						<observation classCode="OBS" moodCode="EVN">
+							<templateId root="2.16.840.1.113883.3.4424.13.10.4.39"/>
+							<code code="SNUDN" codeSystem="2.16.840.1.113883.3.4424.13.5.2" codeSystemName="Słownik nazw skal ocen pielęgniarskich" displayName="Skala oceny nudności"/>
+							<text>
+								<reference value="#OBS_6" />
+							</text>
+							<statusCode code="completed"/>
+							<effectiveTime value="20150907"/>
+							<value xsi:type="CD" code="10028984" codeSystem="2.16.840.1.113883.6.97" codeSystemName="ICNP" displayName="No nausea">
+								<qualifier>
+									<name code="NUDN" codeSystem="2.16.840.1.113883.3.4424.13.5.3.9" codeSystemName="Słownik wartości dla skali oceny nudności" displayName="Stopień nudności"/>
+									<value code="0" codeSystem="2.16.840.1.113883.3.4424.13.5.3.9" codeSystemName="Słownik wartości dla skali oceny nudności" displayName="brak nudności"/>
+								</qualifier>
+							</value>
+						</observation>
+					</entry>
+					<entry typeCode="COMP">
+						<observation classCode="OBS" moodCode="EVN">
+							<templateId root="2.16.840.1.113883.3.4424.13.10.4.36"/>
+							<code code="SNMOCZSO" codeSystem="2.16.840.1.113883.3.4424.13.5.2" codeSystemName="Słownik nazw skal ocen pielęgniarskich" displayName="Skala trzymania moczu - stany ostre"/>
+							<text>
+								<reference value="#OBS_7" />
+							</text>
+							<statusCode code="completed"/>
+							<effectiveTime value="20150907"/>
+							<value xsi:type="CD" code="10025686" codeSystem="2.16.840.1.113883.6.97" codeSystemName="ICNP" displayName="Urinary incontinence">
+								<qualifier>
+									<name code="NMOCZSO" codeSystem="2.16.840.1.113883.3.4424.13.5.3.3" codeSystemName="Słownik wartości dla skali trzymania moczu w stanach ostrych" displayName="Stopień trzymania moczu"/>
+									<value code="0" codeSystem="2.16.840.1.113883.3.4424.13.5.3.3" codeSystemName="Słownik wartości dla skali trzymania moczu w stanach ostrych" displayName="trzymanie moczu"/>
+								</qualifier>
+							</value>
+						</observation>
+					</entry>
+					<entry typeCode="COMP">
+						<observation classCode="OBS" moodCode="EVN">
+							<templateId root="2.16.840.1.113883.3.4424.13.10.4.40"/>
+							<code code="SUPASZ" codeSystem="2.16.840.1.113883.3.4424.13.5.2" codeSystemName="Słownik nazw skal ocen pielęgniarskich" displayName="Skala oceny upadków podczas hospitalizacji"/>
+							<text>
+								<reference value="#OBS_8" />
+							</text>
+							<statusCode code="completed"/>
+							<effectiveTime value="20150907"/>
+							<value xsi:type="CD" code="10029405" codeSystem="2.16.840.1.113883.6.97" codeSystemName="ICNP" displayName="Fall">
+								<qualifier>
+									<name code="UPASZ" codeSystem="2.16.840.1.113883.3.4424.13.5.3.10" codeSystemName="Słownik wartości dla skali oceny upadków podczas hospitalizacji" displayName="Częstotliwość upadków"/>
+									<value code="1" codeSystem="2.16.840.1.113883.3.4424.13.5.3.10" codeSystemName="Słownik wartości dla skali oceny upadków podczas hospitalizacji" displayName="bez upadku 30 dni (występowały od 31-90 dni temu)"/>
+								</qualifier>
+							</value>
+						</observation>
+					</entry>
+					<entry typeCode="COMP">
+						<observation classCode="OBS" moodCode="EVN">
+							<templateId root="2.16.840.1.113883.3.4424.13.10.4.43"/>
+							<code code="10037322" codeSystem="2.16.840.1.113883.6.97" codeSystemName="ICNP" displayName="Impaired Nervous System Function" />
+							<text>
+								<reference value="#OBS_11" />
+							</text>
+							<statusCode code="completed"/>
+							<effectiveTime value="20150907"/>
+						</observation>
+					</entry>
+				</section>
+			</component>
+		</structuredBody>
+	</component>
+</ClinicalDocument>

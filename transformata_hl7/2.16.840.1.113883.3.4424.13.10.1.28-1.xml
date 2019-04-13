@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet href="CDA_PL_IG_1.3.1.xsl" type="text/xsl"?>
+<ClinicalDocument xmlns="urn:hl7-org:v3" xmlns:extPL="http://www.csioz.gov.pl/xsd/extPL/r2" xmlns:pharm="urn:ihe:pharm" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="extPL:ClinicalDocument">
+	<typeId extension="POCD_HD000040" root="2.16.840.1.113883.1.3"/>
+	<templateId root="2.16.840.1.113883.3.4424.13.10.1.28" extension="1.3.1"/>
+	<id extension="2345699" root="2.16.840.1.113883.3.4424.2.7.0.7.1" displayable="false"/>
+	<code code="51852-2" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Letter">
+		<translation code="08.90" codeSystem="2.16.840.1.113883.3.4424.11.1.32" codeSystemName="KLAS_DOK_P1" displayName="Informacja dla lekarza kierującego/POZ"/>
+	</code>
+	<title>Informacja dla lekarza POZ</title>
+	<effectiveTime value="20160909"/>
+	<confidentialityCode code="N" codeSystem="2.16.840.1.113883.5.25"/>
+	<languageCode code="pl-PL"/>
+	<setId extension="432299" root="2.16.840.1.113883.3.4424.2.7.0.7.2"/>
+	<versionNumber value="1"/>
+	<recordTarget>
+		<templateId root="2.16.840.1.113883.3.4424.13.10.2.3"/>
+		<patientRole>
+			<id extension="12345" root="2.16.840.1.113883.3.4424.2.7.0.17.1" displayable="false"/>
+			<id extension="62091599999" root="2.16.840.1.113883.3.4424.1.1.616" displayable="true"/>
+			<addr>
+                <city>Warszawa</city>
+                <postalCode>01-134</postalCode>
+                <streetName>Odkryta</streetName>
+                <houseNumber>41</houseNumber>
+                <unitID>12</unitID>
+            </addr>
+			<patient>
+				<name>
+					<given>Jan</given>
+					<given>Franciszek</given>
+					<family>Kowalski</family>
+				</name>
+				<administrativeGenderCode code="M" codeSystem="2.16.840.1.113883.5.1"/>
+				<birthTime value="19620915"/>
+			</patient>
+		</patientRole>
+	</recordTarget>
+	<author>
+		<templateId root="2.16.840.1.113883.3.4424.13.10.2.4"/>
+		<functionCode code="LEK" codeSystem="2.16.840.1.113883.3.4424.11.3.18" displayName="Lekarz"/>
+		<time value="20160909"/>
+		<assignedAuthor xsi:type="extPL:AssignedAuthor">
+			<id extension="7724513" root="2.16.840.1.113883.3.4424.1.6.2" displayable="false"/>
+			<code code="0718_0726" codeSystem="2.16.840.1.113883.3.4424.11.3.3.1" displayName="neurologia, radiologia i diagnostyka obrazowa"/>
+			<assignedPerson>
+				<templateId root="2.16.840.1.113883.3.4424.13.10.2.1"/>
+				<name>
+					<prefix>dr n. med.</prefix>
+					<given>Piotr</given>
+					<family>Nowak</family>
+				</name>
+			</assignedPerson>
+			<representedOrganization>
+				<templateId root="2.16.840.1.113883.3.4424.13.10.2.18"/>
+				<id extension="2004-09" root="2.16.840.1.113883.3.4424.2.3.3" displayable="true"/>
+				<name>Poradnia neurologiczna</name>
+				<telecom use="PUB" value="tel:22-1111123"/>
+				<addr>
+					<postalCode>00-950</postalCode>
+					<city>Warszawa</city>
+					<streetName>Solec</streetName>
+					<houseNumber>12</houseNumber>
+				</addr>
+				<standardIndustryClassCode code="1220" codeSystem="2.16.840.1.113883.3.4424.11.2.4" displayName="Poradnia neurologiczna"/>
+				<asOrganizationPartOf>
+					<wholeOrganization>
+						<id extension="11223344901234" root="2.16.840.1.113883.3.4424.2.2.2" displayable="true"/>
+						<name>Zespół poradni przyszpitalnych</name>
+						<asOrganizationPartOf>
+							<wholeOrganization>
+								<id extension="2004" root="2.16.840.1.113883.3.4424.2.3.1" displayable="true"/>
+								<id extension="121212445" root="2.16.840.1.113883.3.4424.2.2.1" displayable="true"/>
+								<name>Wojewódzki Szpital Specjalistyczny</name>
+							</wholeOrganization>
+						</asOrganizationPartOf>
+					</wholeOrganization>
+				</asOrganizationPartOf>
+			</representedOrganization>
+		</assignedAuthor>
+	</author>
+	<custodian>
+		<templateId root="2.16.840.1.113883.3.4424.13.10.2.5"/>
+		<assignedCustodian>
+			<representedCustodianOrganization>
+				<id extension="1007" root="2.16.840.1.113883.3.4424.2.3.1" displayable="false"/>
+			</representedCustodianOrganization>
+		</assignedCustodian>
+	</custodian>
+	<legalAuthenticator>
+		<templateId root="2.16.840.1.113883.3.4424.13.10.2.6"/>
+		<time value="20160909"/>
+		<signatureCode code="S"/>
+		<assignedEntity>
+			<id extension="7724513" root="2.16.840.1.113883.3.4424.1.6.2" displayable="true"/>
+		</assignedEntity>
+	</legalAuthenticator>
+	<documentationOf typeCode="DOC">
+		<templateId root="2.16.840.1.113883.3.4424.13.10.2.51"/>
+		<serviceEvent classCode="ACT" moodCode="EVN">
+			<code code="89.005" codeSystem="2.16.840.1.113883.3.4424.11.2.6" codeSystemName="ICD-9-PL" displayName="Konsultacja neurologiczna"/>
+			<effectiveTime value="20140906"/>
+		</serviceEvent>	
+	</documentationOf>
+	<component typeCode="COMP" contextConductionInd="true">
+		<templateId root="2.16.840.1.113883.3.4424.13.10.2.87"/>
+		<structuredBody classCode="DOCBODY" moodCode="EVN">
+			<component>
+				<section>
+					<templateId root="2.16.840.1.113883.3.4424.13.10.3.1" />
+					<code code="29548-5" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Diagnosis" />
+					<title>Ostateczne rozpoznanie (wg ICD-10)</title>
+					<text>
+						<table>
+							<tbody>
+								<tr ID="OBS_1">
+									<td>G40</td>
+								</tr>
+								</tbody>
+						</table>
+					</text>
+					<entry>
+						<templateId root="2.16.840.1.113883.3.4424.13.10.4.1" />
+						<organizer classCode="BATTERY" moodCode="EVN">
+							<code code="8319008" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT" displayName="Principal diagnosis" />
+							<statusCode code="completed" />
+							<component>
+								<observation classCode="OBS" moodCode="EVN">
+									<code code="G40" codeSystem="2.16.840.1.113883.6.3" codeSystemName="icd10" displayName="Padaczka"/>
+									<text>
+										<reference value="#OBS_1" />
+									</text>
+								</observation>
+							</component>
+						</organizer>
+					</entry>
+				</section>
+			</component>
+			<component>
+				<section>
+					<templateId root="2.16.840.1.113883.3.4424.13.10.3.30" />
+					<code code="10164-2" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="History of present illness" />
+					<title>Opis udzielonego świadczenia (obejmuje wykonane badania)</title>
+					<text>
+						<paragraph>
+							Chory z padaczką rozpoznaną ok. 5 lat temu, dotychczas leczony karbamazepiną 2 x 200 mg/dobę zgłosił się po serii napadów uogólnionych z objawami maksymalnymi. Wykonano badanie EEG i CT głowy. Zalecono zmianę leczenia przeciwpadaczkowego i kontynuację opieki w tutejszej poradni.
+						</paragraph>
+						<paragraph>
+							W badaniu EEG z dnia 14.08.2016: Zapis prawidłowo zróżnicowany bez czynności napadowej, Rz - obecna, Hw - nie wpływa na zapis. W badaniu CT głowy z dnia 20.08.2016: Bez zmian ogniskowych.
+						</paragraph>
+					</text>
+				</section>
+			</component>
+			<component>
+				<section>
+					<templateId root="2.16.840.1.113883.3.4424.13.10.3.32" />
+					<code code="57828-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Prescriptions/Prescription list" />
+					<title>Wytyczne dotyczące dalszego postępowania medycznego</title>
+					<text>
+						<paragraph>
+							Wymaga dalszego leczenia w poradni neurologicznej.
+						</paragraph>
+					</text>
+				</section>
+			</component>
+			<component>
+				<section>
+					<templateId root="2.16.840.1.113883.3.4424.13.10.3.32" />
+					<code code="57828-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Prescriptions/Prescription list" />
+					<title>Wskazówki dla lekarza kierującego</title>
+					<text>
+						<list>
+							<caption>w zakresie farmakoterapii:</caption> 
+							<item ID="SBADM_1">Lamitrin 100 mg, 2 x 1 tabl.</item>
+						</list>
+					</text>
+					<entry>
+						<templateId root="2.16.840.1.113883.3.4424.13.10.4.22" />
+						<substanceAdministration classCode="SBADM" moodCode="RQO">
+							<text>
+								<reference value="#SBADM_1" />
+							</text>
+							<consumable>
+								<manufacturedProduct>
+									<templateId root="2.16.840.1.113883.3.4424.13.10.4.21" />
+									<manufacturedLabeledDrug>
+										<code code="100900" codeSystem="2.16.840.1.113883.3.4424.6.1" displayName="Lamitrin 100 mg tabletki" />
+									</manufacturedLabeledDrug>
+								</manufacturedProduct>
+							</consumable>
+						</substanceAdministration>
+					</entry>
+				</section>
+			</component>
+		</structuredBody>
+	</component>
+</ClinicalDocument>

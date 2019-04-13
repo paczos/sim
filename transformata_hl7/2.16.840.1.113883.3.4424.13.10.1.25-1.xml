@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet href="CDA_PL_IG_1.3.1.xsl" type="text/xsl"?>
+<ClinicalDocument xmlns="urn:hl7-org:v3" xmlns:extPL="http://www.csioz.gov.pl/xsd/extPL/r2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="extPL:ClinicalDocument">
+	<!-- Raport pielęgniarski - przykład 1 -->
+	<typeId extension="POCD_HD000040" root="2.16.840.1.113883.1.3"/>
+	<templateId root="2.16.840.1.113883.3.4424.13.10.1.25" extension="1.3.1"/>
+	<id extension="2345678" root="2.16.840.1.113883.3.4424.2.7.0.7.1" displayable="false"/>
+	<code code="46208-5" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Nursing notes">
+		<translation code="05.70" codeSystem="2.16.840.1.113883.3.4424.11.1.32" codeSystemName="KLAS_DOK_P1" displayName="Pozostałe dokumenty pielęgniarskie" />
+	</code>
+	<title>Raport pielęgniarski</title>
+	<effectiveTime value="20150907"/>
+	<confidentialityCode code="N" codeSystem="2.16.840.1.113883.5.25"/>
+	<languageCode code="pl-PL"/>
+	<setId extension="432231" root="2.16.840.1.113883.3.4424.2.7.0.7.2"/>
+	<versionNumber value="1"/>
+	<recordTarget>
+		<templateId root="2.16.840.1.113883.3.4424.13.10.2.3"/>
+		<patientRole>
+			<id extension="12345" root="2.16.840.1.113883.3.4424.2.7.0.17.1" displayable="false"/>
+			<id extension="64012608919" root="2.16.840.1.113883.3.4424.1.1.616" displayable="true"/>
+			<addr>
+				<city>Warszawa</city>
+				<postalCode>01-134</postalCode>
+				<streetName>Odkryta</streetName>
+				<houseNumber>41</houseNumber>
+				<unitID>12</unitID>
+			</addr>
+			<patient>
+				<name>
+					<given>Jan</given>
+					<given>Franciszek</given>
+					<family>Kowalski</family>
+				</name>
+				<administrativeGenderCode code="M" codeSystem="2.16.840.1.113883.5.1"/>
+				<birthTime value="19640126"/>
+			</patient>
+			<providerOrganization classCode="ORG">
+				<templateId root="2.16.840.1.113883.3.4424.13.10.2.2"/>
+				<id extension="1007" root="2.16.840.1.113883.3.4424.2.3.1" displayable="false"/>
+			</providerOrganization>
+		</patientRole>
+	</recordTarget>
+	<author>
+		<templateId root="2.16.840.1.113883.3.4424.13.10.2.4"/>
+		<functionCode code="PIEL" codeSystem="2.16.840.1.113883.3.4424.11.3.18" displayName="Pielęgniarka"/>
+		<time value="20150907"/>
+		<assignedAuthor>
+			<id extension="7724514" root="2.16.840.1.113883.3.4424.1.6.3" displayable="false"/>
+			<assignedPerson>
+				<templateId root="2.16.840.1.113883.3.4424.13.10.2.1"/>
+				<name>
+					<given>Anna</given>
+					<family>Nowak</family>
+				</name>
+			</assignedPerson>
+			<representedOrganization>
+				<templateId root="2.16.840.1.113883.3.4424.13.10.2.18"/>
+				<id extension="2004-09" root="2.16.840.1.113883.3.4424.2.3.3" displayable="true"/>
+				<name>Oddział neurologii</name>
+				<telecom use="PUB" value="tel:22-1111123"/>
+				<addr>
+					<postalCode>00-950</postalCode>
+					<city>Warszawa</city>
+					<streetName>Solec</streetName>
+					<houseNumber>12</houseNumber>
+				</addr>
+				<standardIndustryClassCode code="4220" codeSystem="2.16.840.1.113883.3.4424.11.2.4" displayName="Oddział neurologiczny"/>
+				<asOrganizationPartOf>
+					<wholeOrganization>
+						<id extension="11223344901234" root="2.16.840.1.113883.3.4424.2.2.2" displayable="true"/>
+						<name>Wojewódzki szpital specjalistyczny</name>
+						<asOrganizationPartOf>
+							<wholeOrganization>
+								<id extension="2004" root="2.16.840.1.113883.3.4424.2.3.1" displayable="true"/>
+								<id extension="121212445" root="2.16.840.1.113883.3.4424.2.2.1" displayable="true"/>
+								<name>Wojewódzki szpital specjalistyczny</name>
+							</wholeOrganization>
+						</asOrganizationPartOf>
+					</wholeOrganization>
+				</asOrganizationPartOf>
+			</representedOrganization>
+		</assignedAuthor>
+	</author>
+	<custodian>
+		<templateId root="2.16.840.1.113883.3.4424.13.10.2.5"/>
+		<assignedCustodian>
+			<representedCustodianOrganization>
+				<id extension="1007" root="2.16.840.1.113883.3.4424.2.3.1" displayable="false"/>
+			</representedCustodianOrganization>
+		</assignedCustodian>
+	</custodian>
+	<legalAuthenticator>
+		<templateId root="2.16.840.1.113883.3.4424.13.10.2.6"/>
+		<time value="20150907"/>
+		<signatureCode code="S"/>
+		<assignedEntity>
+			<id extension="7724514" root="2.16.840.1.113883.3.4424.1.6.3" displayable="true"/>
+		</assignedEntity>
+	</legalAuthenticator>
+	<componentOf typeCode="COMP">
+		<templateId root="2.16.840.1.113883.3.4424.13.10.2.52"/>
+		<encompassingEncounter classCode="ENC" moodCode="EVN">
+			<id extension="323432" root="2.16.840.1.113883.3.4424.2.7.0.98" displayable="false"/>
+			<code code="4220" codeSystem="2.16.840.1.113883.3.4424.11.2.4" displayName="Oddział neurologiczny"/>
+			<effectiveTime>
+				<low value="20150907"/>
+			</effectiveTime>
+			<location typeCode="LOC"> 
+				<healthCareFacility classCode="SDLOC">
+					<location>
+						<templateId root="2.16.840.1.113883.3.4424.13.10.2.75"/>
+						<name>Szpital Specjalistyczny im. Świętej Rodziny SP ZOZ, II Oddział Neurologii, sala 2</name>
+					</location>
+				</healthCareFacility>
+			</location>
+		</encompassingEncounter>
+	</componentOf>
+	<component typeCode="COMP" contextConductionInd="true">
+		<templateId root="2.16.840.1.113883.3.4424.13.10.2.8"/>
+		<templateId root="2.16.840.1.113883.3.4424.13.10.2.74"/>
+		<structuredBody classCode="DOCBODY" moodCode="EVN">
+			<component>
+				<section>
+					<templateId root="2.16.840.1.113883.3.4424.13.10.3.47"/>
+					<code code="10164-2" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="History of present illness Narrative"/>
+					<text>
+						<paragraph>
+							<caption>Diagnoza lekarska i powód przyjęcia do szpitala:</caption> Udar niedokrwienny
+						</paragraph>
+						<paragraph>
+							<caption>Stan ogólny:</caption> średni
+						</paragraph>
+						<paragraph>
+							<caption>Aktywność pacjenta:</caption> wymagający asystowania
+						</paragraph>
+						<paragraph>
+							<caption>Parametry życiowe:</caption> temp. 36,7 *C, CTK: 133/85 mmHg, tętno 70 ud./min.
+						</paragraph>
+						<paragraph>
+							<caption>Ból:</caption> brak
+						</paragraph>
+						<paragraph>
+							<caption>Zachowanie i reakcje emocjonalne:</caption> pełna świadomość, nastrój wyrównany 
+						</paragraph>
+						<paragraph>
+							<caption>Wzrok:</caption> prawidłowy
+						</paragraph>
+						<paragraph>
+							<caption>Słuch:</caption> prawidłowy
+						</paragraph>
+						<paragraph>
+							<caption>Układ oddechowy:</caption> oddech prawidłowy
+						</paragraph>
+						<paragraph>
+							<caption>Układ krążenia:</caption> pomiar tętna na tętnicy: promieniowej, słabo napięte<br/>
+							zabarwienie skóry: prawidłowe<br/>
+							obrzęki: brak<br/>
+							pomiar obrzęków: nie
+						</paragraph>
+						<paragraph>
+							<caption>Układ pokarmowy:</caption> <content styleCode="Underline">odżywianie:</content><br/>
+							samodzielne<br/>
+							łaknienie: zmniejszone<br/>
+							pragnienie: w normie<br/>
+							dieta: nadwaga<br/>
+							<content styleCode="Underline">wydalanie:</content> <br/>
+							stolec: regularny<br/>
+							liczba dni od ostatniego stolca: 1<br/>
+							perystaltyka jelit: prawidłowa
+						</paragraph>
+						<paragraph>
+							<caption>Układ moczowy:</caption> diureza prawidłowa<br/>
+							ilość przyjętych płynów dożylnie: 250 ml<br/>
+							ilość przyjętych płynów doustnie: 1200 ml<br/>
+							RAZEM: 1450 ml<br/>
+							DZM: 2500 ml
+						</paragraph>
+						<paragraph>
+							<caption>Skóra:</caption> brak odleżyn
+						</paragraph>
+						<paragraph>
+							<caption>Usprawnienie i bezpieczeństwo pacjenta:</caption> wymaga asystowania, dzwonek w zasięgu ręki pacjenta, pacjent poinformowany o nieopuszczaniu oddziału
+						</paragraph>
+						<paragraph>
+							<caption>Terapia dożylna:</caption> tak, miejsce założenia kaniuli: dłoń P
+						</paragraph>
+						<paragraph>
+							<caption>Czynności higieniczne:</caption> toaleta całego ciała wykonana samodzielnie
+						</paragraph>
+						<paragraph>
+							<caption>Przygotowanie pacjenta do badań diagnostycznych:</caption> tak<br/>
+							pobieranie krwi do badań: tak
+						</paragraph>
+					</text>
+				</section>
+			</component>
+		</structuredBody>
+	</component>
+</ClinicalDocument>

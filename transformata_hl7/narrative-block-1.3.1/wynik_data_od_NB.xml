@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ClinicalDocument xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:hl7="urn:hl7-org:v3" xmlns:pharm="urn:ihe:pharm" xmlns:extPL="http://www.csioz.gov.pl/xsd/extPL/r2">
+<component>
+<structuredBody>
+<component>
+<section>
+<title>Rp</title>
+<text>
+<paragraph ID="SBADM_1">
+<content styleCode="xPLbig">Nutrison Advanced Protison płyn 500ml</content>
+<br />
+<content>14 {edytuj}</content>
+</paragraph>
+<paragraph>
+<caption>Data realizacji od</caption>
+<content styleCode="xPLred Bold"> 1 listopada 2017 r.</content>
+</paragraph>
+<paragraph>Odpłatność<content ID="ACT_1"> 100%</content>
+</paragraph>
+<paragraph>
+<caption>D.S.</caption>
+<content ID="DS_1"> {edytuj}</content>
+</paragraph>
+</text>
+</section>
+</component>
+</structuredBody>
+</component>
+</ClinicalDocument>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ClinicalDocument xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:hl7="urn:hl7-org:v3" xmlns:pharm="urn:ihe:pharm"
+	xmlns:extPL="http://www.csioz.gov.pl/xsd/extPL/r2">
+	<component>
+		<structuredBody>
+			<component>
+				<section>
+					<title>Rpw (Cito)</title>
+					<text>
+						<paragraph ID="SBADM_1">
+							<content styleCode="xPLbig">Enarenal 5mg tabletki</content>
+							<br />
+							<content>1 {edytuj}</content>
+						</paragraph>
+						<paragraph>
+							<caption>NZ</caption>
+						</paragraph>
+						<paragraph ID="OBS_1">
+							<content>Potwierdzenie ilości substancji czynnej: 5mg</content>
+						</paragraph>
+						<paragraph>
+							<caption>Data realizacji od</caption>
+							<content styleCode="xPLred Bold"> 5 maja 2013 r.</content>
+						</paragraph>
+						<paragraph>
+							Odpłatność
+							<content ID="ACT_1" styleCode="xPLgreen Bold"> 50%</content>
+						</paragraph>
+						<paragraph>
+							<caption>D.S.</caption>
+							<content ID="DS_1"> {edytuj}</content>
+						</paragraph>
+						<paragraph>
+							<content ID="TEXT1">Informacja dla osoby wydającej lek: {edytuj}</content>
+						</paragraph>
+					</text>
+				</section>
+			</component>
+		</structuredBody>
+	</component>
+</ClinicalDocument>

@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet href="CDA_PL_IG_1.3.1.xsl" type="text/xsl"?>
+<ClinicalDocument xmlns="urn:hl7-org:v3" xmlns:extPL="http://www.csioz.gov.pl/xsd/extPL/r2" xmlns:pharm="urn:ihe:pharm" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="extPL:ClinicalDocument">
+	<!-- Dokument recepty farmaceutycznej-->
+	<typeId extension="POCD_HD000040" root="2.16.840.1.113883.1.3"/>
+	<templateId root="1.3.6.1.4.1.19376.1.9.1.1.1"/>
+	<templateId root="1.3.6.1.4.1.19376.1.5.3.1.1.1"/>
+    <templateId root="2.16.840.1.113883.3.4424.13.10.1.7" extension="1.3.1"/>
+    <id extension="re432ww" root="2.16.840.1.113883.3.4424.2.7.99999.2.1" displayable="true"/>
+    <code code="57833-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Prescription for medication Document">
+        <translation code="04.01" codeSystem="2.16.840.1.113883.3.4424.11.1.32" codeSystemName="KLAS_DOK_P1" displayName="Recepta">
+            <qualifier>
+                <name code="KDLEK" codeSystem="2.16.840.1.113883.3.4424.13.5.1" codeSystemName="PolskieKlasyfikatoryHL7v3" displayName="Kategoria dostępności leku"/>
+                <value code="Rp" codeSystemName="PolskieKlasyfikatoryHL7v3" codeSystem="2.16.840.1.113883.3.4424.11.1.25"/>
+            </qualifier>
+            <qualifier>
+                <name code="RLEK" codeSystem="2.16.840.1.113883.3.4424.13.5.1" codeSystemName="PolskieKlasyfikatoryHL7v3" displayName="Rodzaj leku"/>
+                <value code="G" codeSystemName="PolskieKlasyfikatoryHL7v3" displayName="Lek gotowy" codeSystem="2.16.840.1.113883.3.4424.13.5.1"/>
+            </qualifier>
+            <qualifier>
+                <name code="TWREC" codeSystem="2.16.840.1.113883.3.4424.13.5.1" codeSystemName="PolskieKlasyfikatoryHL7v3" displayName="Tryb wystawienia recepty"/>
+                <value code="F" codeSystemName="PolskieKlasyfikatoryHL7v3" displayName="Farmaceutyczna" codeSystem="2.16.840.1.113883.3.4424.13.5.1"/>
+            </qualifier>
+            <qualifier>
+                <name code="TRREC" codeSystem="2.16.840.1.113883.3.4424.13.5.1" codeSystemName="PolskieKlasyfikatoryHL7v3" displayName="Tryb realizacji recepty"/>
+                <value code="Z" codeSystemName="PolskieKlasyfikatoryHL7v3" displayName="Zwykły" codeSystem="2.16.840.1.113883.3.4424.13.5.1"/>
+            </qualifier>
+        </translation>
+    </code>
+    <title>Recepta</title>
+    <effectiveTime value="20150301"/>
+    <confidentialityCode code="N" codeSystem="2.16.840.1.113883.5.25"/>
+    <languageCode code="pl-PL"/>
+    <setId extension="ww3432" root="2.16.840.1.113883.3.4424.2.7.99999.2.2"/>
+    <versionNumber value="1"/>
+    <recordTarget>
+    	<templateId root="2.16.840.1.113883.3.4424.13.10.2.23"/>
+        <patientRole>
+            <id extension="12345" root="2.16.840.1.113883.3.4424.2.7.99999.17.1" displayable="false"/>
+            <id extension="62091599999" root="2.16.840.1.113883.3.4424.1.1.616" displayable="true"/>
+            <addr>
+                <city>Warszawa</city>
+                <postalCode>01-134</postalCode>
+                <streetName>Odkryta</streetName>
+                <houseNumber>41</houseNumber>
+                <unitID>12</unitID>
+            </addr>
+            <patient>
+                <name>
+                    <given>Jan</given>
+                    <given>Franciszek</given>
+                    <family>Kowalski</family>
+                </name>
+				<administrativeGenderCode code="M" codeSystem="2.16.840.1.113883.5.1"/>
+                <birthTime value="19620915"/>
+            </patient>
+        </patientRole>
+    </recordTarget>
+    <author>
+    	<templateId root="2.16.840.1.113883.3.4424.13.10.2.81"/>
+        <functionCode code="FARM" codeSystem="2.16.840.1.113883.3.4424.11.3.18" codeSystemName="ZAWODY_MED" displayName="Farmaceuta"/>
+		<time value="20150301122300"/>
+        <assignedAuthor>
+            <id extension="545632" root="2.16.840.1.113883.3.4424.1.6.1" displayable="true"/>
+            <assignedPerson>
+                <templateId root="2.16.840.1.113883.3.4424.13.10.2.1"/>
+                <name>
+                    <prefix>mgr farm.</prefix>
+                    <given>Artur</given>
+                    <family>Zwoliński</family>
+                </name>
+            </assignedPerson>
+           <representedOrganization>
+           		<templateId root="2.16.840.1.113883.3.4424.13.10.2.31"/>
+                <id extension="123456789" root="2.16.840.1.113883.3.4424.2.2.1" displayable="true"/>
+                <id extension="1007" root="2.16.840.1.113883.3.4424.2.6" displayable="true"/>
+                <name>Apteka 24h</name>
+                <telecom use="PUB" value="tel:22-2345123"/>
+                <telecom use="PUB" value="fax:22-2345100"/>
+                <addr>
+                    <postalCode>00-950</postalCode>
+                    <city>Warszawa</city>
+                    <streetName>Dąbrowszczaków</streetName>
+                    <houseNumber>34</houseNumber>
+                </addr>
+            </representedOrganization>
+		</assignedAuthor>
+    </author>
+    <custodian>
+    	<templateId root="2.16.840.1.113883.3.4424.13.10.2.20"/>
+        <assignedCustodian>
+            <representedCustodianOrganization>
+                <id root="2.16.840.1.113883.3.4424" assigningAuthorityName="CSIOZ" displayable="false"/>
+            </representedCustodianOrganization>
+        </assignedCustodian>
+    </custodian>
+    <legalAuthenticator>
+    	<templateId root="2.16.840.1.113883.3.4424.13.10.2.6"/>
+        <time value="20150301122300"/>
+        <signatureCode code="S"/>
+        <assignedEntity>
+            <id extension="545632" root="2.16.840.1.113883.3.4424.1.6.1" displayable="false"/>
+        </assignedEntity>
+    </legalAuthenticator>
+    <component>
+    	<templateId root="2.16.840.1.113883.3.4424.13.10.2.25"/>
+        <structuredBody>
+            <component>
+				<section>
+				    <templateId root="1.3.6.1.4.1.19376.1.9.1.2.1"/>
+				    <templateId root="2.16.840.1.113883.3.4424.13.10.3.4"/>
+				    <id extension="123421" root="2.16.840.1.113883.3.4424.2.7.99999.2.4"/>
+                    <code code="57828-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Prescriptions"/>
+                    <title>Rp. (Cito)</title>
+					<text>
+                    	<paragraph ID="SBADM_1">
+							Enarenal 5mg tabletki(NZ)<br/>
+                            1 op. po 60 tabl.<br/>
+							D.S. 2 x 1 tabl.
+						</paragraph>
+                    </text>
+                    <entry>
+                        <substanceAdministration classCode="SBADM" moodCode="INT">
+							<templateId root="1.3.6.1.4.1.19376.1.9.1.3.2"/>
+							<templateId root="2.16.840.1.113883.10.20.1.24"/>
+							<templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.7"/>
+                            <templateId root="1.3.6.1.4.1.19376.1.9.1.3.6"/>
+							<templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.7.1"/>
+							<templateId root="2.16.840.1.113883.3.4424.13.10.4.3"/>
+                            <templateId root="2.16.840.1.113883.10.20.1.53"/>
+							<id extension="re432ww-1" root="2.16.840.1.113883.3.4424.2.7.99999.2.3"/>
+                            <text>
+                                <reference value="#SBADM_1"/>
+                            </text>
+							<statusCode code="completed"/>
+                            <effectiveTime xsi:type="IVL_TS">
+                                <low value="20150301"/>
+                                <high value="20150302"/>
+                            </effectiveTime>
+							<repeatNumber value="1"/>
+                            <doseQuantity value="1"/>
+                            <consumable>
+                                <manufacturedProduct>
+                                    <templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.7.2"/>
+                                    <templateId root="2.16.840.1.113883.10.20.1.53"/>
+                                    <manufacturedMaterial>
+										<templateId root="1.3.6.1.4.1.19376.1.9.1.3.1"/>
+										<templateId root="2.16.840.1.113883.3.4424.13.10.4.54"/>
+                                        <code code="4321" codeSystem="2.16.840.1.113883.3.4424.6.1" displayName="Enarenal 5mg tabl."/>
+                                    	<name>Enarenal 5mg tabletki</name>
+										<pharm:asContent classCode="CONT">
+											<pharm:containerPackagedMedicine classCode="CONT" determinerCode="INSTANCE">
+												<pharm:code code="5909990014958" codeSystem="1.3.160" codeSystemName="GS1"/>
+												<pharm:name>Enarenal 5mg (60 tabl.)</pharm:name>
+											    <pharm:formCode code="30066000" codeSystem="0.4.0.127.0.16.1.1.2.1" displayName="Tablet container"/>
+												<pharm:capacityQuantity value="60"/>
+											</pharm:containerPackagedMedicine>
+										</pharm:asContent>
+                                    </manufacturedMaterial>
+                                </manufacturedProduct>
+                            </consumable>
+                            <entryRelationship typeCode="COMP">
+                                <supply classCode="SPLY" moodCode="RQO">
+									<templateId root="1.3.6.1.4.1.19376.1.9.1.3.8"/>
+                                    <templateId root="2.16.840.1.113883.3.4424.13.10.4.55"/>
+                                    <effectiveTime value="20150505"/>
+                                    <priorityCode code="UR" codeSystem="2.16.840.1.113883.5.7"/>
+                                    <independentInd value="false"/>
+									<quantity value="1"/>
+                                </supply>
+                            </entryRelationship>
+                        </substanceAdministration>
+                    </entry>
+				</section>
+            </component>
+			<component>
+                <section>
+                    <code code="48767-8" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Annotation comment"/>
+                    <text>
+						<paragraph>
+							<caption>Powód wydania leku</caption>Zagrożenie życia
+						</paragraph>
+					</text>
+                </section>
+            </component>
+        </structuredBody>
+    </component>
+</ClinicalDocument>

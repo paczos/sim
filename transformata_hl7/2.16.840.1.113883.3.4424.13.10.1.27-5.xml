@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet href="CDA_PL_IG_1.3.1.xsl" type="text/xsl"?>
+<ClinicalDocument xmlns="urn:hl7-org:v3" xmlns:extPL="http://www.csioz.gov.pl/xsd/extPL/r2" xmlns:pharm="urn:ihe:pharm" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="extPL:ClinicalDocument">
+	<!-- Realizacja wycofujaca recepty -->
+    <typeId extension="POCD_HD000040" root="2.16.840.1.113883.1.3"/>
+    <templateId root="1.3.6.1.4.1.19376.1.9.1.1.3"/>
+	<templateId root="1.3.6.1.4.1.19376.1.5.3.1.1.1"/>
+    <templateId root="2.16.840.1.113883.3.4424.13.10.1.27" extension="1.3.1"/>
+    <id extension="bc34221ax" root="2.16.840.1.113883.3.4424.2.7.99999.5.1" displayable="true"/>
+    <code code="60593-1" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Medication dispensed extended">
+        <translation code="04.12" codeSystem="2.16.840.1.113883.3.4424.11.1.32" codeSystemName="KLAS_DOK_P1" displayName="Realizacja recepty elektronicznej">
+            <qualifier>
+                <name code="KDLEK" codeSystem="2.16.840.1.113883.3.4424.13.5.1" codeSystemName="PolskieKlasyfikatoryHL7v3" displayName="Kategoria dostępności leku"/>
+                <value code="Rpw" codeSystem="2.16.840.1.113883.3.4424.11.1.25"/>
+            </qualifier>
+            <qualifier>
+                <name code="RLEK" codeSystem="2.16.840.1.113883.3.4424.13.5.1" codeSystemName="PolskieKlasyfikatoryHL7v3" displayName="Rodzaj leku"/>
+                <value code="G" displayName="Lek gotowy" codeSystem="2.16.840.1.113883.3.4424.13.5.1"/>
+            </qualifier>
+            <qualifier>
+                <name code="TWREC" codeSystem="2.16.840.1.113883.3.4424.13.5.1" codeSystemName="PolskieKlasyfikatoryHL7v3" displayName="Tryb wystawienia recepty"/>
+                <value code="Z" displayName="Zwykła" codeSystem="2.16.840.1.113883.3.4424.13.5.1"/>
+            </qualifier>
+            <qualifier>
+                <name code="TRREC" codeSystem="2.16.840.1.113883.3.4424.13.5.1" codeSystemName="PolskieKlasyfikatoryHL7v3" displayName="Tryb realizacji recepty"/>
+                <value code="Z" displayName="Zwykły" codeSystem="2.16.840.1.113883.3.4424.13.5.1"/>
+            </qualifier>
+            <qualifier>
+                <name code="RRREC" codeSystem="2.16.840.1.113883.3.4424.13.5.1" codeSystemName="PolskieKlasyfikatoryHL7v3" displayName="Rodzaj realizacji recepty"/>
+                <value code="W" displayName="wycofująca" codeSystem="2.16.840.1.113883.3.4424.13.5.1"/>
+            </qualifier>
+            <qualifier>
+                <name code="PREC" codeSystem="2.16.840.1.113883.3.4424.13.5.1" codeSystemName="PolskieKlasyfikatoryHL7v3" displayName="Postać recepty"/>
+                <value code="E" displayName="elektroniczna" codeSystem="2.16.840.1.113883.3.4424.13.5.1"/>
+            </qualifier>
+        	<qualifier>
+        		<name code="TWLEK" codeSystem="2.16.840.1.113883.3.4424.13.5.1" codeSystemName="PolskieKlasyfikatoryHL7v3" displayName="Tryb wydania leku"/>
+        		<value code="Z" displayName="zwykły" codeSystem="2.16.840.1.113883.3.4424.13.5.1"/>
+        	</qualifier>
+        </translation>
+    </code>
+    <title>Realizacja recepty elektronicznej</title>
+    <effectiveTime value="20150301122300"/>
+    <confidentialityCode code="N" codeSystem="2.16.840.1.113883.5.25"/>
+    <languageCode code="pl-PL"/>
+    <setId extension="432321" root="2.16.840.1.113883.3.4424.2.7.99999.5.2"/>
+    <versionNumber value="2"/>
+    <recordTarget>
+    	<templateId root="2.16.840.1.113883.3.4424.13.10.2.88"/>
+        <patientRole>
+            <id extension="1234567" root="2.16.840.1.113883.3.4424.2.7.0.17.1" displayable="false"/>
+            <id extension="96013002256" root="2.16.840.1.113883.3.4424.1.1.616" displayable="true"/>
+            <addr>
+                <country>Polska</country>
+                <postalCode>58-200</postalCode>
+                <city>Dzierżoniów</city>
+                <streetName>Szpitalna</streetName>
+                <houseNumber>3a</houseNumber>
+                <unitID>10</unitID>
+            </addr>
+            <patient>
+                <name>
+                    <given>Anna</given>
+                    <given>Maria</given>
+                    <family>Nowak</family>
+                </name>
+				<administrativeGenderCode code="F" codeSystem="2.16.840.1.113883.5.1"/>
+                <birthTime value="19960130"/>
+            </patient>
+        </patientRole>
+    </recordTarget>
+    <author>
+    	<templateId root="2.16.840.1.113883.3.4424.13.10.2.84"/>
+        <functionCode code="FARM" codeSystem="2.16.840.1.113883.3.4424.11.3.18" codeSystemName="ZAWODY_MED" displayName="Farmaceuta"/>
+		<time value="20150301122300"/>
+        <assignedAuthor>
+            <id extension="712178" root="2.16.840.1.113883.3.4424.1.6.1" displayable="true"/>
+            <assignedPerson>
+            	<templateId root="2.16.840.1.113883.3.4424.13.10.2.1"/>
+                <name>
+                    <prefix>mgr</prefix>
+                    <given>Miłosz</given>
+                    <family>Najman</family>
+                </name>
+           </assignedPerson>
+           <representedOrganization>
+           		<templateId root="2.16.840.1.113883.3.4424.13.10.2.31"/>
+                <id extension="12003" root="2.16.840.1.113883.3.4424.2.6" />
+				<name>Apteka porcelanowa</name>
+                <telecom use="PUB" value="tel:32123456"/>
+                <addr>
+                    <country>Polska</country>
+                    <postalCode>31-867</postalCode>
+                    <city>Kraków</city>
+                    <streetName>Mikołaja Kopernika</streetName>
+                    <houseNumber>36</houseNumber>
+                </addr>
+			</representedOrganization>
+		</assignedAuthor>
+    </author>
+    <custodian>
+    	<templateId root="2.16.840.1.113883.3.4424.13.10.2.20"/>
+        <assignedCustodian>
+            <representedCustodianOrganization>
+                <id root="2.16.840.1.113883.3.4424" assigningAuthorityName="CSIOZ" displayable="false"/>
+            </representedCustodianOrganization>
+        </assignedCustodian>
+    </custodian>
+    <legalAuthenticator>
+    	<templateId root="2.16.840.1.113883.3.4424.13.10.2.6"/>
+        <time value="20150301122300"/>
+        <signatureCode code="S"/>
+        <assignedEntity>
+            <id extension="712178" root="2.16.840.1.113883.3.4424.1.6.1" displayable="false"/>
+        </assignedEntity>
+    </legalAuthenticator>
+	<relatedDocument typeCode="RPLC">
+		<templateId root="2.16.840.1.113883.3.4424.13.10.2.83"/>
+		<parentDocument classCode="DOCCLIN" moodCode="EVN">
+			<id extension="232123" root="2.16.840.1.113883.3.4424.2.7.99999.5.1" displayable="true"/>
+			<code code="60593-1" codeSystem="2.16.840.1.113883.6.1"/>
+			<setId extension="432321" root="2.16.840.1.113883.3.4424.2.7.99999.5.2"/>
+			<versionNumber value="1"/>
+		</parentDocument>
+	</relatedDocument>
+    <component>
+    	<templateId root="2.16.840.1.113883.3.4424.13.10.2.80"/>
+        <structuredBody>
+			<component>
+                <section>
+                	<templateId root="1.3.6.1.4.1.19376.1.9.1.2.3"/>
+                	<templateId root="2.16.840.1.113883.3.4424.13.10.3.70"/>
+                    <id extension="12345" root="2.16.840.1.113883.3.4424.2.7.99999.5.3"/>
+                    <code code="60590-7" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Dispensation"/>
+                    <title>Wydanie leku</title>
+                	<text>
+                		<paragraph ID="SPLY_1">
+							<caption>Wydano lek gotowy</caption>
+							Nazwa: MST Continus<br/>
+							Postać: tabletki<br/>
+							Dawka: 100mg<br/>
+							Opakowanie: 30 tabl.<br/>
+							Ilość: 1<br/>
+							Identyfikator produktu: 5909990476527 (GS1/EAN)
+						</paragraph>
+                		<paragraph ID="ACT_1">
+                			<caption>Taksacja:</caption>s
+                			Wartość wydanego leku: 0,00<br/>
+                            Limit urzędowy: 7,01<br/>
+                            Poziom odpłatności leku refundowanego: R<br/>
+                            Kwota refundacji: 7,01 <br/>
+                            Zapłacono: 0,00
+                		</paragraph>
+                	</text>
+                    <entry>
+						<supply classCode="SPLY" moodCode="EVN">
+							<templateId root="1.3.6.1.4.1.19376.1.9.1.3.4"/>
+							<templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.7.3"/>
+							<templateId root="2.16.840.1.113883.10.20.1.34"/>
+							<templateId root="2.16.840.1.113883.3.4424.13.10.4.62"/>
+							<id extension="bc34221ax" root="2.16.840.1.113883.3.4424.2.7.99999.5.1"/>
+                            <text>
+                                <reference value="#SPLY_1"/>
+                            </text>
+							<effectiveTime value="20150212"/>
+                            <quantity value="1"/>
+                            <product>
+                                <manufacturedProduct>
+									<manufacturedMaterial>
+										<templateId root="1.3.6.1.4.1.19376.1.9.1.3.1"/>
+										<templateId root="2.16.840.1.113883.3.4424.13.10.4.54"/>
+										<code code="4321" codeSystem="2.16.840.1.113883.3.4424.6.1" displayName="MST Continus 100mg tabl. powl. o zmod. uwalnianiu"/>
+										<name>MST Continus 100mg tabletki</name>
+										<pharm:asContent classCode="CONT">
+											<pharm:containerPackagedMedicine classCode="CONT" determinerCode="INSTANCE">
+												<pharm:code code="5909990476527" codeSystem="1.3.160" codeSystemName="GS1"/>
+												<pharm:name>MST Continus 100mg tabl. powl. o zmod. uwalnianiu (30 tabl.)</pharm:name>
+												<pharm:formCode code="30066000" codeSystem="0.4.0.127.0.16.1.1.2.1" codeSystemName="EDQM" displayName="Tablet container"/>
+												<pharm:capacityQuantity value="30"/>
+											</pharm:containerPackagedMedicine>
+										</pharm:asContent>
+                                    </manufacturedMaterial>
+								</manufacturedProduct>
+							</product>
+							<entryRelationship typeCode="REFR">
+								<substanceAdministration classCode="SBADM" moodCode="INT">
+									<templateId root="1.3.6.1.4.1.19376.1.9.1.3.11"/>
+									<templateId root="2.16.840.1.113883.3.4424.13.10.4.63"/>
+									<id extension="ff3432b-1" root="2.16.840.1.113883.3.4424.2.7.99999.2.3"/>
+									<code code="PREItem" codeSystem="1.3.6.1.4.1.19376.1.9.2.2"/>
+									<consumable>
+										<manufacturedProduct>
+											<manufacturedMaterial nullFlavor="NA"/>
+										</manufacturedProduct>
+									</consumable>
+									<reference typeCode="REFR">
+										<externalDocument classCode="DOC" moodCode="EVN">
+											<templateId root="2.16.840.1.113883.3.4424.13.10.4.77"/>
+											<id extension="ff3432b" root="2.16.840.1.113883.3.4424.2.7.99999.2.1"/>
+											<code code="57833-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Prescription for medication Document"/>
+										</externalDocument>
+									</reference>
+								</substanceAdministration>
+							</entryRelationship>
+							<entryRelationship typeCode="COMP">
+								<act classCode="ACT" moodCode="EVN">
+									<templateId root="2.16.840.1.113883.3.4424.13.10.4.67"/>
+									<code code="TAKSL" codeSystem="2.16.840.1.113883.3.4424.13.5.1" displayName="Taksacja leku"/>
+									<text>
+										<reference value="#ACT_1"/>
+									</text>
+									<statusCode code="completed"/>
+									<entryRelationship typeCode="COMP">
+										<observation classCode="OBS" moodCode="DEF">
+											<code code="WWL" codeSystem="2.16.840.1.113883.3.4424.13.5.1" displayName="Wartość wydanego leku"/>
+											<statusCode code="completed"/>
+											<value xsi:type="REAL" value="0.00"/>
+										</observation>
+									</entryRelationship>
+									<entryRelationship typeCode="COMP">
+										<observation classCode="OBS" moodCode="DEF">
+											<code code="LIMU" codeSystem="2.16.840.1.113883.3.4424.13.5.1" displayName="Limit urzędowy"/>
+											<statusCode code="completed"/>
+											<value xsi:type="REAL" value="7.01"/>
+										</observation>
+									</entryRelationship>
+									<entryRelationship typeCode="COMP">
+										<observation classCode="OBS" moodCode="DEF">
+											<code code="RLPO" codeSystem="2.16.840.1.113883.3.4424.13.5.1" displayName="Poziomy odpłatności leków refundowanych"/>
+											<statusCode code="completed"/>
+											<value xsi:type="CV" code="R" codeSystem="2.16.840.1.113883.3.4424.11.1.1"/>
+										</observation>
+									</entryRelationship>
+									<entryRelationship typeCode="COMP">
+										<observation classCode="OBS" moodCode="INT">
+											<code code="KREF" codeSystem="2.16.840.1.113883.3.4424.13.5.1" displayName="Kwota refundacji"/>
+											<statusCode code="completed"/>
+											<value xsi:type="REAL" value="7.01"/>
+										</observation>
+									</entryRelationship>
+									<entryRelationship typeCode="COMP">
+										<observation classCode="OBS" moodCode="EVN">
+											<code code="ZAPL" codeSystem="2.16.840.1.113883.3.4424.13.5.1" displayName="Zapłacono"/>
+											<statusCode code="completed"/>
+											<value xsi:type="REAL" value="0.00"/>
+										</observation>
+									</entryRelationship>
+								</act>
+							</entryRelationship>
+						</supply>
+                    </entry>
+				</section>
+			</component>
+        	<component>
+        		<section>
+        			<code code="48768-6" codeSystem="2.16.840.1.113883.6.1"/>
+        			<title>Dane o ubezpieczeniu i uprawnieniach</title>
+        			<text>
+                        <paragraph ID="ACT_2">
+                            Oddział NFZ: 07 <br/>
+                            Uprawnienia dodatkowe: ZK (Nr leg.: 238/2015)
+                        </paragraph>
+                    </text>
+                    <entry>
+                        <act classCode="ACT" moodCode="DEF">
+                            <templateId root="2.16.840.1.113883.10.20.1.20"/>
+                            <templateId root="2.16.840.1.113883.3.4424.13.10.4.51"/>
+                            <id nullFlavor="NA"/>
+                            <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" displayName="Payment source"/>
+                            <text><reference value="#ACT_2"/></text>
+                        	<statusCode code="completed"/>
+        					<entryRelationship typeCode="COMP">
+        						<act classCode="ACT" moodCode="EVN"> <!-- Uprawnienie dodatkowe -->
+        							<templateId root="2.16.840.1.113883.10.20.1.26"/>
+        							<templateId root="2.16.840.1.113883.3.4424.13.10.4.61"/>
+        							<id nullFlavor="NA"/>
+                                    <id nullFlavor="NA"/>
+        							<code code="PUBLICPOL" codeSystem="2.16.840.1.113883.5.4">
+        								<qualifier>
+        									<name code="RLUD" codeSystem="2.16.840.1.113883.3.4424.13.5.1" displayName="Refundacja leków wynikająca z uprawnień dodatkowych"/>
+        									<value code="ZK" displayName="ZK" codeSystem="2.16.840.1.113883.3.4424.11.3.1"/>
+        								</qualifier>
+        							</code>
+        							<statusCode code="completed"/>
+        							<performer typeCode="PRF"> <!-- Dane ubezpieczyciela/płatnika -->
+        								<assignedEntity>										
+        									<id extension="07" root="2.16.840.1.113883.3.4424.3.1" displayable="true"/>
+        								</assignedEntity>
+        							</performer>
+        							<entryRelationship typeCode="REFR">
+        								<act classCode="ACT" moodCode="EVN">
+        									<templateId root="2.16.840.1.113883.10.20.1.19"/>
+        									<templateId root="2.16.840.1.113883.3.4424.13.10.4.53"/>
+        									<id nullFlavor="NA"/>
+        									<code nullFlavor="NA"/>
+        									<entryRelationship typeCode="SUBJ">
+        										<supply classCode="SPLY" moodCode="PRMS">
+        											<id extension="bc34221ax" root="2.16.840.1.113883.3.4424.2.7.99999.5.1"/>
+        										</supply>
+        									</entryRelationship>
+        								</act>
+        							</entryRelationship>
+        							<reference typeCode="REFR">
+        								<externalDocument classCode="DOC" moodCode="EVN"> <!-- Informacja o dokumencie potwierdzającym uprawnienie dodatkowe -->
+        									<templateId root="2.16.840.1.113883.3.4424.13.10.4.59"/>
+        									<text>Nr leg.: 238/2015</text>
+        								</externalDocument>
+        							</reference>
+        						</act>
+        					</entryRelationship>
+        				</act>
+        			</entry>
+        		</section>
+        	</component>
+        </structuredBody>
+    </component>
+</ClinicalDocument>

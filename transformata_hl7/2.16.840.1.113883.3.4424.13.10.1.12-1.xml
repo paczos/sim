@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet href="CDA_PL_IG_1.3.1.xsl" type="text/xsl"?>
+<ClinicalDocument xmlns="urn:hl7-org:v3" xmlns:extPL="http://www.csioz.gov.pl/xsd/extPL/r2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="extPL:ClinicalDocument">
+	<!-- Skierowanie do szpitala psychiatrycznego -->
+    <typeId extension="POCD_HD000040" root="2.16.840.1.113883.1.3"/>
+    <templateId root="2.16.840.1.113883.3.4424.13.10.1.12" extension="1.3.1"/>
+    <id extension="2345678" root="2.16.840.1.113883.3.4424.7.4.1" displayable="false"/>
+    <code code="57832-8" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Prescription for diagnostic or specialist care Document">
+        <translation code="02.10" codeSystem="2.16.840.1.113883.3.4424.11.1.32" codeSystemName="KLAS_DOK_P1" displayName="Skierowanie na badanie lub leczenie"/>
+    </code>
+    <title>Skierowanie do szpitala psychiatrycznego</title>
+    <effectiveTime value="20130412"/>
+    <confidentialityCode code="R" codeSystem="2.16.840.1.113883.5.25"/>
+    <languageCode code="pl-PL"/>
+    <setId extension="432231" root="2.16.840.1.113883.3.4424.7.4.2"/>
+    <versionNumber value="1"/>
+    <recordTarget>
+        <templateId root="2.16.840.1.113883.3.4424.13.10.2.40"/>
+        <patientRole>
+            <id extension="12345" root="2.16.840.1.113883.3.4424.2.7.0.17.1" displayable="false"/>
+            <id extension="62011699999" root="2.16.840.1.113883.3.4424.1.1.616" displayable="true"/>
+            <addr>
+                <city>Warszawa</city>
+                <postalCode>01-134</postalCode>
+                <streetName>Odkryta</streetName>
+                <houseNumber>41</houseNumber>
+                <unitID>12</unitID>
+            </addr>
+            <patient xsi:type="extPL:Patient">
+                <name>
+                    <given>Jan</given>
+                    <given>Franciszek</given>
+                    <family>Kowalski</family>
+                </name>
+                <birthTime value="19620116"/>
+                <birthplace>
+                    <place>
+                        <addr>
+                            <city>Warszawa</city>
+                        </addr>
+                    </place>
+                </birthplace>
+                <extPL:personalRelationship classCode="PRS">
+                    <extPL:templateId root="2.16.840.1.113883.3.4424.13.10.2.64"/>
+                    <extPL:code code="MTH" codeSystem="2.16.840.1.113883.5.111" displayName="Mother"/>
+                    <extPL:person classCode="PSN">
+                        <extPL:name>
+                            <given>Joanna</given>
+                        </extPL:name>
+                    </extPL:person>
+                </extPL:personalRelationship>
+                <extPL:personalRelationship classCode="PRS">
+					<extPL:templateId root="2.16.840.1.113883.3.4424.13.10.2.65"/>
+                    <extPL:code code="FTH" codeSystem="2.16.840.1.113883.5.111" displayName="Father" />
+                    <extPL:person classCode="PSN">
+                        <extPL:name>
+                            <given>Franciszek</given>
+                        </extPL:name>
+                    </extPL:person>
+                </extPL:personalRelationship>
+            </patient>
+        </patientRole>
+    </recordTarget>
+    <author>
+		<templateId root="2.16.840.1.113883.3.4424.13.10.2.86"/>
+        <functionCode code="LEK" codeSystem="2.16.840.1.113883.3.4424.11.3.18" displayName="Lekarz"/>
+		<time value="20130412"/>
+		<assignedAuthor xsi:type="extPL:AssignedAuthor">
+            <id extension="7724513" root="2.16.840.1.113883.3.4424.1.6.2" displayable="false"/>
+            <code code="0718_0726" codeSystem="2.16.840.1.113883.3.4424.11.3.3.1" displayName="neurologia, radiologia i diagnostyka obrazowa"/>
+            <assignedPerson>
+            	<templateId root="2.16.840.1.113883.3.4424.13.10.2.1"/>
+                <name>
+                    <prefix>lek.</prefix>
+                    <given>Piotr</given>
+                    <family>Nowak</family>
+                </name>
+            </assignedPerson>
+            <representedOrganization>
+                <templateId root="2.16.840.1.113883.3.4424.13.10.2.17"/>
+                <id extension="1007-01" root="2.16.840.1.113883.3.4424.2.3.2" displayable="true"/>
+                <name>Poradnia POZ</name>
+                <telecom use="PUB" value="tel:22-1111123"/>
+                <addr>
+                    <postalCode>00-950</postalCode>
+                    <city>Warszawa</city>
+                    <streetName>Marszałkowska</streetName>
+                    <houseNumber>320</houseNumber>
+                </addr>
+                <asOrganizationPartOf>
+                    <wholeOrganization>
+                        <id extension="12345678901234" root="2.16.840.1.113883.3.4424.2.2.2" displayable="true"/>
+                        <asOrganizationPartOf>
+                            <wholeOrganization>
+                                <id extension="1007" root="2.16.840.1.113883.3.4424.2.3.1" displayable="true"/>
+                                <id extension="123456789" root="2.16.840.1.113883.3.4424.2.2.1" displayable="true"/>
+                            </wholeOrganization>
+                        </asOrganizationPartOf>
+                    </wholeOrganization>
+                </asOrganizationPartOf>
+            </representedOrganization>
+            <extPL:boundedBy typeCode="PART">
+                <extPL:templateId root="2.16.840.1.113883.3.4424.13.10.2.44"/>
+                <extPL:reimbursementRelatedContract moodCode="EVN" classCode="CNTRCT">
+                    <extPL:id extension="654321" root="2.16.840.1.113883.3.4424.8.6.7"/>
+                    <extPL:bounding typeCode="PART">
+                        <extPL:reimburser classCode="UNDWRT">
+                            <extPL:id extension="07" root="2.16.840.1.113883.3.4424.3.1" displayable="true"/>
+                        </extPL:reimburser>
+                    </extPL:bounding>
+                </extPL:reimbursementRelatedContract>
+            </extPL:boundedBy>
+        </assignedAuthor>
+	</author>
+    <custodian>
+        <templateId root="2.16.840.1.113883.3.4424.13.10.2.20"/>
+        <assignedCustodian>
+            <representedCustodianOrganization>
+                <id root="2.16.840.1.113883.3.4424" assigningAuthorityName="CSIOZ" displayable="false"/>
+            </representedCustodianOrganization>
+        </assignedCustodian>
+    </custodian>
+    <legalAuthenticator>
+		<templateId root="2.16.840.1.113883.3.4424.13.10.2.6"/>
+		<time value="20130412"/>
+		<signatureCode code="S"/>
+		<assignedEntity>
+			<id extension="7724513" root="2.16.840.1.113883.3.4424.1.6.2" displayable="true"/>
+        </assignedEntity>
+	</legalAuthenticator>
+    <component>
+        <templateId root="2.16.840.1.113883.3.4424.13.10.2.41"/>
+        <structuredBody>
+            <component>
+                <section>
+                    <templateId root="2.16.840.1.113883.3.4424.13.10.3.17"/>
+                    <code code="29762-2" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Social history"/>
+                    <text>
+                        <paragraph>
+                            <caption>Zamieszkuje:</caption>
+							wspólnie z innymi osobami
+						</paragraph>
+                        <paragraph>
+                            <caption>Stan cywilny:</caption>
+							żonaty
+						</paragraph>
+                        <paragraph>
+                            <caption>Zatrudnienie:</caption>
+							na utrzymaniu innych osób
+						</paragraph>
+                        <paragraph>
+                            <caption>Wykształcenie:</caption>
+							wyższe
+						</paragraph>
+                        <paragraph>
+							Osoba badana jest ubezwłasnowolniona całkowicie.
+						</paragraph>
+                    </text>
+					<component>
+                        <section>
+                            <templateId root="2.16.840.1.113883.3.4424.13.10.3.3"/>
+                            <code code="10186-5" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Identifying information"/>
+                            <title>Dane o osobach będzących z mocy prawa uczestnikami postępowania sądowego (art. 46 ust. 1 ustawy z dnia 19.08.1994 o ochronie zdrowia psychicznego):</title>
+                            <text>
+                             	<paragraph>
+                             		<caption>małżonek:</caption>
+                             		Joanna Kowalska, Odkryta 41 m. 12, Warszawa
+                             	</paragraph>
+                            </text>
+                        </section>
+                    </component>	                    
+                </section>
+            </component>
+            <component>
+                <section>
+                    <templateId root="2.16.840.1.113883.3.4424.13.10.3.18"/>
+                    <code code="10164-2" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="History of present illness"/>
+                    <text>
+                        <paragraph>
+                            <caption>Wywiad od osoby badanej:</caption>
+							Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque sed urna nibh. 
+							Donec lacus mi, varius sed ex at, elementum mattis mauris. In sit amet quam vel sem pellentesque euismod. 
+						</paragraph>
+                        <paragraph>
+                            <caption>Wywiad od rodziny i innych osób:</caption>
+							Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque sed urna nibh. 
+							Donec lacus mi, varius sed ex at, elementum mattis mauris. In sit amet quam vel sem pellentesque euismod. 
+						</paragraph>
+                    </text>
+                </section>
+            </component>
+            <component>
+                <section>
+                    <templateId root="2.16.840.1.113883.3.4424.13.10.3.19"/>
+                    <code code="29545-1" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Physical findings"/>
+                    <text>
+                        <paragraph>
+                            <caption>Ocena stanu fizycznego:</caption>
+							Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque sed urna nibh. 
+							Donec lacus mi, varius sed ex at, elementum mattis mauris. In sit amet quam vel sem pellentesque euismod. 
+						</paragraph>
+                        <paragraph>
+                            <caption>Ocena stanu psychicznego:</caption>
+							Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque sed urna nibh. 
+							Donec lacus mi, varius sed ex at, elementum mattis mauris. In sit amet quam vel sem pellentesque euismod. 
+						</paragraph>
+                    </text>
+                </section>
+            </component>
+            <component>
+                <section>
+                    <templateId root="2.16.840.1.113883.3.4424.13.10.3.20"/>
+                    <code code="29548-5" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Diagnosis"/>
+                    <text>
+                        <paragraph>
+                            <caption>Rozpoznanie wstępne:</caption>
+							Jakościowe zaburzenia świadomości. Urojenia prześladowania.
+						</paragraph>
+                    </text>
+                </section>
+            </component>
+            <component>
+                <section>
+                    <templateId root="2.16.840.1.113883.3.4424.13.10.3.21"/>
+                    <code code="57828-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Prescriptions"/>
+                    <text>
+                        <paragraph ID="ENC_1">
+							Kieruję pacjenta do szpitala psychiatrycznego.
+						</paragraph>
+                    </text>
+                    <entry>
+                        <templateId root="2.16.840.1.113883.3.4424.13.10.4.11"/>
+                        <encounter classCode="ENC" moodCode="RQO">
+                            <code code="4700" codeSystem="2.16.840.1.113883.3.4424.11.2.4" displayName="Oddział psychiatryczny (ogólny)"/>
+                            <text>
+                                <reference value="#ENC_1"/>
+                            </text>
+                        </encounter>
+                    </entry>
+                </section>
+            </component>
+            <component>
+                <section>
+                    <templateId root="2.16.840.1.113883.3.4424.13.10.3.22"/>
+                    <code code="42349-1" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Reason for referral"/>
+                    <text>
+                        <paragraph>
+                            <caption>Stwierdzam, że:</caption>
+							nieprzyjęcie osoby badanej do szpitala psychiatrycznego spowoduje pogorszenie stanu zdrowia psychicznego.
+						</paragraph>
+                    </text>
+                </section>
+            </component>
+        </structuredBody>
+    </component>
+</ClinicalDocument>

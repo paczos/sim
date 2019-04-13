@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet href="CDA_PL_IG_1.3.1.xsl" type="text/xsl"?>
+<ClinicalDocument xmlns="urn:hl7-org:v3" xmlns:extPL="http://www.csioz.gov.pl/xsd/extPL/r2" xmlns:pharm="urn:ihe:pharm" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <!-- Dokument recepty na lek recepturowy -->
+    <typeId extension="POCD_HD000040" root="2.16.840.1.113883.1.3"/>
+    <templateId root="1.3.6.1.4.1.19376.1.9.1.1.1"/>
+    <templateId root="1.3.6.1.4.1.19376.1.5.3.1.1.1"/>
+    <templateId root="2.16.840.1.113883.3.4424.13.10.1.3" extension="1.3.1"/>
+    <id extension="b876543" root="2.16.840.1.113883.3.4424.2.7.99999.2.1" displayable="true"/>
+    <code code="57833-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Prescription for medication Document">
+        <translation code="04.01" codeSystem="2.16.840.1.113883.3.4424.11.1.32" codeSystemName="KLAS_DOK_P1" displayName="Recepta">
+            <qualifier>
+                <name code="KDLEK" codeSystem="2.16.840.1.113883.3.4424.13.5.1" codeSystemName="PolskieKlasyfikatoryHL7v3" displayName="Kategoria dostępności leku"/>
+                <value code="Rp" codeSystem="2.16.840.1.113883.3.4424.11.1.25"/>
+            </qualifier>
+            <qualifier>
+                <name code="RLEK" codeSystem="2.16.840.1.113883.3.4424.13.5.1" codeSystemName="PolskieKlasyfikatoryHL7v3" displayName="Rodzaj leku"/>
+                <value code="R" displayName="Lek recepturowy" codeSystem="2.16.840.1.113883.3.4424.13.5.1"/>
+            </qualifier>
+            <qualifier>
+                <name code="TWREC" codeSystem="2.16.840.1.113883.3.4424.13.5.1" codeSystemName="PolskieKlasyfikatoryHL7v3" displayName="Tryb wystawienia recepty"/>
+                <value code="PL" displayName="Pielęgniarska na zlecenie lekarza" codeSystem="2.16.840.1.113883.3.4424.13.5.1"/>
+            </qualifier>
+            <qualifier>
+                <name code="TRREC" codeSystem="2.16.840.1.113883.3.4424.13.5.1" codeSystemName="PolskieKlasyfikatoryHL7v3" displayName="Tryb realizacji recepty"/>
+                <value code="Z" displayName="Zwykły" codeSystem="2.16.840.1.113883.3.4424.13.5.1"/>
+            </qualifier>
+        </translation>
+    </code>
+    <title>Recepta pielęgniarska na zlecenie lekarza</title>
+    <effectiveTime value="20171012"/>
+    <confidentialityCode code="N" codeSystem="2.16.840.1.113883.5.25"/>
+    <languageCode code="pl-PL"/>
+    <setId extension="432231" root="2.16.840.1.113883.3.4424.2.7.99999.2.1"/>
+    <versionNumber value="1"/>
+    <recordTarget>
+        <templateId root="2.16.840.1.113883.3.4424.13.10.2.23"/>
+        <patientRole>
+            <id extension="12345" root="2.16.840.1.113883.3.4424.2.7.99999.17.1" displayable="false"/>
+            <id extension="62091599999" root="2.16.840.1.113883.3.4424.1.1.616" displayable="true"/>
+            <addr>
+                <country>Polska</country>
+                <postalCode xsi:type="extPL:adxp.postalCode" postCity="Piaseczno">03-134</postalCode>
+                <city>Warszawa</city>
+                <streetName>Odkryta</streetName>
+                <houseNumber>41</houseNumber>
+                <unitID>12</unitID>
+                <censusTract>TERYT SIMC: 987654</censusTract>
+            </addr>
+            <patient>
+                <name>
+                    <given>Jan</given>
+                    <given>Franciszek</given>
+                    <family>Kowalski</family>
+                </name>
+                <administrativeGenderCode code="M" codeSystem="2.16.840.1.113883.5.1"/>
+                <birthTime value="19620915"/>
+            </patient>
+        </patientRole>
+    </recordTarget>
+    <author>
+        <templateId root="2.16.840.1.113883.3.4424.13.10.2.82"/>
+        <functionCode code="PIEL" codeSystem="2.16.840.1.113883.3.4424.11.3.18" displayName="Pielęgniarka"/>
+        <time value="20171012"/>
+        <assignedAuthor>
+            <id extension="89765" root="2.16.840.1.113883.3.4424.1.6.3" displayable="true"/>
+            <assignedPerson>
+                <templateId root="2.16.840.1.113883.3.4424.13.10.2.1"/>
+                <name>
+                    <given>Zuzanna</given>
+                    <family>Wyszyńska</family>
+                </name>
+            </assignedPerson>
+            <representedOrganization>
+                <templateId root="2.16.840.1.113883.3.4424.13.10.2.17"/>
+                <id extension="1007-01" root="2.16.840.1.113883.3.4424.2.3.2" displayable="true"/>
+                <name>Poradnia POZ</name>
+                <telecom use="PUB" value="tel:22-1111123"/>
+                <addr>
+                    <postalCode>00-950</postalCode>
+                    <city>Warszawa</city>
+                    <streetName>Marszałkowska</streetName>
+                    <houseNumber>320</houseNumber>
+                </addr>
+                <asOrganizationPartOf>
+                    <wholeOrganization>
+                        <id extension="12345678901234" root="2.16.840.1.113883.3.4424.2.2.2" displayable="true"/>
+                        <asOrganizationPartOf>
+                            <wholeOrganization>
+                                <id extension="1007" root="2.16.840.1.113883.3.4424.2.3.1" displayable="true"/>
+                                <id extension="123456789" root="2.16.840.1.113883.3.4424.2.2.1" displayable="true"/>
+                            </wholeOrganization>
+                        </asOrganizationPartOf>
+                    </wholeOrganization>
+                </asOrganizationPartOf>
+            </representedOrganization>
+        </assignedAuthor>
+    </author>
+    <custodian>
+        <templateId root="2.16.840.1.113883.3.4424.13.10.2.20"/>
+        <assignedCustodian>
+            <representedCustodianOrganization>
+                <id root="2.16.840.1.113883.3.4424" assigningAuthorityName="CSIOZ" displayable="false"/>
+            </representedCustodianOrganization>
+        </assignedCustodian>
+    </custodian>
+    <legalAuthenticator>
+        <templateId root="2.16.840.1.113883.3.4424.13.10.2.6"/>
+        <time value="20171012"/>
+        <signatureCode code="S"/>
+        <assignedEntity>
+            <id extension="89765" root="2.16.840.1.113883.3.4424.1.6.3" displayable="true"/>
+        </assignedEntity>
+    </legalAuthenticator>
+    <component>
+        <templateId root="2.16.840.1.113883.3.4424.13.10.2.25"/>
+        <structuredBody>
+            <component>
+                <section>
+                    <templateId root="1.3.6.1.4.1.19376.1.9.1.2.1"/>
+                    <templateId root="2.16.840.1.113883.3.4424.13.10.3.4"/>
+                    <id extension="322122" root="2.16.840.1.113883.3.4424.2.7.99999.2.4"/>
+                    <code code="57828-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Prescriptions"/>
+                    
+                    <title>Rp (Cito)</title>
+					<text>
+						<paragraph ID="SBADM_1">
+							<content>Maść pośladkowa 100g</content>
+							<list styleCode="Disc" listType="unordered">
+								<item>Vaselinum album</item>
+								<item>Lanolinum</item>
+								<item>Paraffinum liquidum</item>
+								<item>Aqua</item>
+							</list>
+							<content>{edytuj}</content>
+						</paragraph>
+					</text>
+					
+                    <!-- <title>Rp. (Cito)</title> przykład oryginalny
+                    <text>
+                		<paragraph ID="SBADM_1">
+                            Lanolini<br/>
+                            Vaselini albi<br/>
+                            Paraffini liq.<br/>
+                            Aquae aa ad 100.0<br/>
+                            M.f. unguentum<br/>
+                            D.S. Miejscowo na skórę, nałożyć cienką warstwę 
+                            <content>Odpłatność: 100%</content>
+                        </paragraph>
+                    </text> -->
+                    <entry>
+                        <substanceAdministration classCode="SBADM" moodCode="INT">
+                            <templateId root="1.3.6.1.4.1.19376.1.9.1.3.2"/>
+                            <templateId root="2.16.840.1.113883.10.20.1.24"/>
+                            <templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.7"/>
+                            <templateId root="1.3.6.1.4.1.19376.1.9.1.3.6"/>
+                            <templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.7.1"/>
+                            <templateId root="2.16.840.1.113883.3.4424.13.10.4.48"/>
+                            <id extension="b876543-1" root="2.16.840.1.113883.3.4424.2.7.99999.2.3"/>
+                            <text>
+                                <reference value="#SBADM_1"/>
+                            </text>
+                            <statusCode code="completed"/>
+                            <effectiveTime xsi:type="IVL_TS">
+                                <low value="20171012"/>
+                                <high nullFlavor="NA"/>
+                            </effectiveTime>
+                            <repeatNumber value="1"/>
+                            <consumable>
+                                <manufacturedProduct>
+                                    <templateId root="2.16.840.1.113883.10.20.1.53"/>
+                                    <templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.7.2"/>
+                                    <manufacturedMaterial>
+                                        <templateId root="2.16.840.1.113883.3.4424.13.10.4.70"/>
+                                        <templateId root="1.3.6.1.4.1.19376.1.9.1.3.1"/>
+                                        <code nullFlavor="NA"/>
+                                        <name>Maść pośladkowa</name>
+                                        <pharm:formCode code="TOPOINT" codeSystem="2.16.840.1.113883.5.1127" displayName="Topical Ointment"/>
+                                        <pharm:ingredient classCode="ACTI">
+                                            <templateId root="2.16.840.1.113883.3.4424.13.10.4.71"/>
+                                            <pharm:ingredient classCode="MMAT" determinerCode="KIND">
+                                                <pharm:code code="23432" codeSystem="2.16.840.1.113883.3.4424.6.3" displayName="Wazelina biała"/>
+                                                <pharm:name>Vaselinum album</pharm:name>
+                                            </pharm:ingredient>
+                                        </pharm:ingredient>
+                                        <pharm:ingredient classCode="ACTI">
+                                            <templateId root="2.16.840.1.113883.3.4424.13.10.4.71"/>
+                                            <pharm:ingredient classCode="MMAT" determinerCode="KIND">
+                                                <pharm:code code="34543" codeSystem="2.16.840.1.113883.3.4424.6.3" displayName="Lanolina"/>
+                                                <pharm:name>Lanolinum</pharm:name>
+                                            </pharm:ingredient>
+                                        </pharm:ingredient>
+                                        <pharm:ingredient classCode="ACTI">
+                                            <templateId root="2.16.840.1.113883.3.4424.13.10.4.71"/>
+                                            <pharm:ingredient classCode="MMAT" determinerCode="KIND">
+                                                <pharm:code code="45654" codeSystem="2.16.840.1.113883.3.4424.6.3" displayName="Parafina ciekła"/>
+                                                <pharm:name>Paraffinum liquidum</pharm:name>
+                                            </pharm:ingredient>
+                                        </pharm:ingredient>
+                                        <pharm:ingredient classCode="ACTI">
+                                            <templateId root="2.16.840.1.113883.3.4424.13.10.4.71"/>
+                                            <pharm:ingredient classCode="MMAT" determinerCode="KIND">
+                                                <pharm:code code="56765" codeSystem="2.16.840.1.113883.3.4424.6.3" displayName="Woda do receptury aptecznej FP"/>
+                                                <pharm:name>Aqua</pharm:name>
+                                            </pharm:ingredient>
+                                        </pharm:ingredient>
+                                    </manufacturedMaterial>
+                                </manufacturedProduct>
+                            </consumable>
+                            <entryRelationship typeCode="COMP">
+                                <supply classCode="SPLY" moodCode="RQO">
+                                    <templateId root="1.3.6.1.4.1.19376.1.9.1.3.8"/>
+                                    <templateId root="2.16.840.1.113883.3.4424.13.10.4.55"/>
+                                    <effectiveTime value="20171012"/>
+                                    <priorityCode code="UR" codeSystem="2.16.840.1.113883.5.7"/>
+                                    <independentInd value="false"/>
+                                    <quantity value="100" unit="g"/>
+                                </supply>
+                            </entryRelationship>
+                        </substanceAdministration>
+                    </entry>
+                </section>
+            </component>
+            <component>
+                <section>
+                    <templateId root="2.16.840.1.113883.10.20.1.9"/>
+                    <templateId root="1.3.6.1.4.1.19376.1.5.3.1.1.5.3.7"/>
+                    <templateId root="2.16.840.1.113883.3.4424.13.10.3.69"/>
+                    <code code="48768-6" codeSystem="2.16.840.1.113883.6.1"/>
+                    <title>Dane o ubezpieczeniu i uprawnieniach</title>
+                    <text>
+                        <paragraph ID="ACT_2"> Oddział NFZ: 07 <br/> Uprawnienia dodatkowe: ZK (Nr leg.: 238/2015) </paragraph>
+                    </text>
+                    <entry>
+                        <act classCode="ACT" moodCode="DEF">
+                            <templateId root="2.16.840.1.113883.10.20.1.20"/>
+                            <templateId root="2.16.840.1.113883.3.4424.13.10.4.51"/>
+                            <id nullFlavor="NA"/>
+                            <code code="48768-6" codeSystem="2.16.840.1.113883.6.1" displayName="Payment source"/>
+                            <text><reference value="#ACT_2"/></text>
+                            <statusCode code="completed"/>
+                            <entryRelationship typeCode="COMP">
+                                <act classCode="ACT" moodCode="EVN"> <!-- Uprawnienie dodatkowe -->
+                                    <templateId root="2.16.840.1.113883.10.20.1.26"/>
+                                    <templateId root="2.16.840.1.113883.3.4424.13.10.4.61"/>
+                                    <id nullFlavor="NA"/>
+                                    <code code="PUBLICPOL" codeSystem="2.16.840.1.113883.5.4">
+                                        <qualifier>
+                                            <name code="RLUD" codeSystem="2.16.840.1.113883.3.4424.13.5.1" displayName="Refundacja leków wynikająca z uprawnień dodatkowych"/>
+                                            <value code="IB" displayName="IB" codeSystem="2.16.840.1.113883.3.4424.11.3.1"/>
+                                        </qualifier>
+                                    </code>
+                                    <text><reference value="#ACT_2"/></text>
+                                    <statusCode code="completed"/>
+                                    <performer typeCode="PRF"> <!-- Dane ubezpieczyciela/płatnika -->
+                                        <assignedEntity>										
+                                            <id extension="07" root="2.16.840.1.113883.3.4424.3.1" displayable="true"/>
+                                        </assignedEntity>
+                                    </performer>
+                                    <entryRelationship typeCode="REFR">
+                                        <act classCode="ACT" moodCode="EVN">
+                                            <templateId root="2.16.840.1.113883.10.20.1.19"/>
+                                            <templateId root="2.16.840.1.113883.3.4424.13.10.4.53"/>
+                                            <id nullFlavor="NA"/>
+                                            <code nullFlavor="NA"/>
+                                            <entryRelationship typeCode="SUBJ">
+                                                <substanceAdministration classCode="SBADM" moodCode="PRMS">
+                                                    <id extension="b876543-1" root="2.16.840.1.113883.3.4424.2.7.99999.2.3"/>
+                                                    <consumable>
+                                                        <manufacturedProduct>
+                                                            <manufacturedMaterial nullFlavor="NA"/>
+                                                        </manufacturedProduct>
+                                                    </consumable>
+                                                </substanceAdministration>
+                                            </entryRelationship>
+                                        </act>
+                                    </entryRelationship>
+                                    <reference typeCode="REFR">
+                                        <externalDocument classCode="DOC" moodCode="EVN"> <!-- Informacja o dokumencie potwierdzającym uprawnienie dodatkowe -->
+                                            <templateId root="2.16.840.1.113883.3.4424.13.10.4.59"/>
+                                            <text>Nr leg.: 234/1992</text>
+                                        </externalDocument>
+                                    </reference>
+                                </act>
+                            </entryRelationship>
+                        </act>
+                    </entry>
+                </section>
+            </component>
+        </structuredBody>
+    </component>
+</ClinicalDocument>

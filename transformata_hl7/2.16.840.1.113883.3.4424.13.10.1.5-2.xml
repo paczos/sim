@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet href="CDA_PL_IG_1.3.1.xsl" type="text/xsl"?>
+<ClinicalDocument xmlns="urn:hl7-org:v3" xmlns:extPL="http://www.csioz.gov.pl/xsd/extPL/r2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="extPL:ClinicalDocument">
+    <!-- Zlecenie jednorazowe na nebulizator -->
+    <typeId extension="POCD_HD000040" root="2.16.840.1.113883.1.3"/>
+    <templateId root="2.16.840.1.113883.3.4424.13.10.1.5" extension="1.3.1"/>
+    <id extension="554433" root="2.16.840.1.113883.3.4424.7.3.1" displayable="false"/>
+    <code code="57829-4" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Prescription for medical equipment or product Document">
+        <translation code="02.81" codeSystem="2.16.840.1.113883.3.4424.11.1.32" codeSystemName="KLAS_DOK_P1" displayName="Zlecenie na zaopatrzenie w wyroby medyczne">
+			<qualifier>
+                <name code="TZLECWM" codeSystem="2.16.840.1.113883.3.4424.13.5.1" codeSystemName="PolskieKlasyfikatoryHL7v3" displayName="Tryb zlecenia na zapotrzebowanie wyrobu medycznego"/>
+                <value code="JEDN" displayName="Zlecenie jednorazowe" codeSystem="2.16.840.1.113883.3.4424.13.5.1" codeSystemName="PolskieKlasyfikatoryHL7v3"/>
+            </qualifier>
+		</translation>
+    </code>
+    <title>Zlecenie na zaopatrzenie w wyroby medyczne</title>
+    <effectiveTime value="20130412"/>
+    <confidentialityCode code="N" codeSystem="2.16.840.1.113883.5.25"/>
+    <languageCode code="pl-PL"/>
+    <setId extension="555666" root="2.16.840.1.113883.3.4424.7.3.2" displayable="true"/>
+    <versionNumber value="1"/>
+    <recordTarget>
+        <templateId root="2.16.840.1.113883.3.4424.13.10.2.29"/>
+        <patientRole>
+            <id extension="12345" root="2.16.840.1.113883.3.4424.2.7.0.17.1" displayable="false"/>
+            <id extension="62011699999" root="2.16.840.1.113883.3.4424.1.1.616" displayable="true"/>
+            <addr>
+                <city>Warszawa</city>
+                <postalCode>01-134</postalCode>
+                <streetName>Odkryta</streetName>
+                <houseNumber>41</houseNumber>
+                <unitID>12</unitID>
+            </addr>
+            <patient>
+                <name>
+                    <given>Jan</given>
+                    <given>Franciszek</given>
+                    <family>Kowalski</family>
+                </name>
+                <birthTime value="19620116"/>
+            </patient>
+        </patientRole>
+    </recordTarget>
+    <author>
+        <templateId root="2.16.840.1.113883.3.4424.13.10.2.4"/>
+        <functionCode code="LEK" codeSystem="2.16.840.1.113883.3.4424.11.3.18" displayName="Lekarz"/>
+        <time value="20130412"/>
+        <assignedAuthor xsi:type="extPL:AssignedAuthor">
+            <id extension="7724513" root="2.16.840.1.113883.3.4424.1.6.2" displayable="false"/>
+            <code code="0718_0726" codeSystem="2.16.840.1.113883.3.4424.11.3.3.1" displayName="neurologia, radiologia i diagnostyka obrazowa"/>
+            <assignedPerson>
+            	<templateId root="2.16.840.1.113883.3.4424.13.10.2.1"/>
+                <name>
+                    <prefix>lek.</prefix>
+                    <given>Piotr</given>
+                    <family>Nowak</family>
+                </name>
+            </assignedPerson>
+            <representedOrganization>
+                <templateId root="2.16.840.1.113883.3.4424.13.10.2.17"/>
+                <id extension="1007-01" root="2.16.840.1.113883.3.4424.2.3.2" displayable="true"/>
+                <name>Poradnia POZ</name>
+                <telecom use="PUB" value="tel:22-1111123"/>
+                <addr>
+                    <postalCode>00-950</postalCode>
+                    <city>Warszawa</city>
+                    <streetName>Marszałkowska</streetName>
+                    <houseNumber>320</houseNumber>
+                </addr>
+                <asOrganizationPartOf>
+                    <wholeOrganization>
+                        <id extension="12345678901234" root="2.16.840.1.113883.3.4424.2.2.2" displayable="true"/>
+                        <name>NZOZ „POL-MED”</name>
+                        <asOrganizationPartOf>
+                            <wholeOrganization>
+                                <id extension="1007" root="2.16.840.1.113883.3.4424.2.3.1" displayable="true"/>
+                                <id extension="123456789" root="2.16.840.1.113883.3.4424.2.2.1" displayable="true"/>
+                                <name>POL-MED Sp. z o.o.</name>
+                            </wholeOrganization>
+                        </asOrganizationPartOf>
+                    </wholeOrganization>
+                </asOrganizationPartOf>
+            </representedOrganization>
+            <extPL:boundedBy typeCode="PART">
+                <extPL:templateId root="2.16.840.1.113883.3.4424.13.10.2.44"/>
+                <extPL:reimbursementRelatedContract moodCode="EVN" classCode="CNTRCT">
+                    <extPL:id extension="123456" root="2.16.840.1.113883.3.4424.8.6.7"/>
+                    <extPL:bounding typeCode="PART">
+                        <extPL:reimburser classCode="UNDWRT">
+                            <extPL:id extension="07" root="2.16.840.1.113883.3.4424.3.1" displayable="true"/>
+                        </extPL:reimburser>
+                    </extPL:bounding>
+                </extPL:reimbursementRelatedContract>
+            </extPL:boundedBy>
+        </assignedAuthor>
+    </author>
+    <custodian>
+        <templateId root="2.16.840.1.113883.3.4424.13.10.2.20"/>
+        <assignedCustodian>
+            <representedCustodianOrganization>
+                <id root="2.16.840.1.113883.3.4424" assigningAuthorityName="CSIOZ" displayable="false"/>
+            </representedCustodianOrganization>
+        </assignedCustodian>
+    </custodian>
+    <legalAuthenticator>
+		<templateId root="2.16.840.1.113883.3.4424.13.10.2.6"/>
+        <time value="20130412"/>
+        <signatureCode code="S"/>
+        <assignedEntity>
+            <id extension="7724513" root="2.16.840.1.113883.3.4424.1.6.2" displayable="true"/>
+        </assignedEntity>
+    </legalAuthenticator>
+    <participant typeCode="IND">
+        <templateId root="2.16.840.1.113883.3.4424.13.10.2.19"/>
+        <associatedEntity classCode="UNDWRT">
+            <id extension="07" root="2.16.840.1.113883.3.4424.3.1" displayable="true"/>
+        </associatedEntity>
+    </participant>
+    <component>
+        <templateId root="2.16.840.1.113883.3.4424.13.10.2.30"/>
+        <structuredBody>
+            <component>
+                <section>
+                    <templateId root="2.16.840.1.113883.3.4424.13.10.3.8"/>
+                    <title>Środek pomocniczy</title>
+                    <text ID="SPLY_1">
+                        <paragraph>
+                            <caption>Liczba porządkowa wyrobu medycznego:</caption>
+							9254.01
+						</paragraph>
+                        <paragraph>
+                            <caption>Liczba sztuk:</caption>
+							1
+						</paragraph>
+                        <paragraph>
+                            <caption>Określenie wyrobu medycznego wraz z pisemnym uzasadnieniem (np. według klasyfikacji ICD-10):</caption>
+							Inhalator dyszowy - nebulizator (generator aerozolu)
+			            </paragraph>
+                        <paragraph>
+                            <caption>Zaopatrzenie:</caption>
+			                nie dotyczy
+			            </paragraph>
+                        <paragraph>
+                            <caption>Dodatkowe wskazania zlecającego zaopatrzenie:</caption>
+			            	Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque sed urna nibh. 
+							Donec lacus mi, varius sed ex at, elementum mattis mauris. In sit amet quam vel sem pellentesque euismod. 
+			            </paragraph>
+                    </text>
+                    <entry>
+                        <templateId root="2.16.840.1.113883.3.4424.13.10.4.7"/>
+                        <supply classCode="SPLY" moodCode="RQO">
+                            <text>
+                                <reference value="#SPLY_1"/>
+                            </text>
+                            <quantity value="1"/>
+                            <product>
+                                <manufacturedProduct>
+                                    <manufacturedMaterial>
+                                        <code code="9254.01" codeSystem="2.16.840.1.113883.3.4424.11.1.43" displayName="Inhalator dyszowy: - nebulizator (generator aerozolu)"/>
+                                    </manufacturedMaterial>
+                                </manufacturedProduct>
+                            </product>
+                        </supply>
+                    </entry>
+                </section>
+            </component>
+        </structuredBody>
+    </component>
+</ClinicalDocument>
