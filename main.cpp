@@ -26,7 +26,6 @@ int main() {
     dcm2XmlCommand = "dcm2xml " + dcmFilePath + " converted.xml";
     system(dcm2XmlCommand.c_str());
 
-
     //TODO create Hl7 here
     xml_document<> doc;
 
@@ -34,6 +33,10 @@ int main() {
     auto attr = doc.allocate_attribute("xsi:type", "extPL:ClinicalDocument");
     root_node->append_attribute(attr);
     doc.append_node(root_node);
+    auto typeId = doc.allocate_node(node_element, "typeId");
+    auto extension = doc.allocate_attribute("extension", "POCD_HD00040");
+    typeId->append_attribute(extension);
+    root_node->append_node(typeId);
 
     cout << "Hello :) this is the hl7 message:" << endl;
 
