@@ -17,3 +17,7 @@ Pan Wanta 59
 sudo apt-get update
 sudo apt-get install dcmtk
 
+convert to png
+
+dcmj2pnm --write-16-bit-png photo.dcm photo.png
+
