@@ -17,12 +17,13 @@ Pan Wanta 59
 sudo apt-get update
 sudo apt-get install dcmtk
 
-convert to png
+### convert to png
 
 dcmj2pnm --write-16-bit-png photo.dcm photo.png
 
 
-
+### create HL7
 xml -> rapid xml
 
+### transform HL7 to html
 xslt -> http://xml.apache.org/xalan-c/
