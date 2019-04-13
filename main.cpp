@@ -9,9 +9,20 @@ int main() {
     string dcmFilePath;
     cout << "Podaj sciezke do pliku" << endl;
     cin >> dcmFilePath;
-    dcmFilePath = "dcmj2pnm --write-16-bit-png " + dcmFilePath + " photo.png";
-    system(dcmFilePath.c_str());
+    string dcmj2pnmCommand;
+    dcmj2pnmCommand = "dcmj2pnm --write-16-bit-png " + dcmFilePath + " photo.png";
+    system(dcmj2pnmCommand.c_str());
     cout << "Done" << endl;
+
+    string dcm2XmlCommand;
+    cout << dcmFilePath << endl;
+    dcm2XmlCommand = "dcm2xml " + dcmFilePath + " converted.xml";
+    system(dcm2XmlCommand.c_str());
+
+
+    //TODO create Hl7 here
+
+
 
 
     string renderingCommand =
