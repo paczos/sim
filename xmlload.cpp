@@ -10,12 +10,14 @@ using namespace std;
 
 int main(void)
 {
-  cout << "Parsing ElementStore..." << endl;
+  cout << "Parsing sad ElementStore..." << endl;
   xml_document<> doc;
   xml_node<> * root_node;
   // Read the xml file into a vector
-  ifstream theFile ("ElementStore.xml");
-  vector<char> buffer((istreambuf_iterator<char>(theFile)), istreambuf_iterator<char>());
+  ifstream theFile ("ExemplaryXmlToTestLib.xml");
+    cout << "read" << endl;
+
+    vector<char> buffer((istreambuf_iterator<char>(theFile)), istreambuf_iterator<char>());
   buffer.push_back('\0');
   // Parse the buffer using the xml file parsing library into doc 
   doc.parse<0>(&buffer[0]);
