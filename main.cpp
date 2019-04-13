@@ -6,7 +6,7 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
-
+#include <sstream>
 
 using namespace std;
 using namespace rapidxml;
@@ -18,6 +18,7 @@ int main() {
     string dcmj2pnmCommand;
     dcmj2pnmCommand = "dcmj2pnm --write-16-bit-png " + dcmFilePath + " photo.png";
     system(dcmj2pnmCommand.c_str());
+
     cout << "Done" << endl;
 
     string dcm2XmlCommand;
@@ -28,14 +29,25 @@ int main() {
 
     //TODO create Hl7 here
     xml_document<> doc;
-    xml_node<> *root_node;
 
-    xml_node<> *new_node = doc.allocate_node(node_element, "Beer", "LOL");
+    xml_node<> *root_node = doc.allocate_node(node_element, "ClinicalDocument", "");
+    auto attr = doc.allocate_attribute("xsi:type", "extPL:ClinicalDocument");
+    root_node->append_attribute(attr);
+    doc.append_node(root_node);
 
     cout << "Hello :) this is the hl7 message:" << endl;
-    cout << doc << endl;
+
+    std::ostringstream doc_stream;
+    doc_stream << doc;
+    std::string stringStream = doc_stream.str();
+    cout << stringStream << endl;
     string renderingCommand =
-            "xalan -xsl transformata_hl7/narrative-block-1.3.1/CDA_PL_IG_1.3.1.xsl -in hl7example.xml -out hl7example.html";
+            "printf \"" + stringStream + "\" | " +
+            "xalan -xsl transformata_hl7/narrative-block-1.3.1/CDA_PL_IG_1.3.1.xsl -out out.html";
+
+
+    cout << "command " << renderingCommand << endl;
+
     system(renderingCommand.c_str());
     cout << "HL7 message converted to HTMl" << endl;
 
