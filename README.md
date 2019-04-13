@@ -27,6 +27,14 @@ sudo apt install librapidxml-dev
 ```
 xml -> rapid xml
 
+examples of usage:
+
+https://github.com/ashish-harman/RapidXML_Tutorial/blob/master/Update_XML_Node.cpp
+
+https://gist.github.com/luisgustavomiki/5282610
+
+
+
 ### transform HL7 to html
 xslt -> http://xml.apache.org/xalan-c/
 
