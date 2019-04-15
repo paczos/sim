@@ -100,7 +100,6 @@ int main() {
             "cat tmp.xml | xalan -xsl transformata_hl7/CDA_PL_IG_1.3.1.xsl -out out.html";
     system(rendering_command.c_str());
     remove("tmp.xml");
-    remove("tmp.xml");
 
     cout << endl << " HL7 message converted to HTMl" << endl;
     return 0;
