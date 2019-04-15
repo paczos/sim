@@ -26,7 +26,7 @@ xml_node<> *find_in_dicom_xml_by_name(xml_document<> &doc, string dicom_attr_nam
             return element_node;
         }
     }
-    cout << dicom_attr_name << " not found in converted.xml" << endl;
+    cerr << dicom_attr_name << " not found in converted.xml" << endl;
 
 }
 
