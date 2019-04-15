@@ -26,28 +26,26 @@ int main() {
     dcm2XmlCommand = "dcm2xml " + dcmFilePath + " converted.xml";
     system(dcm2XmlCommand.c_str());
 
-    //TODO create Hl7 here
     xml_document<> doc;
+    ifstream theFile("report_hl7_template.xml");
+    vector<char> buffer((istreambuf_iterator<char>(theFile)), istreambuf_iterator<char>());
+    buffer.push_back('\0');
+    // Parse the buffer using the xml file parsing library into doc
+    doc.parse<0>(&buffer[0]);
 
-    xml_node<> *root_node = doc.allocate_node(node_element, "ClinicalDocument", "");
-    auto attr = doc.allocate_attribute("xsi:type", "extPL:ClinicalDocument");
+    //TODO modify Hl7 here
+
+    xml_node<> *root_node = doc.first_node("ClinicalDocument");
+    auto attr = doc.allocate_attribute("xsi:kupka", "extPL:dupsko");
     root_node->append_attribute(attr);
-    doc.append_node(root_node);
-    auto typeId = doc.allocate_node(node_element, "typeId");
-    auto extension = doc.allocate_attribute("extension", "POCD_HD00040");
-    typeId->append_attribute(extension);
-    root_node->append_node(typeId);
-
-    cout << "Hello :) this is the hl7 message:" << endl;
 
     std::ostringstream doc_stream;
     doc_stream << doc;
     std::string stringStream = doc_stream.str();
     cout << stringStream << endl;
     string renderingCommand =
-            "printf \"" + stringStream + "\" | " +
-            "xalan -xsl transformata_hl7/narrative-block-1.3.1/CDA_PL_IG_1.3.1.xsl -out out.html";
-
+            "cat << EOF \n " + stringStream +
+            "\n EOF |   xalan -xsl transformata_hl7/narrative-block-1.3.1/CDA_PL_IG_1.3.1.xsl -out out.html";
 
     cout << "command " << renderingCommand << endl;
 
