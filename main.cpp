@@ -11,6 +11,25 @@
 using namespace std;
 using namespace rapidxml;
 
+
+xml_node<> *find_in_dicom_xml_by_name(xml_document<> &doc, string dicom_attr_name) {
+    auto file_format = doc.first_node("file-format");
+    auto data_set = file_format->first_node("data-set");
+    auto root_node = data_set;
+    auto data_name = root_node->first_attribute("name");
+
+    for (xml_node<> *element_node = root_node->first_node(
+            "element"); element_node; element_node = element_node->next_sibling()) {
+        auto name_attr = element_node->first_attribute("name");
+        if (name_attr->value() == dicom_attr_name) {
+
+            return element_node;
+        }
+    }
+    cout << dicom_attr_name << " not found in converted.xml" << endl;
+
+}
+
 int main() {
     string dcm_file_path;
     cout << "Podaj sciezke do pliku" << endl;
@@ -27,17 +46,45 @@ int main() {
     system(dcm_2_xml_command.c_str());
 
     xml_document<> doc;
-    ifstream theFile("report_hl7_template.xml");
-    vector<char> buffer((istreambuf_iterator<char>(theFile)), istreambuf_iterator<char>());
+    ifstream template_file("report_hl7_template.xml");
+    vector<char> buffer((istreambuf_iterator<char>(template_file)), istreambuf_iterator<char>());
     buffer.push_back('\0');
     // Parse the buffer using the xml file parsing library into doc
     doc.parse<0>(&buffer[0]);
 
+    // open and parse converted.xml <- dicom metadata in xml form
+    xml_document<> dicom_doc;
+    ifstream dicom_xml_file("converted.xml");
+    vector<char> dicom_buffer((istreambuf_iterator<char>(dicom_xml_file)), istreambuf_iterator<char>());
+    buffer.push_back('\0');
+    // Parse the buffer using the xml file parsing library into doc
+    dicom_doc.parse<0>(&dicom_buffer[0]);
+
+
     //TODO modify Hl7 here
 
     xml_node<> *root_node = doc.first_node("ClinicalDocument");
-    auto title = root_node->first_node("title"); // we are looking inside root_node because TITLE is contained in children of ClinicalDocument node
-    title->value("Badanie RTG wygenerowane przez Kingę Kimnes, Wojciecha Wojciechowskiego, Pawła Paczuskiego"); // we can modify value of a node in this manner
+    auto title = root_node->first_node(
+            "title"); // we are looking inside root_node because TITLE is contained in children of ClinicalDocument node
+    title->value(
+            "Badanie RTG wygenerowane przez Kingę Kimnes, Wojciecha Wojciechowskiego, Pawła Paczuskiego"); // we can modify value of a node in this manner
+
+    // example: copying birthdate from original dicom and puting it into HL7 Message
+    auto birth_date_dcm = find_in_dicom_xml_by_name(dicom_doc,
+                                                    "PatientBirthDate"); //find_in_dicom_xml_by_name -> custom function used to find nodes in converted.xml, PatientBirthName-> name attr from converted.xml
+
+    // EXAMPLE
+    // now we need to get pointer to the birthTime node in report_hl7_template.xml -> it is insice ClinicalDocument->recordTarget->patientRole->patient
+    auto recordTarget = root_node->first_node(
+            "recordTarget"); // we can later reuse this pointer, in case we use recordTarget in more than one places
+    auto patientRole = recordTarget->first_node("patientRole");
+    auto patient = patientRole->first_node("patient");
+    auto birthTime = patient->first_node("birthTime");
+    auto birthTime_value_attribute = birthTime->first_attribute(
+            "value"); // in hl7 we need to put the birthTime in "value" attr -> see report_hl77_template.xml,
+    birthTime_value_attribute->value(
+            birth_date_dcm->value()); //this is how we set the value of an attribute. The attribute should be empty before setting its value, because we do not want our template to keep unimportant values
+    // end of EXAMPLE
 
 
     std::ostringstream doc_stream;
@@ -52,6 +99,7 @@ int main() {
     string rendering_command =
             "cat tmp.xml | xalan -xsl transformata_hl7/CDA_PL_IG_1.3.1.xsl -out out.html";
     system(rendering_command.c_str());
+    remove("tmp.xml");
     remove("tmp.xml");
 
     cout << endl << " HL7 message converted to HTMl" << endl;
@@ -77,3 +125,4 @@ void setStringAttribute(
         node->append_attribute(attr);
     }
 }// this will be useful later
+
