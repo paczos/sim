@@ -36,21 +36,44 @@ int main() {
     //TODO modify Hl7 here
 
     xml_node<> *root_node = doc.first_node("ClinicalDocument");
-    auto attr = doc.allocate_attribute("xsi:kupka", "extPL:dupsko");
-    root_node->append_attribute(attr);
+    auto title = root_node->first_node("title"); // we are looking inside root_node because TITLE is contained in children of ClinicalDocument node
+    title->value("Badanie RTG wygenerowane przez Kingę Kimnes, Wojciecha Wojciechowskiego, Pawła Paczuskiego"); // we can modify value of a node in this manner
+
 
     std::ostringstream doc_stream;
     doc_stream << doc;
     std::string string_stream = doc_stream.str();
-    cout << string_stream << endl;
+
+    ofstream hl7_xml;
+    hl7_xml.open("tmp.xml");
+    hl7_xml << string_stream;
+    hl7_xml.close();
+
     string rendering_command =
-            "cat << EOF \n " + string_stream +
-            "\n EOF |   xalan -xsl transformata_hl7/narrative-block-1.3.1/CDA_PL_IG_1.3.1.xsl -out out.html";
-
-    cout << "command " << rendering_command << endl;
-
+            "cat tmp.xml | xalan -xsl transformata_hl7/CDA_PL_IG_1.3.1.xsl -out out.html";
     system(rendering_command.c_str());
-    cout << "HL7 message converted to HTMl" << endl;
+    remove("tmp.xml");
 
+    cout << endl << " HL7 message converted to HTMl" << endl;
     return 0;
 }
+
+void setStringAttribute(
+        xml_document<> &doc, xml_node<> *node,
+        const string &attributeName, const string &attributeValue) {
+    // allocate memory assigned to document for attribute value
+    char *rapidAttributeValue = doc.allocate_string(attributeValue.c_str());
+    // search for the attribute at the given node
+    xml_attribute<> *attr = node->first_attribute(attributeName.c_str());
+    if (attr != 0) { // attribute already exists
+        // only change value of existing attribute
+        attr->value(rapidAttributeValue);
+    } else { // attribute does not exist
+        // allocate memory assigned to document for attribute name
+        char *rapidAttributeName = doc.allocate_string(attributeName.c_str());
+        // create new a new attribute with the given name and value
+        attr = doc.allocate_attribute(rapidAttributeName, rapidAttributeValue);
+        // append attribute to node
+        node->append_attribute(attr);
+    }
+}// this will be useful later
