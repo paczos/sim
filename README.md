@@ -49,5 +49,22 @@ xalan -xsl transformata_hl7/narrative-block-1.3.1/CDA_PL_IG_1.3.1.xsl -in przykl
 ```
 
 
+## Our program
+
+compile
+``` bash
+make
+```
+
+run
+```
+./sim-program
+```
+
+examplary DICOM file:
+
+`image.dcm`
+
+
 
 
