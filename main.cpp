@@ -93,11 +93,7 @@ int main() {
     auto assignedPerson = assignedAuthor->first_node("assignedPerson");
     auto name = assignedPerson->first_node("name");
     auto given = name->first_node("given");
-    cout<<given->value()<<endl;
-    given->value(physician->value());
-    cout<<given->value()<<endl; // Correct node value replacement. Problem with conversion to HTML format?
-
-
+    given->value(doc.allocate_string(physician->value()));
 
 
     std::ostringstream doc_stream;
