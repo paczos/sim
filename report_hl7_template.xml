@@ -133,8 +133,8 @@
                           displayName="Study report"/>
                     <title>Opis badania</title>
                     <text>
-                        asdasdasd asdasd
                         <renderMultiMedia referencedObject="DOCUMENT_CONTENT"/>
+                        Tutaj jakiś opis zdjęcia.
                     </text>
                     <entry>
                         <observationMedia ID="DOCUMENT_CONTENT" classCode="OBS" moodCode="EVN">

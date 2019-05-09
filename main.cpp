@@ -141,9 +141,19 @@ int main() {
     auto section = structuredComponent->first_node("section");
     auto entry = section->first_node("entry");
     auto observationMedia = entry->first_node("observationMedia");
-    auto value = observationMedia->first_node("value");
-    value->value(imageb64.c_str()); // xD
+    auto valueBase64 = observationMedia->first_node("value");
+    // convert photo.png to base64
+    std::ifstream input("photo.png", std::ios::binary);
+    // copies all data into buffer
 
+    string bufferPhoto(std::istreambuf_iterator<char>(input), {});
+    string *photoEncoded = new string();
+    Base64::Encode(bufferPhoto, photoEncoded);
+    valueBase64->value(photoEncoded->c_str()); // xD
+
+
+
+    // save resulting doc as tmp.xml
     std::ostringstream doc_stream;
     doc_stream << doc;
     std::string string_stream = doc_stream.str();
