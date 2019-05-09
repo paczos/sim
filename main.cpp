@@ -7,6 +7,7 @@
 #include <fstream>
 #include <vector>
 #include <sstream>
+#include "base64.h"
 
 using namespace std;
 using namespace rapidxml;
