@@ -96,6 +96,15 @@ int main() {
             birth_date_dcm->value()); //this is how we set the value of an attribute. The attribute should be empty before setting its value, because we do not want our template to keep unimportant values
     // end of EXAMPLE
 
+    auto physician = find_in_dicom_xml_by_name(dicom_doc, "PhysiciansOfRecord");
+
+    auto author = root_node->first_node("author");
+    auto assignedAuthor = author->first_node("assignedAuthor");
+    auto assignedPerson = assignedAuthor->first_node("assignedPerson");
+    auto name = assignedPerson->first_node("name");
+    auto given = name->first_node("given");
+    given->value(doc.allocate_string(physician->value()));
+
 
 
     // clinic name and address
