@@ -133,12 +133,15 @@
                           displayName="Study report"/>
                     <title>Opis badania</title>
                     <text>
-                        <paragraph>
-                            Zaciemnienie obwodu w polu płuca prawego o niejasnym charakterze. Częściowe zaciemnienie
-                            pola dolnego płuca lewego, zmiany zapalne. Wnęki naczyniowe miernie szerokie. Serce
-                            powiększone.
-                        </paragraph>
+                        asdasdasd asdasd
+                        <renderMultiMedia referencedObject="DOCUMENT_CONTENT"/>
                     </text>
+                    <entry>
+                        <observationMedia ID="DOCUMENT_CONTENT" classCode="OBS" moodCode="EVN">
+                            <templateId root="2.16.840.1.113883.3.4424.13.10.4.49"/>
+                            <value representation="B64" mediaType="image/png"></value>
+                        </observationMedia>
+                    </entry>
                 </section>
             </component>
         </structuredBody>
