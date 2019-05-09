@@ -54,7 +54,7 @@
                 <name>
                     <prefix>lek.</prefix>
                     <given></given>
-                    <family>Nowak</family>
+                    <family></family>
                 </name>
             </assignedPerson>
             <representedOrganization>
@@ -110,7 +110,7 @@
         <templateId root="2.16.840.1.113883.3.4424.13.10.2.51"/>
         <serviceEvent classCode="ACT" moodCode="EVN">
             <id extension="9990001" root="2.16.840.1.113883.3.4424.2.7.0.99" displayable="true"/>
-            <code code="87.440" codeSystem="2.16.840.1.113883.3.4424.11.2.6" codeSystemName="ICD-9-PL"
+            <code code="" codeSystem="2.16.840.1.113883.3.4424.11.2.6" codeSystemName="ICD-9-PL"
                   displayName="RTG klatki piersiowej"/>
             <effectiveTime value="201409051012"/>
         </serviceEvent>

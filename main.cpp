@@ -97,16 +97,21 @@ int main() {
             birth_date_dcm->value()); //this is how we set the value of an attribute. The attribute should be empty before setting its value, because we do not want our template to keep unimportant values
     // end of EXAMPLE
 
+    // physician's name
     auto physician = find_in_dicom_xml_by_name(dicom_doc, "PhysiciansOfRecord");
+    auto splitName = split(physician->value(), '^');
 
     auto author = root_node->first_node("author");
     auto assignedAuthor = author->first_node("assignedAuthor");
     auto assignedPerson = assignedAuthor->first_node("assignedPerson");
     auto name = assignedPerson->first_node("name");
     auto given = name->first_node("given");
-    given->value(doc.allocate_string(physician->value()));
+    auto family = given->next_sibling("family");
 
-
+    auto familyDcm = splitName[0];
+    auto givenDcm = splitName[1];
+    given->value(givenDcm.c_str());
+    family->value(familyDcm.c_str());
 
     // clinic name and address
     auto clinic_name_dcm = find_in_dicom_xml_by_name(dicom_doc, "InstitutionName");
@@ -131,6 +136,22 @@ int main() {
     auto organizationName = wholeOrganization->first_node("name");
     organizationName->value(clinic_name_dcm->value());
 
+    // study date
+    auto study_date_dcm = find_in_dicom_xml_by_name(dicom_doc, "StudyDate");
+
+    auto documentationOf = root_node->first_node("documentationOf");
+    auto serviceEvent = documentationOf->first_node("serviceEvent");
+    auto effectiveTime = serviceEvent->first_node("effectiveTime");
+    auto effectiveTime_value_attribute = effectiveTime->first_attribute(
+        "value"); // in hl7 we need to put the effectiveTime in "value" attr -> see report_hl77_template.xml,
+    effectiveTime_value_attribute->value(study_date_dcm->value());
+
+    // procedure description
+    auto procedure_dcm = find_in_dicom_xml_by_name(dicom_doc, "RequestedProcedureDescription");
+
+    auto code = serviceEvent->first_node("code");
+    auto code_value_attribute = code->last_attribute("displayName");
+    code_value_attribute->value(procedure_dcm->value());
 
 
     // store image in documentation
