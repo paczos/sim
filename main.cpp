@@ -11,6 +11,16 @@
 using namespace std;
 using namespace rapidxml;
 
+std::vector <std::string> split(std::string strToSplit, char delimeter) {
+    std::stringstream ss(strToSplit);
+    std::string item;
+    std::vector <std::string> splittedStrings;
+    while (std::getline(ss, item, delimeter)) {
+        splittedStrings.push_back(item);
+    }
+    return splittedStrings;
+}
+
 
 xml_node<> *find_in_dicom_xml_by_name(xml_document<> &doc, string dicom_attr_name) {
     auto file_format = doc.first_node("file-format");
@@ -87,6 +97,34 @@ int main() {
     // end of EXAMPLE
 
 
+
+    // clinic name and address
+    auto clinic_name_dcm = find_in_dicom_xml_by_name(dicom_doc, "InstitutionName");
+    auto clinic_address_dcm = find_in_dicom_xml_by_name(dicom_doc,
+                                                        "InstitutionAddress");
+
+    auto splitAddr = split(clinic_address_dcm->value(), '\n');
+
+    auto author = root_node->first_node("author");
+    auto assignedAuthor = author->first_node("assignedAuthor");
+    auto representedOrganization = assignedAuthor->first_node("representedOrganization");
+    auto addr = representedOrganization->first_node("addr");
+    auto streetName = addr->first_node("streetName");
+    auto city = addr->first_node("city");
+
+
+    auto streetNameDcm = splitAddr[0];
+    auto cityDcm = splitAddr[1];
+    streetName->value(streetNameDcm.c_str());
+    city->value(cityDcm.c_str());
+
+    auto asOrganizationPartOf = representedOrganization->first_node("asOrganizationPartOf");
+    auto wholeOrganization = asOrganizationPartOf->first_node("wholeOrganization");
+    auto organizationName  = wholeOrganization->first_node("name");
+    organizationName->value(clinic_name_dcm->value());
+
+
+
     std::ostringstream doc_stream;
     doc_stream << doc;
     std::string string_stream = doc_stream.str();
@@ -99,7 +137,6 @@ int main() {
     string rendering_command =
             "cat tmp.xml | xalan -xsl transformata_hl7/CDA_PL_IG_1.3.1.xsl -out out.html";
     system(rendering_command.c_str());
-    remove("tmp.xml");
 
     cout << endl << " HL7 message converted to HTMl" << endl;
     return 0;

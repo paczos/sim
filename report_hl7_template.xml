@@ -63,15 +63,13 @@
                 <name>Poradnia POZ</name>
                 <telecom use="PUB" value="tel:22-1111123"/>
                 <addr>
-                    <postalCode>00-950</postalCode>
-                    <city>Warszawa</city>
-                    <streetName>Marszałkowska</streetName>
-                    <houseNumber>320</houseNumber>
+                    <city></city>
+                    <streetName></streetName>
                 </addr>
                 <asOrganizationPartOf>
                     <wholeOrganization>
                         <id extension="12345678901234" root="2.16.840.1.113883.3.4424.2.2.2" displayable="true"/>
-                        <name>NZOZ „POL-MED”</name>
+                        <name></name>
                         <asOrganizationPartOf>
                             <wholeOrganization>
                                 <id extension="1007" root="2.16.840.1.113883.3.4424.2.3.1" displayable="true"/>
