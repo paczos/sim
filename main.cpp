@@ -7,6 +7,7 @@
 #include <fstream>
 #include <vector>
 #include <sstream>
+#include <time.h>
 #include "base64.h"
 
 using namespace std;
@@ -112,6 +113,55 @@ int main() {
     auto givenDcm = splitName[1];
     given->value(givenDcm.c_str());
     family->value(familyDcm.c_str());
+    
+    // Date the document was generated (Current date)
+    auto effectiveTime_now = root_node->first_node("effectiveTime");
+    auto effectiveTime_now_value_attribute = effectiveTime_now->first_attribute("value");
+
+    time_t T= time(NULL);
+    struct  tm tm = *localtime(&T);
+    string time_now = "";
+    if (tm.tm_mon < 9) time_now = to_string(tm.tm_year+1900) + "0" + to_string(tm.tm_mon+1);
+    else time_now = to_string(tm.tm_year+1900) + to_string(tm.tm_mon+1);
+    if (tm.tm_mday < 10) time_now += "0" + to_string(tm.tm_mday);
+    else time_now += to_string(tm.tm_mday);
+
+    effectiveTime_now_value_attribute->value(time_now.c_str());
+
+    // ------------------------Patient informations------------------------------
+    // Patient name
+    auto patientName_dcm = find_in_dicom_xml_by_name(dicom_doc, "PatientName");
+    auto splitPatientName_dcm = split(patientName_dcm->value(), '^');
+
+    auto patient_name = patient->first_node("name");
+    auto given1 = patient_name->first_node("given");
+    auto given2 = patient_name->last_node("given");
+    auto patientFamily = patient_name->first_node("family");
+
+    patientFamily->value(splitPatientName_dcm[0].c_str());
+    given1->value(splitPatientName_dcm[1].c_str());
+    if(splitPatientName_dcm.size() >= 3) given2->value(splitPatientName_dcm[2].c_str());
+
+    // Patient gender
+
+    auto patientSex_dcm = find_in_dicom_xml_by_name(dicom_doc,"PatientSex");
+
+    auto administrativeGenderCode = patient->first_node("administrativeGenderCode");
+    auto administrativeGenderCode_codeValue = administrativeGenderCode->first_attribute("code");
+
+    administrativeGenderCode_codeValue->value(patientSex_dcm->value());
+
+    // Patient ID (PESEL)
+
+    auto patientId_dcm = find_in_dicom_xml_by_name(dicom_doc,"PatientID");
+    string temp_str = patientId_dcm->value();
+    if (temp_str.find("PL") != string::npos) temp_str.erase(temp_str.find("PL"),2);
+    patientId_dcm->value(temp_str.c_str());
+
+    auto patientRole_id = patientRole->last_node("id");
+    auto patientRole_id_extension_value = patientRole_id->first_attribute("extension");
+
+    patientRole_id_extension_value->value(patientId_dcm->value());
 
     // clinic name and address
     auto clinic_name_dcm = find_in_dicom_xml_by_name(dicom_doc, "InstitutionName");
@@ -145,6 +195,13 @@ int main() {
     auto effectiveTime_value_attribute = effectiveTime->first_attribute(
         "value"); // in hl7 we need to put the effectiveTime in "value" attr -> see report_hl77_template.xml,
     effectiveTime_value_attribute->value(study_date_dcm->value());
+
+    auto componentOf = root_node->first_node("componentOf");
+    auto encompassingEncounter = componentOf->first_node("encompassingEncounter");
+    auto effectiveTime2 = encompassingEncounter->first_node("effectiveTime");
+    auto effectiveTime2_value_attribute = effectiveTime2->first_attribute("value");
+
+    effectiveTime2_value_attribute->value(study_date_dcm->value());
 
     // procedure description
     auto procedure_dcm = find_in_dicom_xml_by_name(dicom_doc, "RequestedProcedureDescription");
