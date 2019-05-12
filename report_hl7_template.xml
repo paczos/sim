@@ -20,22 +20,15 @@
         <templateId root="2.16.840.1.113883.3.4424.13.10.2.3"/>
         <patientRole>
             <id extension="12345" root="2.16.840.1.113883.3.4424.2.7.0.17.1" displayable="false"/>
-            <id extension="62091599999" root="2.16.840.1.113883.3.4424.1.1.616" displayable="true"/>
-            <addr>
-                <city>Warszawa</city>
-                <postalCode>01-134</postalCode>
-                <streetName>Odkryta</streetName>
-                <houseNumber>41</houseNumber>
-                <unitID>12</unitID>
-            </addr>
+            <id extension="" root="2.16.840.1.113883.3.4424.1.1.616" displayable="true"/>
             <patient>
                 <name>
-                    <given>Jan</given>
-                    <given>Franciszek</given>
-                    <family>Kowalski</family>
+                    <given></given>
+                    <given></given>
+                    <family></family>
                 </name>
-                <administrativeGenderCode code="M" codeSystem="2.16.840.1.113883.5.1"/>
-                <birthTime value="19620915"/>
+                <administrativeGenderCode code="" codeSystem="2.16.840.1.113883.5.1"/>
+                <birthTime value=""/>
             </patient>
             <providerOrganization classCode="ORG">
                 <templateId root="2.16.840.1.113883.3.4424.13.10.2.2"/>
