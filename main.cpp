@@ -72,14 +72,11 @@ int main() {
     // Parse the buffer using the xml file parsing library into doc
     dicom_doc.parse<0>(&dicom_buffer[0]);
 
-
-    //TODO modify Hl7 here
-
     xml_node<> *root_node = doc.first_node("ClinicalDocument");
     auto title = root_node->first_node(
             "title"); // we are looking inside root_node because TITLE is contained in children of ClinicalDocument node
     title->value(
-            "Badanie RTG wygenerowane przez Kingę Kimnes, Wojciecha Wojciechowskiego, Pawła Paczuskiego"); // we can modify value of a node in this manner
+            "Badanie CT wygenerowane przez Kingę Kimnes, Wojciecha Wojciechowskiego, Pawła Paczuskiego"); // we can modify value of a node in this manner
 
     // example: copying birthdate from original dicom and puting it into HL7 Message
     auto birth_date_dcm = find_in_dicom_xml_by_name(dicom_doc,
