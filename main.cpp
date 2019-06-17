@@ -232,7 +232,8 @@ int main() {
     // add study description (console)
     string study_description;
     cout << "Wprowadz opis badania." << endl;
-    cin >> study_description;
+    cin.ignore();
+    getline(cin,study_description);
 
     auto text = section->first_node("text");
     auto text2 = text->next_sibling("text");
