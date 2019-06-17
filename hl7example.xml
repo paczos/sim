@@ -75,7 +75,7 @@
                 <templateId root="2.16.840.1.113883.3.4424.13.10.2.17"/>
                 <id extension="1007-01" root="2.16.840.1.113883.3.4424.2.3.2" displayable="true"/>
                 <name>Poradnia POZ</name>
-                <telecom use="PUB" value="tel:22-1111123"/>
+                <telecom use="PUB" value=""/>
                 <addr>
                     <postalCode>00-950</postalCode>
                     <city>Warszawa</city>

@@ -229,6 +229,14 @@ int main() {
     Base64::Encode(bufferPhoto, photoEncoded);
     valueBase64->value(photoEncoded->c_str()); // xD
 
+    // add study description (console)
+    string study_description;
+    cout << "Wprowadz opis badania." << endl;
+    cin >> study_description;
+
+    auto text = section->first_node("text");
+    auto text2 = text->next_sibling("text");
+    text2->value(study_description.c_str());
 
 
     // save resulting doc as tmp.xml
