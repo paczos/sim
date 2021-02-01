@@ -6,9 +6,6 @@ DICOM -> HL7 CDA z obrazkiem (xml) sprawdzamy za pomoc xsd -> xslt do html
 jak wybrac obrazek?
 pierwszy
 
-Pan Wanta 59
-
-
 ### Install DCMTK
 ``` bash
 sudo apt-get update
